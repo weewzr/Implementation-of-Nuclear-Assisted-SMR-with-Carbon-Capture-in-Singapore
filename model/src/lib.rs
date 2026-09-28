@@ -263,3 +263,57 @@ pub fn ieaghg_tail_carbon_as_co2_fraction() -> f64 {
     let tail = ieaghg_psa_tail_cho();
     tail.co2 / tail.carbon_kmol_per_h()
 }
+
+
+#[derive(Debug, Clone, Copy)]
+pub struct ReactionExtents {
+    /// CH4 + H2O -> CO + 3 H2, kmol/h.
+    pub smr: f64,
+    /// CO + H2O -> CO2 + H2, kmol/h.
+    pub wgs: f64,
+}
+
+/// Reconstruct reaction extents from a methane-only reduced model.
+///
+/// The inlet is an equivalent methane flow carrying the same number of carbon
+/// atoms as the actual NG feed. This is a carbon-equivalent reduction, not a
+/// claim that the published NG is pure methane.
+pub fn reduced_extents_from_psa_inlet() -> ReactionExtents {
+    let p = ieaghg_psa_inlet_cho();
+    let carbon_feed = ieaghg_feed_carbon_kmol_per_h();
+    let smr = carbon_feed - p.ch4;
+    let wgs = p.co2;
+    ReactionExtents { smr, wgs }
+}
+
+/// H2 implied by the reduced equivalent-CH4 reforming + WGS extents.
+pub fn reduced_reaction_h2_kmol_per_h() -> f64 {
+    let x = reduced_extents_from_psa_inlet();
+    3.0 * x.smr + x.wgs
+}
+
+/// Net steam consumed chemically by the reduced SMR + WGS reactions.
+pub fn reduced_chemical_steam_consumption_kmol_per_h() -> f64 {
+    let x = reduced_extents_from_psa_inlet();
+    x.smr + x.wgs
+}
+
+/// Standard reaction enthalpies at 298.15 K, kJ/mol reaction.
+/// Values correspond to gaseous H2O:
+/// CH4 + H2O(g) -> CO + 3H2 : +206.1 kJ/mol
+/// CO + H2O(g) -> CO2 + H2 : -41.2 kJ/mol
+pub const DELTA_H_SMR_298_KJ_PER_MOL: f64 = 206.1;
+pub const DELTA_H_WGS_298_KJ_PER_MOL: f64 = -41.2;
+
+/// Reference-state reaction duty from the reduced extents, MW.
+///
+/// This is NOT the fired-reformer duty. It excludes sensible heating,
+/// vaporisation, excess steam, higher-hydrocarbon prereforming, heat losses,
+/// equilibrium temperature dependence and heat recovery.
+pub fn reduced_standard_reaction_duty_mw() -> f64 {
+    let x = reduced_extents_from_psa_inlet();
+    // kmol/h * kJ/mol = MJ/h; divide by 3600 => MW.
+    (x.smr * DELTA_H_SMR_298_KJ_PER_MOL
+        + x.wgs * DELTA_H_WGS_298_KJ_PER_MOL)
+        / 3600.0
+}
