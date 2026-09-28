@@ -185,3 +185,15 @@ fn source_prereformer_stream_steam_to_carbon_is_reconstructed_not_assumed() {
     // this with a generic textbook/design S/C assumption.
     close(ieaghg_prereformer_stream_steam_to_carbon(),2.5522,0.002);
 }
+
+
+#[test]
+fn prereformer_to_hts_source_rows_are_not_silently_forced_to_close() {
+    use nuclear_assisted_smr::prereformer_to_hts_source_residual;
+    let r=prereformer_to_hts_source_residual();
+    // Diagnostic guard: if these suddenly approach zero after an edit, inspect
+    // source provenance before claiming a closed reformer control volume.
+    assert!(r.carbon_kmol_atoms_h.abs() > 1.0
+        || r.hydrogen_kmol_atoms_h.abs() > 1.0
+        || r.oxygen_kmol_atoms_h.abs() > 1.0);
+}
