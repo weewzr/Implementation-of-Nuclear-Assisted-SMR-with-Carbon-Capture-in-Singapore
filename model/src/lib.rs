@@ -540,3 +540,61 @@ pub fn source_reformer_water_consumption_kmol_h() -> f64 {
     let o=ieaghg_hts_inlet();
     i.flow(i.h2o) - o.flow(o.h2o)
 }
+
+
+/// IEAGHG comparison cases: authoritative total NG energy input and net power.
+#[derive(Debug, Clone, Copy)]
+pub struct EnergyCase {
+    pub ng_input_mw_lhv: f64,
+    pub h2_product_mw_lhv: f64,
+    pub net_power_export_mwe: f64,
+    pub co2_kg_per_nm3_h2: f64,
+}
+
+pub const IEAGHG_ENERGY_BASE: EnergyCase = EnergyCase {
+    ng_input_mw_lhv: 394.77,
+    h2_product_mw_lhv: 299.70,
+    net_power_export_mwe: 9.918,
+    co2_kg_per_nm3_h2: 0.8091,
+};
+
+/// Shifted-syngas MDEA capture (Case 1A).
+pub const IEAGHG_ENERGY_CASE_1A: EnergyCase = EnergyCase {
+    ng_input_mw_lhv: 407.68,
+    h2_product_mw_lhv: 299.70,
+    net_power_export_mwe: 1.492,
+    co2_kg_per_nm3_h2: 0.3704,
+};
+
+/// Reformer-flue-gas MEA capture (Case 03/3).
+pub const IEAGHG_ENERGY_CASE_3: EnergyCase = EnergyCase {
+    ng_input_mw_lhv: 433.72,
+    h2_product_mw_lhv: 299.70,
+    net_power_export_mwe: 0.426,
+    co2_kg_per_nm3_h2: 0.0888,
+};
+
+/// Incremental NG thermal input relative to the no-capture base case.
+pub fn incremental_ng_input_mw(case: EnergyCase) -> f64 {
+    case.ng_input_mw_lhv - IEAGHG_ENERGY_BASE.ng_input_mw_lhv
+}
+
+/// Loss of net electricity export relative to the base case.
+/// Positive means the capture case has consumed an additional electrical
+/// opportunity that the base plant exported.
+pub fn lost_power_export_mwe(case: EnergyCase) -> f64 {
+    IEAGHG_ENERGY_BASE.net_power_export_mwe - case.net_power_export_mwe
+}
+
+/// A deliberately simple first-law opportunity metric:
+/// incremental NG LHV plus lost exported electricity.
+/// This is NOT SPECCA and does not convert electricity to primary energy.
+pub fn incremental_energy_service_mw(case: EnergyCase) -> f64 {
+    incremental_ng_input_mw(case) + lost_power_export_mwe(case)
+}
+
+/// Plant-gate CO2 avoided at the fixed 100,000 Nm3/h H2 production rate, t/h.
+pub fn plant_gate_co2_avoided_t_per_h(case: EnergyCase) -> f64 {
+    (IEAGHG_ENERGY_BASE.co2_kg_per_nm3_h2 - case.co2_kg_per_nm3_h2)
+        * 100_000.0 / 1000.0
+}
