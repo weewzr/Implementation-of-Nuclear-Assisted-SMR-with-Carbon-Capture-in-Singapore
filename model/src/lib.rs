@@ -317,3 +317,96 @@ pub fn reduced_standard_reaction_duty_mw() -> f64 {
         + x.wgs * DELTA_H_WGS_298_KJ_PER_MOL)
         / 3600.0
 }
+
+
+#[derive(Debug, Clone, Copy)]
+pub struct FullStream {
+    pub total_kmol_h: f64,
+    pub co2: f64,
+    pub co: f64,
+    pub h2: f64,
+    pub n2: f64,
+    pub ch4: f64,
+    pub c2h6: f64,
+    pub c3h8: f64,
+    pub nc4h10: f64,
+    pub nc5h12: f64,
+    pub h2o: f64,
+}
+
+impl FullStream {
+    pub fn flow(self, y: f64) -> f64 { self.total_kmol_h * y }
+
+    pub fn carbon_kmol_h(self) -> f64 {
+        self.total_kmol_h * (
+            self.co2 + self.co + self.ch4 + 2.0*self.c2h6 +
+            3.0*self.c3h8 + 4.0*self.nc4h10 + 5.0*self.nc5h12
+        )
+    }
+
+    pub fn hydrogen_atoms_kmol_h(self) -> f64 {
+        self.total_kmol_h * (
+            2.0*self.h2 + 4.0*self.ch4 + 6.0*self.c2h6 +
+            8.0*self.c3h8 + 10.0*self.nc4h10 + 12.0*self.nc5h12 +
+            2.0*self.h2o
+        )
+    }
+
+    pub fn oxygen_atoms_kmol_h(self) -> f64 {
+        self.total_kmol_h * (2.0*self.co2 + self.co + self.h2o)
+    }
+}
+
+pub fn ieaghg_prereformer_feed() -> FullStream {
+    FullStream {
+        total_kmol_h: 5514.0,
+        co2: 0.0053, co: 0.0, h2: 0.0053, n2: 0.0023,
+        ch4: 0.2350, c2h6: 0.0185, c3h8: 0.0026,
+        nc4h10: 0.0003, nc5h12: 0.0, h2o: 0.7307,
+    }
+}
+
+pub fn ieaghg_hts_inlet() -> FullStream {
+    FullStream {
+        total_kmol_h: 8370.3,
+        co2: 0.0492, co: 0.1156, h2: 0.5171, n2: 0.0015,
+        ch4: 0.0238, c2h6: 0.0, c3h8: 0.0,
+        nc4h10: 0.0, nc5h12: 0.0, h2o: 0.2927,
+    }
+}
+
+pub fn ieaghg_hts_outlet() -> FullStream {
+    FullStream {
+        total_kmol_h: 8370.3,
+        co2: 0.1283, co: 0.0366, h2: 0.5961, n2: 0.0015,
+        ch4: 0.0238, c2h6: 0.0, c3h8: 0.0,
+        nc4h10: 0.0, nc5h12: 0.0, h2o: 0.2137,
+    }
+}
+
+/// WGS extent reconstructed independently from CO consumption and CO2 formation.
+pub fn ieaghg_hts_wgs_extent_from_co_kmol_h() -> f64 {
+    let i=ieaghg_hts_inlet(); let o=ieaghg_hts_outlet();
+    i.flow(i.co) - o.flow(o.co)
+}
+pub fn ieaghg_hts_wgs_extent_from_co2_kmol_h() -> f64 {
+    let i=ieaghg_hts_inlet(); let o=ieaghg_hts_outlet();
+    o.flow(o.co2) - i.flow(i.co2)
+}
+pub fn ieaghg_hts_wgs_extent_from_h2_kmol_h() -> f64 {
+    let i=ieaghg_hts_inlet(); let o=ieaghg_hts_outlet();
+    o.flow(o.h2) - i.flow(i.h2)
+}
+pub fn ieaghg_hts_wgs_extent_from_water_kmol_h() -> f64 {
+    let i=ieaghg_hts_inlet(); let o=ieaghg_hts_outlet();
+    i.flow(i.h2o) - o.flow(o.h2o)
+}
+
+/// Approximate source steam-to-carbon ratio entering the pre-reformer.
+/// Water is divided by carbon atoms in carbonaceous species of stream 4.
+/// Because stream 4 already contains a small amount of H2/CO2 produced
+/// upstream, this is a stream-based diagnostic, not the plant design S/C spec.
+pub fn ieaghg_prereformer_stream_steam_to_carbon() -> f64 {
+    let s=ieaghg_prereformer_feed();
+    s.flow(s.h2o)/s.carbon_kmol_h()
+}
