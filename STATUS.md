@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation, early baseline construction
 
 ## Current scientific question/task
-Close the conventional SMR carbon/energy balance far enough to quantify what a nuclear-heated reformer actually displaces, including PSA tail-gas disposition.
+Extend the now-closed reference carbon balance into a species-resolved reformer/WGS/PSA model, then determine a physically valid tail-gas treatment for the nuclear-heated configuration.
 
 ## Completed
 - Read the complete Project Brief and official CN4252 Problem Statement.
@@ -18,12 +18,15 @@ Close the conventional SMR carbon/energy balance far enough to quantify what a n
 - Established the CN4252 scale identity: required annual H2 production depends on the marginal CO2e reduction per kg H2, not on capture percentage alone.
 
 ## Most important scientific finding so far
-The ideal combined SMR/WGS reaction gives:
-CH4 + 2 H2O -> CO2 + 4 H2.
+The published IEAGHG heat/material balance permits an independent carbon-atom closure.
 
-This imposes a stoichiometric lower-bound relationship of about 1.99 kg CH4/kg H2 and 5.46 kg CO2/kg H2 for complete methane-to-hydrogen conversion.
+For its natural-gas composition, the base case contains about 1578.6 kmol-C/h in NG feedstock and 260.7 kmol-C/h in make-up furnace fuel. Published flue gas contains about 1838.4 kmol-C/h versus 1839.3 kmol-C/h entering: 99.95% closure using rounded source values.
 
-A published Aspen-based 500 t/d SMR case reports 3.16 kg NG/kg H2 and 8.47 kg CO2/kg H2. The difference from the ideal bound shows that a realistic plant-level model must capture feed composition, conversion/recovery losses, fuel use and heat integration rather than using stoichiometry alone.
+More importantly, the PSA tail gas contains about 1578.5 kmol-C/h — essentially 100% of the feedstock carbon before firing. The separately supplied furnace NG is only about 14.2% of total incoming carbon.
+
+Therefore replacing furnace heat with nuclear heat does NOT remove the feedstock-carbon problem. The nuclear flowsheet must capture, convert, recycle or otherwise treat the PSA/tail-gas carbon.
+
+Even at the PSA inlet, removing all existing CO2 would leave about 505 kmol-C/h as CO + CH4 in the reference stream. This residual carbon is now a first-order design constraint.
 
 ## Key assignment implication
 If the candidate system reduces emissions by Delta-e kgCO2e/kgH2 relative to the counterfactual, the production scale needed to exceed 0.25 MtCO2e/y is:
@@ -73,7 +76,7 @@ natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport
 - Earlier Rust CI runs have completed successfully; CI for the newest baseline/tail-gas tests is pending.
 
 ## Next highest-priority task
-Close the carbon balance around reformer -> WGS -> PSA -> tail gas -> furnace for the IEAGHG reference plant, then test nuclear-heat substitution scenarios that conserve the tail-gas carbon rather than deleting it.
+Build a species-resolved steady-state model that reproduces the IEAGHG reference streams (CH4, heavier hydrocarbons, H2O, CO, CO2, H2), then compare candidate tail-gas treatment/recycle architectures before introducing an HTGR heat source. Acceptance criterion: elemental C/H/O closure and reproduction of published key stream flows/compositions within declared tolerances.
 
 Required checks:
 1. elemental mass conservation;
