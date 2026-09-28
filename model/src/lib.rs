@@ -187,3 +187,79 @@ pub fn ieaghg_psa_inlet_non_co2_carbon_kmol_per_h() -> f64 {
     const Y_CH4: f64 = 0.0302;
     PSA_IN_KMOL_H * (Y_CO + Y_CH4)
 }
+
+
+/// A reduced C-H-O material stream for the IEAGHG reference model.
+///
+/// Nitrogen, argon and unreacted steam are deliberately excluded from this
+/// struct until the complete published stream table is encoded. This model is
+/// therefore for carbon/hydrogen chemistry closure, not yet a total wet-gas
+/// flowsheet.
+#[derive(Debug, Clone, Copy)]
+pub struct ChoStream {
+    pub h2: f64,
+    pub co2: f64,
+    pub co: f64,
+    pub ch4: f64,
+}
+
+impl ChoStream {
+    pub fn carbon_kmol_per_h(self) -> f64 {
+        self.co2 + self.co + self.ch4
+    }
+
+    pub fn combustible_kmol_per_h(self) -> f64 {
+        self.h2 + self.co + self.ch4
+    }
+}
+
+/// IEAGHG base-case PSA inlet reconstructed from the published total molar
+/// flow and dry/wet composition entries used in the report's heat/material
+/// balance. Values are kmol/h.
+pub fn ieaghg_psa_inlet_cho() -> ChoStream {
+    const TOTAL: f64 = 6596.9;
+    ChoStream {
+        h2: TOTAL * 0.7507,
+        co2: TOTAL * 0.1627,
+        co: TOTAL * 0.0464,
+        ch4: TOTAL * 0.0302,
+    }
+}
+
+/// IEAGHG base-case PSA tail gas. Values are kmol/h.
+pub fn ieaghg_psa_tail_cho() -> ChoStream {
+    const TOTAL: f64 = 2106.3;
+    ChoStream {
+        h2: TOTAL * 0.2369,
+        co2: TOTAL * 0.5095,
+        co: TOTAL * 0.1454,
+        ch4: TOTAL * 0.0945,
+    }
+}
+
+/// Hydrogen product implied by the difference between PSA inlet and tail gas.
+/// This is a reconstruction from rounded source stream values, not an
+/// independent PSA adsorption model.
+pub fn ieaghg_reconstructed_h2_product_kmol_per_h() -> f64 {
+    ieaghg_psa_inlet_cho().h2 - ieaghg_psa_tail_cho().h2
+}
+
+/// Hydrogen recovery reconstructed from the published inlet/tail streams.
+pub fn ieaghg_reconstructed_psa_h2_recovery() -> f64 {
+    let inlet = ieaghg_psa_inlet_cho().h2;
+    ieaghg_reconstructed_h2_product_kmol_per_h() / inlet
+}
+
+/// Fraction of the PSA-tail-gas molar flow that is combustible H2+CO+CH4.
+/// This is not an energy fraction; LHV accounting is a later model layer.
+pub fn ieaghg_tail_combustible_mole_fraction() -> f64 {
+    let tail = ieaghg_psa_tail_cho();
+    tail.combustible_kmol_per_h() / 2106.3
+}
+
+/// CO2 fraction of tail-gas carbon. The remainder is carbon in CO+CH4 and
+/// survives a hypothetical CO2-only separator.
+pub fn ieaghg_tail_carbon_as_co2_fraction() -> f64 {
+    let tail = ieaghg_psa_tail_cho();
+    tail.co2 / tail.carbon_kmol_per_h()
+}
