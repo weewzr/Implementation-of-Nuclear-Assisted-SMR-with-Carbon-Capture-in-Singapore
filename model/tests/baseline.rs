@@ -244,3 +244,23 @@ fn ieaghg_energy_source_rounding_is_explicit_not_forced() {
     let sum=IEAGHG_FEED_LHV_GJ_PER_1000_NM3_H2+IEAGHG_FUEL_LHV_GJ_PER_1000_NM3_H2;
     close(IEAGHG_TOTAL_LHV_GJ_PER_1000_NM3_H2-sum,0.001,1e-12);
 }
+
+
+#[test]
+fn source_stream4_to_stream5_conserves_elements_with_rounding_tolerance() {
+    use nuclear_assisted_smr::stream4_to_stream5_element_ratios;
+    let (c,h,o)=stream4_to_stream5_element_ratios();
+    close(c,1.0,0.002);
+    close(h,1.0,0.002);
+    close(o,1.0,0.002);
+}
+
+#[test]
+fn source_reformer_consumes_water_and_eliminates_heavier_hydrocarbons() {
+    use nuclear_assisted_smr::{
+        source_reformer_water_consumption_kmol_h,
+        source_reformer_carbon_conversion_kmol_h,
+    };
+    assert!(source_reformer_water_consumption_kmol_h() > 1000.0);
+    assert!(source_reformer_carbon_conversion_kmol_h() > 1000.0);
+}
