@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation, early baseline construction
 
 ## Current scientific question/task
-Replace the reduced equivalent-methane reformer reconstruction with an explicit multi-hydrocarbon + steam C/H/O model, then close the source heat/material balance.
+Use the newly recovered IEAGHG source streams to reconstruct pre-reformer + primary-reformer chemistry explicitly and close the full C/H/O balance before heat-duty integration.
 
 ## Completed
 - Read the complete Project Brief and official CN4252 Problem Statement.
@@ -43,7 +43,10 @@ Lifecycle extension:
 natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport/storage.
 
 ## Work in progress
-- All previous carbon-balance and PSA species Rust tests are now confirmed passing in GitHub Actions.
+- Earlier carbon-balance and PSA species tests passed, but a later reduced-model regression correctly failed: its equivalent-methane approximation missed source H2 by more than the provisional 2% tolerance.
+- Inspection of the primary IEAGHG table also found a transcription error in the earlier PSA inlet H2 fraction: the source value is 0.7563, not 0.7507. The Rust source and tests have been corrected; new CI is pending.
+- The IEAGHG source table now supplies pre-reformer feed, HTS inlet, HTS outlet and PSA inlet directly. These source states supersede inference from the PSA alone.
+- The HTS reaction extent is now reconstructed independently from CO consumption, CO2 production, H2 production and H2O consumption, with C/H/O closure tests.
 - A reduced equivalent-methane reaction-extent model has been added upstream of the PSA. It exactly preserves feed carbon and reconstructs the PSA CO relation through SMR + WGS stoichiometry.
 - The reduced model intentionally exposes a hydrogen mismatch because replacing C2+ hydrocarbons with carbon-equivalent methane changes feed H/C. This is now the acceptance signal for the next explicit-hydrocarbon model.
 - A first reference-state reaction-duty layer using standard SMR/WGS enthalpies has been implemented; it is explicitly not yet the furnace duty.
@@ -81,7 +84,7 @@ natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport
 - Earlier Rust CI runs have completed successfully; CI for the newest baseline/tail-gas tests is pending.
 
 ## Next highest-priority task
-Encode the actual IEAGHG NG species (CH4, C2H6, C3H8, n-C4H10, n-C5H12, feed CO2) and source steam/water streams. Solve C/H/O balances through prereforming/reforming/WGS to the validated PSA inlet. Then add temperature-dependent sensible/reaction enthalpy and compare with published duties. Do not size/select an HTGR until this duty is closed.
+Reconstruct the transformation from the published pre-reformer feed (500 C, 3.39 MPa) to the published HTS inlet using explicit CH4/C2+/H2O/CO/CO2/H2 balances and pre-reforming + primary-reforming reactions. Verify against source streams before adding temperature-dependent enthalpy. Do not size/select an HTGR until the source material and heat balances close.
 
 Required checks:
 1. elemental mass conservation;
