@@ -1,0 +1,3 @@
+# Official CN4252 Problem Statement
+
+The target is that their solution-at-scale can reduce >0.25 MtCO2e/year within Singapore at a cost of <S$100/tCO2e. The solution could be anything from the development and deployment of a new technology to a new policy recommendation. It may be inspired by the guest lecture content or an idea obtained from independent research, but it should not be a regurgitation of an existing project in Singapore. We must clearly show how this solution can abate emissions and what the implementation roadmap would look like. We will be graded on the feasibility and potential effectiveness of the solution, accuracy of the content, and presentation delivery.
