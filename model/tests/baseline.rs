@@ -247,12 +247,16 @@ fn ieaghg_energy_source_rounding_is_explicit_not_forced() {
 
 
 #[test]
-fn source_stream4_to_stream5_conserves_elements_with_rounding_tolerance() {
-    use nuclear_assisted_smr::stream4_to_stream5_element_ratios;
-    let (c,h,o)=stream4_to_stream5_element_ratios();
-    close(c,1.0,0.002);
-    close(h,1.0,0.002);
-    close(o,1.0,0.002);
+fn source_stream4_to_stream5_closes_after_source_described_water_addition() {
+    use nuclear_assisted_smr::prereformer_to_hts_residual_with_inferred_water;
+    let r=prereformer_to_hts_residual_with_inferred_water();
+    // Source rows are rounded to four decimals; the independently inferred
+    // H- and O-based water additions differ by ~1.5 kmol/h. The reconciled
+    // residuals must remain small relative to the ~4,000-14,000 kmol-atom/h
+    // inventories rather than being tuned to exact zero.
+    assert!(r.carbon_kmol_atoms_h.abs() < 0.1);
+    assert!(r.hydrogen_kmol_atoms_h.abs() < 2.0);
+    assert!(r.oxygen_kmol_atoms_h.abs() < 1.0);
 }
 
 #[test]
