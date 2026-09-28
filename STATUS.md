@@ -1,68 +1,84 @@
 # STATUS
 
 ## Current research gate
-Gate 1 — Research framing and landscape; ready to progress into mathematical/model foundation after baseline data selection.
+Gate 3 — Mathematical/model foundation, early baseline construction
 
 ## Current scientific question/task
-Determine the minimum defensible reference system against which the proposed HTGR-assisted SMR + CCS concept must be compared.
+What is the minimum defensible conventional SMR + CCS reference model needed to quantify the marginal value of nuclear process heat?
 
 ## Completed
-- Read the complete Project Brief.
-- Read the complete official CN4252 Problem Statement.
-- Confirmed the Problem Statement is authoritative for assignment requirements.
-- Formalised the assignment requirements matrix.
-- Checked whether HTGR-assisted SMR + amine CCS can satisfy the assignment conceptually.
-- Identified missing proof obligations: annual scale, <S$100/tCO2e cost, counterfactual, lifecycle emissions, roadmap, originality, and alternatives.
-- Searched conventional SMR, process/combustion CO2, CCS, amine regeneration, methane leakage, HTGR process heat, nuclear-integrated hydrogen, eSMR, electrolysis, Singapore energy/hydrogen/nuclear/CCS context, TEA/LCA methods, and open-source implementations.
-- Inspected the supervisor-reported OUTRAM PARK Rust repository and documented its relationship to the original process figure.
-- Updated the research matrix with primary/authoritative sources and explicit gaps.
-- Preserved the student's initial architecture as a hypothesis rather than a conclusion.
-- Initial public GitHub repository structure established.
+- Read the complete Project Brief and official CN4252 Problem Statement.
+- Established the authoritative assignment requirements matrix.
+- Formalised the proposed HTGR-assisted SMR + amine CCS architecture as a hypothesis, not a conclusion.
+- Conducted the initial external landscape review covering SMR, CCS, amine regeneration, methane leakage, HTGR process heat, eSMR, electrolysis, Singapore nuclear/hydrogen/CCS context, TEA/LCA methods and relevant open-source software.
+- Verified the existing public project repository and inspected the supervisor-reported OUTRAM PARK Rust repository for rendering/software provenance.
+- Established the initial comparison set: fired SMR; fired SMR + CCS; eSMR + CCS; nuclear-electric eSMR + CCS; direct HTGR-heated SMR + CCS; and a low-carbon electrolysis benchmark.
+- Added the official problem statement and working project brief to the repository as provenance records.
+- Added first-principles SMR stoichiometric equations, lifecycle/abatement definitions and benchmark parameter provenance.
+- Established the CN4252 scale identity: required annual H2 production depends on the marginal CO2e reduction per kg H2, not on capture percentage alone.
 
-## Most important finding
-The broad concept is technically legitimate but is not novel by itself. Direct HTGR-heated SMR has prior modelling and, by 2026, direct literature comparison against HTGR-electric eSMR already exists. Singapore also already has SMR/CCS studies and a 2025 Aster/Air Liquide low-carbon hydrogen + integrated carbon-capture initiative.
+## Most important scientific finding so far
+The ideal combined SMR/WGS reaction gives:
+CH4 + 2 H2O -> CO2 + 4 H2.
 
-Therefore the project should not claim invention of nuclear-assisted SMR. Its defensible contribution is a Singapore-specific, consistently bounded, quantitatively scaled comparison of direct nuclear heat, nuclear electricity/eSMR, conventional SMR+CCS, and other relevant pathways against the CN4252 thresholds.
+This imposes a stoichiometric lower-bound relationship of about 1.99 kg CH4/kg H2 and 5.46 kg CO2/kg H2 for complete methane-to-hydrogen conversion.
 
-## Key assignment risk
-A generic "SMR + CCS in Singapore" proposal could be interpreted as a regurgitation of existing work. Nuclear-heat integration and the comparative systems analysis must therefore be central.
+A published Aspen-based 500 t/d SMR case reports 3.16 kg NG/kg H2 and 8.47 kg CO2/kg H2. The difference from the ideal bound shows that a realistic plant-level model must capture feed composition, conversion/recovery losses, fuel use and heat integration rather than using stoichiometry alone.
 
-## Major unresolved scientific questions
-1. What baseline hydrogen plant capacity and operating basis are appropriate for Singapore?
-2. What exact process/combustion CO2 split results from the selected SMR configuration?
-3. What heat duty remains after heat recovery, and at what temperature level?
-4. Can an HTGR supply that duty through a physically credible heat-exchanger/interface without violating reactor/process constraints?
-5. How should CCS regeneration heat be supplied in each comparator?
-6. What is the fair counterfactual for annual avoided CO2e?
-7. How sensitive is lifecycle performance to methane leakage, gas source, capture rate and CO2 storage assumptions?
-8. What production scale is required to exceed 0.25 MtCO2e/y?
-9. What CAPEX/OPEX and financing assumptions are needed for <S$100/tCO2e?
-10. How does the nuclear case compare with direct electricity/eSMR and electrolysis when the same heat/electricity accounting boundary is used?
+## Key assignment implication
+If the candidate system reduces emissions by Delta-e kgCO2e/kgH2 relative to the counterfactual, the production scale needed to exceed 0.25 MtCO2e/y is:
+
+H2_required [kt/y] > 250 / Delta-e.
+
+The scale therefore becomes very large when the candidate's marginal advantage over the baseline is small.
+
+## Current model boundary
+Initial baseline:
+natural gas + water/steam -> reforming -> WGS -> H2 separation -> CO2 capture -> solvent regeneration -> CO2 compression.
+
+Lifecycle extension:
+natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport/storage.
 
 ## Work in progress
-- Converting the literature landscape into a parameter provenance table.
-- Selecting baseline model equations.
-- Determining the smallest model capable of falsifying the initial hypothesis.
+- Convert the baseline equations into a verified Rust implementation.
+- Determine a consistent natural-gas composition and steam-to-carbon basis.
+- Separate process CO2, furnace CO2, PSA/tail-gas carbon and upstream methane emissions.
+- Establish a heat-duty model with stream temperature levels.
+- Choose capture topology only after baseline stream concentrations and duties are quantified.
+
+## Major unresolved scientific questions
+1. What baseline configuration best represents a Singapore industrial SMR without biasing the nuclear comparison?
+2. How much of total CO2 is process carbon versus combustion carbon for that configuration?
+3. How much reformer duty remains after internal heat recovery?
+4. What fraction of the CCS regeneration duty should be allocated to each energy source?
+5. What reactor outlet temperature and heat-transfer approach are actually feasible?
+6. What is the fair counterfactual for direct HTGR heat versus nuclear-electric eSMR?
+7. Do upstream methane emissions erase much of the apparent plant-level CCS benefit?
+8. What production scale is compatible with a Singapore deployment scenario?
+9. Can the integrated system achieve the assignment's <S$100/tCO2e threshold on a transparent incremental-cost basis?
 
 ## Blockers
-- Need validated SMR operating conditions and energy duties before quantitative integration.
-- Need consistent Singapore-relevant natural-gas, electricity, CO2 transport/storage and cost assumptions.
-- Need deeper review of exact Singapore existing-project documentation to establish originality boundary.
+- Rust toolchain is not installed in the current execution environment, so the new baseline code scaffold has not been build-tested here.
+- Exact Singapore-relevant natural-gas and cost data still need to be selected with provenance.
+- Existing Singapore SMR/CCS work needs deeper review to define the originality boundary.
 
 ## Verification/build status
-- No research simulation has been run or accepted yet.
-- No numerical model has been validated.
-- No final reactor selection has been made.
-- Rust implementation has not yet begun.
-- GitHub repository files have been created/updated through the connected GitHub account.
-- OUTRAM PARK source code was inspected for provenance/reference purposes only.
+- No production simulation has been accepted as a scientific result.
+- Baseline equations are analytical definitions, not numerical simulation outputs.
+- Literature benchmark values are clearly marked as benchmark/source values.
+- No final reactor or CCS topology has been selected.
+- GitHub repository is public and being used as the canonical research workspace.
+- CI configuration exists but has not been observed running successfully from this environment.
 
 ## Next highest-priority task
-Build the literature-backed conventional SMR + CCS baseline:
-1. define functional unit and plant capacity;
-2. derive CH4/H2/H2O/CO/CO2 material balances;
-3. derive reformer, WGS and heat-recovery duties;
-4. separate process and combustion CO2;
-5. define candidate capture boundaries;
-6. establish a transparent CO2 abatement equation;
-7. benchmark the resulting model against authoritative and peer-reviewed values.
+Build the conventional SMR baseline in Rust and verify it against at least two independent published/authoritative benchmark cases before introducing nuclear heat.
+
+Required checks:
+1. elemental mass conservation;
+2. reaction stoichiometry;
+3. H2 recovery/purity consistency;
+4. total carbon balance;
+5. process-versus-combustion CO2 accounting;
+6. energy-balance closure;
+7. benchmark comparison with stated tolerances;
+8. annual abatement scaling calculation.
