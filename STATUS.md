@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation, early baseline construction
 
 ## Current scientific question/task
-What is the minimum defensible conventional SMR + CCS reference model needed to quantify the marginal value of nuclear process heat?
+Close the conventional SMR carbon/energy balance far enough to quantify what a nuclear-heated reformer actually displaces, including PSA tail-gas disposition.
 
 ## Completed
 - Read the complete Project Brief and official CN4252 Problem Statement.
@@ -40,14 +40,15 @@ Lifecycle extension:
 natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport/storage.
 
 ## Work in progress
-- Convert the baseline equations into a verified Rust implementation.
+- Rust screening model now implements the IEAGHG 2017-02 base case and shifted-syngas MDEA Case 1A, including unit conversion, plant-gate abatement and CN4252 scale functions.
+- CI for the newest baseline tests is currently queued/in progress; do not treat it as passed until GitHub reports success.
 - Determine a consistent natural-gas composition and steam-to-carbon basis.
 - Separate process CO2, furnace CO2, PSA/tail-gas carbon and upstream methane emissions.
 - Establish a heat-duty model with stream temperature levels.
 - Choose capture topology only after baseline stream concentrations and duties are quantified.
 
 ## Major unresolved scientific questions
-1. What baseline configuration best represents a Singapore industrial SMR without biasing the nuclear comparison?
+1. What happens to PSA tail gas when the fired reformer is replaced by nuclear heat? This is now a first-order integration constraint because conventional SMR burns PSA tail gas as primary furnace fuel.
 2. How much of total CO2 is process carbon versus combustion carbon for that configuration?
 3. How much reformer duty remains after internal heat recovery?
 4. What fraction of the CCS regeneration duty should be allocated to each energy source?
@@ -58,7 +59,8 @@ natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport
 9. Can the integrated system achieve the assignment's <S$100/tCO2e threshold on a transparent incremental-cost basis?
 
 ## Blockers
-- Rust toolchain is not installed in the current execution environment, so the new baseline code scaffold has not been build-tested here.
+- Local Rust is unavailable, but GitHub Actions is now being used for actual build/test verification; the newest run is pending.
+- The nuclear flowsheet cannot be closed until PSA tail-gas disposition is selected/modelled.
 - Exact Singapore-relevant natural-gas and cost data still need to be selected with provenance.
 - Existing Singapore SMR/CCS work needs deeper review to define the originality boundary.
 
@@ -68,10 +70,10 @@ natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport
 - Literature benchmark values are clearly marked as benchmark/source values.
 - No final reactor or CCS topology has been selected.
 - GitHub repository is public and being used as the canonical research workspace.
-- CI configuration exists but has not been observed running successfully from this environment.
+- Earlier Rust CI runs have completed successfully; CI for the newest baseline/tail-gas tests is pending.
 
 ## Next highest-priority task
-Build the conventional SMR baseline in Rust and verify it against at least two independent published/authoritative benchmark cases before introducing nuclear heat.
+Close the carbon balance around reformer -> WGS -> PSA -> tail gas -> furnace for the IEAGHG reference plant, then test nuclear-heat substitution scenarios that conserve the tail-gas carbon rather than deleting it.
 
 Required checks:
 1. elemental mass conservation;
