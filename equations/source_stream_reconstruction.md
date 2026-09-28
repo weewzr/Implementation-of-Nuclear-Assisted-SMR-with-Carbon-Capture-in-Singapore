@@ -38,9 +38,9 @@ The Rust model now asserts C/H/O elemental closure across this section.
 
 ## Steam-to-carbon diagnostic
 
-The published pre-reformer-feed stream contains about 73.07 mol% water. Dividing water molar flow by carbon atoms in its carbon-bearing species gives a stream-level steam/carbon ratio of approximately 3.1.
+The published pre-reformer-feed stream contains about 73.07 mol% water. Dividing water molar flow by carbon atoms in its carbon-bearing species gives a directly reconstructed stream-level steam/carbon ratio of approximately 2.55.
 
-This is consistent with the expected industrial practice of using substantial excess steam, but it is not yet treated as the plant design S/C specification because the stream already contains small amounts of H2 and CO2 produced upstream.
+This value is retained as a source-stream diagnostic, not silently replaced by a generic design S/C assumption. The stream already contains small amounts of H2 and CO2 and sits downstream of feed preparation, so it is not automatically identical to the plant's nominal design S/C specification.
 
 ## Process-temperature hierarchy
 
