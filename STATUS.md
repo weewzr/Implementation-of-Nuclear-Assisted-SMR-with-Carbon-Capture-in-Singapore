@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation, early baseline construction
 
 ## Current scientific question/task
-Use the newly recovered IEAGHG source streams to reconstruct pre-reformer + primary-reformer chemistry explicitly and close the full C/H/O balance before heat-duty integration.
+Resolve the exact IEAGHG control-volume/source-row mapping between pre-reformer feed and HTS inlet before claiming a closed primary-reformer balance.
 
 ## Completed
 - Read the complete Project Brief and official CN4252 Problem Statement.
@@ -43,7 +43,9 @@ Lifecycle extension:
 natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport/storage.
 
 ## Work in progress
-- Earlier carbon-balance and PSA species tests passed, but a later reduced-model regression correctly failed: its equivalent-methane approximation missed source H2 by more than the provisional 2% tolerance.
+- The previous CI failure was traced precisely. The reduced-model mismatch diagnostic now behaves as intended; the remaining failing assertion was our assumed pre-reformer stream S/C = 3.1.
+- Direct reconstruction from the encoded IEAGHG source row gives S/C = 2.5522, not 3.1. The incorrect assumption and documentation have been corrected; CI for that correction passed.
+- A source-stream elemental-residual diagnostic has been added so the pre-reformer-feed -> HTS-inlet rows cannot be silently forced to close if they do not represent a complete control volume.
 - Inspection of the primary IEAGHG table also found a transcription error in the earlier PSA inlet H2 fraction: the source value is 0.7563, not 0.7507. The Rust source and tests have been corrected; new CI is pending.
 - The IEAGHG source table now supplies pre-reformer feed, HTS inlet, HTS outlet and PSA inlet directly. These source states supersede inference from the PSA alone.
 - The HTS reaction extent is now reconstructed independently from CO consumption, CO2 production, H2 production and H2O consumption, with C/H/O closure tests.
@@ -84,7 +86,7 @@ natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport
 - Earlier Rust CI runs have completed successfully; CI for the newest baseline/tail-gas tests is pending.
 
 ## Next highest-priority task
-Reconstruct the transformation from the published pre-reformer feed (500 C, 3.39 MPa) to the published HTS inlet using explicit CH4/C2+/H2O/CO/CO2/H2 balances and pre-reforming + primary-reforming reactions. Verify against source streams before adding temperature-dependent enthalpy. Do not size/select an HTGR until the source material and heat balances close.
+Inspect the complete IEAGHG stream numbering/process diagram around pre-reformer, reformer and syngas cooling to identify any intervening/additional streams and exact control-volume boundaries. Only after that provenance is resolved should the model solve reaction extents and attach enthalpy. Do not manufacture closure by tuning source values.
 
 Required checks:
 1. elemental mass conservation;
