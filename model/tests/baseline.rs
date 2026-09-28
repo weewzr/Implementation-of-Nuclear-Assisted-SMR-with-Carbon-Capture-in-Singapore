@@ -60,3 +60,39 @@ fn base_makeup_fuel_combustion_is_only_part_of_total_direct_co2() {
     close(makeup, 1.322, 0.005);
     assert!(makeup < IEAGHG_BASE.co2_emitted_kg_per_kg_h2());
 }
+
+
+#[test]
+fn ieaghg_carbon_balance_closes_from_ng_inputs_to_flue_gas() {
+    use nuclear_assisted_smr::{
+        ieaghg_feed_carbon_kmol_per_h, ieaghg_flue_carbon_kmol_per_h,
+        ieaghg_makeup_fuel_carbon_kmol_per_h,
+    };
+    let carbon_in = ieaghg_feed_carbon_kmol_per_h() + ieaghg_makeup_fuel_carbon_kmol_per_h();
+    let carbon_out = ieaghg_flue_carbon_kmol_per_h();
+    close(carbon_out / carbon_in, 1.0, 0.001);
+}
+
+#[test]
+fn psa_tail_gas_carries_essentially_all_feedstock_carbon_before_firing() {
+    use nuclear_assisted_smr::{
+        ieaghg_feed_carbon_kmol_per_h, ieaghg_tail_gas_carbon_kmol_per_h,
+    };
+    close(
+        ieaghg_tail_gas_carbon_kmol_per_h() / ieaghg_feed_carbon_kmol_per_h(),
+        1.0,
+        0.001,
+    );
+}
+
+#[test]
+fn makeup_furnace_fuel_is_only_about_fourteen_percent_of_input_carbon() {
+    use nuclear_assisted_smr::ieaghg_makeup_fuel_fraction_of_input_carbon;
+    close(ieaghg_makeup_fuel_fraction_of_input_carbon(), 0.1417, 0.001);
+}
+
+#[test]
+fn co_and_ch4_leave_a_large_residual_carbon_load_after_pre_psa_co2_removal() {
+    use nuclear_assisted_smr::ieaghg_psa_inlet_non_co2_carbon_kmol_per_h;
+    close(ieaghg_psa_inlet_non_co2_carbon_kmol_per_h(), 505.2, 0.5);
+}
