@@ -410,3 +410,29 @@ pub fn ieaghg_prereformer_stream_steam_to_carbon() -> f64 {
     let s=ieaghg_prereformer_feed();
     s.flow(s.h2o)/s.carbon_kmol_h()
 }
+
+
+/// Element-balance residuals between two streams, output minus input.
+#[derive(Debug, Clone, Copy)]
+pub struct ElementResidual {
+    pub carbon_kmol_atoms_h: f64,
+    pub hydrogen_kmol_atoms_h: f64,
+    pub oxygen_kmol_atoms_h: f64,
+}
+
+pub fn element_residual(input: FullStream, output: FullStream) -> ElementResidual {
+    ElementResidual {
+        carbon_kmol_atoms_h: output.carbon_kmol_h() - input.carbon_kmol_h(),
+        hydrogen_kmol_atoms_h: output.hydrogen_atoms_kmol_h() - input.hydrogen_atoms_kmol_h(),
+        oxygen_kmol_atoms_h: output.oxygen_atoms_kmol_h() - input.oxygen_atoms_kmol_h(),
+    }
+}
+
+/// Source-stream diagnostic from pre-reformer feed to HTS inlet.
+///
+/// A nonzero residual means the two published stream rows do not form a closed
+/// control volume by themselves (e.g. an omitted stream, transcription issue,
+/// or an intervening source-table boundary). It must not be "fixed" by tuning.
+pub fn prereformer_to_hts_source_residual() -> ElementResidual {
+    element_residual(ieaghg_prereformer_feed(), ieaghg_hts_inlet())
+}
