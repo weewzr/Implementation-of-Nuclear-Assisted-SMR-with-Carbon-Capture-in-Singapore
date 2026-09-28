@@ -151,3 +151,34 @@ fn reduced_standard_reaction_duty_is_positive_and_order_60_mw() {
     let q = reduced_standard_reaction_duty_mw();
     assert!(q > 60.0 && q < 70.0, "unexpected reference reaction duty: {q} MW");
 }
+
+
+#[test]
+fn hts_wgs_extent_closes_independently_on_co_co2_h2_and_water() {
+    use nuclear_assisted_smr::{
+        ieaghg_hts_wgs_extent_from_co_kmol_h,
+        ieaghg_hts_wgs_extent_from_co2_kmol_h,
+        ieaghg_hts_wgs_extent_from_h2_kmol_h,
+        ieaghg_hts_wgs_extent_from_water_kmol_h,
+    };
+    let x=ieaghg_hts_wgs_extent_from_co_kmol_h();
+    close(ieaghg_hts_wgs_extent_from_co2_kmol_h(), x, 2.0);
+    close(ieaghg_hts_wgs_extent_from_h2_kmol_h(), x, 2.0);
+    close(ieaghg_hts_wgs_extent_from_water_kmol_h(), x, 2.0);
+    close(x, 661.3, 2.0);
+}
+
+#[test]
+fn hts_section_conserves_c_h_o_with_rounded_source_values() {
+    use nuclear_assisted_smr::{ieaghg_hts_inlet,ieaghg_hts_outlet};
+    let i=ieaghg_hts_inlet(); let o=ieaghg_hts_outlet();
+    close(o.carbon_kmol_h()/i.carbon_kmol_h(),1.0,0.001);
+    close(o.hydrogen_atoms_kmol_h()/i.hydrogen_atoms_kmol_h(),1.0,0.001);
+    close(o.oxygen_atoms_kmol_h()/i.oxygen_atoms_kmol_h(),1.0,0.001);
+}
+
+#[test]
+fn source_prereformer_stream_has_about_three_point_one_steam_to_carbon() {
+    use nuclear_assisted_smr::ieaghg_prereformer_stream_steam_to_carbon;
+    close(ieaghg_prereformer_stream_steam_to_carbon(),3.10,0.03);
+}
