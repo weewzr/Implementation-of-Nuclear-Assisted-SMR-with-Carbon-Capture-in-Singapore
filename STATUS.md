@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Close and validate the conventional SMR energy balance and temperature-grade ledger before any detailed nuclear heat substitution. The reformer material control volume is now resolved.
+Decompose the now-verified total SMR/CCS energy ledger into temperature-resolved process services before any detailed nuclear heat substitution.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -34,6 +34,14 @@ Including that source-described but unnumbered water/steam addition closes C/H/O
 to <0.1% of the stream-4 elemental inventories without tuning published carbon
 species. The material-boundary component of Review blocker B1 is therefore
 resolved.
+
+## New energy result
+IEAGHG's fixed-output comparison is now encoded and CI-verified:
+- Base: 394.77 MW NG input, 9.918 MWe export, 0.8091 kgCO2/Nm3 H2.
+- Shifted-syngas MDEA (1A): 407.68 MW NG, 1.492 MWe export, 0.3704 kgCO2/Nm3.
+- Flue-gas MEA (3): 433.72 MW NG, 0.426 MWe export, 0.0888 kgCO2/Nm3.
+
+Thus Case 1A adds 12.91 MW NG and loses 8.426 MWe export while avoiding 43.87 tCO2/h plant-gate; Case 3 adds 38.95 MW NG and loses 9.492 MWe while avoiding 72.03 tCO2/h. Capture topology therefore materially changes the energy burden and cannot be selected independently of nuclear integration.
 
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
@@ -75,11 +83,7 @@ resolved.
   remain.
 
 ## Next highest-priority task
-Construct the conventional SMR **energy** ledger from authoritative IEAGHG/source
-data: identify reformer radiant duty or defensible benchmark, steam generation
-and superheat, sensible heating, waste-heat recovery, furnace fuel/tail-gas
-energy, export steam/power, and temperature levels. Add temperature-dependent
-enthalpy calculations and verification tests.
+Decompose the conventional SMR energy ledger into reformer radiant/process duty, convection/feed preheat, steam generation/superheat, syngas heat recovery, furnace losses and PSA-tail-gas chemical energy. Attach temperature levels and verify the sum against the authoritative 394.77 MW NG input plus reported power/steam outputs.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
