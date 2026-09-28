@@ -91,3 +91,24 @@ pub fn ideal_process_co2_kg_per_kg_h2() -> f64 {
     const M_H2: f64 = 2.01588;
     M_CO2 / (4.0 * M_H2)
 }
+
+
+/// CO2 produced by complete combustion of pure methane, kg CO2/kg CH4.
+/// This is a chemical upper-bound conversion for a methane-only fuel stream,
+/// not a natural-gas composition model.
+pub fn co2_from_pure_methane_combustion_kg_per_kg_ch4() -> f64 {
+    const M_CO2: f64 = 44.0095;
+    const M_CH4: f64 = 16.04246;
+    M_CO2 / M_CH4
+}
+
+/// Screening upper bound for CO2 associated with the separately reported
+/// make-up natural-gas fuel, treating that fuel as pure methane.
+///
+/// IMPORTANT: this is NOT the total furnace CO2. Conventional SMR also burns
+/// PSA tail gas containing unrecovered H2, CH4, CO and CO2. Removing the fired
+/// furnace therefore creates a tail-gas disposition problem rather than making
+/// its carbon disappear.
+pub fn makeup_fuel_co2_upper_bound_kg_per_kg_h2(case: SmrCase) -> f64 {
+    case.ng_fuel_kg_per_kg_h2() * co2_from_pure_methane_combustion_kg_per_kg_ch4()
+}
