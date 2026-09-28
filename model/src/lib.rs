@@ -501,3 +501,42 @@ pub fn ieaghg_total_ng_lhv_mw() -> f64 {
 pub fn ieaghg_h2_lhv_efficiency() -> f64 {
     IEAGHG_H2_PRODUCT_ENERGY_MW / ieaghg_total_ng_lhv_mw()
 }
+
+
+/// Overall elemental closure ratios for the published stream 4 -> stream 5
+/// control volume (pre-reformer + primary reformer + heat recovery).
+/// Heat exchangers do not change material inventory, so source rows 4 and 5
+/// should conserve C/H/O to the precision of the rounded table.
+pub fn stream4_to_stream5_element_ratios() -> (f64, f64, f64) {
+    let i = ieaghg_prereformer_feed();
+    let o = ieaghg_hts_inlet();
+    (
+        o.carbon_kmol_h() / i.carbon_kmol_h(),
+        o.hydrogen_atoms_kmol_h() / i.hydrogen_atoms_kmol_h(),
+        o.oxygen_atoms_kmol_h() / i.oxygen_atoms_kmol_h(),
+    )
+}
+
+/// Carbon-equivalent reforming extent across source streams 4 -> 5.
+/// All C2+ species disappear by stream 5; carbon remaining as CH4 is
+/// subtracted from total inlet carbon. Units kmol-C/h represented as
+/// equivalent kmol CH4 conversion.
+pub fn source_reformer_carbon_conversion_kmol_h() -> f64 {
+    let i=ieaghg_prereformer_feed();
+    let o=ieaghg_hts_inlet();
+    i.carbon_kmol_h() - o.flow(o.ch4)
+}
+
+/// Net CO2 increase across pre-reformer + reformer before HTS, kmol/h.
+pub fn source_prehts_co2_change_kmol_h() -> f64 {
+    let i=ieaghg_prereformer_feed();
+    let o=ieaghg_hts_inlet();
+    o.flow(o.co2) - i.flow(i.co2)
+}
+
+/// Net water consumption across source streams 4 -> 5, kmol/h.
+pub fn source_reformer_water_consumption_kmol_h() -> f64 {
+    let i=ieaghg_prereformer_feed();
+    let o=ieaghg_hts_inlet();
+    i.flow(i.h2o) - o.flow(o.h2o)
+}
