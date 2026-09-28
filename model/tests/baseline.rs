@@ -220,3 +220,27 @@ fn stream4_to_stream5_nonclosure_is_explained_by_unreported_water_addition() {
     assert!(r.hydrogen_kmol_atoms_h.abs()/feed.hydrogen_atoms_kmol_h() < 0.001);
     assert!(r.oxygen_kmol_atoms_h.abs()/feed.oxygen_atoms_kmol_h() < 0.001);
 }
+
+
+#[test]
+fn ieaghg_base_energy_ledger_reconstructs_published_scale() {
+    use nuclear_assisted_smr::{
+        ieaghg_feed_lhv_mw, ieaghg_makeup_fuel_lhv_mw, ieaghg_total_ng_lhv_mw,
+        ieaghg_h2_lhv_efficiency,
+    };
+    close(ieaghg_feed_lhv_mw(), 338.806, 0.01);
+    close(ieaghg_makeup_fuel_lhv_mw(), 55.944, 0.01);
+    close(ieaghg_total_ng_lhv_mw(), 394.778, 0.01);
+    close(ieaghg_h2_lhv_efficiency(), 0.75916, 0.0001);
+}
+
+#[test]
+fn ieaghg_energy_source_rounding_is_explicit_not_forced() {
+    use nuclear_assisted_smr::{
+        IEAGHG_FEED_LHV_GJ_PER_1000_NM3_H2,
+        IEAGHG_FUEL_LHV_GJ_PER_1000_NM3_H2,
+        IEAGHG_TOTAL_LHV_GJ_PER_1000_NM3_H2,
+    };
+    let sum=IEAGHG_FEED_LHV_GJ_PER_1000_NM3_H2+IEAGHG_FUEL_LHV_GJ_PER_1000_NM3_H2;
+    close(IEAGHG_TOTAL_LHV_GJ_PER_1000_NM3_H2-sum,0.001,1e-12);
+}
