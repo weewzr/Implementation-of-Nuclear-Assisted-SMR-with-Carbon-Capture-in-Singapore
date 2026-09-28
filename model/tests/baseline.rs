@@ -51,3 +51,12 @@ fn capture_and_avoidance_are_not_identical() {
     let avoided = plant_gate_abatement_kg_per_kg_h2(IEAGHG_BASE, IEAGHG_CASE_1A);
     assert!(captured > avoided);
 }
+
+
+#[test]
+fn base_makeup_fuel_combustion_is_only_part_of_total_direct_co2() {
+    use nuclear_assisted_smr::makeup_fuel_co2_upper_bound_kg_per_kg_h2;
+    let makeup = makeup_fuel_co2_upper_bound_kg_per_kg_h2(IEAGHG_BASE);
+    close(makeup, 1.322, 0.005);
+    assert!(makeup < IEAGHG_BASE.co2_emitted_kg_per_kg_h2());
+}
