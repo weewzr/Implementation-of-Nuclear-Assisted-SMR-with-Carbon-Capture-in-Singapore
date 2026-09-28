@@ -268,3 +268,30 @@ fn source_reformer_consumes_water_and_eliminates_heavier_hydrocarbons() {
     assert!(source_reformer_water_consumption_kmol_h() > 1000.0);
     assert!(source_reformer_carbon_conversion_kmol_h() > 1000.0);
 }
+
+
+#[test]
+fn ieaghg_ccs_cases_reproduce_authoritative_incremental_energy_penalties() {
+    use nuclear_assisted_smr::{
+        incremental_ng_input_mw,lost_power_export_mwe,
+        IEAGHG_ENERGY_CASE_1A,IEAGHG_ENERGY_CASE_3,
+    };
+    close(incremental_ng_input_mw(IEAGHG_ENERGY_CASE_1A),12.91,0.02);
+    close(lost_power_export_mwe(IEAGHG_ENERGY_CASE_1A),8.426,0.002);
+    close(incremental_ng_input_mw(IEAGHG_ENERGY_CASE_3),38.95,0.02);
+    close(lost_power_export_mwe(IEAGHG_ENERGY_CASE_3),9.492,0.002);
+}
+
+#[test]
+fn flue_gas_capture_has_larger_energy_penalty_and_more_plant_gate_abatement() {
+    use nuclear_assisted_smr::{
+        incremental_energy_service_mw,plant_gate_co2_avoided_t_per_h,
+        IEAGHG_ENERGY_CASE_1A,IEAGHG_ENERGY_CASE_3,
+    };
+    assert!(incremental_energy_service_mw(IEAGHG_ENERGY_CASE_3)
+        > incremental_energy_service_mw(IEAGHG_ENERGY_CASE_1A));
+    assert!(plant_gate_co2_avoided_t_per_h(IEAGHG_ENERGY_CASE_3)
+        > plant_gate_co2_avoided_t_per_h(IEAGHG_ENERGY_CASE_1A));
+    close(plant_gate_co2_avoided_t_per_h(IEAGHG_ENERGY_CASE_1A),43.87,0.02);
+    close(plant_gate_co2_avoided_t_per_h(IEAGHG_ENERGY_CASE_3),72.03,0.02);
+}
