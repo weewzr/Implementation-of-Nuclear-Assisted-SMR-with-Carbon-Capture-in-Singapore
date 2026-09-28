@@ -197,3 +197,26 @@ fn prereformer_to_hts_source_rows_are_not_silently_forced_to_close() {
         || r.hydrogen_kmol_atoms_h.abs() > 1.0
         || r.oxygen_kmol_atoms_h.abs() > 1.0);
 }
+
+
+#[test]
+fn stream4_to_stream5_nonclosure_is_explained_by_unreported_water_addition() {
+    use nuclear_assisted_smr::{
+        ieaghg_interstage_water_addition_kmol_h,
+        prereformer_to_hts_residual_with_inferred_water,
+        ieaghg_prereformer_feed,
+    };
+    let w = ieaghg_interstage_water_addition_kmol_h();
+    // H and O balances independently imply ~154 kmol/h H2O. This is
+    // consistent with IEAGHG's stated second HP-steam addition plus BFW
+    // desuperheating between stream 4 and the primary reformer.
+    assert!(w > 153.0 && w < 156.0, "unexpected inferred water addition: {w}");
+
+    let r = prereformer_to_hts_residual_with_inferred_water();
+    let feed = ieaghg_prereformer_feed();
+    // Rounded four-decimal compositions leave tiny residuals; require
+    // <0.1% of the corresponding stream-4 elemental inventories.
+    assert!(r.carbon_kmol_atoms_h.abs()/feed.carbon_kmol_h() < 0.001);
+    assert!(r.hydrogen_kmol_atoms_h.abs()/feed.hydrogen_atoms_kmol_h() < 0.001);
+    assert!(r.oxygen_kmol_atoms_h.abs()/feed.oxygen_atoms_kmol_h() < 0.001);
+}
