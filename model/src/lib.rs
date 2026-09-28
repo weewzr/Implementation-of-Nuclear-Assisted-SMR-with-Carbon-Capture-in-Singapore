@@ -436,3 +436,34 @@ pub fn element_residual(input: FullStream, output: FullStream) -> ElementResidua
 pub fn prereformer_to_hts_source_residual() -> ElementResidual {
     element_residual(ieaghg_prereformer_feed(), ieaghg_hts_inlet())
 }
+
+
+/// Water/steam addition required between published IEAGHG stream 4
+/// (feed to pre-reformer) and stream 5 (HTS inlet), inferred independently
+/// from the H and O elemental residuals of the rounded source table.
+///
+/// IEAGHG's process description states that after stream 4 the pre-reformer
+/// product receives a second HP-superheated-steam addition and BFW
+/// desuperheating before the primary reformer. Those internal additions are
+/// not separately numbered in the published heat/material-balance table.
+/// The returned value is the least-squares reconciliation of the two
+/// independent water estimates: dH/2 and dO. It is a reconstruction from
+/// rounded source data, not an independently published flow.
+pub fn ieaghg_interstage_water_addition_kmol_h() -> f64 {
+    let r = prereformer_to_hts_source_residual();
+    let from_h = r.hydrogen_kmol_atoms_h / 2.0;
+    let from_o = r.oxygen_kmol_atoms_h;
+    (from_h + from_o) / 2.0
+}
+
+/// Elemental residual after including the inferred unnumbered water/steam
+/// addition between streams 4 and 5. Carbon is unaffected by water addition.
+pub fn prereformer_to_hts_residual_with_inferred_water() -> ElementResidual {
+    let r = prereformer_to_hts_source_residual();
+    let w = ieaghg_interstage_water_addition_kmol_h();
+    ElementResidual {
+        carbon_kmol_atoms_h: r.carbon_kmol_atoms_h,
+        hydrogen_kmol_atoms_h: r.hydrogen_kmol_atoms_h - 2.0*w,
+        oxygen_kmol_atoms_h: r.oxygen_kmol_atoms_h - w,
+    }
+}
