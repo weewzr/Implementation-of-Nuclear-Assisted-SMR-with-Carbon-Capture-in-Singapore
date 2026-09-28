@@ -179,7 +179,9 @@ fn hts_section_conserves_c_h_o_with_rounded_source_values() {
 }
 
 #[test]
-fn source_prereformer_stream_has_about_three_point_one_steam_to_carbon() {
+fn source_prereformer_stream_steam_to_carbon_is_reconstructed_not_assumed() {
     use nuclear_assisted_smr::ieaghg_prereformer_stream_steam_to_carbon;
-    close(ieaghg_prereformer_stream_steam_to_carbon(),3.10,0.03);
+    // Directly reconstructed from the encoded source stream. Do not replace
+    // this with a generic textbook/design S/C assumption.
+    close(ieaghg_prereformer_stream_steam_to_carbon(),2.5522,0.002);
 }
