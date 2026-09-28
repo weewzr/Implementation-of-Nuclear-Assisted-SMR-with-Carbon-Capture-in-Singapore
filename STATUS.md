@@ -1,99 +1,88 @@
 # STATUS
 
 ## Current research gate
-Gate 3 — Mathematical/model foundation, early baseline construction
+Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Resolve the exact IEAGHG control-volume/source-row mapping between pre-reformer feed and HTS inlet before claiming a closed primary-reformer balance.
+Close and validate the conventional SMR energy balance and temperature-grade
+ledger before any detailed nuclear heat substitution.
 
-## Completed
-- Read the complete Project Brief and official CN4252 Problem Statement.
-- Established the authoritative assignment requirements matrix.
-- Formalised the proposed HTGR-assisted SMR + amine CCS architecture as a hypothesis, not a conclusion.
-- Conducted the initial external landscape review covering SMR, CCS, amine regeneration, methane leakage, HTGR process heat, eSMR, electrolysis, Singapore nuclear/hydrogen/CCS context, TEA/LCA methods and relevant open-source software.
-- Verified the existing public project repository and inspected the supervisor-reported OUTRAM PARK Rust repository for rendering/software provenance.
-- Established the initial comparison set: fired SMR; fired SMR + CCS; eSMR + CCS; nuclear-electric eSMR + CCS; direct HTGR-heated SMR + CCS; and a low-carbon electrolysis benchmark.
-- Added the official problem statement and working project brief to the repository as provenance records.
-- Added first-principles SMR stoichiometric equations, lifecycle/abatement definitions and benchmark parameter provenance.
-- Established the CN4252 scale identity: required annual H2 production depends on the marginal CO2e reduction per kg H2, not on capture percentage alone.
+## Independent Review 1
+- Review-response pass started from the substantive review available in the
+  CN4252 Project conversation.
+- The requested repository file `reviews/review_01_research_foundation.md`
+  was absent when checked; this provenance discrepancy is recorded rather than
+  hidden.
+- Finding dispositions and acceptance criteria are recorded in
+  `reviews/review_01_resolution.md`.
+- Review gate remains OPEN because valid scientific blockers remain.
 
-## Most important scientific finding so far
-The published IEAGHG heat/material balance permits an independent carbon-atom closure.
+## Newly resolved scientific issue
+The previous stream-4 -> stream-5 elemental non-closure has been diagnosed from
+the full IEAGHG 2017-02 process description.
 
-For its natural-gas composition, the base case contains about 1578.6 kmol-C/h in NG feedstock and 260.7 kmol-C/h in make-up furnace fuel. Published flue gas contains about 1838.4 kmol-C/h versus 1839.3 kmol-C/h entering: 99.95% closure using rounded source values.
+Stream 4 is feed to the pre-reformer. Between stream 4 and the published HTS
+inlet (stream 5), IEAGHG explicitly describes a second HP-superheated-steam
+addition and BFW desuperheating before the primary reformer.
 
-More importantly, the PSA tail gas contains about 1578.5 kmol-C/h — essentially 100% of the feedstock carbon before firing. The separately supplied furnace NG is only about 14.2% of total incoming carbon.
+Using the rounded published stream compositions:
+- carbon residual is only about -0.020 kmol-C/h;
+- hydrogen residual implies about 155.2 kmol/h H2O;
+- oxygen residual implies about 153.7 kmol/h H2O;
+- least-squares reconciliation gives about 154.4 kmol/h aggregate H2O addition.
 
-Therefore replacing furnace heat with nuclear heat does NOT remove the feedstock-carbon problem. The nuclear flowsheet must capture, convert, recycle or otherwise treat the PSA/tail-gas carbon.
+Including that source-described but unnumbered water/steam addition closes C/H/O
+to <0.1% of the stream-4 elemental inventories without tuning published carbon
+species. The material-boundary component of Review blocker B1 is therefore
+resolved.
 
-Even at the PSA inlet, removing all existing CO2 would leave about 505 kmol-C/h as CO + CH4 in the reference stream. This residual carbon is now a first-order design constraint.
+## Preserved findings
+- PSA tail gas remains a first-order nuclear-integration constraint.
+- Replacing make-up furnace NG alone does not remove feedstock carbon.
+- Existing HTS C/H/O closure and reaction-extent verification remain valid.
+- The 298 K reaction-duty calculation is a lower thermochemical layer, NOT
+  reformer furnace duty.
+- Captured CO2 and avoided CO2 remain separate metrics.
+- No final nuclear reactor or CCS topology has been selected.
 
-## Key assignment implication
-If the candidate system reduces emissions by Delta-e kgCO2e/kgH2 relative to the counterfactual, the production scale needed to exceed 0.25 MtCO2e/y is:
+## Valid blockers still open
+1. **Conventional energy balance:** temperature-dependent enthalpy, steam
+   generation/superheat, reformer duty, heat recovery and furnace losses are not
+   yet closed against an authoritative benchmark.
+2. **PSA-tail-gas disposition:** every species needs a defined destination in
+   each furnace-free/nuclear candidate.
+3. **Capture topology:** cannot be frozen until tail-gas/carbon architecture is
+   selected; stream-specific pressure/composition must drive solvent choice and
+   regeneration duty.
+4. **Common comparison specification:** 1 kg H2 is the canonical mass basis,
+   but final product pressure and full nested boundary matrix still require
+   authoritative selection.
 
-H2_required [kt/y] > 250 / Delta-e.
+## Major items coupled to blockers
+- Add stream-specific CCS literature/parameters.
+- Build thermodynamic property layer.
+- Preserve nuclear integration as a heat-temperature envelope before mapping
+  reactor concepts.
+- Freeze transparent incremental economic assumptions before assignment-level
+  S$/tCO2e results.
+- Add independent predictive validation beyond source reconstruction.
 
-The scale therefore becomes very large when the candidate's marginal advantage over the baseline is small.
-
-## Current model boundary
-Initial baseline:
-natural gas + water/steam -> reforming -> WGS -> H2 separation -> CO2 capture -> solvent regeneration -> CO2 compression.
-
-Lifecycle extension:
-natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport/storage.
-
-## Work in progress
-- The previous CI failure was traced precisely. The reduced-model mismatch diagnostic now behaves as intended; the remaining failing assertion was our assumed pre-reformer stream S/C = 3.1.
-- Direct reconstruction from the encoded IEAGHG source row gives S/C = 2.5522, not 3.1. The incorrect assumption and documentation have been corrected; CI for that correction passed.
-- A source-stream elemental-residual diagnostic has been added so the pre-reformer-feed -> HTS-inlet rows cannot be silently forced to close if they do not represent a complete control volume.
-- Inspection of the primary IEAGHG table also found a transcription error in the earlier PSA inlet H2 fraction: the source value is 0.7563, not 0.7507. The Rust source and tests have been corrected; new CI is pending.
-- The IEAGHG source table now supplies pre-reformer feed, HTS inlet, HTS outlet and PSA inlet directly. These source states supersede inference from the PSA alone.
-- The HTS reaction extent is now reconstructed independently from CO consumption, CO2 production, H2 production and H2O consumption, with C/H/O closure tests.
-- A reduced equivalent-methane reaction-extent model has been added upstream of the PSA. It exactly preserves feed carbon and reconstructs the PSA CO relation through SMR + WGS stoichiometry.
-- The reduced model intentionally exposes a hydrogen mismatch because replacing C2+ hydrocarbons with carbon-equivalent methane changes feed H/C. This is now the acceptance signal for the next explicit-hydrocarbon model.
-- A first reference-state reaction-duty layer using standard SMR/WGS enthalpies has been implemented; it is explicitly not yet the furnace duty.
-- Source stream reconstruction gives approximately 89.9% PSA H2 recovery from rounded IEAGHG values.
-- The reference PSA tail gas is approximately 47.7 mol% combustible H2+CO+CH4; approximately 32% of its carbon is in CO+CH4 rather than CO2.
-- CI for the newest baseline tests is currently queued/in progress; do not treat it as passed until GitHub reports success.
-- Determine a consistent natural-gas composition and steam-to-carbon basis.
-- Separate process CO2, furnace CO2, PSA/tail-gas carbon and upstream methane emissions.
-- Establish a heat-duty model with stream temperature levels.
-- Choose capture topology only after baseline stream concentrations and duties are quantified.
-
-## Major unresolved scientific questions
-1. What happens to PSA tail gas when the fired reformer is replaced by nuclear heat? This is now a first-order integration constraint because conventional SMR burns PSA tail gas as primary furnace fuel.
-2. How much of total CO2 is process carbon versus combustion carbon for that configuration?
-3. How much reformer duty remains after internal heat recovery?
-4. What fraction of the CCS regeneration duty should be allocated to each energy source?
-5. What reactor outlet temperature and heat-transfer approach are actually feasible?
-6. What is the fair counterfactual for direct HTGR heat versus nuclear-electric eSMR?
-7. Do upstream methane emissions erase much of the apparent plant-level CCS benefit?
-8. What production scale is compatible with a Singapore deployment scenario?
-9. Can the integrated system achieve the assignment's <S$100/tCO2e threshold on a transparent incremental-cost basis?
-
-## Blockers
-- Local Rust is unavailable, but GitHub Actions is now being used for actual build/test verification; the newest run is pending.
-- The nuclear flowsheet cannot be closed until PSA tail-gas disposition is selected/modelled.
-- Exact Singapore-relevant natural-gas and cost data still need to be selected with provenance.
-- Existing Singapore SMR/CCS work needs deeper review to define the originality boundary.
-
-## Verification/build status
-- No production simulation has been accepted as a scientific result.
-- Baseline equations are analytical definitions, not numerical simulation outputs.
-- Literature benchmark values are clearly marked as benchmark/source values.
-- No final reactor or CCS topology has been selected.
-- GitHub repository is public and being used as the canonical research workspace.
-- Earlier Rust CI runs have completed successfully; CI for the newest baseline/tail-gas tests is pending.
+## Verification status
+- New Rust test added for the corrected stream-4/5 material interpretation and
+  inferred interstage water addition.
+- GitHub Actions for the newest commits is queued/in progress at this update;
+  do not record it as passed until GitHub reports success.
+- No production simulation is accepted as a scientific result.
+- No detailed integrated nuclear model is permitted while Review 1 blockers
+  remain.
 
 ## Next highest-priority task
-Inspect the complete IEAGHG stream numbering/process diagram around pre-reformer, reformer and syngas cooling to identify any intervening/additional streams and exact control-volume boundaries. Only after that provenance is resolved should the model solve reaction extents and attach enthalpy. Do not manufacture closure by tuning source values.
+Construct the conventional SMR **energy** ledger from authoritative IEAGHG/source
+data: identify reformer radiant duty or defensible benchmark, steam generation
+and superheat, sensible heating, waste-heat recovery, furnace fuel/tail-gas
+energy, export steam/power, and temperature levels. Add temperature-dependent
+enthalpy calculations and verification tests.
 
-Required checks:
-1. elemental mass conservation;
-2. reaction stoichiometry;
-3. H2 recovery/purity consistency;
-4. total carbon balance;
-5. process-versus-combustion CO2 accounting;
-6. energy-balance closure;
-7. benchmark comparison with stated tolerances;
-8. annual abatement scaling calculation.
+Acceptance criterion: conventional reference energy demand and major duties
+close and reproduce an authoritative published metric within a declared
+tolerance before nuclear heat is substituted.
