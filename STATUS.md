@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation, early baseline construction
 
 ## Current scientific question/task
-Extend the now-closed reference carbon balance into a species-resolved reformer/WGS/PSA model, then determine a physically valid tail-gas treatment for the nuclear-heated configuration.
+Extend the validated species-resolved PSA reconstruction upstream into reformer/WGS reaction extents, water/steam balance and energy duty before introducing nuclear heat.
 
 ## Completed
 - Read the complete Project Brief and official CN4252 Problem Statement.
@@ -43,7 +43,9 @@ Lifecycle extension:
 natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport/storage.
 
 ## Work in progress
-- Rust screening model now implements the IEAGHG 2017-02 base case and shifted-syngas MDEA Case 1A, including unit conversion, plant-gate abatement and CN4252 scale functions.
+- Rust screening model implements the IEAGHG 2017-02 base case, shifted-syngas MDEA Case 1A, full carbon closure, and explicit H2/CO2/CO/CH4 PSA inlet/tail streams.
+- Source stream reconstruction gives approximately 89.9% PSA H2 recovery from rounded IEAGHG values.
+- The reference PSA tail gas is approximately 47.7 mol% combustible H2+CO+CH4; approximately 32% of its carbon is in CO+CH4 rather than CO2.
 - CI for the newest baseline tests is currently queued/in progress; do not treat it as passed until GitHub reports success.
 - Determine a consistent natural-gas composition and steam-to-carbon basis.
 - Separate process CO2, furnace CO2, PSA/tail-gas carbon and upstream methane emissions.
@@ -76,7 +78,7 @@ natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport
 - Earlier Rust CI runs have completed successfully; CI for the newest baseline/tail-gas tests is pending.
 
 ## Next highest-priority task
-Build a species-resolved steady-state model that reproduces the IEAGHG reference streams (CH4, heavier hydrocarbons, H2O, CO, CO2, H2), then compare candidate tail-gas treatment/recycle architectures before introducing an HTGR heat source. Acceptance criterion: elemental C/H/O closure and reproduction of published key stream flows/compositions within declared tolerances.
+Reconstruct reformer + WGS reaction extents and the water/steam balance that produce the validated PSA inlet. Then calculate the associated reaction/sensible heat duties with source-backed thermochemistry. Acceptance criterion: C/H/O closure plus reproduction of the published PSA inlet and key heat/material balance values within declared tolerances.
 
 Required checks:
 1. elemental mass conservation;
