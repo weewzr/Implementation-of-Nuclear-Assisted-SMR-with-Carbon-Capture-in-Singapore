@@ -4,8 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Close and validate the conventional SMR energy balance and temperature-grade
-ledger before any detailed nuclear heat substitution.
+Close and validate the conventional SMR energy balance and temperature-grade ledger before any detailed nuclear heat substitution. The reformer material control volume is now resolved.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -68,10 +67,9 @@ resolved.
 - Add independent predictive validation beyond source reconstruction.
 
 ## Verification status
-- New Rust test added for the corrected stream-4/5 material interpretation and
-  inferred interstage water addition.
-- GitHub Actions for the newest commits is queued/in progress at this update;
-  do not record it as passed until GitHub reports success.
+- Rust regression for the corrected stream-4/5 interpretation and inferred interstage water addition passed GitHub Actions.
+- IEAGHG baseline energy-invariant tests also passed GitHub Actions.
+- A later auxiliary reformer diagnostic is still running; it is not required for the already-passed reconciled closure test.
 - No production simulation is accepted as a scientific result.
 - No detailed integrated nuclear model is permitted while Review 1 blockers
   remain.
