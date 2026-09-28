@@ -96,3 +96,32 @@ fn co_and_ch4_leave_a_large_residual_carbon_load_after_pre_psa_co2_removal() {
     use nuclear_assisted_smr::ieaghg_psa_inlet_non_co2_carbon_kmol_per_h;
     close(ieaghg_psa_inlet_non_co2_carbon_kmol_per_h(), 505.2, 0.5);
 }
+
+
+#[test]
+fn published_psa_streams_reconstruct_hydrogen_recovery() {
+    use nuclear_assisted_smr::ieaghg_reconstructed_psa_h2_recovery;
+    // Rounded source streams reconstruct about 89.9% recovery, consistent with
+    // the report's approximately 90% PSA recovery basis.
+    close(ieaghg_reconstructed_psa_h2_recovery(), 0.8992, 0.001);
+}
+
+#[test]
+fn published_psa_streams_reconstruct_h2_product_flow() {
+    use nuclear_assisted_smr::ieaghg_reconstructed_h2_product_kmol_per_h;
+    close(ieaghg_reconstructed_h2_product_kmol_per_h(), 4453.5, 2.0);
+}
+
+#[test]
+fn tail_gas_contains_substantial_combustible_species() {
+    use nuclear_assisted_smr::ieaghg_tail_combustible_mole_fraction;
+    close(ieaghg_tail_combustible_mole_fraction(), 0.4768, 0.001);
+}
+
+#[test]
+fn co2_only_tail_gas_capture_leaves_about_thirty_two_percent_of_tail_carbon() {
+    use nuclear_assisted_smr::ieaghg_tail_carbon_as_co2_fraction;
+    let co2_fraction = ieaghg_tail_carbon_as_co2_fraction();
+    close(co2_fraction, 0.6799, 0.002);
+    close(1.0 - co2_fraction, 0.3201, 0.002);
+}
