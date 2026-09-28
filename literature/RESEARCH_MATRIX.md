@@ -1,18 +1,26 @@
 # Initial research matrix
 
-| Topic | Evidence / method | Main finding relevant to project | Status |
-|---|---|---|---|
-| HTGR process heat | JAEA HTTR hydrogen demonstration planning | HTTR achieved 950 C outlet coolant temperature; planned methane-steam reforming heat-use demonstration; coupling safety remains a challenge | Primary/authoritative |
-| HTGR + SMR | IAEA / HTR literature | Helium-heated reforming is established literature; reforming and WGS chemistry can be modeled explicitly | Primary/authoritative |
-| Singapore nuclear | Government/EMA/NEA 2026 | Singapore is studying advanced nuclear and preparing an IAEA INIR Phase 1 review in 2027; no deployment decision | Primary |
-| CCS in Singapore | Singapore government policy | Domestic storage is constrained; regional transport/storage is relevant to boundary | Primary |
-| SMR + CCS | IEA and current LCA/TEA literature | Capture can materially reduce plant emissions but lifecycle results remain sensitive to upstream natural gas and energy penalties | Secondary/primary mix |
-| eSMR | Recent review/industry studies | Electrified reforming is a credible competing configuration | Secondary/primary mix |
-| Nuclear hydrogen software | INL NIHPA/HYBRID/HERON | Existing open-source nuclear-integrated modelling provides methodological precedent, not a ready-made solution | Open source |
-| SMR process repositories | GitHub examples | Open implementations exist but require validation and are generally not Singapore/nuclear integrated | Open source |
-
-## Source verification rule
-
-Every numerical parameter adopted into the computational model must be traceable to a cited primary paper, authoritative technical report, vendor technical document, or clearly identified assumption.
-
-Student/lecture material can motivate a model choice but is not independent validation.
+| Research area | Source / method | Evidence relevant to project | Implication / gap | Status |
+|---|---|---|---|---|
+| Assignment framing | Official CN4252 Problem Statement | >0.25 MtCO2e/y within Singapore and <S$100/tCO2e; any technology/policy solution; must show abatement and implementation roadmap | Evaluation is solution-scale, not simply unit-process performance | Authoritative |
+| SMR fundamentals | US DOE | SMR uses high-temperature steam; DOE describes roughly 700-1,000 C and subsequent WGS to make more H2 and CO2 | Need explicit reforming/WGS mass and energy balances | Established |
+| SMR emissions | US NETL | CO2 arises from process gas and combustion; identifiable streams include SMR flue gas, syngas before PSA, and PSA tail gas | Capture boundary must distinguish process and furnace emissions | Established |
+| Unabated natural-gas H2 | IEA 2024 | 10-12 kgCO2e/kgH2; 75-95% occurs at point of production; upstream/midstream emissions still matter | Lifecycle result cannot equal stack capture rate | Established |
+| SMR + CCS economics | IEA 2024 | Abatement costs about USD60-85/tCO2 for 55-70% capture and USD85-110/tCO2 above 90% capture | CN4252 <S$100/t target is stringent; cost basis must be defined | Benchmark |
+| Amine regeneration | 2025 MEA study | Bench-scale MEA regeneration energy 3.5-3.9 GJ/tCO2 in refinery flue-gas tests | CCS heat duty can be a material integration load; feed concentration matters | Primary experimental |
+| Blue hydrogen methane leakage | Nature Energy 2024 | 96.2% capture cases ranged from 3.3 to 7.4 kgCO2e/kgH2 for different gas supply chains in a US case | Gas supply-chain emissions can dominate residual lifecycle intensity | Primary |
+| Blue H2 methane leakage | Applied Energy 2025 | Methane leakage substantially affects blue-H2 sustainability; low leakage and high capture are jointly important | Capture-only analysis is insufficient | Primary |
+| HTGR capability | JAEA HTTR | HTTR achieved 950 C outlet coolant temperature at 30 MWt; helium-cooled | High-temperature reactor heat can plausibly match high-grade process duties in principle | Demonstrated reactor capability |
+| HTGR-hydrogen coupling | JAEA 2023-24 | JAEA plans methane-SMR coupling to HTTR; states coupling a HTGR to H2 plant has not yet been achieved and safe coupling is a challenge | Direct coupling is a genuine integration research problem | Primary |
+| Nuclear-assisted SMR modelling | Progress in Nuclear Energy 2022 | 1-D pseudo-homogeneous helium-heated HTR-10/SMR model; reports temperature, conversion, H2 yield and efficiency sensitivities | A first-principles reduced-order model is feasible | Primary |
+| HTGR + SMR comparison | Int. J. Hydrogen Energy 2026 | Recent study directly compares helium-heated SMR and HTGR-electric eSMR; reports LCOH/GWP for both | Direct-vs-electric comparison is already an active research question; Singapore-specific extension is more defensible than claiming general novelty | Very recent primary |
+| eSMR | Int. J. Hydrogen Energy 2025 | Joule/microwave/induction heating reviewed; scale-up, uniformity, durability and integration remain challenges | eSMR is a credible comparator | Review |
+| Electrolysis | US DOE H2NEW | Low- and high-temperature electrolysis are active scale-up pathways; solid oxide electrolysis can use high-temperature heat | Nuclear-electric/HTE pathways should remain in the benchmark set | Authoritative programme |
+| Singapore nuclear | Singapore Government / EMA / MTI 2025-26 | Singapore has not decided to deploy nuclear; INIR Phase 1 begins in 2027 | Nuclear must be a future scenario, not an existing asset | Primary |
+| Singapore hydrogen | MTI 2025 | Hydrogen is part of national strategy and intended to support industrial decarbonisation; pathfinder/R&D/international supply chains are emphasised | There is policy relevance, but no presumption that domestic blue H2 wins | Primary |
+| Singapore CCS | MTI 2025 | Singapore and Indonesia signed a 2025 CCS MOU | Regional CO2 transport/storage must be represented in deployment roadmap | Primary |
+| Singapore low-carbon H2 | JTC / Air Liquide / Aster 2025 | MOU for ATR with integrated carbon capture on Jurong Island; described as first-of-kind domestically | Generic gas-reforming+CCS proposal risks originality problem | Primary |
+| Existing Singapore SMR + amine CCS analysis | NCCS technical report | Existing Singapore analysis discusses SMR hydrogen, amine capture and Jurong/Tuas infrastructure | Project needs clear incremental contribution beyond existing Singapore work | Primary/authoritative |
+| LCA modelling infrastructure | DOE GREET | GREET models energy/fuel/lifecycle emissions across supply chains; 45VH2-GREET provides a current hydrogen lifecycle framework | Useful external benchmark; may require Singapore-specific inputs | Authoritative model |
+| TEA methodology | DOE H2A | H2A provides transparent central/distributed hydrogen process cost modelling with discounted cash-flow analysis | Useful benchmark for transparent cost structure | Authoritative model |
+| Rust reactor/process software | OUTRAM PARK | Public Rust workspace contains HTGR simulator, steam-generator/heat-exchanger and deterministic PNG/PDF/SVG rendering infrastructure | Useful software/rendering precedent; not validation of this project's process model | Open source |
