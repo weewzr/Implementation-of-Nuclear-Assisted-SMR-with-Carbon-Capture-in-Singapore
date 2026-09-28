@@ -125,3 +125,29 @@ fn co2_only_tail_gas_capture_leaves_about_thirty_two_percent_of_tail_carbon() {
     close(co2_fraction, 0.6799, 0.002);
     close(1.0 - co2_fraction, 0.3201, 0.002);
 }
+
+
+#[test]
+fn reduced_reaction_extents_reproduce_psa_carbon_species() {
+    use nuclear_assisted_smr::{ieaghg_psa_inlet_cho, reduced_extents_from_psa_inlet};
+    let p = ieaghg_psa_inlet_cho();
+    let x = reduced_extents_from_psa_inlet();
+    close(x.smr - x.wgs, p.co, 1.0);
+}
+
+#[test]
+fn reduced_reaction_extents_nearly_reproduce_psa_hydrogen() {
+    use nuclear_assisted_smr::{ieaghg_psa_inlet_cho, reduced_reaction_h2_kmol_per_h};
+    let source = ieaghg_psa_inlet_cho().h2;
+    let reduced = reduced_reaction_h2_kmol_per_h();
+    // Equivalent-CH4 model neglects H atoms entering in C2+ hydrocarbons.
+    // Requiring <2% mismatch makes that approximation explicit.
+    assert!((reduced - source).abs() / source < 0.02);
+}
+
+#[test]
+fn reduced_standard_reaction_duty_is_positive_and_order_60_mw() {
+    use nuclear_assisted_smr::reduced_standard_reaction_duty_mw;
+    let q = reduced_standard_reaction_duty_mw();
+    assert!(q > 60.0 && q < 70.0, "unexpected reference reaction duty: {q} MW");
+}
