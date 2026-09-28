@@ -219,7 +219,7 @@ impl ChoStream {
 pub fn ieaghg_psa_inlet_cho() -> ChoStream {
     const TOTAL: f64 = 6596.9;
     ChoStream {
-        h2: TOTAL * 0.7507,
+        h2: TOTAL * 0.7563,
         co2: TOTAL * 0.1627,
         co: TOTAL * 0.0464,
         ch4: TOTAL * 0.0302,
