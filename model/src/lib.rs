@@ -112,3 +112,78 @@ pub fn co2_from_pure_methane_combustion_kg_per_kg_ch4() -> f64 {
 pub fn makeup_fuel_co2_upper_bound_kg_per_kg_h2(case: SmrCase) -> f64 {
     case.ng_fuel_kg_per_kg_h2() * co2_from_pure_methane_combustion_kg_per_kg_ch4()
 }
+
+
+#[derive(Debug, Clone, Copy)]
+pub struct NgComposition {
+    pub co2: f64,
+    pub methane: f64,
+    pub ethane: f64,
+    pub propane: f64,
+    pub n_butane: f64,
+    pub n_pentane: f64,
+}
+
+impl NgComposition {
+    /// kmol of carbon atoms per kmol of natural-gas mixture.
+    pub fn carbon_kmol_per_kmol(self) -> f64 {
+        self.co2
+            + self.methane
+            + 2.0 * self.ethane
+            + 3.0 * self.propane
+            + 4.0 * self.n_butane
+            + 5.0 * self.n_pentane
+    }
+}
+
+/// IEAGHG 2017-02 base-case natural-gas composition (molar fractions).
+pub const IEAGHG_NG: NgComposition = NgComposition {
+    co2: 0.0200,
+    methane: 0.8900,
+    ethane: 0.0700,
+    propane: 0.0100,
+    n_butane: 0.0010,
+    n_pentane: 0.0001,
+};
+
+/// kmol-C/h in the IEAGHG base-case feedstock NG stream.
+pub fn ieaghg_feed_carbon_kmol_per_h() -> f64 {
+    1455.8 * IEAGHG_NG.carbon_kmol_per_kmol()
+}
+
+/// kmol-C/h in the IEAGHG base-case separately supplied furnace-fuel NG.
+pub fn ieaghg_makeup_fuel_carbon_kmol_per_h() -> f64 {
+    240.4 * IEAGHG_NG.carbon_kmol_per_kmol()
+}
+
+/// kmol-C/h in the PSA tail gas from its reported molar flow and composition.
+pub fn ieaghg_tail_gas_carbon_kmol_per_h() -> f64 {
+    const TAIL_KMOL_H: f64 = 2106.3;
+    const Y_CO2: f64 = 0.5095;
+    const Y_CO: f64 = 0.1454;
+    const Y_CH4: f64 = 0.0945;
+    TAIL_KMOL_H * (Y_CO2 + Y_CO + Y_CH4)
+}
+
+/// kmol-C/h in the base-case flue gas.
+/// The IEAGHG heat/material balance reports essentially all flue carbon as CO2.
+pub fn ieaghg_flue_carbon_kmol_per_h() -> f64 {
+    8659.4 * 0.2123
+}
+
+/// Fraction of total incoming NG carbon attributable to separately supplied
+/// make-up furnace fuel (rather than feedstock).
+pub fn ieaghg_makeup_fuel_fraction_of_input_carbon() -> f64 {
+    let makeup = ieaghg_makeup_fuel_carbon_kmol_per_h();
+    makeup / (ieaghg_feed_carbon_kmol_per_h() + makeup)
+}
+
+/// Carbon remaining after the shifted-syngas CO2 is removed before PSA,
+/// using the IEAGHG base-case PSA-inlet stream. This consists primarily of
+/// CO and CH4 and therefore cannot simply be vented in a nuclear-heated case.
+pub fn ieaghg_psa_inlet_non_co2_carbon_kmol_per_h() -> f64 {
+    const PSA_IN_KMOL_H: f64 = 6596.9;
+    const Y_CO: f64 = 0.0464;
+    const Y_CH4: f64 = 0.0302;
+    PSA_IN_KMOL_H * (Y_CO + Y_CH4)
+}
