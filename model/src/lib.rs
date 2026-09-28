@@ -467,3 +467,37 @@ pub fn prereformer_to_hts_residual_with_inferred_water() -> ElementResidual {
         oxygen_kmol_atoms_h: r.oxygen_kmol_atoms_h - w,
     }
 }
+
+
+/// IEAGHG base-case LHV energy ledger for 100,000 Nm3/h H2.
+/// Published specific consumptions are 12.197 GJ/1000 Nm3 feedstock,
+/// 2.014 GJ/1000 Nm3 separately supplied NG fuel and 14.212 total.
+/// The 0.001 GJ/1000 Nm3 discrepancy is source-table rounding.
+pub const IEAGHG_FEED_LHV_GJ_PER_1000_NM3_H2: f64 = 12.197;
+pub const IEAGHG_FUEL_LHV_GJ_PER_1000_NM3_H2: f64 = 2.014;
+pub const IEAGHG_TOTAL_LHV_GJ_PER_1000_NM3_H2: f64 = 14.212;
+pub const IEAGHG_H2_PRODUCT_ENERGY_MW: f64 = 299.70;
+pub const IEAGHG_NET_POWER_EXPORT_MWE: f64 = 9.918;
+
+/// Convert the IEAGHG specific-energy basis to MW at its 100,000 Nm3/h H2 scale.
+pub fn ieaghg_specific_gj_per_1000_nm3_to_mw(x: f64) -> f64 {
+    // x GJ / 1000 Nm3 * 100,000 Nm3/h = 100*x GJ/h.
+    // 1 GJ/h = 1/3.6 MW.
+    100.0 * x / 3.6
+}
+
+pub fn ieaghg_feed_lhv_mw() -> f64 {
+    ieaghg_specific_gj_per_1000_nm3_to_mw(IEAGHG_FEED_LHV_GJ_PER_1000_NM3_H2)
+}
+pub fn ieaghg_makeup_fuel_lhv_mw() -> f64 {
+    ieaghg_specific_gj_per_1000_nm3_to_mw(IEAGHG_FUEL_LHV_GJ_PER_1000_NM3_H2)
+}
+pub fn ieaghg_total_ng_lhv_mw() -> f64 {
+    ieaghg_specific_gj_per_1000_nm3_to_mw(IEAGHG_TOTAL_LHV_GJ_PER_1000_NM3_H2)
+}
+
+/// Product-H2 LHV divided by total NG feed+fuel LHV.
+/// This is a source-ledger efficiency diagnostic, not a complete exergy metric.
+pub fn ieaghg_h2_lhv_efficiency() -> f64 {
+    IEAGHG_H2_PRODUCT_ENERGY_MW / ieaghg_total_ng_lhv_mw()
+}
