@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation, early baseline construction
 
 ## Current scientific question/task
-Extend the validated species-resolved PSA reconstruction upstream into reformer/WGS reaction extents, water/steam balance and energy duty before introducing nuclear heat.
+Replace the reduced equivalent-methane reformer reconstruction with an explicit multi-hydrocarbon + steam C/H/O model, then close the source heat/material balance.
 
 ## Completed
 - Read the complete Project Brief and official CN4252 Problem Statement.
@@ -43,7 +43,10 @@ Lifecycle extension:
 natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport/storage.
 
 ## Work in progress
-- Rust screening model implements the IEAGHG 2017-02 base case, shifted-syngas MDEA Case 1A, full carbon closure, and explicit H2/CO2/CO/CH4 PSA inlet/tail streams.
+- All previous carbon-balance and PSA species Rust tests are now confirmed passing in GitHub Actions.
+- A reduced equivalent-methane reaction-extent model has been added upstream of the PSA. It exactly preserves feed carbon and reconstructs the PSA CO relation through SMR + WGS stoichiometry.
+- The reduced model intentionally exposes a hydrogen mismatch because replacing C2+ hydrocarbons with carbon-equivalent methane changes feed H/C. This is now the acceptance signal for the next explicit-hydrocarbon model.
+- A first reference-state reaction-duty layer using standard SMR/WGS enthalpies has been implemented; it is explicitly not yet the furnace duty.
 - Source stream reconstruction gives approximately 89.9% PSA H2 recovery from rounded IEAGHG values.
 - The reference PSA tail gas is approximately 47.7 mol% combustible H2+CO+CH4; approximately 32% of its carbon is in CO+CH4 rather than CO2.
 - CI for the newest baseline tests is currently queued/in progress; do not treat it as passed until GitHub reports success.
@@ -78,7 +81,7 @@ natural-gas upstream emissions + electricity + nuclear lifecycle + CO2 transport
 - Earlier Rust CI runs have completed successfully; CI for the newest baseline/tail-gas tests is pending.
 
 ## Next highest-priority task
-Reconstruct reformer + WGS reaction extents and the water/steam balance that produce the validated PSA inlet. Then calculate the associated reaction/sensible heat duties with source-backed thermochemistry. Acceptance criterion: C/H/O closure plus reproduction of the published PSA inlet and key heat/material balance values within declared tolerances.
+Encode the actual IEAGHG NG species (CH4, C2H6, C3H8, n-C4H10, n-C5H12, feed CO2) and source steam/water streams. Solve C/H/O balances through prereforming/reforming/WGS to the validated PSA inlet. Then add temperature-dependent sensible/reaction enthalpy and compare with published duties. Do not size/select an HTGR until this duty is closed.
 
 Required checks:
 1. elemental mass conservation;
