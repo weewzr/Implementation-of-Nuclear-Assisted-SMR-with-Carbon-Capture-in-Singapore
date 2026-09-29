@@ -1272,3 +1272,28 @@ pub fn max_incremental_annual_cost(
     assert!(target_currency_per_tco2e>=0.0 && annual_avoided_tco2e>0.0);
     target_currency_per_tco2e*annual_avoided_tco2e
 }
+
+
+/// Incremental annual-cost budget compatible with a target abatement cost,
+/// expressed from hydrogen production and specific lifecycle abatement.
+pub fn annual_cost_budget_from_h2(
+    h2_kt_per_year:f64,
+    avoided_kgco2e_per_kgh2:f64,
+    target_currency_per_tco2e:f64,
+)->f64 {
+    assert!(h2_kt_per_year>0.0 && avoided_kgco2e_per_kgh2>0.0);
+    let avoided_t_per_year=h2_kt_per_year*1000.0*avoided_kgco2e_per_kgh2;
+    max_incremental_annual_cost(target_currency_per_tco2e,avoided_t_per_year)
+}
+
+/// Maximum incremental overnight CAPEX that could be supported if the entire
+/// annual abatement-cost budget were allocated to capital recovery alone.
+/// This is a deliberately optimistic upper bound: real projects also have
+/// incremental OPEX, fuel, CCS T&S and integration costs.
+pub fn capex_only_break_even_upper_bound(
+    annual_incremental_cost_budget:f64,
+    discount_rate:f64,
+    lifetime_years:u32,
+)->f64 {
+    annual_incremental_cost_budget/capital_recovery_factor(discount_rate,lifetime_years)
+}
