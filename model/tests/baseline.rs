@@ -787,3 +787,17 @@ fn case1a_screen_requires_large_annual_savings_to_reach_s100() {
     assert!(low>16_700_000.0 && low<16_900_000.0);
     assert!(high>29_100_000.0 && high<29_300_000.0);
 }
+
+
+#[test]
+fn furnace_ng_savings_need_double_digit_sgd_per_gj_to_close_current_gap_alone() {
+    use nuclear_assisted_smr::{
+        ieaghg_annual_makeup_furnace_ng_gj,gas_price_required_for_savings_sgd_per_gj,
+    };
+    let e=ieaghg_annual_makeup_furnace_ng_gj();
+    assert!(e>1_670_000.0 && e<1_680_000.0);
+    let p17=gas_price_required_for_savings_sgd_per_gj(16_800_000.0,1.0);
+    let p29=gas_price_required_for_savings_sgd_per_gj(29_200_000.0,1.0);
+    assert!(p17>9.9 && p17<10.1);
+    assert!(p29>17.3 && p29<17.6);
+}
