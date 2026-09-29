@@ -2866,3 +2866,18 @@ mod recycle_penalty_tests {
         assert!(p5>p2 && p2>0.0);
     }
 }
+
+
+#[cfg(test)]
+mod recycle_penalty_regression_ranges {
+    use super::*;
+    #[test]
+    fn recycle_penalties_remain_screening_scale() {
+        let q=converged_recycle_sensible_heat_mw(0.8,0.8,0.8,40.0,370.0);
+        let p2=converged_recycle_compression_sensitivity_mwe(0.8,0.8,0.8,40.0,2.0,0.75);
+        let p5=converged_recycle_compression_sensitivity_mwe(0.8,0.8,0.8,40.0,5.0,0.75);
+        assert!(q>5.0 && q<20.0);
+        assert!(p2>1.0 && p2<10.0);
+        assert!(p5>p2 && p5<20.0);
+    }
+}
