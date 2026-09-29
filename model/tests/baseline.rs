@@ -1188,3 +1188,23 @@ fn matched_lifecycle_budget_reopens_part_of_shared_reactor_region() {
     assert!(p>14.0 && p<15.5);
     assert!(ts20>55_000_000.0 && ts20<56_000_000.0);
 }
+
+
+#[test]
+fn recycle80_matched_lifecycle_regenerates_abatement_budget_from_same_case() {
+    use nuclear_assisted_smr::{
+        ieaghg_base_lifecycle_screen,recycle80_direct_lifecycle_screen,
+        matched_lifecycle_abatement_budget,
+    };
+    // Screening sensitivities only:
+    // upstream NG 15 gCO2e/MJ, nuclear 12 g/kWh_e, eta_e=0.45,
+    // 162 MWth, 90% fresh-feed-carbon capture, CCS chain 2% of captured CO2.
+    let b=ieaghg_base_lifecycle_screen(15.0);
+    let c=recycle80_direct_lifecycle_screen(0.90,15.0,12.0,0.45,162.0,0.02);
+    let (delta,avoided,budget)=matched_lifecycle_abatement_budget(b,c,8322.0,100.0);
+    println!("MATCHED_LCA_BASE={};CAND={};DELTA={};AVOIDED_T={};BUDGET={}",
+        b.total(),c.total(),delta,avoided,budget);
+    assert!(delta>5.0);
+    assert!(avoided>375_000.0);
+    assert!(budget>37_500_000.0);
+}
