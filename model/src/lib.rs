@@ -1905,12 +1905,15 @@ pub fn ieaghg_shift_sensible_500k_to_target_bounds_mw(
         0.1283*NIST_CO2_298_1200.delta_h_kj_mol(t1,t2)
         +0.0366*NIST_CO_298_1300.delta_h_kj_mol(t1,t2)
         +0.5961*NIST_H2_298_1000.delta_h_kj_mol(t1,t2)
-        +0.0015*NIST_N2_500_2000.delta_h_kj_mol(t1,t2)
         +0.0238*NIST_CH4_298_1300.delta_h_kj_mol(t1,t2);
     let dt=t2-t1;
     let water_lo=0.2137*cp_h2o_lo_j_mol_k*dt/1000.0;
     let water_hi=0.2137*cp_h2o_hi_j_mol_k*dt/1000.0;
-    (n*(dry+water_lo)/3600.0,n*(dry+water_hi)/3600.0)
+    // N2 is only 0.15 mol%; its encoded Shomate range also starts at 500 K,
+    // so bracket it instead of extrapolating.
+    let n2_lo=0.0015*28.0*dt/1000.0;
+    let n2_hi=0.0015*31.0*dt/1000.0;
+    (n*(dry+water_lo+n2_lo)/3600.0,n*(dry+water_hi+n2_hi)/3600.0)
 }
 
 /// Full shifted-syngas sensible-heat bound from 412 C to a target below
