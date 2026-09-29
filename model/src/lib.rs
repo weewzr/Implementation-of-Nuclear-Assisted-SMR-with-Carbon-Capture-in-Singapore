@@ -1081,3 +1081,44 @@ pub fn nuclear_electric_reformer_screen_mw(
     let rhi=reactor_thermal_for_electric_load_mw(ehi,net_generation_eff);
     ((elo,ehi),(rlo,rhi))
 }
+
+
+/// Carbon-equivalent CO2 generated from the IEAGHG feedstock carbon before
+/// capture, expressed per kg H2. This is a carbon-accounting quantity:
+/// it assumes all feedstock carbon ultimately becomes CO2 or captured carbon.
+pub fn feedstock_carbon_co2_equivalent_kg_per_kg_h2() -> f64 {
+    const M_CO2_KG_PER_KMOL: f64 = 44.0095;
+    ieaghg_feed_carbon_kmol_per_h()*M_CO2_KG_PER_KMOL/IEAGHG_BASE.h2_kg_per_h
+}
+
+/// Residual plant-gate carbon emission for a furnace-free matched architecture
+/// when a specified fraction of feedstock carbon is permanently captured.
+/// Tail gas must be recycled/converted consistently; otherwise this identity
+/// does not apply.
+pub fn matched_furnace_free_residual_co2_kg_per_kg_h2(capture_fraction: f64) -> f64 {
+    assert!((0.0..=1.0).contains(&capture_fraction));
+    feedstock_carbon_co2_equivalent_kg_per_kg_h2()*(1.0-capture_fraction)
+}
+
+/// Under identical H2 output, NG feed, carbon conversion/capture and tail-gas
+/// disposition, direct heat and eSMR have identical plant-gate carbon emissions.
+/// This function makes that comparison invariant explicit.
+pub fn matched_direct_minus_electric_plant_gate_co2(
+    capture_fraction: f64
+) -> f64 {
+    let d=matched_furnace_free_residual_co2_kg_per_kg_h2(capture_fraction);
+    let e=matched_furnace_free_residual_co2_kg_per_kg_h2(capture_fraction);
+    d-e
+}
+
+/// Required annual H2 production for the CN4252 abatement target under a
+/// specified lifecycle intensity relative to a baseline.
+pub fn required_h2_kt_per_year_for_abatement(
+    baseline_kgco2e_per_kgh2: f64,
+    candidate_kgco2e_per_kgh2: f64,
+    target_mtco2e_per_year: f64,
+) -> f64 {
+    let delta=baseline_kgco2e_per_kgh2-candidate_kgco2e_per_kgh2;
+    assert!(delta>0.0);
+    target_mtco2e_per_year*1000.0/delta
+}
