@@ -10,7 +10,7 @@ records the response; it does not pretend the missing repository copy existed.
 
 ## Decision
 
-Review 1 gate: **OPEN**.
+Review 1 gate: **CLOSED**.
 
 Detailed integrated nuclear modelling remains prohibited until the remaining
 valid blockers below satisfy their acceptance criteria.
