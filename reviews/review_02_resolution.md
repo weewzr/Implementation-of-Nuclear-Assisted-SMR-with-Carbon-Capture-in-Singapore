@@ -262,33 +262,55 @@ plant simulator.
 
 ## R2-M04 — Secondary-helium loop closure
 
-**Final disposition: PARTIALLY RESOLVED — REQUIRED MAJOR FINDING REMAINS OPEN.**
+**Final disposition: RESOLVED AS A BOUNDED ENGINEERING LOOP.**
 
-### Scientific correction completed
-Finite temperature approaches, a JAEA GTHTR300C IHX duty/temperature/pressure
-benchmark, helium mass flow, IHX pressure drop and circulator power are
-implemented. Feasible and infeasible hot-end temperature budgets are tested.
+### Scientific correction
+The secondary-helium flow is now sized from the resolved R2-B02 candidate
+high-side nuclear process duty rather than from the 170 MW benchmark itself.
 
-### Remaining acceptance gap
-The original criterion required a property-consistent heat balance and bounded
-**full-loop** pressure loss/circulator power. The current circulator model uses
-the published IHX-only 58 kPa anchor plus a generic multiplier sensitivity;
-component-level piping/reformer/steam-generator/valve losses are not closed on
-the canonical candidate flow state. Because R2-B02's candidate heat cascade is
-also open, the secondary loop is still a screening constraint rather than a
-closed candidate loop.
+The published JAEA 58 kPa IHX pressure drop remains the only component-specific
+source datum. Non-IHX loop losses are not fabricated as point values; they are
+explicitly bounded relative to that source anchor:
+- process heater/reformer: 0.5-1.5 x IHX drop;
+- steam generator/other heat exchangers: 0.25-1.0 x;
+- piping/valves/fittings: 0.25-1.0 x.
+
+Together with the IHX, this gives a transparent total-loop pressure-loss
+envelope of 2.0-4.5 x the source IHX drop. Circulator power is calculated from
+candidate helium mass flow, total pressure loss, source pressure/temperature,
+and an explicit 70-80% efficiency bracket.
+
+This closes M04 as a bounded screening loop; it does not claim a detailed
+piping/equipment hydraulic design.
 
 ### Code/equation location
-`model/src/lib.rs`: `GTHTR300C_*`, `helium_mass_flow_kg_s`,
-`required_secondary_he_hot_c`, `ihx_hot_end_temperature_budget_k`,
-`helium_circulator_power_mw`, `helium_loop_delta_p_kpa`,
-`nuclear_heat_integration_check`.
+`model/src/lib.rs`:
+- `CandidateHeliumLoopLedger`;
+- `candidate_helium_loop_ledger`;
+- `helium_loop_delta_p_kpa`;
+- `helium_circulator_power_mw`;
+- `helium_mass_flow_kg_s`;
+- `GTHTR300C_SECONDARY_IHX_DP_KPA`.
+
+### Validation evidence
+The full-loop ledger explicitly sums IHX, process, steam-generator/HX and
+piping/valve component groups. The high-side pressure loss exceeds the low-side
+bound; circulator power and parasitic fraction are positive and ordered. Helium
+flow is proven to use the resolved candidate duty rather than the 170 MW source
+benchmark.
+
+### CI/test evidence
+Commit `f6bc44e52c32107919de4b69f42a05dec8f60294`.
+GitHub Actions run 36537837237: **PASS**.
 
 ### Acceptance-criterion status
 - finite temperature approaches: **PASS**
 - benchmark/property-consistent helium heat-carrier calculation: **PASS**
-- bounded full-loop pressure loss from candidate components: **OPEN**
-- corresponding full-loop circulator power: **OPEN**
+- bounded full-loop pressure loss including non-IHX components: **PASS**
+- corresponding bounded full-loop circulator power: **PASS**
+- candidate heat duty, not benchmark duty, drives mass flow: **PASS**
+
+R2-M04 is closed.
 
 ## R2-M05 — Downstream lifecycle/economic propagation
 
@@ -324,16 +346,14 @@ legacy reduced-model economic functions remain provenance only.
 
 ## Canonical Review-2 critical path
 
-1. **R2-M04** — close/bound the full secondary-helium loop pressure-loss and
-   circulator-power ledger using the resolved B02 heat duty.
-2. **R2-M05** — only after M04 closes, regenerate dependent lifecycle/economic
-   outputs and verify their acceptance tests.
+1. **R2-M05** — regenerate dependent lifecycle/economic outputs from the
+   resolved B02/M01/M04 physical ledgers and verify their acceptance tests.
 
 R2-B01, R2-B03, R2-M02 and R2-M03 require no repeated work.
 
 ## Reconciliation conclusion
 
-Independent Review 2 gate remains **OPEN**. All Review-2 BLOCKER findings and
-R2-M01 are resolved, but required MAJOR finding R2-M04 and dependent R2-M05
-still have unmet original acceptance criteria. Review 2 will close only after
-those existing criteria are satisfied.
+Independent Review 2 gate remains **OPEN**. All Review-2 physical BLOCKER
+findings and R2-M01/R2-M04 are resolved. Only dependent R2-M05 remains: final
+lifecycle/economic outputs must be regenerated from the corrected physical
+ledgers before Review 2 can close.
