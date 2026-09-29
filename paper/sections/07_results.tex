@@ -6,6 +6,23 @@ N_{\mathrm{joint\ pass}}=0\quad\text{of}\quad N=64.
 \end{equation}
 The conservative credible case produces non-positive lifecycle abatement and therefore fails both the annual-abatement and economic criteria.
 
+
+Before reading the numerical map, Figure~\ref{fig:threshold-logic} shows the assignment logic: success requires both conditions simultaneously. A case that fails either branch is not CN4252-compliant.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,node distance=9mm,box/.style={draw,rounded corners,align=center,minimum height=12mm,minimum width=36mm},arr/.style={->,thick}]
+\node[box] (a) {Annual abatement\\$>0.25$ MtCO$_2$e/y};
+\node[box,right=13mm of a] (b) {Abatement cost\\$<$ S\$100/tCO$_2$e};
+\node[box,right=13mm of b] (c) {CN4252 joint\\threshold pass};
+\draw[arr](a)--node[above,font=\small]{AND}(b);
+\draw[arr](b)--node[above,font=\small]{AND}(c);
+\node[below=7mm of b,align=center] {\textbf{Canonical result: 0 of 64 tested nuclear-assisted cases pass both.}};
+\end{tikzpicture}
+\caption{Decision logic used throughout the threshold experiment. The two criteria are conjunctive: neither high abatement at excessive cost nor low cost with insufficient abatement constitutes a joint pass.}
+\label{fig:threshold-logic}
+\end{figure}
+
 Figure~\ref{fig:threshold-map} is generated directly from the canonical Rust-produced Gate-5 CSV during every paper build. The dashed lines are the assignment thresholds, so the upper-left region is the joint-pass region: annual avoided emissions greater than \(0.25\) MtCO2e/y and forward abatement cost below S\$100/tCO2e. Infinite-cost cases, which arise when lifecycle abatement is non-positive, remain explicit as \texttt{inf} in the canonical scatter CSV. A separate build-generated finite-cost view is used only for the scatter layer, so those falsification states are excluded from the finite ordinate rather than clipped or assigned an arbitrary cost; their threshold-failure classifications remain included in Table~\ref{tab:binding-counts}.
 
 \begin{figure}[htbp]
