@@ -36,6 +36,19 @@ R2-B03 is closed. This does not validate recycle predictions; R2-B01 remains the
 ## Remaining Review-2 critical path
 
 1. R2-B01 — full-species physical recycle/purge/reformer/WGS/PSA steady state.
+
+### R2-B01 work in progress
+A six-species WetGas6 state (H2/H2O/CO/CO2/CH4/N2), stoichiometric SMR/WGS
+operators, ideal-gas WGS equilibrium solver and composition-sensitive bounded
+PSA surrogate are implemented and CI-verified against the IEAGHG once-through
+HTS/recovery basis (commit `140c4f2c505a8b88a75ecc51dc7bbfaa2f2224c7`).
+
+The first finite-purge recycle fixed-point implementation did **not** satisfy
+the convergence acceptance tests (commits `3263ae552f065a439e4e4999acc181bed24e590b`
+and `fa455e58701d37501dda4d350f7e37a15bdb1aa1`). This failure is retained as
+falsification evidence; numerical damping was not accepted as physical
+validation. R2-B01 remains OPEN and the recycle closure must be reformulated
+with explicit bounded residual equations/robust root solving.
 2. R2-B02 — integrated temperature-resolved candidate energy balance.
 3. R2-M01 + R2-M02.
 4. R2-M04.
