@@ -3644,3 +3644,71 @@ pub fn matched_recycle_lifecycle_economic_point(
         min_gas_price_low_ts_sgd_per_gj:p,
     }
 }
+
+
+/// Formation enthalpy at 298.15 K from the Shomate H parameter, kJ/mol.
+fn hf298_kj_mol(s:Shomate)->f64 { s.h }
+
+/// Approximate total ideal-gas enthalpy flow for the major CHO/N2 species,
+/// MW relative to elements at 298.15 K. Hydrocarbon C2+ is intentionally not
+/// accepted here because this function is used only after the pre-reformer,
+/// where the IEAGHG reformer product contains none.
+pub fn major_stream_enthalpy_mw(s:FullStream,temperature_k:f64)->f64 {
+    assert!(temperature_k>=500.0 && temperature_k<=1000.0);
+    assert!(s.c2h6==0.0 && s.c3h8==0.0 && s.nc4h10==0.0 && s.nc5h12==0.0);
+    let h=|n:f64,p:Shomate| n*(hf298_kj_mol(p)+p.sensible_h_kj_mol(temperature_k));
+    let mut total=0.0;
+    total+=h(s.flow(s.co2),NIST_CO2_298_1200);
+    total+=h(s.flow(s.co),NIST_CO_298_1300);
+    total+=h(s.flow(s.h2),NIST_H2_298_1000);
+    total+=h(s.flow(s.ch4),NIST_CH4_298_1300);
+    total+=h(s.flow(s.h2o),NIST_H2O_500_1700);
+    // N2 formation enthalpy is zero; choose correlation by temperature.
+    total+=s.flow(s.n2)*(if temperature_k<=500.0 {
+        NIST_N2_100_500.sensible_h_kj_mol(temperature_k)
+    } else {
+        NIST_N2_500_2000.sensible_h_kj_mol(temperature_k)
+    });
+    total/3600.0
+}
+
+/// Reconstruct the unnumbered primary-reformer outlet by reversing only the
+/// source-described reformer WHB cooling from a chosen outlet temperature to
+/// published stream 5 at 320 C. Composition is held equal to stream 5 because
+/// the WHB has no reaction/material source in the IEAGHG description.
+///
+/// The resulting WHB duty is an independently temperature-resolved heat-recovery
+/// metric and can be checked against the source statement that ~75% of saturated
+/// HP steam is generated in the syngas WHB.
+pub fn reconstructed_reformer_whb_duty_mw(reformer_outlet_c:f64)->f64 {
+    assert!(reformer_outlet_c>=900.0 && reformer_outlet_c<=950.0);
+    let s=ieaghg_hts_inlet();
+    major_stream_enthalpy_mw(s,reformer_outlet_c+273.15)
+        -major_stream_enthalpy_mw(s,320.0+273.15)
+}
+
+/// Source steam-generation heat sink represented by 75% of saturated HP steam.
+/// This is a latent-heat-only benchmark because the exact economizer/evaporator
+/// split is not separately published.
+pub fn source_whb_steam_latent_benchmark_mw()->(f64,f64) {
+    let m=0.75*ieaghg_total_saturated_hp_steam_kg_h()/3600.0;
+    (m*STEAM_HFG_4P5MPA_KJ_KG/1000.0,m*STEAM_HFG_4MPA_KJ_KG/1000.0)
+}
+
+#[cfg(test)]
+mod conventional_temperature_balance_tests {
+    use super::*;
+    #[test]
+    fn reformer_whb_duty_rises_with_source_outlet_temperature() {
+        assert!(reconstructed_reformer_whb_duty_mw(950.0)
+            >reconstructed_reformer_whb_duty_mw(900.0));
+    }
+    #[test]
+    fn whb_temperature_reconstruction_is_same_order_as_source_steam_sink() {
+        let q=reconstructed_reformer_whb_duty_mw(925.0);
+        let (lo,hi)=source_whb_steam_latent_benchmark_mw();
+        // Not equality: source benchmark omits feedwater sensible heating and
+        // superheat. This test only rejects grossly inconsistent reconstruction.
+        assert!(q>0.5*lo && q<2.0*hi);
+    }
+}
