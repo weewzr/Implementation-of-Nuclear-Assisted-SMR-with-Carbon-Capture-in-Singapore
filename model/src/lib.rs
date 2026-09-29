@@ -5488,3 +5488,101 @@ mod review2_m01_ccs_duty_tests {
             -IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE).abs()<1e-12);
     }
 }
+
+
+/// Review-2 full secondary-helium loop pressure-loss envelope.
+///
+/// Only the IHX drop (58 kPa) is source-backed at component level. The remaining
+/// loop components are therefore bounded explicitly as multiples of the IHX
+/// anchor rather than assigned fabricated point losses:
+/// - process heater/reformer: 0.5-1.5 x IHX drop;
+/// - steam generator/other heat exchangers: 0.25-1.0 x;
+/// - piping/valves/fittings: 0.25-1.0 x.
+///
+/// This yields a transparent total-loop envelope of 2.0-4.5 x the source IHX
+/// drop. It is a bounded engineering screen, not a detailed hydraulic design.
+pub const HE_LOOP_PROCESS_DP_IHX_MULT_LO:f64=0.50;
+pub const HE_LOOP_PROCESS_DP_IHX_MULT_HI:f64=1.50;
+pub const HE_LOOP_SG_DP_IHX_MULT_LO:f64=0.25;
+pub const HE_LOOP_SG_DP_IHX_MULT_HI:f64=1.00;
+pub const HE_LOOP_PIPING_DP_IHX_MULT_LO:f64=0.25;
+pub const HE_LOOP_PIPING_DP_IHX_MULT_HI:f64=1.00;
+
+#[derive(Debug,Clone,Copy)]
+pub struct CandidateHeliumLoopLedger {
+    pub useful_heat_mw:f64,
+    pub helium_mass_flow_kg_s:f64,
+    pub ihx_dp_kpa:f64,
+    pub process_dp_lo_kpa:f64,
+    pub process_dp_hi_kpa:f64,
+    pub sg_dp_lo_kpa:f64,
+    pub sg_dp_hi_kpa:f64,
+    pub piping_dp_lo_kpa:f64,
+    pub piping_dp_hi_kpa:f64,
+    pub total_dp_lo_kpa:f64,
+    pub total_dp_hi_kpa:f64,
+    pub circulator_lo_mwe:f64,
+    pub circulator_hi_mwe:f64,
+    pub parasitic_lo_fraction:f64,
+    pub parasitic_hi_fraction:f64,
+}
+pub fn candidate_helium_loop_ledger(reformer_inlet_c:f64)->CandidateHeliumLoopLedger {
+    let e=candidate_energy_ledger(reformer_inlet_c);
+    // Size against the high-side resolved candidate nuclear process duty.
+    let q=e.nuclear_process_heat_hi_mw;
+    let m=helium_mass_flow_kg_s(q,5.2,900.0,500.0);
+    let ihx=GTHTR300C_SECONDARY_IHX_DP_KPA;
+    let plo=ihx*HE_LOOP_PROCESS_DP_IHX_MULT_LO;
+    let phi=ihx*HE_LOOP_PROCESS_DP_IHX_MULT_HI;
+    let slo=ihx*HE_LOOP_SG_DP_IHX_MULT_LO;
+    let shi=ihx*HE_LOOP_SG_DP_IHX_MULT_HI;
+    let llo=ihx*HE_LOOP_PIPING_DP_IHX_MULT_LO;
+    let lhi=ihx*HE_LOOP_PIPING_DP_IHX_MULT_HI;
+    let dlo=helium_loop_delta_p_kpa(&[ihx,plo,slo,llo]);
+    let dhi=helium_loop_delta_p_kpa(&[ihx,phi,shi,lhi]);
+    let wlo=helium_circulator_power_mw(
+        m,dlo,GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        GTHTR300C_SECONDARY_HE_INLET_C,0.80);
+    let whi=helium_circulator_power_mw(
+        m,dhi,GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        GTHTR300C_SECONDARY_HE_INLET_C,0.70);
+    CandidateHeliumLoopLedger{
+        useful_heat_mw:q,helium_mass_flow_kg_s:m,ihx_dp_kpa:ihx,
+        process_dp_lo_kpa:plo,process_dp_hi_kpa:phi,
+        sg_dp_lo_kpa:slo,sg_dp_hi_kpa:shi,
+        piping_dp_lo_kpa:llo,piping_dp_hi_kpa:lhi,
+        total_dp_lo_kpa:dlo,total_dp_hi_kpa:dhi,
+        circulator_lo_mwe:wlo,circulator_hi_mwe:whi,
+        parasitic_lo_fraction:wlo/q,parasitic_hi_fraction:whi/q}
+}
+
+#[cfg(test)]
+mod review2_m04_helium_loop_tests {
+    use super::*;
+    #[test]
+    fn full_loop_dp_includes_all_component_groups() {
+        let x=candidate_helium_loop_ledger(650.0);
+        assert!((x.total_dp_lo_kpa-(x.ihx_dp_kpa+x.process_dp_lo_kpa
+            +x.sg_dp_lo_kpa+x.piping_dp_lo_kpa)).abs()<1e-12);
+        assert!((x.total_dp_hi_kpa-(x.ihx_dp_kpa+x.process_dp_hi_kpa
+            +x.sg_dp_hi_kpa+x.piping_dp_hi_kpa)).abs()<1e-12);
+        assert!(x.total_dp_hi_kpa>x.total_dp_lo_kpa);
+    }
+    #[test]
+    fn full_loop_circulator_is_bounded_and_nonzero() {
+        let x=candidate_helium_loop_ledger(650.0);
+        assert!(x.helium_mass_flow_kg_s>0.0);
+        assert!(x.circulator_hi_mwe>x.circulator_lo_mwe&&x.circulator_lo_mwe>0.0);
+        assert!(x.parasitic_hi_fraction>x.parasitic_lo_fraction);
+        assert!(x.parasitic_hi_fraction<0.20);
+    }
+    #[test]
+    fn loop_flow_uses_resolved_candidate_heat_not_old_170mw_benchmark() {
+        let x=candidate_helium_loop_ledger(650.0);
+        let expected=helium_mass_flow_kg_s(
+            candidate_energy_ledger(650.0).nuclear_process_heat_hi_mw,
+            5.2,900.0,500.0);
+        assert!((x.helium_mass_flow_kg_s-expected).abs()<1e-12);
+        assert!(x.useful_heat_mw<GTHTR300C_IHX_DUTY_MW);
+    }
+}
