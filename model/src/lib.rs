@@ -894,3 +894,55 @@ pub fn feed_preheater_ng_only_duty_mw() -> f64 {
         +0.0089*n2_delta_h_kj_mol(t1,t2);
     n*dh/3600.0
 }
+
+
+/// NIST SRD 69 hydrogen Shomate coefficients, 298-1000 K.
+pub const NIST_H2_298_1000: Shomate = Shomate {
+    a:33.066178,b:-11.363417,c:11.432816,d:-2.772874,
+    e:-0.158558,f:-9.980797,g:172.707974,h:0.0,
+};
+
+/// IEAGHG base-case PSA hydrogen recycle stream 13.
+pub const IEAGHG_H2_RECYCLE_KMOL_H: f64 = 29.1;
+pub const IEAGHG_H2_RECYCLE_INLET_C: f64 = 40.0;
+
+/// H2-recycle sensible duty through the furnace Feed Pre-Heater Coil,
+/// screening from published 40 C recycle state to the 370 C feed-preheater
+/// outlet stated in the process description.
+pub fn feed_preheater_h2_recycle_duty_mw() -> f64 {
+    let dh=NIST_H2_298_1000.delta_h_kj_mol(
+        IEAGHG_H2_RECYCLE_INLET_C+273.15,370.0+273.15);
+    IEAGHG_H2_RECYCLE_KMOL_H*dh/3600.0
+}
+
+pub fn feed_preheater_ng_plus_h2_duty_mw() -> f64 {
+    feed_preheater_ng_only_duty_mw()+feed_preheater_h2_recycle_duty_mw()
+}
+
+/// NIST SRD 69 water-vapour Shomate coefficients, 500-1700 K.
+pub const NIST_H2O_500_1700: Shomate = Shomate {
+    a:30.09200,b:6.832514,c:6.793435,d:-2.534480,
+    e:0.082139,f:-250.8810,g:223.3967,h:-241.8264,
+};
+
+/// Lower-bound Pre-Reformer Feed Pre-Heater duty.
+/// The published stream 4 exits this coil / enters the pre-reformer at 500 C.
+/// We conservatively assume NG+H2 enter at 370 C and all stream-4 water enters
+/// as already-superheated 400 C steam. Any BFW desuperheating lowers inlet
+/// enthalpy and therefore increases actual coil duty.
+pub fn prereformer_feed_preheater_lower_bound_mw() -> f64 {
+    let s=ieaghg_prereformer_feed();
+    let t_out=500.0+273.15;
+    let t_gas_in=370.0+273.15;
+    let t_steam_in=400.0+273.15;
+
+    let q_ch4=s.flow(s.ch4)*NIST_CH4_298_1300.delta_h_kj_mol(t_gas_in,t_out);
+    let q_co2=s.flow(s.co2)*NIST_CO2_298_1200.delta_h_kj_mol(t_gas_in,t_out);
+    let q_h2=s.flow(s.h2)*NIST_H2_298_1000.delta_h_kj_mol(t_gas_in,t_out);
+    let q_n2=s.flow(s.n2)*NIST_N2_500_2000.delta_h_kj_mol(t_gas_in,t_out);
+    let q_c2=s.flow(s.c2h6)*integrate_cp_table_kj_mol(NIST_C2H6_CP,t_gas_in,t_out);
+    let q_c3=s.flow(s.c3h8)*integrate_cp_table_kj_mol(NIST_C3H8_CP,t_gas_in,t_out);
+    let q_c4=s.flow(s.nc4h10)*integrate_cp_table_kj_mol(NIST_NC4H10_CP,t_gas_in,t_out);
+    let q_h2o=s.flow(s.h2o)*NIST_H2O_500_1700.delta_h_kj_mol(t_steam_in,t_out);
+    (q_ch4+q_co2+q_h2+q_n2+q_c2+q_c3+q_c4+q_h2o)/3600.0
+}
