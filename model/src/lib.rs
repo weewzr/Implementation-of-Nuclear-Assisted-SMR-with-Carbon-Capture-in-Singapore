@@ -598,3 +598,30 @@ pub fn plant_gate_co2_avoided_t_per_h(case: EnergyCase) -> f64 {
     (IEAGHG_ENERGY_BASE.co2_kg_per_nm3_h2 - case.co2_kg_per_nm3_h2)
         * 100_000.0 / 1000.0
 }
+
+
+/// IEAGHG base-case preliminary equipment list: steam-reformer radiant duty,
+/// reported as 82.63 million kcal/h.
+pub const IEAGHG_REFORMER_RADIANT_DUTY_MMKCAL_H: f64 = 82.63;
+
+/// Exact thermochemical conversion used here:
+/// 1 kcal = 4.184 kJ; therefore 1 million kcal/h = 4.184 GJ/h.
+pub fn mmkcal_per_h_to_mw(x: f64) -> f64 {
+    x * 4.184 / 3.6
+}
+
+pub fn ieaghg_reformer_radiant_duty_mw() -> f64 {
+    mmkcal_per_h_to_mw(IEAGHG_REFORMER_RADIANT_DUTY_MMKCAL_H)
+}
+
+/// Ratio of published radiant duty to separately purchased NG-fuel LHV.
+/// >1 is expected because PSA tail gas is also fired in the conventional furnace.
+pub fn ieaghg_radiant_to_makeup_fuel_lhv_ratio() -> f64 {
+    ieaghg_reformer_radiant_duty_mw() / ieaghg_makeup_fuel_lhv_mw()
+}
+
+/// Difference between the published radiant duty and the earlier reduced
+/// 298-K reaction-only thermochemical layer.
+pub fn radiant_minus_reduced_reaction_duty_mw() -> f64 {
+    ieaghg_reformer_radiant_duty_mw() - reduced_standard_reaction_duty_mw()
+}
