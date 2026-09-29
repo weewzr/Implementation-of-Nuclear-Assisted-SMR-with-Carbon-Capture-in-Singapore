@@ -7284,3 +7284,46 @@ mod gate5_synthesis_tests {
             .contains("not evidence that every conceivable"));
     }
 }
+
+
+/// Gate-5 binding-count CSV for deterministic plotting.
+pub fn gate5_binding_counts_csv()->String {
+    let b=gate5_binding_summary();
+    format!(
+"binding,count\njoint_pass,{}\nabatement_only,{}\ncost_only,{}\nboth,{}\n",
+b.none,b.abatement_only,b.cost_only,b.both)
+}
+
+/// Gate-5 figure manifest. Plotting code consumes only canonical generated CSVs.
+pub fn gate5_figure_manifest_markdown()->String {
+    String::from(
+"# Gate 5 reproducible figure manifest\n\n\
+Figure 1: gate5_threshold_scatter.csv -> annual avoided CO2e vs S$/tCO2e, \
+with 0.25 Mt/y and S$100/t threshold lines; points classified by binding constraint.\n\
+Figure 2: gate5_binding_counts.csv -> counts of joint-pass, abatement-only, \
+cost-only and both-fail cases.\n\
+Figure 3: gate5_driver_effects.csv -> normalized local driver effects on \
+abatement and cost thresholds.\n\n\
+All CSVs are generated from model/src/lib.rs. Figures are derivative outputs; \
+the Rust model and generated CSVs are canonical. The threshold scatter must show \
+zero joint-pass points for the current 64-case domain.\n")
+}
+
+#[cfg(test)]
+mod gate5_figure_data_tests {
+    use super::*;
+    #[test]
+    fn binding_counts_reconcile_to_64_and_zero_joint_pass() {
+        let b=gate5_binding_summary();
+        assert_eq!(b.n,64);
+        assert_eq!(b.none,0);
+        assert_eq!(b.n,b.none+b.abatement_only+b.cost_only+b.both);
+    }
+    #[test]
+    fn figure_manifest_preserves_threshold_semantics() {
+        let m=gate5_figure_manifest_markdown();
+        assert!(m.contains("0.25 Mt/y"));
+        assert!(m.contains("S$100/t"));
+        assert!(m.contains("zero joint-pass"));
+    }
+}
