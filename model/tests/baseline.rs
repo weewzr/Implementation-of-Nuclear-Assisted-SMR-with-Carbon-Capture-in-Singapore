@@ -337,3 +337,33 @@ fn primary_950c_cannot_support_950c_process_with_finite_approach() {
     use nuclear_assisted_smr::ihx_hot_end_temperature_budget_k;
     assert!(ihx_hot_end_temperature_budget_k(950.0,950.0,10.0) < 0.0);
 }
+
+
+#[test]
+fn gthtr300c_large_scale_ihx_is_same_order_as_project_helium_flow() {
+    use nuclear_assisted_smr::{
+        helium_mass_flow_kg_s,ieaghg_reformer_radiant_duty_mw,
+        GTHTR300C_SECONDARY_HE_MASS_FLOW_KG_S,
+    };
+    let project_screen=helium_mass_flow_kg_s(
+        ieaghg_reformer_radiant_duty_mw(),5.2,880.0,650.0);
+    assert!((project_screen-GTHTR300C_SECONDARY_HE_MASS_FLOW_KG_S).abs() < 5.0);
+}
+
+#[test]
+fn gthtr300c_ihx_only_pumping_is_low_single_digit_mw() {
+    use nuclear_assisted_smr::{
+        helium_circulator_power_mw,
+        GTHTR300C_SECONDARY_HE_MASS_FLOW_KG_S,
+        GTHTR300C_SECONDARY_HE_INLET_C,
+        GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        GTHTR300C_SECONDARY_IHX_DP_KPA,
+    };
+    let w=helium_circulator_power_mw(
+        GTHTR300C_SECONDARY_HE_MASS_FLOW_KG_S,
+        GTHTR300C_SECONDARY_IHX_DP_KPA,
+        GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        GTHTR300C_SECONDARY_HE_INLET_C,
+        0.80);
+    assert!(w > 1.5 && w < 2.2, "IHX-only screening circulator power {w} MW");
+}
