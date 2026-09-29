@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Allocate the now-closed 18.76-18.84 MW shifted-syngas sensible-heat ceiling among the existing shift-WHB/BFW/feed/condensate duties to determine the residual MDEA heat actually available.
+Reconstruct or lower-bound the remaining Shift-WHB/BFW/condensate/demi-water duties; the source-explicit feed-preheater allocation has already reduced the optimistic MDEA residual heat ceiling to ~13.9 MW (<~37% of regeneration duty).
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -342,6 +342,15 @@ Against the ~38.1-39.2 MW Case-2A MDEA latent duty, this is only ~47.8-49.5% ava
 
 The IAPWS dew-point result remains decisive: bulk condensation begins below the 170 C hot-side pinch for a 160 C reboiler/10 K approach, so the large latent heat cannot fill the remaining MDEA duty in a simple conventional exchanger.
 
+## MDEA residual heat ceiling tightened by source allocation
+IEAGHG explicitly states that NG is heated to 135 C in the Feed Pre-heater using shifted syngas leaving the BFW preheater. The already verified feed-preheater duty is ~4.899 MW, so it must be preserved as a competing shifted-syngas heat-recovery service. citeturn1search0
+
+Subtracting that duty from the closed 18.756-18.842 MW 412->170 C sensible-heat ceiling leaves only **~13.86-13.94 MW** before any Shift-WHB, BFW, condensate or demi-water duties are charged. Against the ~38.1-39.2 MW MDEA regeneration latent duty, this is an optimistic upper fraction of only **~35-37%**.
+
+Therefore, under a 160 C reboiler and 10 K approach, the actual directly recoverable MDEA heat fraction must be below ~37% unless existing downstream duties are reassigned elsewhere. The external 63% benchmark is no longer a plausible central value for this IEAGHG configuration under the current pinch assumptions.
+
+The public IEAGHG equipment-list text names the remaining exchangers but does not expose their numerical duties in the searchable table, so those duties have not been fabricated.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -382,4 +391,4 @@ The IAPWS dew-point result remains decisive: bulk condensation begins below the 
   remain.
 
 ## Next highest-priority task
-Reconstruct/allocate the existing shifted-syngas cold-service duties (shift-WHB steam generation, BFW preheat, NG/feed preheat, condensate and demi-water preheat) with source temperatures where available and a common DeltaTmin. Subtract them from the 18.76-18.84 MW 412->170 C availability ceiling. If residual heat is insufficient, quantify incremental MDEA heat and evaluate lower-temperature solvent/heat-pump regeneration as a competing configuration rather than forcing conventional MDEA.
+Reconstruct or bound the remaining Shift-WHB/BFW/condensate/demi-water heat commitments from source stream/water balances. If exact cold-side states cannot be recovered, propagate a residual MDEA-heat sensitivity from 0 to the current ~13.9 MW upper bound and update the HTGR thermal/economic envelope. Do not delay the project indefinitely for unavailable exchanger duties.
