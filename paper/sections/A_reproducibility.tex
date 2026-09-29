@@ -1,10 +1,25 @@
 \section{Reproducibility}
-From a fresh repository checkout:
+From a fresh repository checkout, the canonical end-to-end reproduction command is:
+\begin{verbatim}
+sh paper/build.sh
+\end{verbatim}
+The build script regenerates the canonical Gate-5/Gate-6 manuscript datasets from Rust and then invokes \texttt{latexmk}. For explicit verification, the equivalent sequence is:
 \begin{verbatim}
 cd model
 cargo test --all-targets
 sh scripts/generate_gate5_results.sh
 cd ../paper
-latexmk -pdf main.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 \end{verbatim}
-The Rust implementation is the canonical computational source. Generated Gate-5 CSV/Markdown files are derivative artifacts. The PDF is generated from this LaTeX manuscript and is not independently maintained.
+
+The Rust implementation in \texttt{model/src/lib.rs} is the canonical computational source. Generated CSV/Markdown files under \texttt{results/generated/} are derivative artifacts and are recreated during the paper build. The quantitative manuscript chain is therefore:
+\[
+\text{source/assumption}
+\rightarrow \text{Rust model}
+\rightarrow \text{generated CSV}
+\rightarrow \text{LaTeX table/figure}
+\rightarrow \text{PDF}.
+\]
+The PDF is generated from \texttt{paper/main.tex} and is never maintained independently.
+
+The GitHub Actions paper workflow independently performs Rust tests, canonical data generation and LaTeX compilation on a fresh runner. A successful current workflow run, rather than the existence of a locally generated PDF alone, is the Gate-6 reproducibility acceptance evidence.
