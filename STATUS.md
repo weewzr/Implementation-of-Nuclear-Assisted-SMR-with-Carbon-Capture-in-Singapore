@@ -90,6 +90,18 @@ Both the source-ledger decomposition and the corrected recycle-electricity accou
 
 This tightens the S$100/t boundary relative to the previous ~S$14.7/GJ minimum-gas screen. Exact design values remain sensitivity-dependent because recycle compressor efficiency and the final injection pressure are not yet equipment-selected.
 
+## Recycle pressure/efficiency sensitivity implemented
+The post-capture recycle compressor is now parameterised by injection pressure rather than fixed at 4.5 MPa. A reproducible 3x3 screening surface spans injection pressures 2.0/3.0/4.5 MPa and compressor isentropic efficiencies 0.65/0.75/0.85.
+
+Each point propagates the compressor load through the corrected full-cost S$100/t boundary while retaining the same converged lifecycle denominator, recycle sensible-heat screen, Case-2A capture/CO2-compression loads, no source-expander credit, and representative reactor/IHX/integration/T&S assumptions.
+
+Acceptance tests require:
+- higher injection pressure -> higher minimum NG value for feasibility;
+- higher compressor efficiency -> lower minimum NG value;
+- monotonicity across the complete 3x3 surface.
+
+Commit `5554a366b10131376343e7c956d88a274b7d9903` contains the implementation. GitHub Actions was still queued at the time of this STATUS update, so this sensitivity is not yet marked verified.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
