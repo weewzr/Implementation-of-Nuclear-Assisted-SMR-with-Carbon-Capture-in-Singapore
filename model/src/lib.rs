@@ -3592,3 +3592,55 @@ pub fn recycle80_min_gas_price_with_matched_lifecycle(
         ccs_ts_cost_sgd_y,allocated_reactor_cost_sgd_y,ihx_loop_cost_sgd_y,
         other_integration_cost_sgd_y)
 }
+
+
+/// Singapore 2024 import-mix screening upstream intensity.
+/// EMA: 6 Mtoe LNG / 11 Mtoe total NG imports.
+/// IEA 2026 anchors: 18.6 gCO2e/MJ delivered LNG and 11.5 gCO2e/MJ
+/// global-average natural-gas supply. This is a weighted screening proxy,
+/// not a route-specific measured Singapore intensity.
+pub fn singapore_2024_ng_mix_screen_gco2e_per_mj()->f64 {
+    let lng_share=6.0/11.0;
+    lng_share*18.6+(1.0-lng_share)*11.5
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct MatchedRecycleLifecycleEconomicPoint {
+    pub upstream_gco2e_per_mj:f64,
+    pub nuclear_gco2e_per_kwh_e:f64,
+    pub ccs_transport_fraction:f64,
+    pub baseline_kgco2e_per_kgh2:f64,
+    pub candidate_kgco2e_per_kgh2:f64,
+    pub abatement_kgco2e_per_kgh2:f64,
+    pub annual_abatement_t:f64,
+    pub annual_budget_sgd:f64,
+    pub min_gas_price_low_ts_sgd_per_gj:f64,
+}
+
+/// Joint lifecycle/economic point for the same 80% recycle/shared-HTGR case.
+pub fn matched_recycle_lifecycle_economic_point(
+    upstream_gco2e_per_mj:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+    ccs_transport_fraction:f64,
+)->MatchedRecycleLifecycleEconomicPoint {
+    let baseline=ieaghg_base_lifecycle_screen(upstream_gco2e_per_mj);
+    let candidate=recycle80_direct_lifecycle_screen(
+        0.90,upstream_gco2e_per_mj,nuclear_gco2e_per_kwh_e,
+        0.504,162.0,ccs_transport_fraction);
+    let (delta,annual,budget)=matched_lifecycle_abatement_budget(
+        baseline,candidate,8322.0,100.0);
+    let p=recycle80_min_gas_price_for_full_cost_sgd_per_gj(
+        budget,162.0,5.69,150.0,31_900_000.0,
+        50_000_000.0,8_200_000.0,5_000_000.0);
+    MatchedRecycleLifecycleEconomicPoint{
+        upstream_gco2e_per_mj,
+        nuclear_gco2e_per_kwh_e,
+        ccs_transport_fraction,
+        baseline_kgco2e_per_kgh2:baseline.total(),
+        candidate_kgco2e_per_kgh2:candidate.total(),
+        abatement_kgco2e_per_kgh2:delta,
+        annual_abatement_t:annual,
+        annual_budget_sgd:budget,
+        min_gas_price_low_ts_sgd_per_gj:p,
+    }
+}
