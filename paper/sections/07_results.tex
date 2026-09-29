@@ -10,8 +10,14 @@ Figure~\ref{fig:threshold-map} is generated directly from the canonical Rust-pro
 
 \begin{figure}[htbp]
 \centering
+\pgfplotstableread[col sep=comma]{../results/generated/gate6_threshold_plot_bounds.csv}\thresholdbounds
+\pgfplotstablegetelem{0}{xmin}\of{\thresholdbounds}\edef\plotxmin{\pgfplotsretval}
+\pgfplotstablegetelem{0}{xmax}\of{\thresholdbounds}\edef\plotxmax{\pgfplotsretval}
+\pgfplotstablegetelem{0}{ymin}\of{\thresholdbounds}\edef\plotymin{\pgfplotsretval}
+\pgfplotstablegetelem{0}{ymax}\of{\thresholdbounds}\edef\plotymax{\pgfplotsretval}
 \begin{tikzpicture}
 \begin{axis}[
+  xmin=\plotxmin,xmax=\plotxmax,ymin=\plotymin,ymax=\plotymax,
   width=0.94\linewidth,
   height=0.60\linewidth,
   xlabel={Annual avoided emissions (tCO$_2$e/y)},
@@ -30,13 +36,11 @@ Figure~\ref{fig:threshold-map} is generated directly from the canonical Rust-pro
   table/y=abatement_cost_sgd_t
 ] table[col sep=comma] {../results/generated/gate5_threshold_scatter_finite.csv};
 \addlegendentry{64-case nuclear design}
-\addplot[dashed] coordinates {(250000,-1e9) (250000,1e9)};
-\addlegendentry{0.25 MtCO$_2$e/y threshold}
-\addplot[densely dashed] coordinates {(-1e9,100) (1e9,100)};
-\addlegendentry{S\$100/tCO$_2$e threshold}
+\draw[dashed] (axis cs:250000,\plotymin) -- (axis cs:250000,\plotymax);
+\draw[densely dashed] (axis cs:\plotxmin,100) -- (axis cs:\plotxmax,100);
 \end{axis}
 \end{tikzpicture}
-\caption{CN4252 threshold map for the verified 64-case coupled nuclear-assisted domain. No tested point occupies the joint-pass region. Data are regenerated from \texttt{model/src/lib.rs} by \texttt{model/scripts/generate\_gate5\_results.sh}; the figure is therefore derivative of the canonical computational model rather than manually transcribed.}
+\caption{CN4252 threshold map for the verified 64-case coupled nuclear-assisted domain. The vertical and horizontal dashed lines mark 0.25 MtCO$_2$e/y and S\$100/tCO$_2$e, respectively; no tested point occupies their joint-pass region. Axis limits are generated from finite physical cases with controlled margins, so the threshold guides do not distort the data scale. Data are regenerated from \texttt{model/src/lib.rs} by \texttt{model/scripts/generate\_gate5\_results.sh}; the figure is therefore derivative of the canonical computational model rather than manually transcribed.}
 \label{fig:threshold-map}
 \end{figure}
 
