@@ -1208,3 +1208,19 @@ fn recycle80_matched_lifecycle_regenerates_abatement_budget_from_same_case() {
     assert!(avoided>375_000.0);
     assert!(budget>37_500_000.0);
 }
+
+
+#[test]
+fn matched_lifecycle_budget_changes_full_cost_gas_boundary() {
+    use nuclear_assisted_smr::{
+        ieaghg_base_lifecycle_screen,recycle80_direct_lifecycle_screen,
+        recycle80_min_gas_price_with_matched_lifecycle,
+    };
+    let b=ieaghg_base_lifecycle_screen(15.0);
+    let c=recycle80_direct_lifecycle_screen(0.90,15.0,12.0,0.45,162.0,0.02);
+    let p=recycle80_min_gas_price_with_matched_lifecycle(
+        b,c,8322.0,100.0,162.0,5.69,150.0,31_900_000.0,
+        50_000_000.0,8_200_000.0,5_000_000.0);
+    println!("MATCHED_LCA_MIN_GAS={p}");
+    assert!(p>15.0 && p<25.0);
+}
