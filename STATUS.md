@@ -1,3 +1,5 @@
+Independent Review 1 gate: CLOSED
+
 # STATUS
 
 ## Current research gate
