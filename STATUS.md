@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Extend the NIST/IAPWS property layer to the remaining NG/H2/H2O species and quantify the pre-reformer/reformer convection-coil duties without inventing missing inlet temperatures.
+Recover the recycled-H2 flow and exact pre-reformer/reformer convection-coil boundary temperatures, then quantify those remaining furnace services without hidden assumptions.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -107,6 +107,15 @@ This is a rigorous partial lower bound because CO2/C2+/N2 and recycled H2 sensib
 
 The next model layer will add remaining species rather than applying an arbitrary mixture cp.
 
+## Completed NG feed-preheater calculation
+The complete natural-gas portion of the fired-furnace 135->370 C Feed Pre-Heater Coil has now been calculated from NIST SRD 69 properties.
+
+Using Shomate enthalpies for CH4/CO2/N2 and integrated NIST ideal-gas Cp tables for C2H6/C3H8/n-C4H10/n-C5H12 gives Delta h_NG = ~11.922 kJ/mol mixture and Q_NG = ~4.821 MW at the published 1455.8 kmol/h NG flow.
+
+This supersedes the prior 4.05 MW methane-only lower bound. Recycled H2 remains excluded until its source flow is recovered.
+
+Combining 96.04 MW radiant + ~16.0-16.25 MW HP steam superheat + 4.82 MW NG feed preheat gives a currently quantified furnace-dependent service floor of ~116.9-117.1 MW, still excluding several convection duties and nuclear-loop losses.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -147,7 +156,7 @@ The next model layer will add remaining species rather than applying an arbitrar
   remain.
 
 ## Next highest-priority task
-Implement NIST Shomate/IAPWS enthalpies for the remaining feed and steam species, complete the 135->370 C feed-preheater duty, then quantify the pre-reformer/reformer preheat coils using source temperatures or explicit sensitivity ranges. Continue to keep the furnace-only saturated-steam generation share separate until it can be isolated from shift heat recovery.
+Recover the PSA-H2 recycle/slipstream flow and the exact inlet/outlet states for the Pre-Reformer Feed Pre-Heater and Reformer Pre-Heater coils from the IEAGHG process/stream tables. Then compute their duties with the property layer. If a boundary state is genuinely absent, use a declared sensitivity range rather than a fitted value.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
