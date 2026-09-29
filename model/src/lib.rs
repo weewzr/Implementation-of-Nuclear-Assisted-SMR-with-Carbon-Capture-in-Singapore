@@ -4295,3 +4295,44 @@ mod review2_b03_property_tests {
         let _=H2_LOW.standard_gibbs_kj_mol(1000.1);
     }
 }
+
+
+/// Independent literature benchmark for dimensionless SMR equilibrium Kp.
+/// Daubert-based table reproduced in membrane-reactor literature:
+/// 973 K 12.735; 1073 K 171.07; 1173 K 1485.1; 1273 K 9199.6.
+/// This benchmark is independent of the NIST Shomate coefficients used here.
+pub fn smr_external_kp_benchmark(t:f64)->f64 {
+    match t as i32 {
+        973=>12.735,
+        1073=>171.07,
+        1173=>1485.1,
+        1273=>9199.6,
+        _=>panic!("no external SMR Kp benchmark at requested temperature"),
+    }
+}
+
+#[cfg(test)]
+mod review2_b03_external_equilibrium_tests {
+    use super::*;
+    #[test]
+    fn nist_smr_k_matches_independent_thermochemical_table() {
+        for t in [973.0,1073.0,1173.0,1273.0] {
+            let calc=smr_equilibrium_constant_piecewise(t);
+            let reference=smr_external_kp_benchmark(t);
+            let rel=(calc-reference).abs()/reference;
+            assert!(rel<0.03,"SMR Kp external benchmark mismatch at {t} K: calc={calc}, ref={reference}, rel={rel}");
+        }
+    }
+    #[test]
+    fn equilibrium_is_continuous_across_h2_dispatch_boundary() {
+        let a=smr_equilibrium_constant_piecewise(999.999);
+        let b=smr_equilibrium_constant_piecewise(1000.001);
+        assert!((a-b).abs()/((a+b)*0.5)<1e-3);
+    }
+    #[test]
+    fn equilibrium_is_physical_across_reformer_range() {
+        let k1173=smr_equilibrium_constant_piecewise(1173.15);
+        let k1223=smr_equilibrium_constant_piecewise(1223.15);
+        assert!(k1223>k1173 && k1173>0.0);
+    }
+}
