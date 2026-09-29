@@ -2530,3 +2530,52 @@ mod converged_lifecycle_tests {
         assert!(mt>0.25);
     }
 }
+
+
+/// Reference-screen numerical summary for the converged recycle lifecycle case.
+/// Assumptions intentionally match the previous lifecycle sensitivity so the
+/// only change is replacing the one-pass recycle approximation by the verified
+/// fixed point.
+#[derive(Debug,Clone,Copy)]
+pub struct ConvergedReferenceScreen {
+    pub fresh_ng_fraction:f64,
+    pub fresh_ng_kmol_h:f64,
+    pub fresh_feed_mw:f64,
+    pub gross_ng_displacement_mw:f64,
+    pub baseline_ci:f64,
+    pub candidate_ci:f64,
+    pub specific_abatement:f64,
+    pub annual_abatement_mt:f64,
+    pub annual_s100_budget_sgd:f64,
+}
+pub fn converged_reference_screen()->ConvergedReferenceScreen {
+    let s=analytical_tail_recycle_fresh_ng_fraction();
+    let b=ieaghg_unabated_lifecycle_screen(11.5);
+    let c=converged_recycle_shared_direct_lifecycle_screen(
+        0.90,11.5,162.0,5.5,0.504,0.025);
+    let (mt,budget)=annual_lifecycle_abatement_and_budget(
+        b,c,IEAGHG_BASE.h2_kg_per_h,8322.0,100.0);
+    ConvergedReferenceScreen {
+        fresh_ng_fraction:s,
+        fresh_ng_kmol_h:1455.8*s,
+        fresh_feed_mw:ieaghg_feed_lhv_mw()*s,
+        gross_ng_displacement_mw:converged_recycle_gross_ng_displacement_mw(),
+        baseline_ci:b.total(),
+        candidate_ci:c.total(),
+        specific_abatement:b.total()-c.total(),
+        annual_abatement_mt:mt,
+        annual_s100_budget_sgd:budget,
+    }
+}
+
+#[cfg(test)]
+mod converged_reference_screen_tests {
+    use super::*;
+    #[test]
+    fn reference_screen_numerics_are_stable() {
+        let r=converged_reference_screen();
+        assert!(r.fresh_ng_fraction>0.70 && r.fresh_ng_fraction<0.77);
+        assert!(r.annual_abatement_mt>0.25);
+        assert!(r.annual_s100_budget_sgd>25_000_000.0);
+    }
+}
