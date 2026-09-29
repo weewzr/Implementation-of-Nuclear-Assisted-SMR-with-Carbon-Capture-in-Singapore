@@ -1883,3 +1883,44 @@ pub fn stream6_condensation_above_mdea_pinch(
 )->bool {
     ieaghg_stream6_water_dewpoint_c() >= reboiler_c+dtmin_c
 }
+
+
+/// Bounded sensible-heat increment for IEAGHG stream 6 from 500 K down to
+/// a hotter-than-dew-point target. Non-water species use encoded NIST
+/// Shomate properties. Water vapour uses an explicit Cp bracket because the
+/// NIST H2O Shomate fit begins at 500 K; IAPWS-IF97 is the authoritative
+/// formulation to replace this bracket in the next property-layer refinement.
+///
+/// cp_h2o bounds are J/mol-K. 33..36 J/mol-K deliberately brackets steam Cp
+/// in this moderate-temperature low-partial-pressure interval.
+pub fn ieaghg_shift_sensible_500k_to_target_bounds_mw(
+    target_c:f64,cp_h2o_lo_j_mol_k:f64,cp_h2o_hi_j_mol_k:f64
+)->(f64,f64) {
+    let t1=target_c+273.15;
+    let t2=500.0;
+    assert!(t1>=400.0 && t1<=500.0);
+    assert!(cp_h2o_lo_j_mol_k>0.0 && cp_h2o_hi_j_mol_k>=cp_h2o_lo_j_mol_k);
+    let n=8370.3;
+    let dry =
+        0.1283*NIST_CO2_298_1200.delta_h_kj_mol(t1,t2)
+        +0.0366*NIST_CO_298_1300.delta_h_kj_mol(t1,t2)
+        +0.5961*NIST_H2_298_1000.delta_h_kj_mol(t1,t2)
+        +0.0015*NIST_N2_500_2000.delta_h_kj_mol(t1,t2)
+        +0.0238*NIST_CH4_298_1300.delta_h_kj_mol(t1,t2);
+    let dt=t2-t1;
+    let water_lo=0.2137*cp_h2o_lo_j_mol_k*dt/1000.0;
+    let water_hi=0.2137*cp_h2o_hi_j_mol_k*dt/1000.0;
+    (n*(dry+water_lo)/3600.0,n*(dry+water_hi)/3600.0)
+}
+
+/// Full shifted-syngas sensible-heat bound from 412 C to a target below
+/// 226.85 C, combining exact encoded NIST 412->226.85 C with the bounded
+/// 500 K -> target interval.
+pub fn ieaghg_shift_sensible_412_to_target_bounds_mw(
+    target_c:f64
+)->(f64,f64) {
+    let q_hi_t=ieaghg_hts_outlet_sensible_heat_to_mw(226.85);
+    let (lo,hi)=ieaghg_shift_sensible_500k_to_target_bounds_mw(
+        target_c,33.0,36.0);
+    (q_hi_t+lo,q_hi_t+hi)
+}
