@@ -2464,3 +2464,69 @@ mod analytical_recycle_tests {
         assert!((a.tail_co_kmol_h-b.tail_co_kmol_h).abs()>1.0);
     }
 }
+
+
+/// Lifecycle screen driven by the analytically verified reduced recycle fixed
+/// point, replacing the earlier single-pass 80% fresh-feed approximation.
+///
+/// Capture is applied to the external fresh-feed carbon entering the closed
+/// recycle system. This is internally consistent with the reduced fixed-point
+/// carbon ledger, but still inherits the surrogate model's fixed conversion
+/// and PSA-recovery assumptions.
+pub fn converged_recycle_shared_direct_lifecycle_screen(
+    capture_fraction:f64,
+    upstream_gco2e_per_mj:f64,
+    thermal_service_mw:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+    net_electric_efficiency:f64,
+    ccs_transport_fraction:f64,
+)->LifecycleCase {
+    assert!((0.0..=1.0).contains(&capture_fraction));
+    let fresh_fraction=analytical_tail_recycle_fresh_ng_fraction();
+    let external_feed_carbon=
+        feedstock_carbon_co2_equivalent_kg_per_kg_h2()*fresh_fraction;
+    let fresh_ng_energy=ieaghg_feed_lhv_mw()*fresh_fraction;
+    LifecycleCase {
+        plant_carbon:external_feed_carbon*(1.0-capture_fraction),
+        upstream_ng:upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+            fresh_ng_energy,upstream_gco2e_per_mj),
+        nuclear:direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(
+            thermal_service_mw,nuclear_gco2e_per_kwh_e,net_electric_efficiency),
+        ccs_transport:ccs_transport_kgco2e_per_kgh2(
+            external_feed_carbon*capture_fraction,ccs_transport_fraction),
+    }
+}
+
+/// Gross NG energy displaced relative to the unabated IEAGHG plant:
+/// all supplementary furnace fuel plus the fresh-feed reduction produced by
+/// the converged reduced recycle fixed point.
+pub fn converged_recycle_gross_ng_displacement_mw()->f64 {
+    let s=analytical_tail_recycle_fresh_ng_fraction();
+    ieaghg_makeup_fuel_lhv_mw()+ieaghg_feed_lhv_mw()*(1.0-s)
+}
+
+#[cfg(test)]
+mod converged_lifecycle_tests {
+    use super::*;
+
+    #[test]
+    fn converged_lifecycle_uses_verified_fresh_feed_fraction() {
+        let s=analytical_tail_recycle_fresh_ng_fraction();
+        let c=converged_recycle_shared_direct_lifecycle_screen(
+            0.90,11.5,162.0,5.5,0.504,0.025);
+        let expected_upstream=upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+            ieaghg_feed_lhv_mw()*s,11.5);
+        assert!((c.upstream_ng-expected_upstream).abs()<1.0e-12);
+        assert!(c.total()>0.0);
+    }
+
+    #[test]
+    fn converged_recycle_still_exceeds_assignment_abatement_scale_in_reference_screen() {
+        let b=ieaghg_unabated_lifecycle_screen(11.5);
+        let c=converged_recycle_shared_direct_lifecycle_screen(
+            0.90,11.5,162.0,5.5,0.504,0.025);
+        let (mt,_)=annual_lifecycle_abatement_and_budget(
+            b,c,IEAGHG_BASE.h2_kg_per_h,8322.0,100.0);
+        assert!(mt>0.25);
+    }
+}
