@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Isolate/bound the furnace-convection share of saturated HP steam generation, the largest remaining conventional heat-service ambiguity before direct-heat vs nuclear-electric comparison.
+Begin the common-service comparison of direct HTGR heat versus HTGR-electric reforming, using the now-bounded conventional furnace-service envelope.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -135,6 +135,13 @@ These remain incomplete lower/service envelopes because furnace-only saturated-s
 
 For the current ~80.30 kg/s helium screening flow at 5.15 MPa and 80% circulator efficiency, loop pressure loss equal to 1x/2x/3x the published 58 kPa IHX anchor gives ~2.17/4.33/6.50 MWe circulator power. Electrical parasitics remain separate from MWth service.
 
+## Furnace steam-generation ambiguity is now bounded
+IEAGHG states that ~75% of saturated HP steam comes from the syngas WHB and that the remainder is shared by shift heat recovery and the furnace convection steam-generator coil. The accessible source does not publish that split, so it has not been invented.
+
+The entire ~25% non-WHB remainder is ~35.34 t/h. Assigning all of it to the furnace coil gives an intentionally conservative upper bound of ~16.45-16.82 MW of saturated-steam generation near 4.23 MPa. The true furnace contribution is lower because shift heat recovery demonstrably shares the remainder.
+
+Combining this with the verified service calculations yields a current conventional furnace-service bound of approximately **131-151 MWth** at 100,000 Nm3/h H2, before nuclear-loop thermal losses. This converts the missing steam split from an unbounded blocker into a <=~17 MW uncertainty.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -175,4 +182,4 @@ For the current ~80.30 kg/s helium screening flow at 5.15 MPa and 80% circulator
   remain.
 
 ## Next highest-priority task
-Recover or bound the split of the non-syngas-WHB saturated-steam generation between shift heat recovery and the fired-furnace steam-generation coil. Then close the conventional furnace-service ledger and begin a common-service comparison of direct HTGR heat versus HTGR-electric eSMR.
+Construct a fair direct-heat versus nuclear-electric comparison on the same 100,000 Nm3/h H2 service basis. Translate the 131-151 MWth process-service envelope into reactor thermal requirements for direct heat (IHX/loop losses) and into electrical/primary-thermal requirements for eSMR using literature-backed electric-heater and nuclear power-cycle efficiencies. Keep CCS and tail-gas disposition identical where possible so the comparison isolates heat-delivery architecture.
