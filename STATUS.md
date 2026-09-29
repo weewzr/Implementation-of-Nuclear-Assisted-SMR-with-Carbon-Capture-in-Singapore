@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Recover the recycled-H2 flow and exact pre-reformer/reformer convection-coil boundary temperatures, then quantify those remaining furnace services without hidden assumptions.
+Refine the verified pre-reformer feed-preheat lower bound and propagate the now-implemented 600-650 C reformer-preheater sensitivity into the total HTGR service envelope.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -116,6 +116,13 @@ This supersedes the prior 4.05 MW methane-only lower bound. Recycled H2 remains 
 
 Combining 96.04 MW radiant + ~16.0-16.25 MW HP steam superheat + 4.82 MW NG feed preheat gives a currently quantified furnace-dependent service floor of ~116.9-117.1 MW, still excluding several convection duties and nuclear-loop losses.
 
+## Recycle and reformer-preheater status
+The previously missing H2 recycle is source-resolved: IEAGHG stream 13 is 29.1 kmol/h (59 kg/h), 40 C, 2.51 MPa, >99.99 mol% H2. Its feed-preheat contribution is only ~0.08 MW using NIST H2 properties.
+
+The corrected Pre-Reformer Feed Pre-Heater lower-bound implementation now passes CI. It deliberately omits C2+ sensible terms above their encoded NIST Cp-table range rather than extrapolating, so it remains conservative.
+
+The standalone IEAGHG summary does not expose the exact primary-reformer inlet temperature. A sensitivity function is therefore implemented rather than a fabricated point value. A related IEAGHG study provides 600-650 C only as contextual range. Rust tests confirm the calculated duty increases monotonically across 600, 625 and 650 C.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -156,7 +163,7 @@ Combining 96.04 MW radiant + ~16.0-16.25 MW HP steam superheat + 4.82 MW NG feed
   remain.
 
 ## Next highest-priority task
-Recover the PSA-H2 recycle/slipstream flow and the exact inlet/outlet states for the Pre-Reformer Feed Pre-Heater and Reformer Pre-Heater coils from the IEAGHG process/stream tables. Then compute their duties with the property layer. If a boundary state is genuinely absent, use a declared sensitivity range rather than a fitted value.
+Extract/report the numerical Pre-Reformer Feed Pre-Heater lower bound from the verified model, extend high-temperature C2+ property coverage where justified, and combine the 600-650 C reformer-preheater sensitivity with radiant, steam-superheat, feed-preheat and helium-parasitic terms to produce the first uncertainty-bounded HTGR thermal-service envelope.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
