@@ -3859,3 +3859,38 @@ mod independent_radiant_validation_tests {
         assert!(q>0.5*lo && q<2.0*hi);
     }
 }
+
+
+/// Validation of the independently reconstructed radiant-duty envelope against
+/// the authoritative IEAGHG equipment-list radiant duty. No tolerance is used
+/// to construct the envelope; this function only evaluates the comparison.
+#[derive(Debug,Clone,Copy)]
+pub struct RadiantEnvelopeValidation {
+    pub calculated_lo_mw:f64,
+    pub calculated_hi_mw:f64,
+    pub reference_mw:f64,
+    pub reference_inside:bool,
+    pub nearest_relative_error:f64,
+}
+pub fn validate_independent_radiant_envelope()->RadiantEnvelopeValidation {
+    let (lo,hi)=independent_radiant_duty_envelope_mw();
+    let q=ieaghg_reformer_radiant_duty_mw();
+    let nearest=if q<lo {(lo-q)/q} else if q>hi {(q-hi)/q} else {0.0};
+    RadiantEnvelopeValidation{
+        calculated_lo_mw:lo,calculated_hi_mw:hi,reference_mw:q,
+        reference_inside:q>=lo && q<=hi,
+        nearest_relative_error:nearest,
+    }
+}
+
+#[cfg(test)]
+mod radiant_acceptance_tests {
+    use super::*;
+    #[test]
+    fn radiant_validation_metrics_are_finite() {
+        let v=validate_independent_radiant_envelope();
+        assert!(v.calculated_lo_mw.is_finite() && v.calculated_hi_mw.is_finite());
+        assert!(v.reference_mw.is_finite() && v.nearest_relative_error.is_finite());
+        assert!(v.calculated_hi_mw>v.calculated_lo_mw);
+    }
+}
