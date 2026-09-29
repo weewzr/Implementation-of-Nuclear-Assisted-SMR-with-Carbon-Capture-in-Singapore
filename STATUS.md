@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Reconstruct or lower-bound the remaining Shift-WHB/BFW/condensate/demi-water duties; the source-explicit feed-preheater allocation has already reduced the optimistic MDEA residual heat ceiling to ~13.9 MW (<~37% of regeneration duty).
+Propagate the source-bounded recycle HTGR envelope into annual operating economics and test whether the 80% tail-recycle case still leaves any credible S$100/tCO2e feasibility region.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -351,6 +351,15 @@ Therefore, under a 160 C reboiler and 10 K approach, the actual directly recover
 
 The public IEAGHG equipment-list text names the remaining exchangers but does not expose their numerical duties in the searchable table, so those duties have not been fabricated.
 
+## Unavailable exchanger duties bounded and propagated
+A focused primary-source check confirms the remaining Shift-WHB/BFW/condensate/demi-water exchanger duties are named but not numerically tabulated in the accessible IEAGHG report. They are therefore no longer treated as a blocker and have not been fabricated. citeturn0search0turn0search1
+
+Direct MDEA heat recovery is carried as 0 to ~13.9 MW, giving incremental MDEA heat of roughly ~24-39 MW. Combining this with the conservative ~-11 MW reaction-heat change yields a source-bounded 80% recycle thermal increment of order **~13-28 MWth**.
+
+This interval is now propagated into the HTGR service model. At the 625 C reformer-preheat sensitivity, the recycle configuration moves the reactor-side process-service requirement from the previous furnace-only range into approximately the **mid-140s to high-170s MWth** range, before nuclear-loop thermal losses. Separation/circulator electricity remains separate.
+
+This replaces the earlier optimistic ~3 MW recycle-heat assumption with a defensible source-bounded uncertainty.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -391,4 +400,4 @@ The public IEAGHG equipment-list text names the remaining exchangers but does no
   remain.
 
 ## Next highest-priority task
-Reconstruct or bound the remaining Shift-WHB/BFW/condensate/demi-water heat commitments from source stream/water balances. If exact cold-side states cannot be recovered, propagate a residual MDEA-heat sensitivity from 0 to the current ~13.9 MW upper bound and update the HTGR thermal/economic envelope. Do not delay the project indefinitely for unavailable exchanger duties.
+Update the 80% recycle economic screen using the source-bounded ~13-28 MWth incremental thermal requirement, Case-2A 6.309 MWe separation anchor, fresh-feed NG displacement and supplementary-furnace-NG removal. Price nuclear heat transparently using source/sensitivity ranges and compare annual real savings/costs with the S$17-29m/y threshold gap. If no credible region remains, record economic falsification rather than refining unavailable exchanger duties further.
