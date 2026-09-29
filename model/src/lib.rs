@@ -625,3 +625,34 @@ pub fn ieaghg_radiant_to_makeup_fuel_lhv_ratio() -> f64 {
 pub fn radiant_minus_reduced_reaction_duty_mw() -> f64 {
     ieaghg_reformer_radiant_duty_mw() - reduced_standard_reaction_duty_mw()
 }
+
+
+/// Screening secondary-helium heat-carrier calculation.
+///
+/// For helium over this temperature range, cp is treated here as a constant
+/// screening parameter supplied by the caller. The final model will replace
+/// this with a temperature-dependent property correlation.
+pub fn helium_mass_flow_kg_s(q_mw: f64, cp_kj_kg_k: f64, t_hot_c: f64, t_cold_c: f64) -> f64 {
+    assert!(q_mw > 0.0);
+    assert!(cp_kj_kg_k > 0.0);
+    assert!(t_hot_c > t_cold_c);
+    q_mw * 1000.0 / (cp_kj_kg_k * (t_hot_c - t_cold_c))
+}
+
+/// Minimum secondary-helium hot-side temperature required for a chosen
+/// reformer/process hot-end temperature and minimum terminal approach.
+pub fn required_secondary_he_hot_c(process_hot_c: f64, min_approach_k: f64) -> f64 {
+    assert!(min_approach_k > 0.0);
+    process_hot_c + min_approach_k
+}
+
+/// Remaining reactor-to-secondary-helium temperature budget after imposing
+/// the reformer hot-end approach. Positive means the assumed reactor outlet
+/// still has temperature headroom for the IHX; non-positive is infeasible.
+pub fn ihx_hot_end_temperature_budget_k(
+    reactor_primary_out_c: f64,
+    process_hot_c: f64,
+    reformer_min_approach_k: f64,
+) -> f64 {
+    reactor_primary_out_c - required_secondary_he_hot_c(process_hot_c, reformer_min_approach_k)
+}
