@@ -66,6 +66,7 @@ using the model for Gate-5 experiments/results.
 - Experiment 03: common-scale IEAGHG Case-1A decomposition — COMPLETE.
 - Experiment 04: binding-constraint map — COMPLETE.
 - Canonical CSV/Markdown renderers and reproduction commands — COMPLETE.
+- Figure-ready 64-case threshold dataset and claim-strength synthesis — COMPLETE.
 
 Gate-5 result contract: `results/GATE5_RESULTS.md`.
 
@@ -73,9 +74,10 @@ The experimental evidence currently remains adverse to a robust nuclear case:
 0/64 coupled cases pass both CN4252 thresholds. Do not optimize this result away.
 
 ## Next step
-Use the materialized Gate-5 tables to produce reproducible figures and a
-results synthesis, then determine whether additional experiments are
-scientifically necessary before Gate-5 closure.
+Generate reproducible figures from the canonical CSVs (threshold scatter,
+binding classes and driver effects), then assess whether the completed
+experiments answer the Gate-5 research questions sufficiently for closure or
+whether one targeted experiment remains necessary.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
