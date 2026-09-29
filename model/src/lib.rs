@@ -6617,6 +6617,37 @@ mod r3_m03_singapore_scale_tests {
 }
 
 
+/// Reference-case lifecycle decomposition for Gate-6 manuscript figures.
+/// Inputs are the declared R3 reference screening corner, not fitted values.
+pub fn gate6_lifecycle_decomposition_csv()->String {
+    let x=r3_candidate_lifecycle(11.5,5.5,5.5,0.025);
+    format!(
+"component,kgco2e_per_kgh2,claim_class\n\
+Residual direct carbon,{:.9},VERIFIED MODEL RESULT\n\
+Upstream natural gas,{:.9},SCREENING RESULT\n\
+Nuclear heat allocation proxy,{:.9},BOUNDED ESTIMATE\n\
+Auxiliary electricity,{:.9},SCREENING RESULT\n\
+CCS transport chain,{:.9},SCREENING RESULT\n\
+Total,{:.9},SCREENING RESULT\n",
+x.direct_residual,x.upstream_ng,x.nuclear_heat,x.auxiliary_electricity,
+x.ccs_transport,x.total)
+}
+
+#[cfg(test)]
+mod gate6_lifecycle_decomposition_tests {
+    use super::*;
+    #[test]
+    fn decomposition_reconciles_exactly_and_preserves_proxy_label() {
+        let x=r3_candidate_lifecycle(11.5,5.5,5.5,0.025);
+        assert!((x.total-(x.direct_residual+x.upstream_ng+x.nuclear_heat
+            +x.auxiliary_electricity+x.ccs_transport)).abs()<1e-12);
+        let s=gate6_lifecycle_decomposition_csv();
+        assert!(s.contains("Nuclear heat allocation proxy"));
+        assert!(s.contains("BOUNDED ESTIMATE"));
+        assert!(!s.contains("published nuclear process heat LCA"));
+    }
+}
+
 /// Deterministic Singapore deployment-scale CSV for manuscript generation.
 pub fn gate6_singapore_scale_csv()->String {
     let x=r3_singapore_scale();
