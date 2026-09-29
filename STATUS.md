@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Replace the current helium-loop pressure-drop sensitivity with source-backed component losses where possible, and quantify the fired-furnace convection services that disappear under nuclear heating.
+Quantify the furnace-dependent HP-steam superheating duty from IAPWS properties and bound the remaining convection/feed-preheat duties lost under nuclear heating.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -86,6 +86,13 @@ The model now parameterises total loop loss as a multiple of the published GTHTR
 
 This is a sensitivity bound, not a final loop result. Rust regression tests passed GitHub Actions.
 
+## New steam-service result
+IEAGHG's base heat/material balance directly reports 95.301 t/h HP steam to process at 400 C / 4.29 MPa and 46.053 t/h HP steam export at 395 C / 4.23 MPa: ~141.354 t/h combined.
+
+IEAGHG states around 75% of saturated HP steam is generated in the reformer syngas waste-heat boiler, implying an approximate ~106 t/h retained syngas-WHB generation scale if comparable reformer outlet conditions are preserved. The remaining ~35.3 t/h is an upper-group bound shared between shift heat recovery and the furnace convection steam-generator coil; it must not be labelled as furnace-only steam generation.
+
+Crucially, IEAGHG routes saturated HP steam through the furnace steam-superheater coil before process/export use. Thus furnace removal creates a superheating service for roughly the full 141 t/h steam flow, not merely the non-WHB steam fraction. The next calculation will use NIST/IAPWS steam enthalpies rather than an assumed constant cp.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -126,7 +133,7 @@ This is a sensitivity bound, not a final loop result. Rust regression tests pass
   remain.
 
 ## Next highest-priority task
-Use the IEAGHG heat/mass balance and equipment tables to quantify or bound the convection-section feed-preheat, steam-superheat and steam-generation duties that disappear with furnace removal. Continue searching primary JAEA/component literature for reformer/SG/duct pressure losses. Acceptance criterion: a non-double-counted heat-service ledger plus a defensible total-loop parasitic envelope.
+Compute HP steam superheater duty with IAPWS/NIST enthalpies at the source pressures and temperatures, then bound the remaining furnace-convection steam-generation and feed-preheat duties. Acceptance criterion: add these services to the verified 96.04 MW radiant duty without double-counting syngas/shift heat recovery.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
