@@ -6445,3 +6445,92 @@ mod r3_m01_falsification_classification_tests {
         assert_eq!(d.low_cost_both_pass+d.high_cost_both_pass,0);
     }
 }
+
+
+/// R3-M02 source-backed common-scale comparator: IEAGHG Case 1A.
+/// These are SOURCE VALUES from IEAGHG 2017-02 Tables 1/2/5, not fitted.
+pub const IEAGHG_CASE1A_FEED_NG_T_H:f64=26.262;
+pub const IEAGHG_CASE1A_FUEL_NG_T_H:f64=5.300;
+pub const IEAGHG_CASE1A_DIRECT_KG_CO2_NM3_H2:f64=0.3704;
+pub const IEAGHG_CASE1A_CAPTURED_KG_CO2_NM3_H2:f64=0.4660;
+pub const IEAGHG_BASE_DIRECT_KG_CO2_NM3_H2:f64=0.8091;
+pub const IEAGHG_CASE1A_SOURCE_CAC_EUR2014_T:f64=47.1;
+pub const IEAGHG_CASE1A_SOURCE_TS_EUR_T_CAPTURED:f64=10.0;
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3Case1aComparator {
+    pub h2_nm3_h:f64,pub h2_kg_h:f64,pub hours_y:f64,
+    pub direct_avoided_t_y:f64,pub direct_capture_t_y:f64,
+    pub direct_avoidance_fraction:f64,pub captured_to_avoided_ratio:f64,
+    pub source_cac_eur2014_t:f64,pub source_non_ts_cac_eur2014_t:f64,
+}
+pub fn r3_case1a_comparator()->R3Case1aComparator {
+    let h2nm=100_000.0;let hours=8322.0;
+    let avoided_kg_nm3=IEAGHG_BASE_DIRECT_KG_CO2_NM3_H2
+        -IEAGHG_CASE1A_DIRECT_KG_CO2_NM3_H2;
+    let avoided=avoided_kg_nm3*h2nm*hours/1000.0;
+    let captured=IEAGHG_CASE1A_CAPTURED_KG_CO2_NM3_H2*h2nm*hours/1000.0;
+    let ratio=IEAGHG_CASE1A_CAPTURED_KG_CO2_NM3_H2/avoided_kg_nm3;
+    let non_ts=IEAGHG_CASE1A_SOURCE_CAC_EUR2014_T
+        -IEAGHG_CASE1A_SOURCE_TS_EUR_T_CAPTURED*ratio;
+    R3Case1aComparator{h2_nm3_h:h2nm,h2_kg_h:IEAGHG_BASE.h2_kg_per_h,
+        hours_y:hours,direct_avoided_t_y:avoided,direct_capture_t_y:captured,
+        direct_avoidance_fraction:avoided_kg_nm3/IEAGHG_BASE_DIRECT_KG_CO2_NM3_H2,
+        captured_to_avoided_ratio:ratio,source_cac_eur2014_t:
+        IEAGHG_CASE1A_SOURCE_CAC_EUR2014_T,source_non_ts_cac_eur2014_t:non_ts}
+}
+
+/// Singapore-adjusted Case-1A T&S-only avoidance-cost contribution.
+/// This deliberately leaves the source non-T&S term in EUR2014 rather than
+/// silently mixing price years/currencies. It is a denominator-consistency
+/// function, not a final Singapore CAC.
+pub fn r3_case1a_ts_contribution_sgd_per_t_avoided(
+    ts_sgd_per_t_captured:f64
+)->f64 {
+    assert!(ts_sgd_per_t_captured>=0.0);
+    r3_case1a_comparator().captured_to_avoided_ratio*ts_sgd_per_t_captured
+}
+
+#[derive(Debug,Clone,Copy,PartialEq,Eq)]
+pub enum R3ComparatorEvidence {
+    CommonBoundaryQuantitative,
+    ExternalStudyOnly,
+    DataLimited,
+}
+pub fn r3_comparator_evidence_status(name:&str)->R3ComparatorEvidence {
+    match name {
+        "unabated_smr"|"case1a_smr_ccs"=>R3ComparatorEvidence::CommonBoundaryQuantitative,
+        "htgr_electric_esmr"=>R3ComparatorEvidence::ExternalStudyOnly,
+        "low_carbon_electrolysis"=>R3ComparatorEvidence::DataLimited,
+        _=>R3ComparatorEvidence::DataLimited,
+    }
+}
+
+#[cfg(test)]
+mod r3_m02_comparator_tests {
+    use super::*;
+    #[test]
+    fn case1a_same_scale_direct_abatement_exceeds_assignment_scale() {
+        let x=r3_case1a_comparator();
+        assert!((x.h2_nm3_h-100000.0).abs()<1e-12);
+        assert!((x.h2_kg_h-IEAGHG_BASE.h2_kg_per_h).abs()<1e-12);
+        assert!((x.hours_y-8322.0).abs()<1e-12);
+        assert!(x.direct_avoided_t_y>250_000.0);
+    }
+    #[test]
+    fn case1a_source_cac_decomposition_reconstructs_published_value() {
+        let x=r3_case1a_comparator();
+        let rebuilt=x.source_non_ts_cac_eur2014_t
+            +IEAGHG_CASE1A_SOURCE_TS_EUR_T_CAPTURED*x.captured_to_avoided_ratio;
+        assert!((rebuilt-IEAGHG_CASE1A_SOURCE_CAC_EUR2014_T).abs()<1e-12);
+    }
+    #[test]
+    fn comparator_evidence_is_not_overstated() {
+        assert_eq!(r3_comparator_evidence_status("case1a_smr_ccs"),
+            R3ComparatorEvidence::CommonBoundaryQuantitative);
+        assert_eq!(r3_comparator_evidence_status("htgr_electric_esmr"),
+            R3ComparatorEvidence::ExternalStudyOnly);
+        assert_eq!(r3_comparator_evidence_status("low_carbon_electrolysis"),
+            R3ComparatorEvidence::DataLimited);
+    }
+}
