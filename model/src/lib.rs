@@ -940,9 +940,8 @@ pub fn prereformer_feed_preheater_lower_bound_mw() -> f64 {
     let q_co2=s.flow(s.co2)*NIST_CO2_298_1200.delta_h_kj_mol(t_gas_in,t_out);
     let q_h2=s.flow(s.h2)*NIST_H2_298_1000.delta_h_kj_mol(t_gas_in,t_out);
     let q_n2=s.flow(s.n2)*NIST_N2_500_2000.delta_h_kj_mol(t_gas_in,t_out);
-    let q_c2=s.flow(s.c2h6)*integrate_cp_table_kj_mol(NIST_C2H6_CP,t_gas_in,t_out);
-    let q_c3=s.flow(s.c3h8)*integrate_cp_table_kj_mol(NIST_C3H8_CP,t_gas_in,t_out);
-    let q_c4=s.flow(s.nc4h10)*integrate_cp_table_kj_mol(NIST_NC4H10_CP,t_gas_in,t_out);
+    // C2+ terms are omitted in this lower bound because the currently
+    // encoded Cp tables stop below the 773.15 K outlet.
     let q_h2o=s.flow(s.h2o)*NIST_H2O_500_1700.delta_h_kj_mol(t_steam_in,t_out);
-    (q_ch4+q_co2+q_h2+q_n2+q_c2+q_c3+q_c4+q_h2o)/3600.0
+    (q_ch4+q_co2+q_h2+q_n2+q_h2o)/3600.0
 }
