@@ -1681,3 +1681,46 @@ pub fn reduced_tail_recycle_partial_net_value_sgd_y(
         *8322.0*electricity_sgd_per_mwh;
     gas-power
 }
+
+
+/// Standard reaction enthalpies used only for a first reaction-heat screen.
+/// CH4 + H2O -> CO + 3H2: +205.8 kJ/mol.
+/// CO + H2O -> CO2 + H2: -41.2 kJ/mol.
+/// Sources: NETL SMR technical references. Actual high-temperature duties
+/// require temperature-dependent reaction enthalpies/equilibrium.
+pub const SMR_DH298_KJ_MOL: f64 = 205.8;
+pub const WGS_DH298_KJ_MOL: f64 = -41.2;
+
+/// Reaction-enthalpy contribution of converted recycled CO/CH4.
+/// Full CH4 conversion includes SMR followed by WGS, hence SMR+WGS per CH4.
+/// This is a 298-K reaction-enthalpy screen, not total reformer duty.
+pub fn reduced_tail_recycle_reaction_heat_screen_mw(
+    co_conversion:f64,ch4_conversion:f64
+)->f64 {
+    let t=ieaghg_tail_inventory();
+    let q_kj_h =
+        ch4_conversion*t.ch4_kmol_h*1000.0*(SMR_DH298_KJ_MOL+WGS_DH298_KJ_MOL)
+        +co_conversion*t.co_kmol_h*1000.0*WGS_DH298_KJ_MOL;
+    q_kj_h/3.6e6
+}
+
+/// Case-2A solvent-regeneration steam latent-heat screen.
+/// Source steam flow is 66.9 t/h. A 4-7 barg saturated-steam bracket uses
+/// h_fg ~2108 to 2048 kJ/kg from saturated steam tables.
+pub fn case2a_mdea_regeneration_latent_heat_bounds_mw()->(f64,f64) {
+    let m_kg_s=66_900.0/3600.0;
+    let lo=m_kg_s*2048.0/1000.0;
+    let hi=m_kg_s*2108.0/1000.0;
+    (lo,hi)
+}
+
+/// Carbon-throughput diagnostic for the reduced recycle case.
+/// Returns (fresh carbon removed, tail non-CO2 carbon converted), kmol-C/h.
+/// Their difference is more informative for net steam demand than gross
+/// stoichiometric water consumption alone.
+pub fn reduced_tail_recycle_carbon_replacement(
+    result:ReducedTailRecycleResult
+)->(f64,f64) {
+    let fresh_removed=result.fresh_ng_displaced_kmol_h*IEAGHG_NG.carbon_kmol_per_kmol();
+    (fresh_removed,result.converted_tail_carbon_kmol_h)
+}
