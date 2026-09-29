@@ -1782,3 +1782,24 @@ pub fn recycle_net_thermal_increment_screen_80pct(
     let ((lo,hi),rxn)=recycle_heat_cascade_screen_80pct(waste_heat_fraction);
     (lo+rxn,hi+rxn)
 }
+
+
+/// Source-based upper-group bound for retained non-syngas-WHB steam generation.
+/// IEAGHG says ~75% of saturated HP steam comes from the reformer WHB.
+/// The remaining ~25% is shared by shift heat recovery and furnace SG.
+/// This converts that remaining steam mass to an approximate latent-heat pool.
+/// It is an upper bound on shift-recoverable heat, not a measured shift duty.
+pub fn non_syngas_whb_steam_latent_heat_upper_bounds_mw()->(f64,f64) {
+    let m=ieaghg_non_syngas_whb_steam_kg_h_upper_group()/3600.0;
+    (m*STEAM_HFG_4P5MPA_KJ_KG/1000.0,m*STEAM_HFG_4MPA_KJ_KG/1000.0)
+}
+
+/// Conservative source-based MDEA waste-heat fraction ceiling using only the
+/// non-syngas-WHB saturated-steam latent-heat group as potentially redirectable.
+/// Because the group includes BOTH shift recovery and furnace steam generation,
+/// this is deliberately an upper bound on retained shift heat.
+pub fn mdea_waste_heat_fraction_upper_from_ieaghg_steam_group()->(f64,f64) {
+    let (qlo,qhi)=non_syngas_whb_steam_latent_heat_upper_bounds_mw();
+    let (mlo,mhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+    ((qlo/mhi).min(1.0),(qhi/mlo).min(1.0))
+}
