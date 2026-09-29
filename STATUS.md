@@ -29,6 +29,26 @@ Commit `622856765a07f7f58d0133a33df84e2478c57925` adds the analytical benchmark 
 
 Execution verification remains pending: the available container has no Rust compiler and no outbound GitHub access, while the GitHub connector does not expose direct-main workflow runs. No test-pass claim is made.
 
+## Converged recycle lifecycle and full-cost result
+The fixed-point recycle implementation and its analytical benchmark are now CI-verified. Rust CI run 256 passed after two scientifically incorrect legacy test expectations were corrected; subsequent lifecycle and full-cost propagation runs 257-260 also passed.
+
+Using the same explicit reference assumptions as the prior 80% sensitivity (90% capture, 11.5 gCO2e/MJ upstream NG, 162 MWth nuclear service, 5.5 gCO2e/kWh-e nuclear LCA proxy at 50.4% efficiency, 2.5% CCS-transport sensitivity), but replacing the one-pass recycle approximation with the verified fixed point:
+- fresh-NG fraction = ~0.73711;
+- fresh NG = ~1073.09 kmol/h;
+- fresh-feed energy = ~249.74 MW_LHV;
+- total NG displacement including eliminated supplementary furnace fuel = ~145.01 MW_LHV;
+- unabated lifecycle screen = ~10.813 kgCO2e/kgH2;
+- converged candidate lifecycle screen = ~1.897 kgCO2e/kgH2;
+- specific lifecycle abatement = ~8.916 kgCO2e/kgH2;
+- annual abatement at 8994 kgH2/h and 8322 h/y = ~0.667 MtCO2e/y;
+- corresponding S$100/t annual incremental-cost allowance = ~S$66.74m/y.
+
+For the existing representative full-cost assumptions (162 MWth, S$5.69/GJ nuclear heat, S$150/MWh separation electricity, S$50m/y allocated reactor cost, S$8.2m/y IHX/loop, S$5m/y other integration, and S$31.9m/y low Group-A-like CCS T&S), the corrected minimum NG value is ~S$14.70/GJ.
+
+At NG=S$15/GJ, maximum compatible CCS T&S is only ~S$33.21m/y; at S$20/GJ it rises to ~S$54.93m/y. Therefore the representative shared-reactor case remains inside the S$100/t screen only in a constrained favourable region. The low-T&S/S$15 case is marginal; the high-T&S case requires materially higher gas value or lower other costs.
+
+These are screening results, not a bankable cost estimate. The largest remaining scientific weakness is no longer recycle arithmetic; it is validation of the reduced recycle/reformer/PSA surrogate and the assumed 162 MWth integrated heat requirement under the changed recycle composition.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
