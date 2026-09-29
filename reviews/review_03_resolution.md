@@ -310,3 +310,40 @@ A fresh checkout can generate the experiment Markdown with:
 The verified domain remains constrained to zero joint passes; Experiment 01 is
 intended to explain the failure topology, not search outside the declared
 evidence-backed design.
+
+
+## Gate 5 Experiment 02 — Threshold-driver attribution
+
+**Status: COMPLETE for local driver contrasts.**
+
+Six controlled perturbations are evaluated from one common favourable anchor:
+reformer temperature, reformer pressure, PSA recovery, capture fraction,
+gas/upstream/auxiliary-carbon-price corner, and nuclear-heat/fixed-cost corner.
+
+For each perturbation the experiment reports:
+- change in annual avoided tCO2e/y;
+- change in S$/tCO2e;
+- change normalized by the 0.25 Mt/y threshold;
+- change normalized by the S$100/t threshold.
+
+This separates physical/lifecycle effects from cost effects while retaining the
+64-point coupled design as the global falsification experiment. Local contrasts
+are not interpreted as global causal coefficients.
+
+Tests require every declared driver to measurably affect at least one output,
+require the carbon-intensive auxiliary corner to reduce abatement, and require
+higher heat/fixed cost to worsen S$/t.
+
+Implementation:
+- `Gate5DriverEffect`
+- `gate5_driver_effects`
+- `gate5_experiment02_markdown`
+- CLI `model/src/bin/gate5_experiment02.rs`
+
+Evidence:
+- `9c4b803636b4297a427ba25d8f66ef0d57e8032d`, CI run 36548051807 PASS;
+- `65edad937bfe6c5d9aa1e2d09b0ade3b18e02264`, reproducibility CLI.
+
+Next experiment should persist and analyse the actual numerical driver table and
+then test comparator threshold behaviour on the common source scale; do not
+expand the nuclear parameter domain merely to search for a pass.
