@@ -972,3 +972,22 @@ fn shifted_syngas_has_material_sensible_heat_above_mdea_temperature() {
     let (lo,hi)=mdea_fraction_from_shift_sensible_ceiling(160.0,66.85);
     assert!(lo>0.33 && hi<0.42, "MDEA sensible ceiling fraction {lo}..{hi}");
 }
+
+
+#[test]
+fn stream6_water_dewpoint_is_below_a_160c_reboiler_plus_10k_pinch() {
+    use nuclear_assisted_smr::{
+        ieaghg_stream6_water_dewpoint_c,
+        stream6_condensation_above_mdea_pinch,
+    };
+    let td=ieaghg_stream6_water_dewpoint_c();
+    assert!(td>155.0 && td<160.0, "stream6 dew point {td} C");
+    assert!(!stream6_condensation_above_mdea_pinch(160.0,10.0));
+}
+
+#[test]
+fn iapws_region4_tsat_reproduces_normal_boiling_point() {
+    use nuclear_assisted_smr::iapws_if97_tsat_k_from_mpa;
+    let t=iapws_if97_tsat_k_from_mpa(0.101325)-273.15;
+    assert!((t-99.974).abs()<0.02, "normal boiling point {t} C");
+}
