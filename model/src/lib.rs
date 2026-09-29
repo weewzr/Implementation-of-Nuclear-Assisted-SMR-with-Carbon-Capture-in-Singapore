@@ -1724,3 +1724,28 @@ pub fn reduced_tail_recycle_carbon_replacement(
     let fresh_removed=result.fresh_ng_displaced_kmol_h*IEAGHG_NG.carbon_kmol_per_kmol();
     (fresh_removed,result.converted_tail_carbon_kmol_h)
 }
+
+
+/// Methane-only standard reaction-heat requirement removed when fresh NG is
+/// displaced, assuming displaced NG has the baseline 89 mol% CH4 composition.
+/// This deliberately omits C2+ reforming heat, so it is a lower bound on the
+/// fresh-feed reaction duty removed.
+pub fn displaced_fresh_ng_ch4_reaction_heat_lower_bound_mw(
+    result:ReducedTailRecycleResult
+)->f64 {
+    let ch4_kmol_h=result.fresh_ng_displaced_kmol_h*IEAGHG_NG.methane;
+    ch4_kmol_h*1000.0*(SMR_DH298_KJ_MOL+WGS_DH298_KJ_MOL)/3.6e6
+}
+
+/// Difference between recycled-species standard reaction heat and the
+/// methane-only lower bound of displaced fresh-feed reaction heat.
+/// Negative means recycle requires less standard reaction enthalpy.
+/// C2+ omission makes the magnitude of savings conservative.
+pub fn recycle_minus_displaced_reaction_heat_screen_mw(
+    result:ReducedTailRecycleResult,
+    co_conversion:f64,
+    ch4_conversion:f64,
+)->f64 {
+    reduced_tail_recycle_reaction_heat_screen_mw(co_conversion,ch4_conversion)
+        - displaced_fresh_ng_ch4_reaction_heat_lower_bound_mw(result)
+}
