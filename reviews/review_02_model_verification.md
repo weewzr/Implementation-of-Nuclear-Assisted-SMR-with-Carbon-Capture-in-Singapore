@@ -8,9 +8,16 @@ solver behaviour, conservation, validation logic and whether model outputs are
 physically supported. It does not repeat the literature/research-foundation
 review and does not reopen Review 1.
 
-## Decision
+## Decision — SUPERSEDED
 
-**Review 2 gate: CLOSED.**
+**This file's former CLOSED decision is superseded by
+`reviews/review_02_resolution.md`. Current Review 2 gate: OPEN.**
+
+The later acceptance-criterion reconciliation restored the original Review-2
+finding taxonomy and found R2-B02 plus dependent major criteria still open.
+Use `reviews/review_02_resolution.md` and `STATUS.md` for current state.
+The scientific evidence recorded below remains historical evidence and is not
+deleted.
 
 All Review-2 mathematical/computational blockers are resolved and the current
 main-branch Rust CI is green. Closure is for the declared screening-model scope:
