@@ -4818,3 +4818,100 @@ mod review2_nested_conservation_tests {
         for e in wet6_element_residual(feed,shifted) {assert!(e.abs()<1e-8);}
     }
 }
+
+
+/// Solve ideal-gas SMR equilibrium extent at fixed T,P for a WetGas6 state.
+/// CO2/N2 are spectators; WGS is handled separately. Both forward and reverse
+/// extents are permitted within nonnegative-species bounds.
+pub fn solve_smr_equilibrium(s:WetGas6,t_k:f64,p_bar:f64)->WetGas6 {
+    assert!(s.nonnegative()&&p_bar>0.0);
+    assert!(t_k>=500.0&&t_k<=1300.0);
+    let eps=1e-9;
+    let lo=-(s.co.min(s.h2/3.0))+eps;
+    let hi=s.ch4.min(s.h2o)-eps;
+    assert!(hi>lo,"SMR equilibrium extent interval empty");
+    let residual=|xi:f64| {
+        let x=apply_smr(s,xi); let n=x.total();
+        let q=smr_reaction_quotient(x.ch4/n,x.h2o/n,x.co/n,x.h2/n,p_bar);
+        q.ln()-smr_equilibrium_constant_piecewise(t_k).ln()
+    };
+    let mut a=lo; let mut b=hi; let mut fa=residual(a); let fb=residual(b);
+    assert!(fa*fb<=0.0,"SMR equilibrium root not bracketed");
+    for _ in 0..160 {
+        let m=0.5*(a+b); let fm=residual(m);
+        if fm.abs()<1e-11 {return apply_smr(s,m);}
+        if fa*fm<=0.0 {b=m;} else {a=m;fa=fm;}
+    }
+    apply_smr(s,0.5*(a+b))
+}
+
+/// Sequential equilibrium reformer screen: SMR equilibrium followed by WGS
+/// equilibrium at the same declared reformer T/P. Repeated sweeps are used
+/// because the two reactions share H2/H2O/CO. This is an ideal-gas equilibrium
+/// limit, not a kinetic reformer.
+pub fn solve_smr_wgs_equilibrium(
+    mut s:WetGas6,t_k:f64,p_bar:f64,tolerance:f64,max_sweeps:u32
+)->WetGas6 {
+    assert!(tolerance>0.0&&max_sweeps>0);
+    for _ in 0..max_sweeps {
+        let old=s;
+        s=solve_smr_equilibrium(s,t_k,p_bar);
+        s=solve_wgs_equilibrium(s,t_k,p_bar);
+        let err=(s.h2-old.h2).abs().max((s.h2o-old.h2o).abs())
+            .max((s.co-old.co).abs()).max((s.co2-old.co2).abs())
+            .max((s.ch4-old.ch4).abs());
+        if err<tolerance {return s;}
+    }
+    panic!("coupled SMR/WGS equilibrium sweeps did not converge")
+}
+
+/// Equilibrium residuals ln(Q/K) for the coupled reformer state.
+pub fn smr_wgs_ln_residuals(s:WetGas6,t_k:f64,p_bar:f64)->(f64,f64) {
+    let n=s.total();
+    let smr=smr_reaction_quotient(s.ch4/n,s.h2o/n,s.co/n,s.h2/n,p_bar)
+        .ln()-smr_equilibrium_constant_piecewise(t_k).ln();
+    let wgs=wgs_reaction_quotient(s.co/n,s.h2o/n,s.co2/n,s.h2/n,p_bar)
+        .ln()-wgs_equilibrium_constant_piecewise(t_k).ln();
+    (smr,wgs)
+}
+
+/// Source-limited once-through reformer validation.
+/// IEAGHG does not publish the numbered primary-reformer inlet state, so the
+/// authoritative stream-5 composition is used only to infer whether a plausible
+/// hot reformer state (900-950 C, ~2.8 MPa) is thermodynamically compatible.
+/// We reverse the WHB without changing composition and report Q/K residuals;
+/// this is a validation diagnostic, not a fabricated inlet reconstruction.
+pub fn ieaghg_hot_reformer_product_equilibrium_residuals(
+    outlet_c:f64
+)->(f64,f64) {
+    assert!((900.0..=950.0).contains(&outlet_c));
+    smr_wgs_ln_residuals(ieaghg_hts_inlet_wet6(),outlet_c+273.15,28.0)
+}
+
+#[cfg(test)]
+mod review2_smr_equilibrium_tests {
+    use super::*;
+    #[test]
+    fn smr_equilibrium_solver_conserves_elements_and_closes_qk() {
+        let s=WetGas6{h2:100.0,h2o:1000.0,co:100.0,co2:50.0,ch4:500.0,n2:10.0};
+        let e=solve_smr_equilibrium(s,1173.15,28.0);
+        for r in wet6_element_residual(s,e) {assert!(r.abs()<1e-8);}
+        let (r,_)=smr_wgs_ln_residuals(e,1173.15,28.0);
+        assert!(r.abs()<1e-8);
+    }
+    #[test]
+    fn coupled_equilibrium_closes_both_reactions() {
+        let s=WetGas6{h2:100.0,h2o:1000.0,co:100.0,co2:50.0,ch4:500.0,n2:10.0};
+        let e=solve_smr_wgs_equilibrium(s,1173.15,28.0,1e-8,10000);
+        let (a,b)=smr_wgs_ln_residuals(e,1173.15,28.0);
+        assert!(a.abs()<1e-7&&b.abs()<1e-7);
+        for r in wet6_element_residual(s,e) {assert!(r.abs()<1e-7);}
+    }
+    #[test]
+    fn ieaghg_hot_product_has_finite_thermodynamic_residuals() {
+        for t in [900.0,925.0,950.0] {
+            let (a,b)=ieaghg_hot_reformer_product_equilibrium_residuals(t);
+            assert!(a.is_finite()&&b.is_finite());
+        }
+    }
+}
