@@ -464,3 +464,13 @@ fn prereformer_coil_lower_bound_is_positive_and_material() {
     let q=prereformer_feed_preheater_lower_bound_mw();
     assert!(q > 5.0 && q < 12.0);
 }
+
+
+#[test]
+fn reformer_preheater_duty_increases_monotonically_with_inlet_temperature() {
+    use nuclear_assisted_smr::reformer_preheater_sensitivity_mw;
+    let q600=reformer_preheater_sensitivity_mw(600.0);
+    let q625=reformer_preheater_sensitivity_mw(625.0);
+    let q650=reformer_preheater_sensitivity_mw(650.0);
+    assert!(q600 > 0.0 && q600 < q625 && q625 < q650);
+}
