@@ -406,3 +406,18 @@ fn ieaghg_hp_steam_mass_ledger_reconstructs_total_superheated_flow() {
     close(ieaghg_syngas_whb_steam_kg_h_approx(),106_015.5,0.1);
     close(ieaghg_non_syngas_whb_steam_kg_h_upper_group(),35_338.5,0.1);
 }
+
+
+#[test]
+fn hp_steam_superheat_is_about_sixteen_mw() {
+    use nuclear_assisted_smr::ieaghg_hp_steam_superheat_duty_bounds_mw;
+    let (lo,hi)=ieaghg_hp_steam_superheat_duty_bounds_mw();
+    assert!(lo > 15.9 && hi < 16.4, "superheat bounds {lo}..{hi} MW");
+}
+
+#[test]
+fn quantified_furnace_replacement_services_already_exceed_112_mw() {
+    use nuclear_assisted_smr::quantified_furnace_replacement_service_bounds_mw;
+    let (lo,hi)=quantified_furnace_replacement_service_bounds_mw();
+    assert!(lo > 112.0 && hi < 112.5, "quantified service bounds {lo}..{hi} MW");
+}
