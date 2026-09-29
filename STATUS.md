@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Harmonise the conventional IEAGHG SMR+CCS economic comparator to a declared SGD price year and replace its low EUR10/t storage assumption with Singapore cross-border T&S sensitivities before adding any nuclear premium.
+Escalate the now-decomposed IEAGHG Case-1A non-T&S cost from Q4-2014 to a declared analysis-year sensitivity without misusing consumer inflation as an engineering plant-cost index; then combine it with Singapore T&S.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -218,6 +218,13 @@ Under a GTHTR300C-like 28.33% thermal-energy-share allocation, cogeneration expa
 
 IEAGHG Case 1A conventional SMR+CCS already reports EUR47.1/tCO2 avoided on Q4-2014 assumptions including only EUR10/t stored. This makes a Singapore-adjusted conventional SMR+CCS comparator the next critical economic baseline before nuclear cost is added.
 
+## Case 1A conventional CCS comparator decomposed
+Primary IEAGHG data now allow the published Case-1A EUR47.1/tCO2 avoided result to be separated exactly from its EUR10/t captured T&S assumption. Case 1A captures 0.4660 kg/Nm3 while avoiding 0.4387 kg/Nm3 versus the base, so captured/avoided = 1.0622. The EUR10/t T&S charge therefore contributes EUR10.62/t avoided, leaving an implied non-T&S capture/integration CAC of **EUR36.48/t avoided in Q4-2014 euros**.
+
+The Rust model reconstructs the published EUR47.1/t result from these components and tests the tariff sensitivity.
+
+This is the correct base for Singapore substitution. The EUR36.48/t term has deliberately NOT yet been inflated to 2026 SGD. Eurostat HICP is a consumer-price index; using it to escalate a chemical-process plant is only a screening proxy. CEPCI/Marshall & Swift are more appropriate for plant/equipment escalation, but a reliable current public index value has not yet been established, so no fabricated engineering escalation is recorded.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -258,4 +265,4 @@ IEAGHG Case 1A conventional SMR+CCS already reports EUR47.1/tCO2 avoided on Q4-2
   remain.
 
 ## Next highest-priority task
-Harmonise IEAGHG Case 1A economics: separate its capture/integration cost from the EUR10/t stored T&S assumption, escalate the 2014Q4 capture component to a declared analysis year, convert with a sourced FX rate, and substitute Singapore T&S sensitivities. Then test whether conventional SMR+CCS alone can meet S$100/tCO2e; nuclear integration should only be credited/debited relative to that comparator.
+Establish a defensible escalation range for the EUR36.48/t Q4-2014 non-T&S comparator using available industrial/process cost-index evidence, with consumer HICP only as a clearly labelled lower-information sensitivity if needed. Convert to SGD with a sourced analysis-date FX rate, add Singapore T&S per tonne captured using the 1.0622 captured/avoided ratio, and test whether conventional Case 1A alone crosses S$100/tCO2e before nuclear integration.
