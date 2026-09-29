@@ -44,9 +44,15 @@ These adverse results are retained as scientific findings, not treated as model
 failures.
 
 ## Current CI state
-Focused Review-3 closure state
-`c384e053e8ea1ec42f1d471fe7f7733dda022b75`:
-GitHub Actions run `36545720485` PASS (`cargo test --all-targets`).
+Gate-6 baseline paper/reproducibility workflow is verified:
+commit `eeab77dc4138ed13f8a5f2c663a4d884c1e51fee`,
+GitHub Actions run `36558930790`: PASS.
+This run includes Rust tests, canonical Gate-5 data generation and successful
+LaTeX/PDF compilation.
+
+Subsequent figure/table manuscript commits are queued for GitHub Actions
+verification and must not be described as rendered successfully until those
+runs complete.
 
 ## Retained limitations
 - Reformer/prereformer treatment remains a screening model, not catalyst
@@ -87,29 +93,30 @@ The experimental conclusion remains adverse/conditional:
   fully matched basis.
 
 ## Gate-6 progress
-- Canonical modular LaTeX manuscript under `paper/`: FIRST COMPLETE TEXT DRAFT.
-- Abstract through conclusions: populated from verified evidence.
-- CN4252 requirement traceability appendix: created.
-- Reproducibility appendix and `scripts/reproduce.sh`: created.
-- Starter bibliography: created; citation coverage still requires strengthening.
-- Paper/reproducibility GitHub Actions workflow: created.
-- Manuscript build CI: currently being verified.
-
-## Gate-6 progress
-- Single canonical LaTeX manuscript under `paper/`: ESTABLISHED.
-- Abstract through conclusions: FIRST-PASS CONTENT ESTABLISHED.
+- Single canonical modular LaTeX manuscript under `paper/`: ESTABLISHED.
+- Abstract through conclusions: FIRST COMPLETE TEXT DRAFT.
 - Governing equations / verification / adverse Gate-5 results: INTEGRATED.
-- Canonical bibliography: ESTABLISHED; requires progressive source enrichment.
-- CN4252 requirement traceability: ESTABLISHED.
-- Reproducibility build script: ESTABLISHED.
-- CI LaTeX build: ADDED; first build validation in progress.
-- Historical `manuscript/main.tex`: SUPERSEDED provenance pointer.
+- Baseline LaTeX/PDF CI build: VERIFIED PASS at `eeab77d`.
+- Reproducible Gate-5 threshold map and binding table: INTEGRATED; latest render
+  CI pending.
+- Reproducible local driver/sensitivity figure: INTEGRATED; latest render CI
+  pending.
+- Original integrated nuclear-SMR-CCS system schematic: INTEGRATED; latest
+  render CI pending.
+- IEAGHG Case-1A claim-labelled comparator table: INTEGRATED.
+- Singapore deployment-scale table: INTEGRATED.
+- Lifecycle-emissions decomposition: INTEGRATED with screening limitations
+  explicit.
+- Primary-source coverage strengthened for IEAGHG, NIST, JAERI/JAEA and official
+  Singapore nuclear/CCS context; further citation completeness review remains.
+- Reproducibility script and CN4252 traceability appendix: ESTABLISHED.
 
 ## Next step
-Resolve the first LaTeX CI build if necessary, then deepen the manuscript with
-canonical generated tables/figures and fuller primary-source citations. Do not
-request Independent Review 4 until the complete first manuscript has all major
-results, figures, discussion, limitations and conclusions.
+Wait only as needed to verify the queued manuscript render CI; meanwhile continue
+citation/equation/cross-reference completeness and inspect generated PDF evidence
+once an updated paper workflow succeeds. Independent Review 4 remains blocked
+until the principal figures/tables are verified to render and the complete first
+manuscript/reproducibility package passes from a fresh checkout.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
