@@ -580,3 +580,30 @@ fn ninety_percent_matched_feedstock_carbon_capture_leaves_about_point_seven_seve
     use nuclear_assisted_smr::matched_furnace_free_residual_co2_kg_per_kg_h2;
     close(matched_furnace_free_residual_co2_kg_per_kg_h2(0.90),0.7724,0.005);
 }
+
+
+#[test]
+fn iea_global_gas_and_lng_anchors_materially_change_upstream_h2_intensity() {
+    use nuclear_assisted_smr::upstream_ng_kgco2e_per_kgh2;
+    let gas=upstream_ng_kgco2e_per_kgh2(11.5);
+    let lng=upstream_ng_kgco2e_per_kgh2(18.6);
+    assert!(gas > 1.5 && gas < 1.6);
+    assert!(lng > 2.5 && lng < 2.6);
+    assert!(lng > gas);
+}
+
+#[test]
+fn direct_heat_lca_proxy_is_lower_than_electric_for_same_service_conversion_chain() {
+    use nuclear_assisted_smr::{
+        direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2,
+        nuclear_electric_lca_kgco2e_per_kgh2,
+        electric_heater_power_mwe,
+    };
+    let q=140.0;
+    let e=electric_heater_power_mwe(q,0.90);
+    let direct=direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(q,5.5,0.504);
+    let electric=nuclear_electric_lca_kgco2e_per_kgh2(e,5.5);
+    assert!(direct < electric);
+    assert!(direct < 0.06);
+    assert!(electric > 0.09 && electric < 0.11);
+}
