@@ -393,3 +393,16 @@ fn pressure_losses_add_linearly_in_screening_budget() {
     use nuclear_assisted_smr::helium_loop_delta_p_kpa;
     close(helium_loop_delta_p_kpa(&[58.0,20.0,40.0,15.0]),133.0,1e-12);
 }
+
+
+#[test]
+fn ieaghg_hp_steam_mass_ledger_reconstructs_total_superheated_flow() {
+    use nuclear_assisted_smr::{
+        ieaghg_total_superheated_hp_steam_kg_h,
+        ieaghg_syngas_whb_steam_kg_h_approx,
+        ieaghg_non_syngas_whb_steam_kg_h_upper_group,
+    };
+    close(ieaghg_total_superheated_hp_steam_kg_h(),141_354.0,1e-12);
+    close(ieaghg_syngas_whb_steam_kg_h_approx(),106_015.5,0.1);
+    close(ieaghg_non_syngas_whb_steam_kg_h_upper_group(),35_338.5,0.1);
+}
