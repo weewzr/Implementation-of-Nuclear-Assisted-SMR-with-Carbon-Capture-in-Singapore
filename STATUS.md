@@ -70,6 +70,11 @@ build.
 No unresolved Review-3 BLOCKER or required MAJOR corrective action prevents
 using the model for Gate-5 experiments/results.
 
+Gate-6 acceptance is currently blocked only by external GitHub Actions queueing:
+the current canonical end-to-end manuscript workflow has not yet started. This
+is a verification/infrastructure blocker, not a scientific-model blocker. Do
+not mark Review-4 readiness until a current workflow run completes successfully.
+
 ## Gate-5 progress
 - Experiment 01: threshold failure topology — COMPLETE.
 - Experiment 02: local threshold-driver attribution — COMPLETE.
@@ -114,11 +119,12 @@ The experimental conclusion remains adverse/conditional:
 - Reproducibility script and CN4252 traceability appendix: ESTABLISHED.
 
 ## Next step
-Wait only as needed to verify the queued manuscript render CI; meanwhile continue
-citation/equation/cross-reference completeness and inspect generated PDF evidence
-once an updated paper workflow succeeds. Independent Review 4 remains blocked
-until the principal figures/tables are verified to render and the complete first
-manuscript/reproducibility package passes from a fresh checkout.
+Do not add new scientific scope merely while waiting for CI. The next acceptance
+action is to inspect the first current canonical paper workflow that executes:
+verify Rust tests, generated datasets, citation/reference integrity, LaTeX/PDF
+build and the uploaded manuscript artifact. If clean, update this file to state
+that the complete first manuscript is ready for Independent Review 4 and STOP;
+otherwise repair the concrete failure. Independent Review 4 must not begin here.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
