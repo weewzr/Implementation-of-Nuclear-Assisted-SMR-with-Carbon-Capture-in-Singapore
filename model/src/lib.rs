@@ -5856,3 +5856,49 @@ mod r3_b01_physical_stream_graph_tests {
         assert!(s.purge_fraction>0.0&&s.recycle.nonnegative());
     }
 }
+
+
+pub fn wet6_mass_kg_h(s:WetGas6)->f64 {
+    s.h2*2.01588+s.h2o*18.01528+s.co*28.0101+s.co2*44.0095
+        +s.ch4*16.04246+s.n2*28.0134
+}
+pub fn r3_external_mass_residual_fraction(s:R3FixedFreshState)->f64 {
+    let source=r3_ieaghg_external_reformer_feed_wet6().scale(s.fresh_fraction);
+    let product=WetGas6{h2:s.product_h2_kmol_h,..WetGas6::default()};
+    let captured=WetGas6{co2:s.captured_co2_kmol_h,..WetGas6::default()};
+    let out=product.add(captured).add(s.purge);
+    (wet6_mass_kg_h(out)-wet6_mass_kg_h(source))/wet6_mass_kg_h(source)
+}
+
+/// Once-through source validation for the new external-feed reformer.
+/// Returns relative species errors against IEAGHG stream 5 (HTS inlet).
+pub fn r3_once_through_reformer_relative_errors()->WetGas6 {
+    let feed=r3_ieaghg_external_reformer_feed_wet6();
+    let out=solve_smr_wgs_equilibrium(feed,1173.15,28.0,1e-8,10000);
+    let src=ieaghg_hts_inlet_wet6();
+    WetGas6{
+        h2:(out.h2-src.h2)/src.h2,h2o:(out.h2o-src.h2o)/src.h2o,
+        co:(out.co-src.co)/src.co,co2:(out.co2-src.co2)/src.co2,
+        ch4:(out.ch4-src.ch4)/src.ch4,n2:(out.n2-src.n2)/src.n2}
+}
+
+#[cfg(test)]
+mod r3_b01_mass_and_source_validation_tests {
+    use super::*;
+    #[test]
+    fn canonical_external_mass_closes() {
+        let s=r3_canonical_recycle_case();
+        assert!(r3_external_mass_residual_fraction(s).abs()<1e-6);
+    }
+    #[test]
+    fn once_through_reformer_is_source_compatible_not_exactly_fitted() {
+        let e=r3_once_through_reformer_relative_errors();
+        // Screening equilibrium must reproduce every major reactive species
+        // within 50% of the rounded source row before recycle is accepted.
+        // This is deliberately broad and independent of the recycle fit.
+        for x in [e.h2,e.h2o,e.co,e.co2,e.ch4] {
+            assert!(x.abs()<0.50,"once-through source relative error {x}");
+        }
+        assert!(e.n2.abs()<0.02);
+    }
+}
