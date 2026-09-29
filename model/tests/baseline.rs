@@ -1046,8 +1046,10 @@ fn recycle80_operating_energy_screen_has_expected_economic_direction() {
     // at ~0.00813 SGD/JPY; it is a technology-cost anchor, not Singapore price.
     let low_gas=recycle80_operating_energy_net_bounds_sgd_y(
         145.0,179.0,10.0,5.69,150.0);
+    println!("RECYCLE80_NET_GAS10={:?}",low_gas);
     let high_gas=recycle80_operating_energy_net_bounds_sgd_y(
         145.0,179.0,20.0,5.69,150.0);
+    println!("RECYCLE80_NET_GAS20={:?}",high_gas);
     assert!(low_gas.0>4_000_000.0 && low_gas.1<13_000_000.0);
     assert!(high_gas.0>48_000_000.0 && high_gas.1<57_000_000.0);
     let p=recycle80_break_even_gas_price_sgd_per_gj(162.0,5.69,150.0);
