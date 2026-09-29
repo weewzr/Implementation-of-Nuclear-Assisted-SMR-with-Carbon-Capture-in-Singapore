@@ -607,3 +607,25 @@ fn direct_heat_lca_proxy_is_lower_than_electric_for_same_service_conversion_chai
     assert!(direct < 0.06);
     assert!(electric > 0.09 && electric < 0.11);
 }
+
+
+#[test]
+fn ninety_percent_capture_lifecycle_screen_is_upstream_gas_dominated() {
+    use nuclear_assisted_smr::{
+        matched_direct_lifecycle_screen,matched_electric_lifecycle_screen,
+    };
+    let d=matched_direct_lifecycle_screen(0.90,11.5,5.5,0.504,140.0,0.025);
+    let e=matched_electric_lifecycle_screen(0.90,11.5,5.5,140.0,0.90,0.025);
+    assert!(d.upstream_ng > d.plant_carbon);
+    assert!(e.upstream_ng > e.plant_carbon);
+    assert!(d.total() > 2.4 && d.total() < 2.7);
+    assert!(e.total() > d.total() && e.total() < 2.8);
+}
+
+#[test]
+fn lng_anchor_materially_raises_matched_lifecycle_intensity() {
+    use nuclear_assisted_smr::matched_direct_lifecycle_screen;
+    let gas=matched_direct_lifecycle_screen(0.90,11.5,5.5,0.504,140.0,0.025);
+    let lng=matched_direct_lifecycle_screen(0.90,18.6,5.5,0.504,140.0,0.025);
+    assert!(lng.total()-gas.total() > 0.9);
+}
