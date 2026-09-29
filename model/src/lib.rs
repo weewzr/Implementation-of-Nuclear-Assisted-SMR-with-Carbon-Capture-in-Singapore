@@ -6853,3 +6853,80 @@ n.closest_joint.pressure_bar,n.closest_joint.psa_recovery,
 n.closest_joint.capture_fraction,n.closest_joint.annual_avoided_t,
 n.closest_joint.abatement_cost_sgd_t)
 }
+
+
+#[derive(Debug,Clone,Copy)]
+pub struct Gate5DriverEffect {
+    pub name:&'static str,
+    pub delta_avoided_t:f64,
+    pub delta_cost_sgd_t:f64,
+    pub normalized_abatement_effect:f64,
+    pub normalized_cost_effect:f64,
+}
+pub fn gate5_driver_effects()->[Gate5DriverEffect;6] {
+    let base=r3_uncertainty_point(
+        900.0,28.0,0.90,0.95,11.5,5.5,15.0,5.69,150.0,80e6);
+    let cases=[
+        ("reformer_temperature",r3_uncertainty_point(
+            950.0,28.0,0.90,0.95,11.5,5.5,15.0,5.69,150.0,80e6)),
+        ("reformer_pressure",r3_uncertainty_point(
+            900.0,20.0,0.90,0.95,11.5,5.5,15.0,5.69,150.0,80e6)),
+        ("psa_recovery",r3_uncertainty_point(
+            900.0,28.0,0.70,0.95,11.5,5.5,15.0,5.69,150.0,80e6)),
+        ("capture_fraction",r3_uncertainty_point(
+            900.0,28.0,0.90,0.85,11.5,5.5,15.0,5.69,150.0,80e6)),
+        ("gas_aux_carbon_price",r3_uncertainty_point(
+            900.0,28.0,0.90,0.95,18.6,402.0,20.0,5.69,200.0,80e6)),
+        ("heat_fixed_cost",r3_uncertainty_point(
+            900.0,28.0,0.90,0.95,11.5,5.5,15.0,8.0,150.0,120e6)),
+    ];
+    cases.map(|(name,x)|{
+        let da=x.annual_avoided_t-base.annual_avoided_t;
+        let dc=x.abatement_cost_sgd_t-base.abatement_cost_sgd_t;
+        Gate5DriverEffect{name,delta_avoided_t:da,delta_cost_sgd_t:dc,
+            normalized_abatement_effect:da/250_000.0,
+            normalized_cost_effect:dc/100.0}
+    })
+}
+
+pub fn gate5_experiment02_markdown()->String {
+    let mut s=String::from(
+"# Gate 5 Experiment 02 — Threshold-driver attribution\n\n\
+All effects are one-factor contrasts from the same favourable physical/economic \
+anchor. Positive delta cost worsens the S$100/t metric; negative delta avoided \
+emissions worsens the 0.25 Mt/y metric.\n\n\
+| Driver perturbation | Delta avoided (t/y) | Delta S$/t | Normalized abatement effect | Normalized cost effect |\n\
+|---|---:|---:|---:|---:|\n");
+    for d in gate5_driver_effects() {
+        s.push_str(&format!("| {} | {:.3} | {:.3} | {:.6} | {:.6} |\n",
+            d.name,d.delta_avoided_t,d.delta_cost_sgd_t,
+            d.normalized_abatement_effect,d.normalized_cost_effect));
+    }
+    s.push_str("\nThese are local contrasts, not global causal coefficients. Coupled effects \
+remain represented by the 64-point experiment.\n");
+    s
+}
+
+#[cfg(test)]
+mod gate5_experiment02_tests {
+    use super::*;
+    #[test]
+    fn every_declared_driver_has_a_measurable_effect() {
+        for d in gate5_driver_effects() {
+            assert!(d.delta_avoided_t.abs()>1e-6||d.delta_cost_sgd_t.abs()>1e-6,
+                "driver {} has no measurable effect",d.name);
+        }
+    }
+    #[test]
+    fn carbon_intensive_auxiliary_corner_reduces_abatement() {
+        let d=gate5_driver_effects().into_iter()
+            .find(|x|x.name=="gas_aux_carbon_price").unwrap();
+        assert!(d.delta_avoided_t<0.0);
+    }
+    #[test]
+    fn higher_heat_and_fixed_cost_worsens_abatement_cost() {
+        let d=gate5_driver_effects().into_iter()
+            .find(|x|x.name=="heat_fixed_cost").unwrap();
+        assert!(d.delta_cost_sgd_t>0.0);
+    }
+}
