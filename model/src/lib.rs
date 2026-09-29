@@ -6151,3 +6151,48 @@ mod r3_b03_forward_lifecycle_economics_tests {
         assert!(grid.total>low.total);
     }
 }
+
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3ThresholdCase {
+    pub lifecycle:R3Lifecycle,pub economics:R3AnnualCost,
+    pub passes_abatement_scale:bool,pub passes_cost_threshold:bool,
+}
+pub fn r3_reference_threshold_case()->R3ThresholdCase {
+    let l=r3_candidate_lifecycle(11.5,5.5,5.5,0.025);
+    let e=r3_forward_economic_scenario(
+        15.0,5.69,150.0,95.1e6,11.5,5.5,5.5,0.025);
+    R3ThresholdCase{lifecycle:l,economics:e,
+        passes_abatement_scale:e.annual_avoided_tco2e>250_000.0,
+        passes_cost_threshold:e.abatement_cost_sgd_t<100.0}
+}
+/// Conservative credible screening corner: LNG-like upstream gas, Singapore-grid
+/// auxiliary electricity, higher gas/electricity prices and fixed annual cost.
+/// This is a scenario stress test, not a forecast.
+pub fn r3_conservative_threshold_case()->R3ThresholdCase {
+    let l=r3_candidate_lifecycle(18.6,6.4,402.0,0.035);
+    let e=r3_forward_economic_scenario(
+        20.0,8.0,200.0,120.0e6,18.6,6.4,402.0,0.035);
+    R3ThresholdCase{lifecycle:l,economics:e,
+        passes_abatement_scale:e.annual_avoided_tco2e>250_000.0,
+        passes_cost_threshold:e.abatement_cost_sgd_t<100.0}
+}
+
+#[cfg(test)]
+mod r3_b03_threshold_tests {
+    use super::*;
+    #[test]
+    fn threshold_cases_are_forward_results_not_assumed_passes() {
+        for x in [r3_reference_threshold_case(),r3_conservative_threshold_case()] {
+            assert_eq!(x.passes_abatement_scale,x.economics.annual_avoided_tco2e>250_000.0);
+            assert_eq!(x.passes_cost_threshold,x.economics.abatement_cost_sgd_t<100.0);
+            assert!(x.economics.abatement_cost_sgd_t.is_finite());
+        }
+    }
+    #[test]
+    fn conservative_auxiliary_emissions_exceed_reference() {
+        let a=r3_reference_threshold_case();
+        let b=r3_conservative_threshold_case();
+        assert!(b.lifecycle.auxiliary_electricity>a.lifecycle.auxiliary_electricity);
+    }
+}
