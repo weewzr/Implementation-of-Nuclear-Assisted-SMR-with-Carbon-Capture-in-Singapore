@@ -971,3 +971,19 @@ pub fn reformer_preheater_sensitivity_mw(reformer_inlet_c: f64) -> f64 {
     let q_h2o=s.flow(s.h2o)*NIST_H2O_500_1700.delta_h_kj_mol(t1,t2);
     (q_ch4+q_co2+q_h2+q_n2+q_h2o)/3600.0
 }
+
+
+/// Composite lower-bound/sensitivity envelope for furnace-dependent thermal
+/// services already represented in the model.
+///
+/// The reformer-preheater term is sensitivity-based, not source-reconstructed.
+/// The prereformer-feed term is a conservative lower bound.
+/// Furnace steam-generation share and nuclear-loop heat losses are excluded.
+pub fn current_htgr_service_envelope_mw(reformer_inlet_c: f64) -> (f64,f64) {
+    let (steam_lo,steam_hi)=ieaghg_hp_steam_superheat_duty_bounds_mw();
+    let fixed=ieaghg_reformer_radiant_duty_mw()
+        + feed_preheater_ng_plus_h2_duty_mw()
+        + prereformer_feed_preheater_lower_bound_mw()
+        + reformer_preheater_sensitivity_mw(reformer_inlet_c);
+    (fixed+steam_lo,fixed+steam_hi)
+}
