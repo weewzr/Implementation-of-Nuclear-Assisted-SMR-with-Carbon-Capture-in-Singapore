@@ -1,6 +1,8 @@
 # STATUS
 
 ## Current research gate
+Gate 5 — Experiments/results: IN PROGRESS.
+
 Gate 4 — Verified computational model: COMPLETE.
 
 Independent Review 1 gate: CLOSED.
@@ -58,12 +60,22 @@ GitHub Actions run `36545720485` PASS (`cargo test --all-targets`).
 No unresolved Review-3 BLOCKER or required MAJOR corrective action prevents
 using the model for Gate-5 experiments/results.
 
-## Next step
-Gate 5 — experiments/results.
+## Gate-5 progress
+- Experiment 01: threshold failure topology — COMPLETE.
+- Experiment 02: local threshold-driver attribution — COMPLETE.
+- Experiment 03: common-scale IEAGHG Case-1A decomposition — COMPLETE.
+- Experiment 04: binding-constraint map — COMPLETE.
+- Canonical CSV/Markdown renderers and reproduction commands — COMPLETE.
 
-Gate 5 must use the corrected R3 canonical model and must preserve falsification:
-experiments should map and explain the no-pass region, comparator behaviour and
-threshold drivers rather than optimize the nuclear case toward a desired answer.
+Gate-5 result contract: `results/GATE5_RESULTS.md`.
+
+The experimental evidence currently remains adverse to a robust nuclear case:
+0/64 coupled cases pass both CN4252 thresholds. Do not optimize this result away.
+
+## Next step
+Use the materialized Gate-5 tables to produce reproducible figures and a
+results synthesis, then determine whether additional experiments are
+scientifically necessary before Gate-5 closure.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
