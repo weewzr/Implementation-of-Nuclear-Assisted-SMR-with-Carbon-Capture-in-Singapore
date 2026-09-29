@@ -333,7 +333,7 @@ fn ninety_six_mw_requires_large_secondary_helium_flow_for_modest_delta_t() {
 }
 
 #[test]
-fn 950c_primary_cannot_support_950c_process_with_finite_approach() {
+fn primary_950c_cannot_support_950c_process_with_finite_approach() {
     use nuclear_assisted_smr::ihx_hot_end_temperature_budget_k;
     assert!(ihx_hot_end_temperature_budget_k(950.0,950.0,10.0) < 0.0);
 }
