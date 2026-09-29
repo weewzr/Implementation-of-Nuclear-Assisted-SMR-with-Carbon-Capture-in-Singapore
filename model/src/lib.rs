@@ -7292,7 +7292,7 @@ pub fn gate5_driver_cost_finite_csv()->String {
 }
 
 pub fn gate6_domain_table_csv()->String {
-String::from("parameter,low,high,unit,class,provenance\nReformer temperature,900,950,degC,SCREENING RANGE,canonical R3 equilibrium screen\nReformer pressure,20,28,bar,SCREENING RANGE,canonical R3 equilibrium screen\nPSA recovery,0.70,0.90,fraction,BOUNDED ASSUMPTION,Review-2 bounded PSA range\nCapture fraction,0.85,0.95,fraction,SCREENING RANGE,canonical capture sensitivity\nCarbon-energy corner,11.5;5.5;15;150,18.6;402;20;200,gCO2e/MJ;gCO2e/kWh;SGD/GJ;SGD/MWh,MIXED SOURCE-SCENARIO,IEA-UNECE-EMA plus project gas-price scenario\nHeat-fixed-cost corner,5.69;80,8.0;120,SGD/GJ;million SGD/y,MIXED SOURCE-SCENARIO,JAEA heat anchor plus project fixed-cost scenario\n")
+String::from("parameter,low,high,unit,basis\nReformer temperature,900,950,degC,Screening range - R3 model\nReformer pressure,20,28,bar,Screening range - R3 model\nPSA recovery,0.70,0.90,fraction,Bounded assumption - Review 2\nCapture fraction,0.85,0.95,fraction,Screening range - R3 model\nCarbon-energy corner,11.5;5.5;15;150,18.6;402;20;200,paired tuple,Mixed sources plus gas-price scenario\nHeat-fixed-cost corner,5.69;80,8.0;120,paired tuple,JAEA heat anchor plus fixed-cost scenario\n")
 }
 pub fn gate6_threshold_magnitude_csv()->String {
  let r=r3_reference_threshold_case(); let c=r3_conservative_threshold_case(); let n=gate5_nearest_cases();
@@ -7307,7 +7307,7 @@ pub fn gate6_threshold_plot_bounds_csv()->String {
  let xmin=f.iter().map(|x|x.annual_avoided_t).fold(f64::INFINITY,f64::min); let xmax=f.iter().map(|x|x.annual_avoided_t).fold(f64::NEG_INFINITY,f64::max);
  let ymin=f.iter().map(|x|x.abatement_cost_sgd_t).fold(f64::INFINITY,f64::min); let ymax=f.iter().map(|x|x.abatement_cost_sgd_t).fold(f64::NEG_INFINITY,f64::max);
  let xs=(xmax-xmin).max(1.0); let ys=(ymax-ymin).max(1.0);
- format!("xmin,xmax,ymin,ymax\n{:.6},{:.6},{:.6},{:.6}\n",(xmin-0.05*xs).min(250000.0),(xmax+0.05*xs).max(250000.0),(ymin-0.05*ys).min(100.0),(ymax+0.05*ys).max(100.0))
+ format!("xmin,xmax,ymin,ymax\n{:.6},{:.6},{:.6},{:.6}\n",(xmin-0.05*xs).min(250000.0),(xmax+0.05*xs).max(260000.0),(ymin-0.05*ys).min(80.0),(ymax+0.05*ys).max(100.0))
 }
 #[cfg(test)] mod review4_manuscript_data_tests { use super::*; #[test] fn domain_is_64(){assert_eq!(gate6_domain_table_csv().lines().count(),7);assert_eq!(r3_uncertainty_design().len(),64);} #[test] fn magnitude_keeps_zero_pass(){assert_eq!(gate6_threshold_magnitude_csv().lines().count(),6);assert_eq!(r3_uncertainty_summary().both_pass,0);} #[test] fn bounds_have_no_sentinel(){assert!(!gate6_threshold_plot_bounds_csv().contains("1000000000"));} }
 
