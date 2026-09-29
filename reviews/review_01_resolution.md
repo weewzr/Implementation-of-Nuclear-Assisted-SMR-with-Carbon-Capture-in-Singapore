@@ -75,13 +75,23 @@ gas and flue-gas capture have materially different pressure/composition and
 solvent/energy requirements.
 
 ### B5 — Functional unit/common comparison boundary needs freezing
-**Disposition: ACCEPTED — resolution required before comparative results.**
+**Disposition: RESOLVED.**
 
-Canonical modelling basis will be 1 kg H2 at a declared plant-gate purity and
-pressure, with annual scaling after specific results. Process-gate and lifecycle
-boundaries must remain nested and separately reported. Product pressure still
-requires selection from an authoritative industrial basis before this finding
-is marked closed.
+The common basis is now frozen to the authoritative IEAGHG merchant-plant
+reference: 100,000 Nm3/h = 8,994 kg/h H2, purity >99.9%, with the PSA equipment
+list specifying 2.58/2.51 MPa on the H2 side. The canonical plant-gate product
+pressure is therefore 2.51 MPa, before any downstream merchant/pipeline
+compression. Specific results use 1 kg H2 on this product basis; annual results
+scale only after the specific calculation.
+
+The model now also encodes strict nested boundaries:
+ProcessGate < PlantGate < Lifecycle. Process-gate chemistry/heat is not silently
+mixed with plant utilities; lifecycle adds upstream NG, nuclear-LCA and CCS-chain
+burdens outside plant gate.
+
+Evidence: IEAGHG 2017-02 base-case heat/material and equipment tables; Rust
+`COMMON_H2_BASIS` and `SystemBoundary` tests, commit
+`d9cac760df2a534c1d6a5039b0ec72f35cf8c150`.
 
 ### M1 — CCS literature needs stream-specific treatment
 **Disposition: ACCEPTED.**
