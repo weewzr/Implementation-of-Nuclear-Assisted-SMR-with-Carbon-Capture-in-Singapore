@@ -22,3 +22,4 @@ cargo run --quiet --bin deployment_cost_breakdown_csv > ../results/generated/dep
 cargo run --quiet --bin deployment_scale_curve_csv > ../results/generated/deployment_scale_curve.csv
 cargo run --quiet --bin deployment_cost_curve_csv > ../results/generated/deployment_cost_curve.csv
 cargo run --quiet --bin deployment_evidence_csv > ../results/generated/deployment_evidence.csv
+cargo run --quiet --bin deployment_heat_feasibility_csv > ../results/generated/deployment_heat_feasibility.csv
