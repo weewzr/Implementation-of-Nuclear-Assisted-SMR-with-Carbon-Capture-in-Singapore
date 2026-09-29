@@ -901,6 +901,10 @@ pub const NIST_H2_298_1000: Shomate = Shomate {
     a:33.066178,b:-11.363417,c:11.432816,d:-2.772874,
     e:-0.158558,f:-9.980797,g:172.707974,h:0.0,
 };
+pub const NIST_H2_1000_2500: Shomate = Shomate {
+    a:18.563083,b:12.257357,c:-2.859786,d:0.268238,
+    e:1.977990,f:-1.147438,g:156.288133,h:0.0,
+};
 
 /// IEAGHG base-case PSA hydrogen recycle stream 13.
 pub const IEAGHG_H2_RECYCLE_KMOL_H: f64 = 29.1;
@@ -3208,7 +3212,7 @@ impl Shomate {
 /// SMR: CH4 + H2O <=> CO + 3H2.
 /// WGS: CO + H2O <=> CO2 + H2.
 pub fn smr_equilibrium_constant_nist(temperature_k:f64)->f64 {
-    assert!(temperature_k>=500.0 && temperature_k<=1000.0);
+    assert!(temperature_k>=500.0 && temperature_k<=1300.0);
     let dg=NIST_CO_298_1300.standard_gibbs_kj_mol(temperature_k)
         +3.0*NIST_H2_298_1000.standard_gibbs_kj_mol(temperature_k)
         -NIST_CH4_298_1300.standard_gibbs_kj_mol(temperature_k)
@@ -3660,7 +3664,15 @@ pub fn major_stream_enthalpy_mw(s:FullStream,temperature_k:f64)->f64 {
     let mut total=0.0;
     total+=h(s.flow(s.co2),NIST_CO2_298_1200);
     total+=h(s.flow(s.co),NIST_CO_298_1300);
-    total+=h(s.flow(s.h2),NIST_H2_298_1000);
+    total+=if temperature_k<=1000.0 {
+        h(s.flow(s.h2),NIST_H2_298_1000)
+    } else {
+        // Preserve the 298-K reference by integrating low interval to 1000 K
+        // and the high interval from 1000 K onward.
+        s.flow(s.h2)*(NIST_H2_298_1000.sensible_h_kj_mol(1000.0)
+            +NIST_H2_1000_2500.sensible_h_kj_mol(temperature_k)
+            -NIST_H2_1000_2500.sensible_h_kj_mol(1000.0))
+    };
     total+=h(s.flow(s.ch4),NIST_CH4_298_1300);
     total+=h(s.flow(s.h2o),NIST_H2O_500_1700);
     // N2 formation enthalpy is zero; choose correlation by temperature.
