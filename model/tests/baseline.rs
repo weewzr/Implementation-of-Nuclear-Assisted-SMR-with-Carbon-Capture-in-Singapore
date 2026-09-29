@@ -449,3 +449,18 @@ fn complete_ng_feed_preheat_exceeds_methane_only_bound() {
     assert!(q > feed_preheater_ch4_only_lower_bound_mw());
     assert!(q > 4.5 && q < 5.5, "NG-only feed preheat {q} MW");
 }
+
+
+#[test]
+fn recycle_stream_preheat_is_small_and_positive() {
+    use nuclear_assisted_smr::feed_preheater_h2_recycle_duty_mw;
+    let q=feed_preheater_h2_recycle_duty_mw();
+    assert!(q > 0.07 && q < 0.09);
+}
+
+#[test]
+fn prereformer_coil_lower_bound_is_positive_and_material() {
+    use nuclear_assisted_smr::prereformer_feed_preheater_lower_bound_mw;
+    let q=prereformer_feed_preheater_lower_bound_mw();
+    assert!(q > 15.0 && q < 25.0);
+}
