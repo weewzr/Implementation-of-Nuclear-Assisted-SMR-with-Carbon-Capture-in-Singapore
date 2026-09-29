@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Extend the source-derived shifted-syngas heat model through water condensation using pressure-dependent phase equilibrium/IAPWS properties, then subtract competing downstream heat-recovery duties to obtain residual MDEA heat.
+Close the remaining 226.85->~170 C shifted-syngas sensible-heat interval with authoritative water-vapour properties, because IAPWS dew-point analysis shows condensation latent heat occurs below the 160 C MDEA + 10 K pinch.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -326,6 +326,15 @@ This is not freely allocatable heat: IEAGHG explicitly routes shifted syngas thr
 
 The large water reduction from stream 6 (8370.3 kmol/h, 21.37% H2O) to stream 7 (6596.9 kmol/h, 0.24% H2O) proves substantial condensation occurs downstream. The next calculation must therefore use pressure-dependent water phase equilibrium/IAPWS enthalpies; ideal-gas extrapolation is no longer acceptable.
 
+## Shifted-syngas dew point resolves the latent-heat question
+The model now implements the IAPWS-IF97 Region-4 saturation-temperature equation and independently checks the normal boiling point. For IEAGHG stream 6, y_H2O=0.2137 and P=2.77 MPa give p_H2O ~=0.592 MPa and an ideal-mixture water dew point in the high-150 C range. citeturn0search25turn0search0
+
+For an illustrative 160 C MDEA reboiler with DeltaTmin=10 K, the hot stream must remain >=170 C. Because stream-6 bulk water condensation begins below that temperature, the large ~32 t/h water-condensation latent heat is **not directly pinch-feasible** for a conventional 160 C MDEA reboiler under this screen.
+
+This corrects the prior expectation that condensation might close the gap to the external 63% heat-recovery benchmark. For the IEAGHG stream, temperature-feasible MDEA heat is primarily shifted-syngas sensible heat above the pinch; condensation heat is better suited to lower-temperature duties or would require a different solvent/heat-pump architecture.
+
+The remaining direct calculation gap is 226.85 C -> ~170 C sensible cooling. NIST's encoded water-vapour Shomate correlation stops at 500 K, so it will not be extrapolated.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -366,4 +375,4 @@ The large water reduction from stream 6 (8370.3 kmol/h, 21.37% H2O) to stream 7 
   remain.
 
 ## Next highest-priority task
-Calculate the stream-6 water dew point at 2.77 MPa from its 0.2137 water mole fraction, then build a phase-aware cooling/condensation enthalpy model from 412 C toward the MDEA pinch region using IAPWS/steam properties. Quantify sensible + latent heat and subtract source-required BFW/feed/condensate heating duties. Acceptance criterion: obtain a residual IEAGHG-specific MDEA heat fraction rather than an availability ceiling.
+Add authoritative water-vapour enthalpy/Cp coverage for 443-500 K and calculate the full 412->170 C temperature-feasible shifted-syngas sensible heat. Then subtract the source-required shift-WHB/BFW/feed/condensate duties to obtain residual MDEA heat. Also sensitivity-test reboiler temperature and DeltaTmin; a lower-temperature solvent or heat-pump configuration may recover condensation heat that conventional 160 C MDEA cannot.
