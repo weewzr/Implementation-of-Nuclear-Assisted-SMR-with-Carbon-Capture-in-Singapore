@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Propagate the new Singapore-oriented upstream-gas, nuclear-LCA and CCS-transport sensitivities into kgCO2e/kgH2 and the CN4252 >0.25 MtCO2e/y scaling test.
+Refine the first assignment-level lifecycle screen with route-specific Singapore gas/CCS data and then test the <S$100/tCO2e economic threshold.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -169,6 +169,17 @@ Singapore lacks domestic geological storage and is pursuing cross-border CCS wit
 
 The emerging falsification hypothesis is that lifecycle performance may be limited more by imported-gas emissions than by direct-vs-electric nuclear heat architecture.
 
+## First assignment-level emissions-scale screen
+A matched 90% feedstock-carbon-capture screening model now combines plant carbon, upstream NG, nuclear lifecycle and CO2 transport terms.
+
+On the IEAGHG feedstock basis, IEA's 11.5 gCO2e/MJ global gas-supply anchor gives ~1.56 kgCO2e/kgH2 upstream; the 18.6 g/MJ global LNG anchor gives ~2.52. At 90% feedstock-carbon capture, residual plant carbon is ~0.77 kgCO2/kgH2. A 2.5%-of-captured-CO2 historical shipping sensitivity adds ~0.17 kgCO2e/kgH2. Nuclear energy contributes only order ~0.04 direct / ~0.10 electric kgCO2e/kgH2 under the current proxy assumptions.
+
+This produces illustrative matched lifecycle intensities of roughly ~2.5-2.6 kgCO2e/kgH2 on the lower/global-gas anchor, rising by ~1 kg/kg under the LNG anchor. These are screening values, not route-specific Singapore results.
+
+Against IEA's 10-12 kgCO2e/kgH2 unabated-NG hydrogen benchmark, the implied specific abatement is roughly 6.4-9.5 kgCO2e/kgH2, requiring order 26-39 ktH2/y to exceed 0.25 MtCO2e/y. The IEAGHG reference plant produces ~72 ktH2/y at 8000 h/y, so the assignment's scale threshold appears achievable in principle across much of the current screening envelope.
+
+The dominant scientific uncertainty after high capture is now upstream imported-gas emissions, not direct-vs-electric nuclear lifecycle emissions.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -209,4 +220,4 @@ The emerging falsification hypothesis is that lifecycle performance may be limit
   remain.
 
 ## Next highest-priority task
-Compute matched lifecycle-intensity envelopes for direct heat and eSMR across capture fraction, upstream-gas intensity, CCS transport fraction and nuclear-LCA assumptions. Then translate each case into required ktH2/y to exceed 0.25 MtCO2e/y relative to a clearly declared unabated-SMR lifecycle baseline. This will be the first assignment-level emissions-scale falsification test.
+Refine Singapore-specific lifecycle provenance: identify plausible LNG/pipeline source-route emissions and a candidate cross-border CO2 transport/storage route. In parallel begin the economic foundation needed for the CN4252 <S$100/tCO2e test: define counterfactual, annualised CAPEX/OPEX boundary, nuclear heat/electricity allocation, NG price, CCS T&S cost and financing assumptions without yet claiming compliance.
