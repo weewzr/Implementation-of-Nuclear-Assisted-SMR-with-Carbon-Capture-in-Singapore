@@ -1,7 +1,7 @@
 # STATUS
 
 ## Current research gate
-Gate 6 — Paper/reproducibility: IN PROGRESS.
+Gate 6 — Paper/reproducibility: COMPLETE FIRST MANUSCRIPT; READY FOR INDEPENDENT REVIEW 4.
 
 Gate 5 — Experiments/results: COMPLETE.
 
@@ -44,17 +44,24 @@ These adverse results are retained as scientific findings, not treated as model
 failures.
 
 ## Current CI state
-Gate-6 baseline paper/reproducibility workflow is verified:
-commit `eeab77dc4138ed13f8a5f2c663a4d884c1e51fee`,
-GitHub Actions run `36558930790`: PASS.
-This run includes Rust tests, canonical Gate-5 data generation and successful
-LaTeX/PDF compilation.
+Current canonical paper/reproducibility workflow is verified:
+commit `b9ca2896c442071f7694a811b4a4383c71fee7fe`,
+GitHub Actions Paper run `36566879465`: PASS.
 
-Subsequent figure/table manuscript commits are queued for GitHub Actions
-verification and must not be described as rendered successfully until those
-runs complete. The paper workflow now additionally fails on unresolved LaTeX
-citations/references and uploads the generated PDF artifact after a successful
-build.
+Acceptance evidence:
+- canonical Rust tests completed successfully;
+- canonical Gate-5/Gate-6 manuscript datasets regenerated;
+- clean LaTeX/BibTeX build converged;
+- final unresolved citation/reference integrity check passed;
+- `paper/main.pdf` generated successfully (13 pages in the converged CI build);
+- `cn4252-manuscript` artifact uploaded successfully, artifact ID
+  `11032795799`, SHA-256 digest
+  `4ccb56f742cbd55c8b3f139ec01612c23ed4db52d697a2b1630cc364fc32781b`.
+Research CI run `36566879451`: PASS.
+
+First-pass LaTeX warnings for citations/references occurred before BibTeX and
+subsequent LaTeX passes, then resolved during the converged build. They are not
+remaining unresolved citations/references.
 
 ## Retained limitations
 - Reformer/prereformer treatment remains a screening model, not catalyst
@@ -67,13 +74,8 @@ build.
   storage.
 
 ## Blockers
-No unresolved Review-3 BLOCKER or required MAJOR corrective action prevents
-using the model for Gate-5 experiments/results.
-
-Gate-6 acceptance is currently blocked only by external GitHub Actions queueing:
-the current canonical end-to-end manuscript workflow has not yet started. This
-is a verification/infrastructure blocker, not a scientific-model blocker. Do
-not mark Review-4 readiness until a current workflow run completes successfully.
+No unresolved scientific, manuscript-build or reproducibility blocker prevents
+Independent Review 4. Review 4 has NOT been conducted by Main Research.
 
 ## Gate-5 progress
 - Experiment 01: threshold failure topology — COMPLETE.
@@ -119,12 +121,9 @@ The experimental conclusion remains adverse/conditional:
 - Reproducibility script and CN4252 traceability appendix: ESTABLISHED.
 
 ## Next step
-Do not add new scientific scope merely while waiting for CI. The next acceptance
-action is to inspect the first current canonical paper workflow that executes:
-verify Rust tests, generated datasets, citation/reference integrity, LaTeX/PDF
-build and the uploaded manuscript artifact. If clean, update this file to state
-that the complete first manuscript is ready for Independent Review 4 and STOP;
-otherwise repair the concrete failure. Independent Review 4 must not begin here.
+STOP Main Research manuscript expansion. The complete first manuscript now
+satisfies the Review-4 trigger and is ready for Independent Review 4. Main
+Research must not conduct Review 4 itself.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
