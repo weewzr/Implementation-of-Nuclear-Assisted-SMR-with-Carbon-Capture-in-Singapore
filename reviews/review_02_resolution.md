@@ -314,46 +314,71 @@ R2-M04 is closed.
 
 ## R2-M05 — Downstream lifecycle/economic propagation
 
-**Final disposition: OPEN — DEPENDENT MAJOR FINDING.**
+**Final disposition: RESOLVED.**
 
-### Original scientific issue
-Lifecycle/economic conclusions inherited unresolved physical-model assumptions.
+### Scientific correction
+A new integrated reference screen regenerates the dependent lifecycle and
+economic boundary from the final corrected physical ledgers rather than the
+retired 0.737/162 MWth model.
 
-### Current scientific state
-The legacy 0.737 recycle fraction is explicitly retired from predictive use.
-The thermodynamic/purge-aware reference state now feeds a new lifecycle/NG
-displacement path, which is a necessary correction.
+Its dependency chain is explicit:
+1. `thermo_recycle_reference_case` supplies fresh-feed/recycle/purge state;
+2. `candidate_energy_ledger(650 C)` supplies the conservative high-side
+   nuclear process heat;
+3. `candidate_ccs_duty_ledger` supplies candidate CO2 compression and
+   tail-route compression loads;
+4. `candidate_helium_loop_ledger(650 C)` supplies the high-side circulator
+   parasitic;
+5. lifecycle intensity, annual abatement/S$100 budget and the representative
+   minimum-gas-value boundary are recomputed from those quantities.
 
-However, the earlier full-cost/economic screens were built on the retired
-reduced recycle fraction and representative 162 MWth duty. They have not been
-regenerated from a closed R2-B02 candidate energy ledger, candidate-specific CCS
-duties, and closed helium-loop parasitics. Those historical outputs are already
-labelled non-current in `STATUS.md`.
-
-No economics are regenerated during this reconciliation.
+The existing unit-price/CAPEX/T&S numbers remain scenario assumptions; this
+resolution does not validate those prices. It corrects the physical quantities
+fed into the existing economic screen.
 
 ### Code/equation location
-`model/src/lib.rs`: `thermo_recycle_reference_case`,
-`thermo_recycle_lifecycle_screen`, `thermo_reference_screen`;
-legacy reduced-model economic functions remain provenance only.
+`model/src/lib.rs`:
+- `CanonicalIntegratedScreen`;
+- `canonical_integrated_screen`;
+- upstream canonical B02/M01/M04 ledger functions.
+
+### Validation evidence
+Tests assert exact dependency equality between the integrated screen and each
+canonical physical ledger. Separate regression tests prove the current
+fresh-feed fraction is not the retired analytical 0.737 value and current
+nuclear heat is not the old 162 MWth assumption. Lifecycle and cost outputs are
+required to be finite, baseline CI must exceed candidate CI, and annual
+abatement/budget and NG displacement must remain positive.
+
+### CI/test evidence
+Commit `767c8b409f7aa17a03736273a3c4b001c1f50eec`.
+GitHub Actions run 36538114531: **PASS**.
 
 ### Acceptance-criterion status
 - legacy physical basis retired: **PASS**
 - lifecycle path accepts corrected physical state: **PASS**
-- independent predictive/system tests before integrated conclusions: **PASS for current physical solver**
-- downstream lifecycle/economic results regenerated from the final corrected
-  physical/energy/CCS/helium ledgers: **OPEN**
+- B02 candidate heat propagated: **PASS**
+- M01 candidate CCS electrical loads propagated: **PASS**
+- M04 full-loop circulator parasitic propagated: **PASS**
+- dependent lifecycle/economic screen regenerated and CI-verified: **PASS**
+
+R2-M05 is closed.
 
 ## Canonical Review-2 critical path
 
-1. **R2-M05** — regenerate dependent lifecycle/economic outputs from the
-   resolved B02/M01/M04 physical ledgers and verify their acceptance tests.
-
-R2-B01, R2-B03, R2-M02 and R2-M03 require no repeated work.
+All existing Review-2 BLOCKER and required MAJOR acceptance criteria are now
+satisfied for the declared screening-model scope. No additional Review-2
+scientific work is required before the next milestone.
 
 ## Reconciliation conclusion
 
-Independent Review 2 gate remains **OPEN**. All Review-2 physical BLOCKER
-findings and R2-M01/R2-M04 are resolved. Only dependent R2-M05 remains: final
-lifecycle/economic outputs must be regenerated from the corrected physical
-ledgers before Review 2 can close.
+Independent Review 2 gate: **CLOSED**.
+
+Closure is for the declared screening-model scope and preserves the documented
+limitations: ideal-gas equilibrium reformer chemistry rather than catalyst
+kinetics; bounded PSA recovery rather than a bed-resolved adsorption cycle;
+source-limited primary-reformer inlet reconstruction; bounded rather than
+detailed secondary-helium hydraulics; and economic unit prices/CAPEX/T&S as
+scenario assumptions rather than validated forecasts.
+
+No Gate-4 work is begun by this closure.
