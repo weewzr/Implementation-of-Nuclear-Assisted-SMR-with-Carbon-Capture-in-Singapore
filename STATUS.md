@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Resolve the remaining convective/steam heat services and secondary-helium temperature approach around the first source-backed high-temperature nuclear duty anchor.
+Quantify the secondary-helium/IHX feasibility window around the 96.04 MW radiant-duty anchor while resolving remaining convection/steam services.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -52,6 +52,17 @@ IEAGHG states that reformer syngas leaves at ~900-950 C and that ~75% of HP satu
 
 JAEA provides a close physical precedent: HTTR supplies 950 C primary helium through an IHX, with secondary helium serving a methane steam reformer, superheater and steam generator. JAEA documents a 10 MW nuclear-heat steam-reforming system design and an 880 C helium-inlet mock-up. The IEAGHG 96 MW radiant duty is therefore roughly an order of magnitude above that demonstration/design heat-transfer scale, not a direct commercial-reactor sizing result.
 
+## New helium-interface result
+JAEA provides a direct physical anchor for the proposed architecture: 950 C primary HTTR helium transfers heat through an IHX to a secondary loop; the HTTR steam-reforming system design supplies 10 MW nuclear heat, and the mock-up used 4 MPa helium at 880 C at the steam-reformer inlet.
+
+A generic screening model is now implemented:
+Q = m_dot_He cp_He (T_hot - T_cold),
+with explicit finite temperature-approach constraints across both IHX and reformer.
+
+Using the verified 96.04 MW IEAGHG radiant duty and a temporary screening assumption cp_He=5.2 kJ/kg-K, 880->650 C secondary helium requires about 80 kg/s. This is an assumption-based screening value, not a final design flow.
+
+The first CI run for these tests failed at compile time only because a Rust test function name began with a numeral; the identifier has been corrected and CI rerun is pending. No scientific assertion failed in that run.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -92,7 +103,7 @@ JAEA provides a close physical precedent: HTTR supplies 950 C primary helium thr
   remain.
 
 ## Next highest-priority task
-Recover/derive the remaining convective-section and steam-system duties, then formulate a secondary-helium heat-exchanger model with explicit approach temperatures and pressure/pumping assumptions. Acceptance criterion: a temperature-resolved service ledger that reproduces the 96.04 MW radiant benchmark and remains consistent with IEAGHG steam/power recovery before any reactor concept is sized.
+Constrain secondary-helium hot/cold temperatures and mass flow using JAEA/HTGR evidence and temperature-dependent helium properties, then add pressure-drop/pumping estimates. In parallel, recover remaining conventional convection/steam duties so the nuclear loop is sized to a complete service ledger rather than radiant duty alone.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
