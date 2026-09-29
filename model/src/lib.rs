@@ -3765,3 +3765,97 @@ mod conventional_validation_metric_tests {
         assert!(q.1>q.0 && q.0>0.0);
     }
 }
+
+
+/// Source-table reconstructed aggregate H2O addition between IEAGHG streams 4
+/// and 5 (second HP steam + BFW), kmol/h. This is a least-squares reconciliation
+/// of independent H and O residuals; it is not a separately published utility.
+pub const IEAGHG_INTERSTAGE_H2O_RECONCILED_KMOL_H:f64=154.4;
+
+/// Reduced primary-reformer inlet surrogate for the tube-side energy bound.
+/// Because the pre-reformer outlet is not numbered, carbon species are not
+/// invented here. Instead, the lower/upper radiant-duty calculation uses the
+/// source stream-5 product composition and independently reconstructed reaction
+/// enthalpy; this function supplies only the known additional water sensible
+/// enthalpy entering after stream 4.
+pub fn interstage_water_enthalpy_mw(temperature_c:f64)->f64 {
+    let t=temperature_c+273.15;
+    assert!(t>=500.0 && t<=1000.0);
+    IEAGHG_INTERSTAGE_H2O_RECONCILED_KMOL_H
+        *(hf298_kj_mol(NIST_H2O_500_1700)+NIST_H2O_500_1700.sensible_h_kj_mol(t))
+        /3600.0
+}
+
+/// Temperature-corrected net reaction duty from the source-reconstructed
+/// overall reforming extents. Reaction enthalpies are corrected from 298 K by
+/// species sensible enthalpies for CH4+H2O->CO+3H2 and CO+H2O->CO2+H2.
+pub fn smr_delta_h_kj_mol_at_t(t:f64)->f64 {
+    assert!(t>=500.0 && t<=1000.0);
+    DELTA_H_SMR_298_KJ_PER_MOL
+        +NIST_CO_298_1300.sensible_h_kj_mol(t)
+        +3.0*NIST_H2_298_1000.sensible_h_kj_mol(t)
+        -NIST_CH4_298_1300.sensible_h_kj_mol(t)
+        -NIST_H2O_500_1700.sensible_h_kj_mol(t)
+}
+pub fn wgs_delta_h_kj_mol_at_t(t:f64)->f64 {
+    assert!(t>=500.0 && t<=1000.0);
+    DELTA_H_WGS_298_KJ_PER_MOL
+        +NIST_CO2_298_1200.sensible_h_kj_mol(t)
+        +NIST_H2_298_1000.sensible_h_kj_mol(t)
+        -NIST_CO_298_1300.sensible_h_kj_mol(t)
+        -NIST_H2O_500_1700.sensible_h_kj_mol(t)
+}
+
+/// Overall source reaction-duty diagnostic evaluated at a representative
+/// reformer inlet temperature. This remains a bound because pre-reformer and
+/// primary-reformer extents are not separately published.
+pub fn source_temperature_corrected_reaction_duty_mw(reformer_inlet_c:f64)->f64 {
+    assert!(reformer_inlet_c>500.0 && reformer_inlet_c<=700.0);
+    let t=reformer_inlet_c+273.15;
+    let x=reduced_extents_from_psa_inlet();
+    (x.smr*smr_delta_h_kj_mol_at_t(t)+x.wgs*wgs_delta_h_kj_mol_at_t(t))/3600.0
+}
+
+/// Independent radiant-duty reconstruction envelope:
+/// temperature-corrected reaction duty plus sensible heating of the published
+/// reformer-product composition from an admissible 600-700 C inlet surrogate
+/// to the source 900-950 C outlet. This deliberately avoids using the published
+/// 96 MW radiant duty in the calculation.
+pub fn independent_radiant_duty_envelope_mw()->(f64,f64) {
+    let product=ieaghg_hts_inlet();
+    let calc=|tin_c:f64,tout_c:f64| {
+        let rxn=source_temperature_corrected_reaction_duty_mw(tin_c);
+        let sens=major_stream_enthalpy_mw(product,tout_c+273.15)
+            -major_stream_enthalpy_mw(product,tin_c+273.15);
+        rxn+sens
+    };
+    let lo=calc(700.0,900.0);
+    let hi=calc(600.0,950.0);
+    (lo.min(hi),lo.max(hi))
+}
+
+pub fn independent_radiant_benchmark_relative_error_bounds()->(f64,f64) {
+    let (lo,hi)=independent_radiant_duty_envelope_mw();
+    let q=ieaghg_reformer_radiant_duty_mw();
+    ((lo-q)/q,(hi-q)/q)
+}
+
+#[cfg(test)]
+mod independent_radiant_validation_tests {
+    use super::*;
+    #[test]
+    fn temperature_corrected_smr_remains_endothermic() {
+        assert!(smr_delta_h_kj_mol_at_t(900.0)>0.0);
+    }
+    #[test]
+    fn independent_radiant_envelope_is_ordered_and_positive() {
+        let (lo,hi)=independent_radiant_duty_envelope_mw();
+        assert!(lo>0.0 && hi>lo);
+    }
+    #[test]
+    fn authoritative_radiant_benchmark_is_not_orders_outside_reconstruction() {
+        let (lo,hi)=independent_radiant_duty_envelope_mw();
+        let q=ieaghg_reformer_radiant_duty_mw();
+        assert!(q>0.5*lo && q<2.0*hi);
+    }
+}
