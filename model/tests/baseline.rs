@@ -1085,3 +1085,24 @@ fn maximum_nuclear_heat_price_falls_as_ccs_cost_rises() {
     assert!(low>10.0 && low<20.0);
     assert!(high>5.0 && high<15.0);
 }
+
+
+#[test]
+fn iaea_htgr_source_costs_are_large_relative_to_current_hydrogen_headroom() {
+    use nuclear_assisted_smr::{
+        source_reactor_annual_cost_allocated_by_heat,
+        reactor_cost_multiplier_headroom,
+    };
+    // IAEA TECDOC 2075 source cases, million USD basis.
+    // HTGR-200+SMR: 4x200 MWth, NPP CAPEX 2065, O&M 192/y.
+    let htgr200=source_reactor_annual_cost_allocated_by_heat(
+        2065.0,192.0,800.0,162.0,0.08,25);
+    // MHR-T+SMR: 4x600 MWth, NPP CAPEX 2748, O&M 324/y.
+    let mhrt=source_reactor_annual_cost_allocated_by_heat(
+        2748.0,324.0,2400.0,162.0,0.08,25);
+    assert!(htgr200>70.0 && htgr200<90.0, "HTGR200 allocated MUSD/y {htgr200}");
+    assert!(mhrt>35.0 && mhrt<45.0, "MHR-T allocated MUSD/y {mhrt}");
+    // Example hydrogen-side headroom of 20 MUSD/y cannot carry either source case.
+    assert!(reactor_cost_multiplier_headroom(20.0,htgr200)<0.3);
+    assert!(reactor_cost_multiplier_headroom(20.0,mhrt)<0.6);
+}
