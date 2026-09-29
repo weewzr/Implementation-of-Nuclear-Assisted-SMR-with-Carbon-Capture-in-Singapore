@@ -1,4 +1,33 @@
 \section{Sensitivity, uncertainty and falsification}
+
+\subsection{Canonical 64-case domain and forward-cost inputs}
+The coupled design is the Cartesian product of the six binary dimensions in Table~\ref{tab:domain}. The carbon/energy-price and heat/fixed-cost dimensions are deliberately paired corners, not four independently crossed variables; hence the design contains exactly $2^6=64$ cases. Values labelled as project scenarios are not Singapore forecasts.
+
+\begin{table}[htbp]
+\centering
+\caption{Canonical binary dimensions defining the 64-case Gate-5 design. Semicolon-separated entries within a paired corner move together.}
+\label{tab:domain}
+\scriptsize
+\pgfplotstabletypeset[
+ col sep=comma,string type,
+ columns={parameter,low,high,unit,class,provenance},
+ columns/parameter/.style={column name={Parameter},column type={p{0.16\linewidth}}},
+ columns/low/.style={column name={Low/reference},column type={p{0.13\linewidth}}},
+ columns/high/.style={column name={High/alternative},column type={p{0.13\linewidth}}},
+ columns/unit/.style={column name={Units},column type={p{0.17\linewidth}}},
+ columns/class/.style={column name={Class},column type={p{0.15\linewidth}}},
+ columns/provenance/.style={column name={Provenance},column type={p{0.19\linewidth}}},
+ every head row/.style={before row=\toprule,after row=\midrule},
+ every last row/.style={after row=\bottomrule}
+]{../results/generated/gate6_domain_table.csv}
+\end{table}
+
+For each design point, baseline annual cost is unabated conventional-SMR natural-gas energy at the same 8322 h/y basis. Candidate annual cost is fresh-feed natural gas plus high-side nuclear process heat plus CCS/tail-compression/helium-circulator electricity plus the paired bundled fixed annual allowance. Thus
+\begin{equation}
+C_{\rm cand}=C_{\rm NG,fresh}+C_{\rm nuclear\ heat}+C_{\rm aux\ electricity}+C_{\rm fixed},
+\end{equation}
+followed by Eq.~\eqref{eq:abatement-cost}. The Gate-5 grid does not add a separate CCS transport/storage cash charge: the S\$80--120 million/y term is an explicit bundled project screening allowance. Natural-gas prices S\$15--20/GJ and the fixed-cost range are author-declared scenario assumptions; electricity S\$150--200/MWh is a screening range consistent with 2025 Singapore wholesale prices~\cite{emaenergyprices}; the S\$5.69/GJ lower nuclear-heat anchor is a project conversion of JAEA's 0.7 JPY/MJ HTGR heat-cost assumption~\cite{jaea2014economics}, while S\$8/GJ is an author-declared adverse sensitivity.
+
 The 64-case design maps joint threshold behaviour rather than varying parameters until a favourable point appears. Cases are partitioned into abatement-only failure, cost-only failure, both-threshold failure and joint pass. Local driver contrasts quantify the effect of reformer temperature, reformer pressure, PSA recovery, capture fraction, carbon/electricity conditions and heat/fixed-cost assumptions on both annual abatement and S\$/t.
 
 Table~\ref{tab:binding-counts} is populated directly from the generated binding-count CSV. It is a compact statement of the threshold-failure topology and provides an independent manuscript-level reconciliation to the 64-case design and Eq.~\eqref{eq:joint-pass}.
@@ -15,6 +44,32 @@ Table~\ref{tab:binding-counts} is populated directly from the generated binding-
   every head row/.style={before row=\toprule,after row=\midrule},
   every last row/.style={after row=\bottomrule}
 ]{../results/generated/gate5_binding_counts.csv}
+\end{table}
+
+
+\subsection{Magnitude of threshold failure}
+Table~\ref{tab:threshold-magnitude} exposes the deterministic reference, conservative, best-abatement, best-finite-cost and closest-joint cases. The latter three are selected algorithmically from all 64 cases, not cherry-picked. An infinite cost denotes non-positive lifecycle abatement and therefore no finite abatement-cost denominator.
+
+\begin{table}[htbp]
+\centering
+\caption{Magnitude and direction of CN4252 threshold failure. Generated directly from canonical R3/Gate-5 diagnostics.}
+\label{tab:threshold-magnitude}
+\scriptsize
+\pgfplotstabletypeset[
+ col sep=comma,string type,
+ columns={case,reformer_c,pressure_bar,psa_recovery,capture_fraction,annual_avoided_t,cost_sgd_t,abatement_status,cost_status},
+ columns/case/.style={column name={Case}},
+ columns/reformer_c/.style={column name={$T$ / C}},
+ columns/pressure_bar/.style={column name={$P$ / bar}},
+ columns/psa_recovery/.style={column name={PSA}},
+ columns/capture_fraction/.style={column name={Capture}},
+ columns/annual_avoided_t/.style={column name={Avoided t/y}},
+ columns/cost_sgd_t/.style={column name={S\$/t}},
+ columns/abatement_status/.style={column name={A}},
+ columns/cost_status/.style={column name={C}},
+ every head row/.style={before row=\toprule,after row=\midrule},
+ every last row/.style={after row=\bottomrule}
+]{../results/generated/gate6_threshold_magnitude.csv}
 \end{table}
 
 The uncertainty study therefore serves two purposes: it identifies binding constraints and actively attempts to falsify the nuclear hypothesis. The absence of a joint passing point in the declared design is retained as a scientific finding rather than treated as a numerical failure.
