@@ -48,7 +48,7 @@ reproduce an authoritative reference energy/duty metric within a declared
 tolerance before nuclear heat substitution.
 
 ### B3 — PSA-tail-gas disposition unresolved when fired reformer is removed
-**Disposition: RESOLUTION IMPLEMENTED — CI verification pending.**
+**Disposition: PARTIALLY RESOLVED — carbon ledger verified by CI; inert/purge closure remains.**
 
 The furnace-free candidate now has an explicit reduced-CHO disposition rather
 than deleting the conventional PSA tail gas. Existing tail CO2 is routed to the
@@ -65,7 +65,7 @@ sized. B3 will be marked fully resolved only after the strengthened
 reformer/shift/recycle model retains or explicitly bounds that purge requirement.
 
 Evidence: `model/src/lib.rs`, commit `8b5c40c25afd56a78f5c680dd99cd3e406e74108`
-plus compile fix `27add5ade930a60a7444c63f38f63fefb9b3ab22`.
+plus compile fix `27add5ade930a60a7444c63f38f63fefb9b3ab22`; Rust CI run 36524925119 passed.
 
 ### B4 — Capture topology cannot be fixed before carbon architecture closes
 **Disposition: ACCEPTED — OPEN BLOCKER, dependent on B3.**
