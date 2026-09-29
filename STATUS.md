@@ -49,6 +49,21 @@ At NG=S$15/GJ, maximum compatible CCS T&S is only ~S$33.21m/y; at S$20/GJ it ris
 
 These are screening results, not a bankable cost estimate. The largest remaining scientific weakness is no longer recycle arithmetic; it is validation of the reduced recycle/reformer/PSA surrogate and the assumed 162 MWth integrated heat requirement under the changed recycle composition.
 
+## Recycle-adjusted HTGR heat-service bound
+The prior 162 MWth economic midpoint is no longer treated as a validated point duty. A literature cross-check confirms that JAEA's HTTR steam-reforming system distributes secondary-helium heat across the steam reformer, superheater and steam generator, and current JAEA work treats the coupled plant as a dynamic thermal-hydraulic system rather than a simple fresh-feed-scaled heater.
+
+A new CI-verified bound therefore makes only the correction supported by the present reduced model:
+- fresh-feed methane reaction heat removed according to the converged 26.3% fresh-NG displacement;
+- recycled CO/CH4 reaction heat added from the fixed-point converted flow;
+- the existing source-bounded MDEA incremental-heat interval retained;
+- source-anchored furnace services are NOT multiplied wholesale by the 0.737 fresh-feed fraction.
+
+At the 625 C reformer-inlet sensitivity, the resulting controlled envelope remains in approximately the mid-140s to high-170s MWth range. CI confirms the reaction-heat correction is a net saving (broadly -20 to -5 MW) and the final bounded service remains >140 MW and <200 MW.
+
+This result is intentionally conservative in interpretation: recycle sensible heating, changed steam generation, pressure drop/compression, and altered syngas heat recovery are not yet closed. Therefore 162 MWth remains usable only as a representative midpoint inside the current bounded range, not as a solved integrated duty.
+
+Commits `21185e05294de8c869ebcdb6ebfb5b54c8230279` and `40bcb9db43fb7e86890c1e4ddb5e47b4f83c0cec` implement and regression-lock this bound.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
