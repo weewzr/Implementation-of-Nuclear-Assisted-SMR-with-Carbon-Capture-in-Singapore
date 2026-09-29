@@ -18,3 +18,30 @@ Table~\ref{tab:binding-counts} is populated directly from the generated binding-
 \end{table}
 
 The uncertainty study therefore serves two purposes: it identifies binding constraints and actively attempts to falsify the nuclear hypothesis. The absence of a joint passing point in the declared design is retained as a scientific finding rather than treated as a numerical failure.
+
+Figure~\ref{fig:driver-effects} reports the six local one-factor driver contrasts relative to the same favourable anchor used by Gate-5 Experiment 02. The effects are normalized by the corresponding CN4252 threshold: \(\Delta A/(250{,}000~\mathrm{tCO_2e/y})\) for annual abatement and \(\Delta C/(100~\mathrm{S\$/tCO_2e})\) for cost. These quantities are sensitivity contrasts, not global causal coefficients; coupled behaviour remains represented by the 64-case design.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  width=0.96\linewidth,
+  height=0.58\linewidth,
+  ylabel={Normalized threshold effect},
+  symbolic x coords={reformer_temperature,reformer_pressure,psa_recovery,capture_fraction,gas_aux_carbon_price,heat_fixed_cost},
+  xtick=data,
+  x tick label style={rotate=35,anchor=east,font=\scriptsize},
+  legend style={at={(0.5,1.02)},anchor=south,legend columns=2},
+  grid=major,
+  bar width=5pt
+]
+\addplot table[col sep=comma,x=driver,y=normalized_abatement_effect] {../results/generated/gate5_driver_effects.csv};
+\addlegendentry{Abatement effect}
+\addplot table[col sep=comma,x=driver,y=normalized_cost_effect] {../results/generated/gate5_driver_effects.csv};
+\addlegendentry{Cost effect}
+\end{axis}
+\end{tikzpicture}
+\caption{Local Gate-5 driver contrasts normalized to the two CN4252 thresholds. Positive cost effect worsens the cost metric; negative abatement effect worsens the annual-abatement metric. The plotted CSV is regenerated directly from the verified Rust model during the manuscript build.}
+\label{fig:driver-effects}
+\end{figure}
