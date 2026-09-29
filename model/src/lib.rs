@@ -2249,3 +2249,146 @@ pub fn annual_lifecycle_abatement_and_budget(
     let avoided_t_y=delta*h2_kg_per_h*hours_per_year/1000.0;
     (avoided_t_y/1.0e6,avoided_t_y*target_currency_per_tco2e)
 }
+
+
+/// Converged fixed-H2 recycle closure for the reduced PSA-tail model.
+///
+/// This is a deliberately transparent surrogate, not an equilibrium simulator.
+/// The once-through IEAGHG product and tail yields are scaled with fresh-NG feed.
+/// After tail CO2 removal, H2/CO/CH4 are recycled. CO and CH4 conversions create
+/// H2 according to CO+H2O->CO2+H2 and CH4+2H2O->CO2+4H2; converted carbon is
+/// assumed removed as CO2 before the next PSA. PSA recovery is held at the
+/// source-reconstructed value. Fresh NG is adjusted each iteration to keep the
+/// IEAGHG H2 product fixed. The regenerated tail is then iterated to a fixed point.
+///
+/// The closure is useful for replacing the previous single-pass "80%" shortcut,
+/// but its fixed conversion/recovery coefficients remain assumptions that require
+/// later validation against a rigorous reformer/shift/PSA flowsheet.
+#[derive(Debug,Clone,Copy)]
+pub struct IterativeTailRecycleResult {
+    pub iterations:u32,
+    pub converged:bool,
+    pub fresh_ng_kmol_h:f64,
+    pub fresh_ng_fraction_of_baseline:f64,
+    pub fresh_feed_energy_mw:f64,
+    pub tail_h2_kmol_h:f64,
+    pub tail_co_kmol_h:f64,
+    pub tail_ch4_kmol_h:f64,
+    pub captured_co2_kmol_h:f64,
+    pub recycled_carbon_kmol_h:f64,
+    pub extra_water_consumed_kmol_h:f64,
+}
+
+pub fn iterative_tail_recycle_fixed_h2(
+    co_conversion:f64,
+    ch4_conversion:f64,
+    recycle_h2_recovery:f64,
+    tolerance:f64,
+    max_iterations:u32,
+)->IterativeTailRecycleResult {
+    for x in [co_conversion,ch4_conversion,recycle_h2_recovery] {
+        assert!((0.0..=1.0).contains(&x));
+    }
+    assert!(tolerance>0.0 && max_iterations>0);
+
+    let base_tail=ieaghg_tail_inventory();
+    let base_product=ieaghg_reconstructed_h2_product_kmol_per_h();
+    let product_per_fresh_ng=base_product/1455.8;
+    let psa_recovery=ieaghg_reconstructed_psa_h2_recovery();
+
+    let mut tail=base_tail;
+    let mut fresh_ng=1455.8;
+    let mut captured_co2=0.0;
+    let mut water=0.0;
+
+    for iteration in 1..=max_iterations {
+        let recycled_h2_product=recycle_h2_recovery*tail.h2_kmol_h;
+        let converted_h2=psa_recovery*(
+            co_conversion*tail.co_kmol_h
+            +4.0*ch4_conversion*tail.ch4_kmol_h
+        );
+        fresh_ng=((base_product-recycled_h2_product-converted_h2)
+            /product_per_fresh_ng).clamp(0.0,1455.8);
+        let scale=fresh_ng/1455.8;
+
+        let generated_h2=
+            co_conversion*tail.co_kmol_h+4.0*ch4_conversion*tail.ch4_kmol_h;
+        let next=TailGasInventory {
+            h2_kmol_h:base_tail.h2_kmol_h*scale
+                +(1.0-recycle_h2_recovery)*tail.h2_kmol_h
+                +(1.0-psa_recovery)*generated_h2,
+            co_kmol_h:base_tail.co_kmol_h*scale
+                +(1.0-co_conversion)*tail.co_kmol_h,
+            ch4_kmol_h:base_tail.ch4_kmol_h*scale
+                +(1.0-ch4_conversion)*tail.ch4_kmol_h,
+            co2_kmol_h:0.0,
+        };
+        captured_co2=base_tail.co2_kmol_h*scale
+            +co_conversion*tail.co_kmol_h
+            +ch4_conversion*tail.ch4_kmol_h;
+        water=co_conversion*tail.co_kmol_h
+            +2.0*ch4_conversion*tail.ch4_kmol_h;
+
+        let err=(next.h2_kmol_h-tail.h2_kmol_h).abs()
+            .max((next.co_kmol_h-tail.co_kmol_h).abs())
+            .max((next.ch4_kmol_h-tail.ch4_kmol_h).abs());
+        tail=next;
+        if err<tolerance {
+            let frac=fresh_ng/1455.8;
+            return IterativeTailRecycleResult {
+                iterations:iteration,converged:true,
+                fresh_ng_kmol_h:fresh_ng,
+                fresh_ng_fraction_of_baseline:frac,
+                fresh_feed_energy_mw:ieaghg_feed_lhv_mw()*frac,
+                tail_h2_kmol_h:tail.h2_kmol_h,
+                tail_co_kmol_h:tail.co_kmol_h,
+                tail_ch4_kmol_h:tail.ch4_kmol_h,
+                captured_co2_kmol_h:captured_co2,
+                recycled_carbon_kmol_h:tail.co_kmol_h+tail.ch4_kmol_h,
+                extra_water_consumed_kmol_h:water,
+            };
+        }
+    }
+    let frac=fresh_ng/1455.8;
+    IterativeTailRecycleResult {
+        iterations:max_iterations,converged:false,
+        fresh_ng_kmol_h:fresh_ng,
+        fresh_ng_fraction_of_baseline:frac,
+        fresh_feed_energy_mw:ieaghg_feed_lhv_mw()*frac,
+        tail_h2_kmol_h:tail.h2_kmol_h,
+        tail_co_kmol_h:tail.co_kmol_h,
+        tail_ch4_kmol_h:tail.ch4_kmol_h,
+        captured_co2_kmol_h:captured_co2,
+        recycled_carbon_kmol_h:tail.co_kmol_h+tail.ch4_kmol_h,
+        extra_water_consumed_kmol_h:water,
+    }
+}
+
+#[cfg(test)]
+mod iterative_recycle_tests {
+    use super::*;
+
+    #[test]
+    fn fixed_h2_recycle_converges_and_reduces_fresh_ng() {
+        let r=iterative_tail_recycle_fixed_h2(0.80,0.80,0.80,1.0e-8,10_000);
+        assert!(r.converged);
+        assert!(r.iterations<10_000);
+        assert!(r.fresh_ng_kmol_h>0.0 && r.fresh_ng_kmol_h<1455.8);
+        assert!(r.fresh_feed_energy_mw>0.0 && r.fresh_feed_energy_mw<ieaghg_feed_lhv_mw());
+    }
+
+    #[test]
+    fn zero_recycle_returns_once_through_fresh_feed() {
+        let r=iterative_tail_recycle_fixed_h2(0.0,0.0,0.0,1.0e-8,100);
+        assert!(r.converged);
+        assert!((r.fresh_ng_kmol_h-1455.8).abs()<1.0e-6);
+    }
+
+    #[test]
+    fn stronger_conversion_does_not_increase_fresh_ng() {
+        let a=iterative_tail_recycle_fixed_h2(0.50,0.50,0.50,1.0e-8,10_000);
+        let b=iterative_tail_recycle_fixed_h2(0.80,0.80,0.80,1.0e-8,10_000);
+        assert!(a.converged && b.converged);
+        assert!(b.fresh_ng_kmol_h<=a.fresh_ng_kmol_h);
+    }
+}
