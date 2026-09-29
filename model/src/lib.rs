@@ -774,3 +774,48 @@ pub fn quantified_furnace_replacement_service_bounds_mw() -> (f64, f64) {
     let (lo,hi)=ieaghg_hp_steam_superheat_duty_bounds_mw();
     (ieaghg_reformer_radiant_duty_mw()+lo, ieaghg_reformer_radiant_duty_mw()+hi)
 }
+
+
+#[derive(Debug, Clone, Copy)]
+pub struct Shomate {
+    pub a: f64, pub b: f64, pub c: f64, pub d: f64,
+    pub e: f64, pub f: f64, pub g: f64, pub h: f64,
+}
+
+impl Shomate {
+    /// NIST Shomate H(T)-H(298.15 K), kJ/mol, with t=T/1000.
+    pub fn sensible_h_kj_mol(self, temperature_k: f64) -> f64 {
+        let t=temperature_k/1000.0;
+        self.a*t + self.b*t*t/2.0 + self.c*t*t*t/3.0
+            + self.d*t*t*t*t/4.0 - self.e/t + self.f - self.h
+    }
+    pub fn delta_h_kj_mol(self, t1_k: f64, t2_k: f64) -> f64 {
+        self.sensible_h_kj_mol(t2_k)-self.sensible_h_kj_mol(t1_k)
+    }
+}
+
+/// NIST Chemistry WebBook methane, 298-1300 K, Chase 1998.
+pub const NIST_CH4_298_1300: Shomate = Shomate {
+    a:-0.703029,b:108.4773,c:-42.52157,d:5.862788,
+    e:0.678565,f:-76.84376,g:158.7163,h:-74.87310,
+};
+
+/// Rigorous partial lower bound on the fired-convection feed-preheater duty:
+/// only the CH4 portion of the published NG feedstock is counted, heated from
+/// 135 C to 370 C. All other NG species and recycled H2 have positive sensible
+/// duty and are deliberately omitted, so this is not a full coil duty.
+pub fn feed_preheater_ch4_only_lower_bound_mw() -> f64 {
+    let ch4_kmol_h=1455.8*0.89;
+    let dh=NIST_CH4_298_1300.delta_h_kj_mol(135.0+273.15,370.0+273.15);
+    // kmol/h * kJ/mol = MJ/h; /3600 = MW.
+    ch4_kmol_h*dh/3600.0
+}
+
+/// Current source-backed furnace-service lower bound:
+/// radiant + HP steam superheat + methane-only portion of feed preheat.
+/// It remains deliberately incomplete.
+pub fn current_furnace_service_lower_bound_mw() -> (f64,f64) {
+    let (lo,hi)=quantified_furnace_replacement_service_bounds_mw();
+    let q_feed_min=feed_preheater_ch4_only_lower_bound_mw();
+    (lo+q_feed_min,hi+q_feed_min)
+}
