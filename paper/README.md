@@ -1,25 +1,29 @@
-# Paper and reproducibility
+# Canonical paper
 
-The canonical manuscript is `paper/main.tex`. The PDF is generated and must
-not be edited independently.
+`paper/main.tex` is the single canonical manuscript source.
 
-## Full reproduction
+## Build
+
+From repository root:
 
 ```bash
-sh scripts/reproduce.sh
+sh paper/build.sh
 ```
 
-This runs the Rust test suite, regenerates Gate-5 result data, and compiles the
-LaTeX manuscript with `latexmk`.
+The script first regenerates Gate-5 result data from the verified Rust model, then builds `paper/main.pdf` with `latexmk`.
+
+Requirements:
+- stable Rust/Cargo;
+- a LaTeX distribution providing `latexmk`, `pdflatex`, `natbib`, `siunitx`, `booktabs`, `microtype` and standard AMS packages.
+
+The PDF is generated and must not be edited independently.
 
 ## Scientific provenance
 
-- computational source: `model/src/lib.rs`;
-- generated result contract: `results/GATE5_RESULTS.md`;
-- Gate-5 closure: `results/gate5_closure.md`;
-- literature matrix: `literature/RESEARCH_MATRIX.md`;
-- manuscript: `paper/`.
+- computation: `model/src/lib.rs`;
+- Gate-5 data generation: `model/scripts/generate_gate5_results.sh`;
+- result contract: `results/GATE5_RESULTS.md`;
+- bibliography: `paper/references.bib`;
+- manuscript: `paper/main.tex` + `paper/sections/*.tex`.
 
-The manuscript must preserve the verified adverse result: zero joint passes in
-the declared 64-case nuclear-assisted domain. A successful paper build is not
-permission to change the model or expand the domain to seek a favourable result.
+The historical `manuscript/` skeleton is superseded and is not a competing manuscript.
