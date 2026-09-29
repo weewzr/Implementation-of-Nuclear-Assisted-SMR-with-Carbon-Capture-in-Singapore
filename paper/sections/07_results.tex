@@ -41,3 +41,36 @@ Figure~\ref{fig:threshold-map} is generated directly from the canonical Rust-pro
 \end{figure}
 
 The result is not interpreted as proof that every conceivable nuclear-assisted configuration fails. It is a verified experimental result for the declared evidence-backed domain. Canonical figure/table data are generated directly from Rust under \texttt{results/generated/}.
+
+\subsection{Lifecycle-emissions decomposition}
+The reference screening case uses the declared R3 lifecycle corner (upstream natural gas \(11.5~\mathrm{gCO_2e/MJ}\), nuclear electricity-LCA proxy input \(5.5~\mathrm{gCO_2e/kWh_e}\), low-carbon auxiliary electricity \(5.5~\mathrm{gCO_2e/kWh}\), and a CCS-transport burden equal to \(2.5\%\) of captured CO$_2$). These are screening inputs, not Singapore measurements. The nuclear-heat term is especially limited: it converts an electricity lifecycle factor to a thermal-service allocation proxy using the declared reactor efficiency, so it is a bounded estimate rather than a published process-heat LCA.
+
+Figure~\ref{fig:lifecycle-decomposition} shows the resulting component contributions. The plotted total is required by Rust regression tests to equal the sum of residual direct carbon, upstream natural gas, nuclear-heat proxy, auxiliary electricity and CCS-transport contributions.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  width=0.94\linewidth,
+  height=0.56\linewidth,
+  ylabel={kgCO$_2$e/kgH$_2$},
+  symbolic x coords={Residual direct carbon,Upstream natural gas,Nuclear heat allocation proxy,Auxiliary electricity,CCS transport chain},
+  xtick=data,
+  x tick label style={rotate=32,anchor=east,font=\scriptsize},
+  grid=major,
+  ymin=0
+]
+\addplot table[
+  col sep=comma,
+  x=component,
+  y=kgco2e_per_kgh2,
+  restrict expr to domain={\coordindex}{0:4}
+] {../results/generated/gate6_lifecycle_decomposition.csv};
+\end{axis}
+\end{tikzpicture}
+\caption{Reference-case lifecycle-emissions decomposition for the nuclear-assisted screening configuration. Components are generated directly from the canonical R3 lifecycle ledger. The nuclear-heat contribution is an allocation proxy and must not be interpreted as a measured or source-published process-heat lifecycle intensity.}
+\label{fig:lifecycle-decomposition}
+\end{figure}
+
+This decomposition explains why high stack-capture performance alone cannot establish lifecycle compliance: residual plant carbon is only one term in the candidate intensity. Upstream gas supply, energy-related burdens and the CCS chain remain inside the declared lifecycle boundary.
