@@ -759,3 +759,17 @@ fn each_unit_of_ts_tariff_moves_case1a_cac_by_captured_per_avoided_ratio() {
     let b=case1a_cac_with_replacement_ts(40.0,51.0);
     close(b-a,r,1e-12);
 }
+
+
+#[test]
+fn case1a_singapore_screen_exceeds_assignment_threshold_under_group_a_inputs() {
+    use nuclear_assisted_smr::{
+        case1a_non_ts_cac_sgd_screen,case1a_singapore_cac_sgd_screen,
+    };
+    let non_ts=case1a_non_ts_cac_sgd_screen(576.1,812.8,1.5105);
+    assert!(non_ts>77.0 && non_ts<79.0);
+    let low=case1a_singapore_cac_sgd_screen(non_ts,50.0*1.2863);
+    let high=case1a_singapore_cac_sgd_screen(non_ts,75.0*1.2863);
+    assert!(low>145.0 && low<147.0);
+    assert!(high>179.0 && high<181.0);
+}
