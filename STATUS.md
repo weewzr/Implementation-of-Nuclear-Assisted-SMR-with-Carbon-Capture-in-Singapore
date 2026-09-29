@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Add lifecycle terms to the now-matched direct-heat/eSMR emissions boundary, beginning with Singapore-relevant upstream natural-gas uncertainty and a defensible nuclear-process-heat allocation.
+Propagate the new Singapore-oriented upstream-gas, nuclear-LCA and CCS-transport sensitivities into kgCO2e/kgH2 and the CN4252 >0.25 MtCO2e/y scaling test.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -158,6 +158,17 @@ This makes an important interpretation explicit: Ahn & Lee's 2026 h-SMR/eSMR GWP
 
 DOE 45VH2-GREET confirms a well-to-gate methodology including feedstock extraction/delivery, electricity, facility emissions, CO2 capture/delivery and potential storage leakage. IEA reports 10-12 kgCO2e/kgH2 for unabated NG hydrogen and warns upstream/midstream emissions remain material after CCS. UNECE provides a 5.1-6.4 gCO2e/kWh nuclear-electric lifecycle range, but a defensible allocation to direct nuclear process heat remains unresolved.
 
+## Singapore-oriented lifecycle layer established
+EMA reports 11 Mtoe of natural-gas imports in 2024, including 6 Mtoe LNG (~55% on that energy basis), so Singapore cannot be represented honestly by a single LNG-only or pipeline-only upstream factor.
+
+IEA's latest global anchors are ~11.5 gCO2e/MJ for extraction/processing/transport of gas overall and 18.6 gCO2e/MJ for delivered LNG production-to-regasification in 2025, with large geographic uncertainty. On the IEAGHG feedstock basis (1219.7 GJ/h NG for 8994 kgH2/h), these correspond to ~1.56 and ~2.52 kgCO2e/kgH2 upstream, respectively. These are sensitivity anchors, not Singapore route-specific measurements.
+
+UNECE's nuclear-electricity LCA range is 5.1-6.4 gCO2e/kWh. A direct-heat allocation proxy has been defined from the electric factor times net electric efficiency; at 5.5 g/kWh_e and 50.4% this is ~2.77 g/kWh_th. Under a 140 MW service example, nuclear lifecycle contributions are only order ~0.04 kgCO2e/kgH2 direct and ~0.10 kgCO2e/kgH2 electric, much smaller than upstream gas uncertainty.
+
+Singapore lacks domestic geological storage and is pursuing cross-border CCS with Indonesia/Malaysia. No storage site is assumed. IEAGHG ship-transport emissions are therefore used only as an explicit transport-fraction sensitivity until a route is selected.
+
+The emerging falsification hypothesis is that lifecycle performance may be limited more by imported-gas emissions than by direct-vs-electric nuclear heat architecture.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -198,4 +209,4 @@ DOE 45VH2-GREET confirms a well-to-gate methodology including feedstock extracti
   remain.
 
 ## Next highest-priority task
-Build the lifecycle layer without importing US defaults as Singapore facts: establish an upstream-NG emissions sensitivity appropriate to Singapore's imported gas supply, define CO2 transport/storage terms, and derive a defensible lifecycle allocation for direct nuclear heat versus nuclear electricity. Then calculate kgCO2e/kgH2 and CN4252 annual-abatement scale for the matched cases.
+Compute matched lifecycle-intensity envelopes for direct heat and eSMR across capture fraction, upstream-gas intensity, CCS transport fraction and nuclear-LCA assumptions. Then translate each case into required ktH2/y to exceed 0.25 MtCO2e/y relative to a clearly declared unabated-SMR lifecycle baseline. This will be the first assignment-level emissions-scale falsification test.
