@@ -1,7 +1,7 @@
 \section{Sensitivity, uncertainty and falsification}
 
 \subsection{Canonical 64-case domain and forward-cost inputs}
-The coupled design is the Cartesian product of the six binary dimensions in Table~\ref{tab:domain}. The carbon/energy-price and heat/fixed-cost dimensions are deliberately paired corners, not four independently crossed variables; hence the design contains exactly $2^6=64$ cases. Values labelled as project scenarios are not Singapore forecasts.
+The coupled design is the Cartesian product of the six binary dimensions in Table~\ref{tab:domain}. The carbon/energy-price and heat/fixed-cost dimensions are deliberately paired corners, not four independently crossed variables; hence the design contains exactly $2^6=64$ cases. Values labelled as project scenarios are not Singapore forecasts. In the carbon-energy tuple, entries are upstream gCO$_2$e/MJ; auxiliary gCO$_2$e/kWh; gas S\$/GJ; electricity S\$/MWh. In the heat-fixed tuple, entries are nuclear-heat S\$/GJ and bundled fixed million S\$/y. The lifecycle anchors are supported by IEA, UNECE and EMA~\cite{iea2026lng,unece2022lca,emagrid2024}; economic provenance is stated below.
 
 \begin{table}[htbp]
 \centering
@@ -10,13 +10,12 @@ The coupled design is the Cartesian product of the six binary dimensions in Tabl
 \scriptsize
 \pgfplotstabletypeset[
  col sep=comma,string type,
- columns={parameter,low,high,unit,class,provenance},
- columns/parameter/.style={column name={Parameter},column type={p{0.16\linewidth}}},
- columns/low/.style={column name={Low/reference},column type={p{0.13\linewidth}}},
- columns/high/.style={column name={High/alternative},column type={p{0.13\linewidth}}},
- columns/unit/.style={column name={Units},column type={p{0.17\linewidth}}},
- columns/class/.style={column name={Class},column type={p{0.15\linewidth}}},
- columns/provenance/.style={column name={Provenance},column type={p{0.19\linewidth}}},
+ columns={parameter,low,high,unit,basis},
+ columns/parameter/.style={column name={Parameter},column type={p{0.20\linewidth}}},
+ columns/low/.style={column name={Low/reference},column type={p{0.15\linewidth}}},
+ columns/high/.style={column name={High/alternative},column type={p{0.15\linewidth}}},
+ columns/unit/.style={column name={Units},column type={p{0.12\linewidth}}},
+ columns/basis/.style={column name={Classification / provenance},column type={p{0.30\linewidth}}},
  every head row/.style={before row=\toprule,after row=\midrule},
  every last row/.style={after row=\bottomrule}
 ]{../results/generated/gate6_domain_table.csv}
