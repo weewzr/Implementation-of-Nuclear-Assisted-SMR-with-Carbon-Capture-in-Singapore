@@ -109,8 +109,8 @@ pub fn deployment_cost_breakdown_csv()->String {
 }
 
 pub fn deployment_cost_curve_csv()->String {
- let mut s=String::from("annual_scale,case,cost_sgd_t,annual_avoided_t,joint_pass\n");
- for i in 10..=30 {let a=i as f64/10.0;for k in [DeploymentCostClass::JaeaMature,DeploymentCostClass::ModernCentral,DeploymentCostClass::FoakAdverse]{let x=deployment_case_at_scale(k,true,a);let n=match k{DeploymentCostClass::JaeaMature=>"JAEA mature",DeploymentCostClass::ModernCentral=>"Modern central",DeploymentCostClass::FoakAdverse=>"FOAK adverse"};s.push_str(&format!("{:.1},{},{:.3},{:.3},{}\n",a,n,x.abatement_cost_sgd_t,x.annual_avoided_t,x.joint_pass));}} s
+ let mut s=String::from("annual_scale,scenario_id,case,cost_sgd_t,annual_avoided_t,joint_pass\n");
+ for i in 10..=30 {let a=i as f64/10.0;for k in [DeploymentCostClass::JaeaMature,DeploymentCostClass::ModernCentral,DeploymentCostClass::FoakAdverse]{let x=deployment_case_at_scale(k,true,a);let (id,n)=match k{DeploymentCostClass::JaeaMature=>(0,"JAEA mature"),DeploymentCostClass::ModernCentral=>(1,"Modern central"),DeploymentCostClass::FoakAdverse=>(2,"FOAK adverse")};s.push_str(&format!("{:.1},{},{},{:.3},{:.3},{}\n",a,id,n,x.abatement_cost_sgd_t,x.annual_avoided_t,x.joint_pass));}} s
 }
 pub fn deployment_evidence_csv()->String {
  String::from("source,technology,thermal_mw,cost,cost_basis,capacity_factor,finance,class\nJAEA 2014,GTHTR300,600,0.7 JPY/MJ,heat service,0.80,3pct 40y,MATURE DESIGN\nJAEA user requirement,GTHTR300,600,40-50 bn JPY/unit,design target,greater than 0.90,60y,DESIGN TARGET\nINL GAIN 2024,thermal HTGR SMR,thermal-only,2500 USD/kWth; 12 USD/MWhth,moderate,0.93,7.5pct 60y,MODERN CENTRAL\nINL GAIN 2024,thermal HTGR SMR,thermal-only,3250 USD/kWth; 16 USD/MWhth,conservative,0.80 project screen,10pct project WACC 60y,FOAK-ADVERSE SCREEN\n")
