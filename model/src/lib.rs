@@ -5044,3 +5044,108 @@ mod review2_thermo_recycle_tests {
         assert!((a.fresh_fraction-b.fresh_fraction).abs()>1e-5);
     }
 }
+
+
+/// Canonical Review-2 thermodynamic full-species recycle reference case.
+/// This is the only fresh-feed fraction intended for new predictive propagation.
+/// Legacy analytical 0.737 functions remain solely for historical/surrogate
+/// regression and must not be used by new lifecycle/energy calculations.
+pub fn thermo_recycle_reference_case()->FullRecycle6Result {
+    solve_full_recycle6_nested_thermo(
+        1173.15,28.0,685.15,27.7,0.35,0.10,
+        ieaghg_reconstructed_h2_product_kmol_per_h(),
+        1e-6,1e-6,50000)
+}
+
+pub fn thermo_recycle_gross_ng_displacement_mw(case:FullRecycle6Result)->f64 {
+    assert!(case.converged);
+    ieaghg_makeup_fuel_lhv_mw()+ieaghg_feed_lhv_mw()*(1.0-case.fresh_fraction)
+}
+
+pub fn thermo_recycle_lifecycle_screen(
+    case:FullRecycle6Result,
+    capture_fraction:f64,
+    upstream_gco2e_per_mj:f64,
+    thermal_service_mw:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+    net_electric_efficiency:f64,
+    ccs_transport_fraction:f64,
+)->LifecycleCase {
+    assert!(case.converged);
+    assert!((0.0..=1.0).contains(&capture_fraction));
+    let external_feed_carbon=
+        feedstock_carbon_co2_equivalent_kg_per_kg_h2()*case.fresh_fraction;
+    let fresh_ng_energy=ieaghg_feed_lhv_mw()*case.fresh_fraction;
+    LifecycleCase{
+        plant_carbon:external_feed_carbon*(1.0-capture_fraction),
+        upstream_ng:upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+            fresh_ng_energy,upstream_gco2e_per_mj),
+        nuclear:direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(
+            thermal_service_mw,nuclear_gco2e_per_kwh_e,net_electric_efficiency),
+        ccs_transport:ccs_transport_kgco2e_per_kgh2(
+            external_feed_carbon*capture_fraction,ccs_transport_fraction),
+    }
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct ThermoReferenceScreen {
+    pub fresh_ng_fraction:f64,
+    pub purge_fraction:f64,
+    pub psa_recovery:f64,
+    pub fresh_feed_mw:f64,
+    pub gross_ng_displacement_mw:f64,
+    pub baseline_ci:f64,
+    pub candidate_ci:f64,
+    pub specific_abatement:f64,
+    pub annual_abatement_mt:f64,
+}
+pub fn thermo_reference_screen()->ThermoReferenceScreen {
+    let r=thermo_recycle_reference_case();
+    assert!(r.converged);
+    let b=ieaghg_unabated_lifecycle_screen(11.5);
+    let cand=thermo_recycle_lifecycle_screen(
+        r,0.90,11.5,162.0,5.5,0.504,0.025);
+    let (mt,_)=annual_lifecycle_abatement_and_budget(
+        b,cand,IEAGHG_BASE.h2_kg_per_h,8322.0,100.0);
+    ThermoReferenceScreen{
+        fresh_ng_fraction:r.fresh_fraction,
+        purge_fraction:r.purge_fraction,
+        psa_recovery:r.psa_recovery,
+        fresh_feed_mw:ieaghg_feed_lhv_mw()*r.fresh_fraction,
+        gross_ng_displacement_mw:thermo_recycle_gross_ng_displacement_mw(r),
+        baseline_ci:b.total(),candidate_ci:cand.total(),
+        specific_abatement:b.total()-cand.total(),annual_abatement_mt:mt,
+    }
+}
+
+#[cfg(test)]
+mod review2_b02_propagation_tests {
+    use super::*;
+    #[test]
+    fn canonical_reference_uses_thermo_solver_not_legacy_fraction() {
+        let r=thermo_recycle_reference_case();
+        assert!(r.converged);
+        let legacy=analytical_tail_recycle_fresh_ng_fraction();
+        // The physically strengthened path must not be algebraically identical
+        // to the purge-blind legacy result.
+        assert!((r.fresh_fraction-legacy).abs()>1e-5);
+    }
+    #[test]
+    fn thermo_lifecycle_uses_solved_fresh_fraction() {
+        let r=thermo_recycle_reference_case();
+        let c=thermo_recycle_lifecycle_screen(r,0.90,11.5,162.0,5.5,0.504,0.025);
+        let expected=upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+            ieaghg_feed_lhv_mw()*r.fresh_fraction,11.5);
+        assert!((c.upstream_ng-expected).abs()<1e-12);
+    }
+    #[test]
+    fn thermo_reference_outputs_are_finite_without_legacy_range_lock() {
+        let x=thermo_reference_screen();
+        for v in [x.fresh_ng_fraction,x.purge_fraction,x.psa_recovery,
+            x.fresh_feed_mw,x.gross_ng_displacement_mw,x.baseline_ci,
+            x.candidate_ci,x.specific_abatement,x.annual_abatement_mt] {
+            assert!(v.is_finite());
+        }
+        assert!(x.fresh_ng_fraction>0.0&&x.fresh_ng_fraction<2.0);
+    }
+}
