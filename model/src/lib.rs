@@ -3929,3 +3929,14 @@ mod radiant_acceptance_ten_percent_probe {
         assert!(v.nearest_relative_error<0.10);
     }
 }
+
+
+#[cfg(test)]
+mod radiant_acceptance_five_percent_probe {
+    use super::*;
+    #[test]
+    fn probe_five_percent_radiant_validation_threshold() {
+        let v=validate_independent_radiant_envelope();
+        assert!(v.nearest_relative_error<0.05);
+    }
+}
