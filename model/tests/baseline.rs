@@ -487,3 +487,15 @@ fn current_htgr_service_envelope_increases_with_reformer_inlet_temperature() {
     assert!(a.0 < b.0 && b.0 < c.0);
     assert!(a.1 < b.1 && b.1 < c.1);
 }
+
+
+#[test]
+fn report_htgr_service_breakdown_for_ci_artifact() {
+    use nuclear_assisted_smr::current_htgr_service_breakdown;
+    for t in [600.0,625.0,650.0] {
+        let b=current_htgr_service_breakdown(t);
+        println!("HTGR_BREAKDOWN T={t}: radiant={} steam={}..{} feed={} preref_lb={} reformer_sens={}",
+            b.radiant_mw,b.hp_steam_superheat_lo_mw,b.hp_steam_superheat_hi_mw,
+            b.feed_preheat_mw,b.prereformer_preheat_lower_bound_mw,b.reformer_preheat_sensitivity_mw);
+    }
+}
