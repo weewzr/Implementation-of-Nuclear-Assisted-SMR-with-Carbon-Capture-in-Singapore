@@ -2182,3 +2182,70 @@ pub fn recycle80_max_ccs_ts_cost_sgd_y(
     allowed_incremental_cost_sgd_y+ng-heat-elec-allocated_reactor_cost_sgd_y
         -ihx_loop_cost_sgd_y-other_integration_cost_sgd_y
 }
+
+
+/// Convert any delivered-NG energy rate to upstream lifecycle intensity per kg H2.
+pub fn upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+    ng_energy_mw:f64,
+    intensity_gco2e_per_mj:f64,
+)->f64 {
+    assert!(ng_energy_mw>=0.0 && intensity_gco2e_per_mj>=0.0);
+    let upstream_kg_h=ng_energy_mw*3600.0*intensity_gco2e_per_mj/1000.0;
+    upstream_kg_h/IEAGHG_BASE.h2_kg_per_h
+}
+
+/// Internally consistent lifecycle baseline using IEAGHG direct plant CO2 plus
+/// upstream emissions on both feedstock and supplementary furnace NG.
+pub fn ieaghg_unabated_lifecycle_screen(
+    upstream_gco2e_per_mj:f64
+)->LifecycleCase {
+    LifecycleCase {
+        plant_carbon:IEAGHG_BASE.co2_emitted_kg_per_kg_h2(),
+        upstream_ng:upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+            ieaghg_total_ng_lhv_mw(),upstream_gco2e_per_mj),
+        nuclear:0.0,
+        ccs_transport:0.0,
+    }
+}
+
+/// Matched lifecycle screen for the reduced 80% tail-recycle + direct-HTGR case.
+/// Fresh-feed NG is reduced by the recycle model and furnace NG is eliminated.
+/// Capture fraction applies to reduced external feed carbon. This remains a
+/// screening closure assumption until a full iterative recycle flowsheet exists.
+pub fn recycle80_shared_direct_lifecycle_screen(
+    capture_fraction:f64,
+    upstream_gco2e_per_mj:f64,
+    thermal_service_mw:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+    net_electric_efficiency:f64,
+    ccs_transport_fraction:f64,
+)->LifecycleCase {
+    assert!((0.0..=1.0).contains(&capture_fraction));
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let fresh_fraction=1.0-r.fresh_ng_displaced_fraction;
+    let external_feed_carbon=
+        feedstock_carbon_co2_equivalent_kg_per_kg_h2()*fresh_fraction;
+    let fresh_ng_energy=ieaghg_feed_lhv_mw()*fresh_fraction;
+    LifecycleCase {
+        plant_carbon:external_feed_carbon*(1.0-capture_fraction),
+        upstream_ng:upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+            fresh_ng_energy,upstream_gco2e_per_mj),
+        nuclear:direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(
+            thermal_service_mw,nuclear_gco2e_per_kwh_e,net_electric_efficiency),
+        ccs_transport:ccs_transport_kgco2e_per_kgh2(
+            external_feed_carbon*capture_fraction,ccs_transport_fraction),
+    }
+}
+
+pub fn annual_lifecycle_abatement_and_budget(
+    baseline:LifecycleCase,
+    candidate:LifecycleCase,
+    h2_kg_per_h:f64,
+    hours_per_year:f64,
+    target_currency_per_tco2e:f64,
+)->(f64,f64) {
+    let delta=baseline.total()-candidate.total();
+    assert!(delta>0.0);
+    let avoided_t_y=delta*h2_kg_per_h*hours_per_year/1000.0;
+    (avoided_t_y/1.0e6,avoided_t_y*target_currency_per_tco2e)
+}
