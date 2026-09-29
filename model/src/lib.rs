@@ -3333,3 +3333,19 @@ mod ieaghg_wgs_validation_tests {
         assert!(d.is_finite());
     }
 }
+
+
+#[cfg(test)]
+mod wgs_numeric_interpretation_lock {
+    use super::*;
+    #[test]
+    fn published_hts_equilibrium_approach_is_moderate_not_orders_of_magnitude() {
+        let ratio=ieaghg_stream6_wgs_q_over_k();
+        let teq=ieaghg_stream6_wgs_apparent_equilibrium_temperature_k();
+        let approach=ieaghg_stream6_wgs_temperature_approach_k();
+        // Broad scientific regression bounds, not fitted targets.
+        assert!(ratio>0.1 && ratio<10.0);
+        assert!(teq>550.0 && teq<850.0);
+        assert!(approach>-150.0 && approach<150.0);
+    }
+}
