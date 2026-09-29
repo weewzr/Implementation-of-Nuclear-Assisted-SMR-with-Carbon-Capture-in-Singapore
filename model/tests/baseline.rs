@@ -464,6 +464,7 @@ fn prereformer_coil_lower_bound_is_positive_and_material() {
     let q=prereformer_feed_preheater_lower_bound_mw();
     println!("prereformer_lower_bound_mw={q}");
     assert!(q > 5.0 && q < 12.0);
+    assert!(q.is_finite());
 }
 
 
