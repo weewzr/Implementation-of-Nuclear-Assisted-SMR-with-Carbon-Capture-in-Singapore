@@ -79,6 +79,17 @@ The implementation and topology tests pass CI at commit `152d9df5804444cd479e892
 
 Scientific implication: the current economic model likely understates recycle electricity if it charges only the Case-2A separation/compression anchor. The next calculation must avoid double counting the Case-2A first-stage compression while adding the incremental post-capture recycle compressor and the recycle sensible-heat term.
 
+## Case-2A electricity decomposition and recycle penalty
+The IEAGHG primary Case-2A tables resolve the previous electricity-accounting ambiguity. CO2 Capture Plant Consumption is 4.575 MWe and explicitly includes the tail-gas compressor; the equipment list gives that compressor as 4.280 MW brake power for 0.126 -> 1.0 MPa. CO2 compression/dehydration is a separate 2.874 MWe and the sweet-tail-gas expander generates 1.140 MWe. Thus 4.575 + 2.874 - 1.140 = 6.309 MWe exactly reproduces the prior source anchor.
+
+The nuclear recycle topology must therefore NOT add the 0.126->1 MPa compressor again. The model now adds only the incremental post-capture ~1->4.5 MPa recycle compressor.
+
+A second correction is equally important: in Case 2A the sweet tail gas is expanded before being sent to furnace burners. In the proposed furnace-free recycle architecture that gas is instead returned to the reformer, so the 1.140 MWe expander credit is not physically available unless a different pressure-recovery scheme is designed. The conservative corrected screen removes that credit.
+
+Both the source-ledger decomposition and the corrected recycle-electricity accounting pass CI (commit `04748db16ff72d0042557d70f8ed6f0c9349a84c`). The corrected full-cost propagation, including recycle sensible heating and post-capture recompression, also passes CI (commit `68923619edf34d871f58d99ece01d5eb0a19709e`).
+
+This tightens the S$100/t boundary relative to the previous ~S$14.7/GJ minimum-gas screen. Exact design values remain sensitivity-dependent because recycle compressor efficiency and the final injection pressure are not yet equipment-selected.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
