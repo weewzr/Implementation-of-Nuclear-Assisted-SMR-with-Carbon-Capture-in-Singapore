@@ -1429,3 +1429,31 @@ pub fn case1a_cac_with_replacement_ts(
     non_ts_cost_per_t_avoided
         + replacement_ts_cost_per_t_captured*ieaghg_case1a_captured_per_avoided_ratio()
 }
+
+
+/// Generic price-index escalation.
+pub fn escalate_cost_by_index(cost:f64,index_old:f64,index_new:f64)->f64 {
+    assert!(cost>=0.0 && index_old>0.0 && index_new>0.0);
+    cost*index_new/index_old
+}
+
+/// Screening translation of Case-1A non-T&S CAC to SGD.
+/// The new plant cost index must be supplied explicitly.
+pub fn case1a_non_ts_cac_sgd_screen(
+    plant_cost_index_2014:f64,
+    plant_cost_index_new:f64,
+    sgd_per_eur:f64,
+)->f64 {
+    escalate_cost_by_index(
+        ieaghg_case1a_non_ts_cac_eur2014_per_t_avoided(),
+        plant_cost_index_2014,plant_cost_index_new)*sgd_per_eur
+}
+
+/// Add a Singapore T&S tariff in SGD/t captured to an already harmonised
+/// non-T&S cost in SGD/t avoided.
+pub fn case1a_singapore_cac_sgd_screen(
+    non_ts_sgd_per_t_avoided:f64,
+    ts_sgd_per_t_captured:f64,
+)->f64 {
+    case1a_cac_with_replacement_ts(non_ts_sgd_per_t_avoided,ts_sgd_per_t_captured)
+}
