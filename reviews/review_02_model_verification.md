@@ -10,7 +10,13 @@ review and does not reopen Review 1.
 
 ## Decision
 
-**Review 2 gate: OPEN — BLOCKERS PRESENT.**
+**Review 2 gate: CLOSED.**
+
+All Review-2 mathematical/computational blockers are resolved and the current
+main-branch Rust CI is green. Closure is for the declared screening-model scope:
+ideal-gas equilibrium reformer chemistry, bounded PSA recovery uncertainty, and
+source-limited IEAGHG reformer-state validation. It is not a claim of detailed
+catalyst kinetics, PSA adsorption-cycle prediction, or bankable plant design.
 
 The current repository contains substantial new full-species/equilibrium work,
 but the new recycle solver fails its own CI convergence tests. Legacy reduced
@@ -136,26 +142,28 @@ and industrial/validated SMR-VPSA literature reporting high-purity recoveries
 within/above the selected envelope.
 
 ### R2-M02 — Review-1 radiant validation is source-limited, not unique state validation
-**Severity: MAJOR / limitation, not a reopened Review-1 blocker.**
+**Disposition: RESOLVED AS EXPLICIT MODEL LIMITATION.**
 
 The <5% nearest-envelope agreement is a useful independent duty check, but the
 600-700 C inlet interval is an uncertainty envelope because the exact primary
 reformer inlet is unavailable. The test establishes consistency with the
 authoritative radiant metric, not uniqueness of the reconstructed state.
 
-**Acceptance criterion:** preserve this interpretation in downstream model
-validation; do not describe it as reproducing the exact IEAGHG reformer state.
+This interpretation has been preserved throughout the thermodynamic coupling:
+the IEAGHG hot-product calculation is explicitly called a compatibility
+diagnostic, while the independently validated radiant-duty envelope remains the
+energy benchmark. No exact unpublished reformer inlet state is claimed.
 
 ### R2-M03 — STATUS contains stale contradictory gate/task statements
-**Severity: MAJOR reproducibility issue.**
+**Disposition: RESOLVED.**
 
 `STATUS.md` begins with `Independent Review 1 gate: CLOSED` but later still
 states `Independent Review 1 gate OPEN` and describes obsolete recycle tasks
 and pending-CI states. This can mislead future work selection.
 
-**Acceptance criterion:** after scientific blockers are addressed, reduce
-`STATUS.md` to the canonical current gate, verified results, blockers and next
-scientific task without deleting provenance held elsewhere.
+`STATUS.md` has been reduced to a concise canonical state after Review-2
+scientific closure; historical detail remains in the review records and git
+history.
 
 ## Sound work retained
 
@@ -168,9 +176,15 @@ scientific task without deleting provenance held elsewhere.
 - Analytical-vs-iterative verification of the legacy reduced model as a
   mathematical surrogate (not physical validation).
 
-## Required next action
+## Closure state
 
-Reassess the remaining Review-2 findings and CI state. If no valid mathematical
-or computational blocker remains, close Review 2 while retaining the explicit
-limitations: ideal-gas equilibrium reformer screening, bounded rather than
-adsorption-resolved PSA, and source-limited reformer inlet reconstruction.
+Review 2 is closed. The next project milestone is Gate 4 — verified computational
+model — but no Gate-4 work is begun by this review closure.
+
+Retained limitations for the next phase:
+- reformer chemistry is ideal-gas equilibrium screening, not catalyst kinetics;
+- PSA is bounded by a literature-supported recovery envelope, not an adsorption
+  cycle simulator;
+- IEAGHG primary-reformer inlet reconstruction remains source-limited;
+- legacy 0.737 recycle results are provenance diagnostics only, not predictive
+  outputs.
