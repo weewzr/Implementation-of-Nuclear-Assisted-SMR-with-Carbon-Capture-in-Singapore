@@ -1,6 +1,8 @@
 # STATUS
 
 ## Current research gate
+Gate 6 — Paper/reproducibility: IN PROGRESS.
+
 Gate 5 — Experiments/results: COMPLETE.
 
 Gate 4 — Verified computational model: COMPLETE.
@@ -84,11 +86,20 @@ The experimental conclusion remains adverse/conditional:
 - no technology is established as a definitive Singapore economic winner on a
   fully matched basis.
 
+## Gate-6 progress
+- Canonical modular LaTeX manuscript under `paper/`: FIRST COMPLETE TEXT DRAFT.
+- Abstract through conclusions: populated from verified evidence.
+- CN4252 requirement traceability appendix: created.
+- Reproducibility appendix and `scripts/reproduce.sh`: created.
+- Starter bibliography: created; citation coverage still requires strengthening.
+- Paper/reproducibility GitHub Actions workflow: created.
+- Manuscript build CI: currently being verified.
+
 ## Next step
-Gate 6 — paper/reproducibility. Synthesize the verified model, experiments,
-falsification results, comparator evidence and limitations into the canonical
-LaTeX manuscript and reproducibility package. Do not reopen completed modelling
-solely to seek a favourable nuclear result.
+Resolve any LaTeX/build failures, then strengthen citation coverage and connect
+canonical generated result tables/figures into the manuscript. Independent
+Review 4 remains premature until the first manuscript builds successfully with
+its major results and references.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
