@@ -2034,3 +2034,50 @@ pub fn recycle80_break_even_gas_price_sgd_per_gj(
     let elec=case2a_tail_separation_net_electric_anchor_mwe()*8322.0*electricity_sgd_per_mwh;
     (heat+elec)/annual_saved_gj
 }
+
+
+/// Maximum delivered nuclear-heat price compatible with a specified remaining
+/// annual cost budget after CCS T&S, separation electricity and other fixed
+/// incremental annual costs are reserved. The NG savings are those of the
+/// 80% recycle screen (fresh feed + supplementary furnace fuel).
+pub fn recycle80_max_nuclear_heat_price_sgd_per_gj(
+    allowed_incremental_cost_sgd_y:f64,
+    htgr_service_mw:f64,
+    gas_price_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+    ccs_ts_cost_sgd_y:f64,
+    other_fixed_incremental_sgd_y:f64,
+)->f64 {
+    let ng=recycle80_gross_ng_saving_sgd_y(gas_price_sgd_per_gj);
+    let elec=case2a_tail_separation_net_electric_anchor_mwe()*8322.0*electricity_sgd_per_mwh;
+    let numerator=allowed_incremental_cost_sgd_y+ng-elec-ccs_ts_cost_sgd_y-other_fixed_incremental_sgd_y;
+    numerator/(htgr_service_mw*8322.0*3.6)
+}
+
+/// Maximum annual hydrogen-side HTGR/IHX/integration cost after energy and
+/// CCS T&S have been paid while respecting the allowed incremental-cost budget.
+/// Positive = annualised capital/fixed-O&M headroom; negative = infeasible even
+/// before capital.
+pub fn recycle80_max_allocated_capital_opex_sgd_y(
+    allowed_incremental_cost_sgd_y:f64,
+    htgr_service_mw:f64,
+    gas_price_sgd_per_gj:f64,
+    nuclear_heat_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+    ccs_ts_cost_sgd_y:f64,
+)->f64 {
+    let (net,_)=recycle80_operating_energy_net_bounds_sgd_y(
+        htgr_service_mw,htgr_service_mw,gas_price_sgd_per_gj,
+        nuclear_heat_sgd_per_gj,electricity_sgd_per_mwh);
+    allowed_incremental_cost_sgd_y + net - ccs_ts_cost_sgd_y
+}
+
+/// Convert hydrogen-side annual common-reactor-cost headroom to total common
+/// reactor annual-cost headroom under an allocation fraction.
+pub fn total_common_reactor_headroom_sgd_y(
+    hydrogen_side_headroom_sgd_y:f64,
+    allocation_fraction:f64,
+)->f64 {
+    assert!(allocation_fraction>0.0 && allocation_fraction<=1.0);
+    hydrogen_side_headroom_sgd_y/allocation_fraction
+}
