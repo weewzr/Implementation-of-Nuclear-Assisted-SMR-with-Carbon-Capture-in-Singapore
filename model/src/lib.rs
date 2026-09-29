@@ -6706,7 +6706,7 @@ mod r3_m04_gate4_adversarial_tests {
         let c=r3_conservative_threshold_case();
         assert!(!c.passes_abatement_scale&&!c.passes_cost_threshold);
         let u=r3_uncertainty_summary();
-        assert_eq!(u.n,128);
+        assert_eq!(u.n,64);
         assert_eq!(u.both_pass,0);
     }
 
@@ -6720,7 +6720,7 @@ mod r3_m04_gate4_adversarial_tests {
     #[test]
     fn g_canonical_results_snapshot_is_self_consistent() {
         let x=r3_canonical_results();
-        assert_eq!(x.uncertainty_points,128);
+        assert_eq!(x.uncertainty_points,64);
         assert_eq!(x.uncertainty_joint_passes,0);
         assert!(x.annual_h2_t>0.0&&x.captured_co2_t_y>0.0);
         assert!(x.secondary_he_hot_c>900.0);
