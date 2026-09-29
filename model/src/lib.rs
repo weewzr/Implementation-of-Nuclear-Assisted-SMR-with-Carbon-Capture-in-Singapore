@@ -7307,7 +7307,7 @@ pub fn gate6_threshold_plot_bounds_csv()->String {
  let xmin=f.iter().map(|x|x.annual_avoided_t).fold(f64::INFINITY,f64::min); let xmax=f.iter().map(|x|x.annual_avoided_t).fold(f64::NEG_INFINITY,f64::max);
  let ymin=f.iter().map(|x|x.abatement_cost_sgd_t).fold(f64::INFINITY,f64::min); let ymax=f.iter().map(|x|x.abatement_cost_sgd_t).fold(f64::NEG_INFINITY,f64::max);
  let xs=(xmax-xmin).max(1.0); let ys=(ymax-ymin).max(1.0);
- format!("xmin,xmax,ymin,ymax\n{:.6},{:.6},{:.6},{:.6}\n",(xmin-.05*xs).min(250000.0),(xmax+.05*xs).max(250000.0),(ymin-.05*ys).min(100.0),(ymax+.05*ys).max(100.0))
+ format!("xmin,xmax,ymin,ymax\n{:.6},{:.6},{:.6},{:.6}\n",(xmin-0.05*xs).min(250000.0),(xmax+0.05*xs).max(250000.0),(ymin-0.05*ys).min(100.0),(ymax+0.05*ys).max(100.0))
 }
 #[cfg(test)] mod review4_manuscript_data_tests { use super::*; #[test] fn domain_is_64(){assert_eq!(gate6_domain_table_csv().lines().count(),7);assert_eq!(r3_uncertainty_design().len(),64);} #[test] fn magnitude_keeps_zero_pass(){assert_eq!(gate6_threshold_magnitude_csv().lines().count(),6);assert_eq!(r3_uncertainty_summary().both_pass,0);} #[test] fn bounds_have_no_sentinel(){assert!(!gate6_threshold_plot_bounds_csv().contains("1000000000"));} }
 
