@@ -1107,3 +1107,16 @@ fn iaea_htgr_source_costs_are_large_relative_to_current_hydrogen_headroom() {
     assert!(reactor_cost_multiplier_headroom(20.0,htgr200)<0.3);
     assert!(reactor_cost_multiplier_headroom(20.0,mhrt)<0.6);
 }
+
+
+#[test]
+fn gthtr300c_ihx_loop_anchor_is_not_negligible_against_narrow_margin() {
+    use nuclear_assisted_smr::{
+        annualised_integration_component_cost,
+        integration_capex_from_annual_margin,
+    };
+    let annual=annualised_integration_component_cost(69.0,0.08,25,0.0);
+    assert!(annual>6.4 && annual<6.6, "annualised legacy IHX/loop MUSD/y {annual}");
+    let cap=integration_capex_from_annual_margin(2.0,0.08,25,0.0);
+    assert!(cap>21.0 && cap<22.0);
+}
