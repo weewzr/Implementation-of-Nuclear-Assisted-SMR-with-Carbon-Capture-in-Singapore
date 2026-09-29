@@ -421,3 +421,20 @@ fn quantified_furnace_replacement_services_already_exceed_112_mw() {
     let (lo,hi)=quantified_furnace_replacement_service_bounds_mw();
     assert!(lo > 112.0 && hi < 112.5, "quantified service bounds {lo}..{hi} MW");
 }
+
+
+#[test]
+fn nist_methane_shomate_reproduces_feed_preheat_lower_bound() {
+    use nuclear_assisted_smr::{
+        NIST_CH4_298_1300,feed_preheater_ch4_only_lower_bound_mw,
+    };
+    close(NIST_CH4_298_1300.delta_h_kj_mol(408.15,643.15),11.2453,0.001);
+    close(feed_preheater_ch4_only_lower_bound_mw(),4.0473,0.002);
+}
+
+#[test]
+fn current_source_backed_furnace_service_floor_exceeds_116_mw() {
+    use nuclear_assisted_smr::current_furnace_service_lower_bound_mw;
+    let (lo,hi)=current_furnace_service_lower_bound_mw();
+    assert!(lo > 116.0 && hi < 117.0, "current floor {lo}..{hi} MW");
+}
