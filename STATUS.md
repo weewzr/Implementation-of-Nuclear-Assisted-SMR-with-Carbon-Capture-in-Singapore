@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Reconstruct the actual shift/downstream-syngas recoverable heat from IEAGHG stream states and NIST/IAPWS enthalpies, replacing the current ~44% source-ledger upper bound with a source-derived heat duty.
+Extend the source-derived shifted-syngas heat model through water condensation using pressure-dependent phase equilibrium/IAPWS properties, then subtract competing downstream heat-recovery duties to obtain residual MDEA heat.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -317,6 +317,15 @@ At this ~42-44% upper-group bound, incremental MDEA heat is order ~21-23 MWth; c
 
 This does not rule out >44% recovery: additional low-grade sensible/condensing syngas heat may exist outside the steam-generation ledger. It means that extra heat must be explicitly reconstructed rather than assumed.
 
+## Direct IEAGHG shifted-syngas heat reconstruction
+The full primary IEAGHG heat/material balance resolves the missing states: HTS inlet stream 5 is 320 C/2.80 MPa/8370.3 kmol/h; HTS outlet stream 6 is 412 C/2.77 MPa at the same flow; PSA inlet stream 7 is 35 C/2.58 MPa after downstream heat recovery and condensate separation. Stream 6 contains 21.37 mol% H2O. citeturn5view0
+
+NIST SRD 69 CO Shomate data were added. To avoid extrapolating NIST water-vapour Shomate below its verified 500 K lower limit, the first direct calculation cools stream 6 only from 412 C to 226.85 C. This yields **~14.49 MWth of sensible heat**, enough in pure availability terms for ~37-38% of the ~38.1-39.2 MW MDEA latent duty. No condensation heat is credited.
+
+This is not freely allocatable heat: IEAGHG explicitly routes shifted syngas through the shift WHB, BFW preheater, feed preheater, condensate preheater, air cooler and demi-water preheater before condensate separation. citeturn4view0
+
+The large water reduction from stream 6 (8370.3 kmol/h, 21.37% H2O) to stream 7 (6596.9 kmol/h, 0.24% H2O) proves substantial condensation occurs downstream. The next calculation must therefore use pressure-dependent water phase equilibrium/IAPWS enthalpies; ideal-gas extrapolation is no longer acceptable.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -357,4 +366,4 @@ This does not rule out >44% recovery: additional low-grade sensible/condensing s
   remain.
 
 ## Next highest-priority task
-Reconstruct the shift/downstream-syngas heat duty directly from IEAGHG stream states: identify HTS inlet/outlet and downstream cooling/condensation states, compute mixture enthalpy with NIST/IAPWS properties, subtract heat already committed to existing steam/feed services, and enforce a declared DeltaTmin to the MDEA reboiler. Acceptance criterion: derive an IEAGHG-specific feasible f_WH rather than an external anchor or upper-group bound.
+Calculate the stream-6 water dew point at 2.77 MPa from its 0.2137 water mole fraction, then build a phase-aware cooling/condensation enthalpy model from 412 C toward the MDEA pinch region using IAPWS/steam properties. Quantify sensible + latent heat and subtract source-required BFW/feed/condensate heating duties. Acceptance criterion: obtain a residual IEAGHG-specific MDEA heat fraction rather than an availability ceiling.
