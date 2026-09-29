@@ -1816,7 +1816,9 @@ pub const NIST_CO_298_1300: Shomate = Shomate {
 /// Returns ideal-gas sensible heat recoverable by cooling to target_c.
 /// This deliberately excludes condensation.
 pub fn ieaghg_hts_outlet_sensible_heat_to_mw(target_c:f64)->f64 {
-    assert!(target_c>=25.0 && target_c<412.0);
+    // 226.85 C = 500 K, lower limit of the encoded NIST water-vapour
+    // Shomate correlation. Do not extrapolate below the verified range.
+    assert!(target_c>=226.85 && target_c<412.0);
     let n=8370.3;
     let t1=target_c+273.15;
     let t2=412.0+273.15;
