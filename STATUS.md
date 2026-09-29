@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Replace the external 63% MDEA waste-heat sensitivity anchor with a reduced source-based composite-curve/pinch ledger for the IEAGHG streams, including temperature feasibility.
+Reconstruct the actual shift/downstream-syngas recoverable heat from IEAGHG stream states and NIST/IAPWS enthalpies, replacing the current ~44% source-ledger upper bound with a source-derived heat duty.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -306,6 +306,17 @@ At the external 63% anchor, incremental MDEA heat is ~14.1-14.5 MW. Combining th
 
 This is not yet a design result: the 63% value is external and temperature-approach feasibility for the IEAGHG streams has not been proven. It does establish that f_MDEA,nuclear=1 is unnecessarily conservative.
 
+## IEAGHG-source heat-cascade bound
+The first source-based heat-integration constraint is now derived without importing the external 63% benchmark.
+
+IEAGHG states that reformer syngas leaves at ~900-950 C and is cooled to ~320 C in the reformer WHB, which supplies ~75% of saturated HP steam. That large heat source is therefore already committed to the baseline steam network and cannot be double-counted as free MDEA heat. citeturn0search12
+
+The remaining ~25% saturated-steam-generation group (~35.34 t/h) is shared by shift heat recovery and the fired-furnace steam-generator coil. Its latent-heat scale is ~16.45-16.82 MWth. Assigning the **entire** group to retained shift heat gives an intentionally optimistic source-ledger upper bound of only **~42-44%** of the ~38.1-39.2 MW MDEA regeneration duty. The true shift-steam contribution is smaller because the furnace coil shares that 25%.
+
+At this ~42-44% upper-group bound, incremental MDEA heat is order ~21-23 MWth; combined only with the conservative ~-11 MW recycle reaction-heat change, the incomplete net thermal increment is order ~10-12 MW. This is between the no-integration (+27-28 MW) and external-63%-anchor (~+3 MW) screens.
+
+This does not rule out >44% recovery: additional low-grade sensible/condensing syngas heat may exist outside the steam-generation ledger. It means that extra heat must be explicitly reconstructed rather than assumed.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -346,4 +357,4 @@ This is not yet a design result: the 63% value is external and temperature-appro
   remain.
 
 ## Next highest-priority task
-Build a reduced IEAGHG composite-curve/pinch ledger from source stream temperatures and heat duties for reformer syngas cooling, WGS cooling, steam generation/superheat, feed preheat and the MDEA reboiler. Enforce a declared minimum temperature approach. Acceptance criterion: derive a source-based feasible range for f_WH and replace the external 63% anchor as the central heat-integration estimate.
+Reconstruct the shift/downstream-syngas heat duty directly from IEAGHG stream states: identify HTS inlet/outlet and downstream cooling/condensation states, compute mixture enthalpy with NIST/IAPWS properties, subtract heat already committed to existing steam/feed services, and enforce a declared DeltaTmin to the MDEA reboiler. Acceptance criterion: derive an IEAGHG-specific feasible f_WH rather than an external anchor or upper-group bound.
