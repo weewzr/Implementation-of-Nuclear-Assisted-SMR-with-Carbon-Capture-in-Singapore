@@ -1014,3 +1014,22 @@ fn preserving_feed_preheat_pushes_mdea_recovery_ceiling_below_thirty_seven_perce
     let (flo,fhi)=mdea_fraction_after_feed_preheat_upper_bounds();
     assert!(flo>0.34 && fhi<0.38, "MDEA upper fraction {flo}..{fhi}");
 }
+
+
+#[test]
+fn source_bounded_mdea_and_recycle_heat_are_finite_and_ordered() {
+    use nuclear_assisted_smr::{
+        mdea_incremental_heat_source_bounded_mw,
+        recycle_80pct_thermal_increment_source_bounded_mw,
+        htgr_service_with_recycle_source_bounded_mw,
+    };
+    let (mlo,mhi)=mdea_incremental_heat_source_bounded_mw();
+    assert!(mlo>24.0 && mlo<26.0);
+    assert!(mhi>38.0 && mhi<40.0);
+    let (rlo,rhi)=recycle_80pct_thermal_increment_source_bounded_mw();
+    assert!(rlo>12.0 && rlo<15.0);
+    assert!(rhi>27.0 && rhi<30.0);
+    let (qlo,qhi)=htgr_service_with_recycle_source_bounded_mw(625.0);
+    assert!(qlo>144.0 && qlo<148.0);
+    assert!(qhi>175.0 && qhi<180.0);
+}
