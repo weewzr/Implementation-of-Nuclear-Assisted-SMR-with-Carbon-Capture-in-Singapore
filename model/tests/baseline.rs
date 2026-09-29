@@ -1142,3 +1142,23 @@ fn shared_reactor_full_cost_boundary_requires_favourable_gas_or_ts() {
     println!("FULL_COST_MAX_TS={ts}");
     assert!(ts>35_000_000.0 && ts<45_000_000.0, "max T&S {ts} SGD/y");
 }
+
+
+#[test]
+fn recycle80_matched_lifecycle_recomputes_assignment_budget() {
+    use nuclear_assisted_smr::{
+        ieaghg_unabated_lifecycle_screen,
+        recycle80_shared_direct_lifecycle_screen,
+        annual_lifecycle_abatement_and_budget,
+    };
+    let b=ieaghg_unabated_lifecycle_screen(11.5);
+    let c=recycle80_shared_direct_lifecycle_screen(
+        0.90,11.5,162.0,5.5,0.504,0.025);
+    println!("MATCHED_LCA_BASE={};CAND={}",b.total(),c.total());
+    let (mt,budget)=annual_lifecycle_abatement_and_budget(
+        b,c,8994.0,8322.0,100.0);
+    println!("MATCHED_LCA_ABATE_MT={mt};BUDGET_SGDY={budget}");
+    assert!(c.total()<b.total());
+    assert!(mt>0.60 && mt<0.90);
+    assert!(budget>60_000_000.0 && budget<90_000_000.0);
+}
