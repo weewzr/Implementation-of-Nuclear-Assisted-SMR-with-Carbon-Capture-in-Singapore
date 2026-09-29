@@ -6018,3 +6018,136 @@ mod r3_b02_heat_cascade_tests {
         }
     }
 }
+
+
+/// R3 high-side helium parasitic using the feasible R3-B02 temperature state
+/// and the retained bounded full-loop pressure-loss model.
+pub fn r3_helium_circulator_hi_mwe(h:R3HeatCascade)->f64 {
+    let ihx=GTHTR300C_SECONDARY_IHX_DP_KPA;
+    let dp=helium_loop_delta_p_kpa(&[
+        ihx,
+        ihx*HE_LOOP_PROCESS_DP_IHX_MULT_HI,
+        ihx*HE_LOOP_SG_DP_IHX_MULT_HI,
+        ihx*HE_LOOP_PIPING_DP_IHX_MULT_HI]);
+    helium_circulator_power_mw(
+        h.helium_mass_flow_hi_kg_s,dp,GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        h.secondary_he_cold_c,0.70)
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3Lifecycle {
+    pub direct_residual:f64,pub upstream_ng:f64,pub nuclear_heat:f64,
+    pub auxiliary_electricity:f64,pub ccs_transport:f64,pub total:f64,
+}
+pub fn r3_candidate_lifecycle(
+    upstream_gco2e_per_mj:f64,nuclear_gco2e_per_kwh_e:f64,
+    auxiliary_gco2e_per_kwh:f64,ccs_transport_fraction:f64,
+)->R3Lifecycle {
+    let s=r3_canonical_recycle_case();
+    let h=r3_heat_cascade(650.0,20.0,30.0,500.0);
+    let c=r3_ccs_ledger(s);
+    let circ=r3_helium_circulator_hi_mwe(h);
+    let h2=IEAGHG_BASE.h2_kg_per_h;
+
+    // Residual carbonaceous purge is oxidized. Process CO2 capture is explicit.
+    // Purge CO/CH4 carbon is routed to oxidation+capture in the topology; use
+    // the same 90% terminal capture assumption as the canonical capture train.
+    let purge_c=c.purge_oxidation_co2_kmol_h;
+    let residual_process=s.shifted.co2-s.captured_co2_kmol_h;
+    let residual_c=residual_process+0.10*purge_c;
+    let direct=residual_c*44.0095/h2;
+
+    // Fresh-feed energy scales from the actual external source fraction.
+    let upstream=upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+        ieaghg_feed_lhv_mw()*s.fresh_fraction,upstream_gco2e_per_mj);
+    let nuclear=direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(
+        h.nuclear_heat_hi_mw,nuclear_gco2e_per_kwh_e,0.504);
+    let aux_mwe=c.co2_compression_mwe+c.tail_compression_mwe+circ;
+    let aux=aux_mwe*auxiliary_gco2e_per_kwh*1000.0/h2;
+    let captured_c=s.captured_co2_kmol_h+0.90*purge_c;
+    let transport=ccs_transport_kgco2e_per_kgh2(
+        captured_c*44.0095/h2,ccs_transport_fraction);
+    let total=direct+upstream+nuclear+aux+transport;
+    R3Lifecycle{direct_residual:direct,upstream_ng:upstream,nuclear_heat:nuclear,
+        auxiliary_electricity:aux,ccs_transport:transport,total}
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3AnnualCost {
+    pub baseline_sgd_y:f64,pub candidate_sgd_y:f64,
+    pub incremental_sgd_y:f64,pub abatement_cost_sgd_t:f64,
+    pub annual_avoided_tco2e:f64,pub annual_h2_t:f64,
+}
+/// Forward economic scenario. Cost inputs are explicitly scenario assumptions,
+/// not predictions. No S$/t target appears as an input.
+pub fn r3_forward_economic_scenario(
+    gas_price_sgd_gj:f64,nuclear_heat_sgd_gj:f64,electricity_sgd_mwh:f64,
+    candidate_fixed_annual_sgd:f64,
+    upstream_gco2e_per_mj:f64,nuclear_gco2e_per_kwh_e:f64,
+    auxiliary_gco2e_per_kwh:f64,ccs_transport_fraction:f64,
+)->R3AnnualCost {
+    let s=r3_canonical_recycle_case();
+    let h=r3_heat_cascade(650.0,20.0,30.0,500.0);
+    let c=r3_ccs_ledger(s);
+    let circ=r3_helium_circulator_hi_mwe(h);
+    let hours=8322.0;
+    let base_lca=ieaghg_unabated_lifecycle_screen(upstream_gco2e_per_mj).total();
+    let cand_lca=r3_candidate_lifecycle(upstream_gco2e_per_mj,
+        nuclear_gco2e_per_kwh_e,auxiliary_gco2e_per_kwh,
+        ccs_transport_fraction).total;
+    let h2kg=IEAGHG_BASE.h2_kg_per_h*hours;
+    let avoided=(base_lca-cand_lca)*h2kg/1000.0;
+    assert!(avoided>0.0);
+
+    let base=annual_thermal_energy_cost_sgd(
+        ieaghg_total_ng_lhv_mw(),hours,gas_price_sgd_gj);
+    let fresh_ng=annual_thermal_energy_cost_sgd(
+        ieaghg_feed_lhv_mw()*s.fresh_fraction,hours,gas_price_sgd_gj);
+    let nuclear=annual_thermal_energy_cost_sgd(
+        h.nuclear_heat_hi_mw,hours,nuclear_heat_sgd_gj);
+    let elec_mwe=c.co2_compression_mwe+c.tail_compression_mwe+circ;
+    let elec=elec_mwe*hours*electricity_sgd_mwh;
+    let candidate=fresh_ng+nuclear+elec+candidate_fixed_annual_sgd;
+    let incremental=candidate-base;
+    R3AnnualCost{baseline_sgd_y:base,candidate_sgd_y:candidate,
+        incremental_sgd_y:incremental,
+        abatement_cost_sgd_t:incremental/avoided,
+        annual_avoided_tco2e:avoided,annual_h2_t:h2kg/1000.0}
+}
+
+#[cfg(test)]
+mod r3_b03_forward_lifecycle_economics_tests {
+    use super::*;
+    #[test]
+    fn lifecycle_contains_all_r3_physical_energy_terms() {
+        let x=r3_candidate_lifecycle(11.5,5.5,5.5,0.025);
+        for v in [x.direct_residual,x.upstream_ng,x.nuclear_heat,
+            x.auxiliary_electricity,x.ccs_transport,x.total] {
+            assert!(v.is_finite()&&v>=0.0);
+        }
+        assert!((x.total-(x.direct_residual+x.upstream_ng+x.nuclear_heat
+            +x.auxiliary_electricity+x.ccs_transport)).abs()<1e-12);
+        assert!(x.auxiliary_electricity>0.0);
+    }
+    #[test]
+    fn annual_h2_scale_is_independently_reproduced() {
+        let x=r3_forward_economic_scenario(
+            15.0,5.69,150.0,95.1e6,11.5,5.5,5.5,0.025);
+        let expected=IEAGHG_BASE.h2_kg_per_h*8322.0/1000.0;
+        assert!((x.annual_h2_t-expected).abs()<1e-9);
+    }
+    #[test]
+    fn abatement_cost_is_forward_identity_not_target_budget() {
+        let x=r3_forward_economic_scenario(
+            15.0,5.69,150.0,95.1e6,11.5,5.5,5.5,0.025);
+        assert!((x.abatement_cost_sgd_t
+            -x.incremental_sgd_y/x.annual_avoided_tco2e).abs()<1e-12);
+        assert!(x.annual_avoided_tco2e>0.0);
+    }
+    #[test]
+    fn auxiliary_electricity_source_changes_lifecycle_result() {
+        let low=r3_candidate_lifecycle(11.5,5.5,5.5,0.025);
+        let grid=r3_candidate_lifecycle(11.5,5.5,402.0,0.025);
+        assert!(grid.total>low.total);
+    }
+}
