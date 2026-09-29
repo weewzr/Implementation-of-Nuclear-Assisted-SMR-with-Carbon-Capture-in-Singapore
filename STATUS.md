@@ -14,6 +14,21 @@ Verify and propagate the newly implemented iterative fixed-H2 tail-recycle closu
 - GitHub workflow status could not yet be verified through the connector because its commit-run endpoint exposes pull-request-triggered runs only and returned no run for this direct main-branch commit.
 - Acceptance remains pending until the Rust tests are independently executed and the converged state is propagated through lifecycle/economic calculations.
 
+## Analytical recycle benchmark added
+An independent algebraic fixed-point benchmark has now been derived and encoded for the reduced recycle equations. For positive recycle/conversion coefficients, the reduced model gives
+
+s = P / (P + H_tail + CO_tail + 4 CH4_tail),
+
+where s is fresh-NG fraction of the IEAGHG baseline and P is fixed H2 product.
+
+Using the rounded IEAGHG source streams gives s ~= 0.7371, fresh NG ~= 1073.1 kmol/h and fresh-feed energy ~= 249.7 MW_LHV. Thus the reduced fixed point displaces ~26.3% of fresh feed. At 80% CO conversion, CH4 conversion and recycle-H2 recovery, the corresponding analytical circulating tail is approximately 561.3 kmol/h H2, 282.2 kmol/h CO and 183.4 kmol/h CH4; the current algebraic capture expression is ~1163.5 kmol/h CO2 (~51.2 t/h).
+
+This is a correction to interpreting a one-pass 80% sensitivity as an 80% fresh-feed displacement. In the reduced steady-state equations, positive conversion/recovery coefficients primarily change circulating inventory; the net fresh-feed fixed point is set by the source tail's H2-equivalent inventory. This is a model property, not yet a validated physical PSA/reformer result.
+
+Commit `622856765a07f7f58d0133a33df84e2478c57925` adds the analytical benchmark and numerical-vs-analytical regression tests.
+
+Execution verification remains pending: the available container has no Rust compiler and no outbound GitHub access, while the GitHub connector does not expose direct-main workflow runs. No test-pass claim is made.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
