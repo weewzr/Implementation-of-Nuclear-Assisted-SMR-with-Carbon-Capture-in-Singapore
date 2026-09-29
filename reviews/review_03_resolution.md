@@ -62,8 +62,59 @@ within 2%. This is a screening validation, not an exact source-state claim.
 
 R3-B01 is closed. This does not validate detailed prereformer kinetics.
 
+## R3-B02 — Temperature-feasible integrated heat cascade
+
+**Disposition: RESOLVED for the declared bounded screening scope.**
+
+### Correction
+The R3 heat cascade consumes the corrected R3-B01 canonical stream state and a
+new R3 CCS ledger. Candidate MDEA regeneration duty is therefore derived from
+the same captured-CO2/purge-carbon state used by the flowsheet.
+
+The process hot end is 900 C. A positive 20 K process approach requires
+secondary helium at 920 C; a further 30 K IHX approach requires a 950 C primary
+outlet. The previous 900 C helium -> 900 C process pairing is no longer used on
+the R3 path.
+
+Reformer external duty is total-enthalpy difference on the corrected stream
+state. WHB heat recovery is reported explicitly and credited at most once
+against the candidate-scaled low-grade MDEA regeneration duty. Remaining MDEA
+heat plus reformer external heat defines the nuclear-process-heat bound.
+Helium flow is recomputed from that duty and the feasible 920 C -> 500 C
+secondary-helium span.
+
+### Code/equation location
+`model/src/lib.rs`:
+- `R3CcsLedger`, `r3_ccs_ledger`
+- `R3HeatCascade`, `r3_heat_cascade`
+
+### Validation evidence
+CI asserts:
+- strictly positive process and IHX terminal approaches;
+- identical MDEA duties in CCS and energy ledgers;
+- WHB recovery cannot be allocated beyond available heat;
+- recovered MDEA heat is subtracted exactly once;
+- explicit first-law residual is numerically zero;
+- 600/650/700 C inlet screens retain the feasible temperature hierarchy and
+  positive heat/helium flow.
+
+### CI evidence
+Commit `166b7be59910f019e206da2344e1536fda1698fd`;
+GitHub Actions run 36540973483: PASS.
+
+### Acceptance criterion status
+- positive finite approaches: PASS
+- one candidate-scaled MDEA duty across CCS/energy: PASS
+- recovered heat allocated once: PASS
+- first-law residual: PASS
+- helium flow recomputed from feasible state: PASS
+- reference and inlet-temperature screening hierarchy: PASS
+
+R3-B02 is closed as a bounded heat-integration screen. Detailed exchanger
+area/pinch-network design remains outside this scope.
+
 ## Next corrective action
 
-R3-B02 — close a temperature-feasible integrated heat cascade using this new
-R3 canonical state. Review-2 energy/CCS/helium ledgers remain superseded for
-Gate-4 purposes until rebuilt on the R3 state.
+R3-B03 — rebuild lifecycle and economics as forward calculations using the R3
+carbon, heat, CCS and auxiliary ledgers. Do not use S$100/t as an input to the
+forward result.
