@@ -6930,3 +6930,84 @@ mod gate5_experiment02_tests {
         assert!(d.delta_cost_sgd_t>0.0);
     }
 }
+
+
+/// Gate-5 Experiment 03: source-faithful comparator threshold decomposition.
+/// Case 1A source non-T&S CAC stays in EUR2014; Singapore T&S is reported as
+/// a separate SGD/t-avoided contribution to avoid false currency-year addition.
+#[derive(Debug,Clone,Copy)]
+pub struct Gate5Case1aThresholdDecomposition {
+    pub annual_direct_avoided_t:f64,
+    pub passes_abatement_scale:bool,
+    pub source_total_cac_eur2014_t:f64,
+    pub source_non_ts_cac_eur2014_t:f64,
+    pub captured_to_avoided_ratio:f64,
+    pub singapore_ts_low_sgd_t_captured:f64,
+    pub singapore_ts_high_sgd_t_captured:f64,
+    pub singapore_ts_low_sgd_t_avoided:f64,
+    pub singapore_ts_high_sgd_t_avoided:f64,
+}
+pub fn gate5_case1a_threshold_decomposition(
+    ts_low_sgd_t_captured:f64,ts_high_sgd_t_captured:f64
+)->Gate5Case1aThresholdDecomposition {
+    assert!(ts_low_sgd_t_captured>=0.0&&ts_high_sgd_t_captured>=ts_low_sgd_t_captured);
+    let x=r3_case1a_comparator();
+    Gate5Case1aThresholdDecomposition{
+        annual_direct_avoided_t:x.direct_avoided_t_y,
+        passes_abatement_scale:x.direct_avoided_t_y>250_000.0,
+        source_total_cac_eur2014_t:x.source_cac_eur2014_t,
+        source_non_ts_cac_eur2014_t:x.source_non_ts_cac_eur2014_t,
+        captured_to_avoided_ratio:x.captured_to_avoided_ratio,
+        singapore_ts_low_sgd_t_captured:ts_low_sgd_t_captured,
+        singapore_ts_high_sgd_t_captured:ts_high_sgd_t_captured,
+        singapore_ts_low_sgd_t_avoided:
+            r3_case1a_ts_contribution_sgd_per_t_avoided(ts_low_sgd_t_captured),
+        singapore_ts_high_sgd_t_avoided:
+            r3_case1a_ts_contribution_sgd_per_t_avoided(ts_high_sgd_t_captured)}
+}
+
+pub fn gate5_experiment03_markdown()->String {
+    // 20-30 SGD/t captured is retained as the project's earlier Singapore T&S
+    // screening range; it is a scenario input, not a current market quote.
+    let x=gate5_case1a_threshold_decomposition(20.0,30.0);
+    format!(
+"# Gate 5 Experiment 03 — Case-1A comparator threshold decomposition\n\n\
+## Common-scale abatement\n\n\
+- Annual direct avoided CO2: {:.3} t/y\n\
+- Passes 0.25 Mt/y direct-abatement scale: {}\n\n\
+## Source cost basis (do not currency-mix)\n\n\
+- IEAGHG total CAC: {:.3} EUR2014/t avoided\n\
+- IEAGHG non-T&S component: {:.3} EUR2014/t avoided\n\
+- Captured/avoided ratio: {:.6}\n\n\
+## Singapore T&S scenario contribution only\n\n\
+- T&S scenario: {:.1}-{:.1} SGD/t captured\n\
+- Corresponding contribution: {:.3}-{:.3} SGD/t avoided\n\n\
+The EUR2014 source non-T&S term and SGD T&S contribution are deliberately \
+reported separately. This experiment does not claim a final Singapore Case-1A \
+S$/t until a defensible currency-year/common-cost conversion is supplied.\n",
+x.annual_direct_avoided_t,x.passes_abatement_scale,
+x.source_total_cac_eur2014_t,x.source_non_ts_cac_eur2014_t,
+x.captured_to_avoided_ratio,x.singapore_ts_low_sgd_t_captured,
+x.singapore_ts_high_sgd_t_captured,x.singapore_ts_low_sgd_t_avoided,
+x.singapore_ts_high_sgd_t_avoided)
+}
+
+#[cfg(test)]
+mod gate5_experiment03_tests {
+    use super::*;
+    #[test]
+    fn case1a_passes_scale_without_claiming_singapore_cost_pass() {
+        let x=gate5_case1a_threshold_decomposition(20.0,30.0);
+        assert!(x.passes_abatement_scale);
+        assert!(x.annual_direct_avoided_t>250_000.0);
+    }
+    #[test]
+    fn ts_contribution_scales_on_captured_over_avoided_denominator() {
+        let x=gate5_case1a_threshold_decomposition(20.0,30.0);
+        assert!((x.singapore_ts_low_sgd_t_avoided
+            -20.0*x.captured_to_avoided_ratio).abs()<1e-12);
+        assert!((x.singapore_ts_high_sgd_t_avoided
+            -30.0*x.captured_to_avoided_ratio).abs()<1e-12);
+        assert!(x.singapore_ts_high_sgd_t_avoided>x.singapore_ts_low_sgd_t_avoided);
+    }
+}
