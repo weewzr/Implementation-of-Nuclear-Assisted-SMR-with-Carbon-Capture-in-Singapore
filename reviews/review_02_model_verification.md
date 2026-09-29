@@ -70,17 +70,31 @@ converged purge-aware full-species solver. All headline recycle predictions must
 come from the physically closed solver.
 
 ### R2-B03 — Thermodynamic layer is not yet coupled to SMR conversion
-**Severity: BLOCKER for predictive recycle chemistry.**
+**Disposition: RESOLVED for the ideal-equilibrium screening model.**
 
 The model now has NIST/JANAF equilibrium constants and an equilibrium WGS solve,
 but `solve_full_recycle6` still takes `smr_conversion` as an arbitrary input.
 Thus reformer chemistry is only partially thermodynamically constrained.
 Numerical convergence would not by itself validate the reformer.
 
-**Acceptance criterion:** constrain SMR by equilibrium/finite-approach physics at
-declared T/P (or justify a kinetic/conversion model from authoritative data),
-validate the once-through IEAGHG reformer state/duty first, and then apply the
-same formulation under recycle.
+An ideal-gas SMR equilibrium extent solver now closes ln(Q/K)=0 while
+conserving C/H/O/N. Coupled SMR/WGS equilibrium sweeps close both reaction
+residuals at declared reformer T/P. The formulation is checked first against
+the source-limited IEAGHG hot-product composition over 900-950 C; this remains
+a thermodynamic compatibility diagnostic because the exact primary-reformer
+inlet state is not published. The independently validated radiant-duty envelope
+from Review 1 remains the energy-side once-through benchmark.
+
+The same equilibrium formulation is now coupled into the nested full-species
+recycle solver. No arbitrary `smr_conversion` appears on this predictive path.
+CI verifies convergence at the 900 C reference screen and a physically
+non-invariant fresh-feed response when reformer temperature changes to 950 C.
+
+This resolves the mathematical blocker for an ideal-equilibrium screening
+model; it does not claim kinetic/catalyst validation.
+
+Evidence: commits `66fbcaaf51f59b3fa6d7308a67ee9dd239f883ea`
+and `aab7779e81a462bd02eb65f84c40a552b542b0be`; CI passed.
 
 ### R2-M01 — PSA model is a bounded surrogate, not adsorption validation
 **Severity: MAJOR.**
@@ -129,9 +143,7 @@ scientific task without deleting provenance held elsewhere.
 
 ## Required next action
 
-Resolve **R2-B03** next: replace arbitrary SMR conversion in the nested
-full-species solver with equilibrium/finite-approach reformer physics and
-validate that formulation against the authoritative IEAGHG once-through
-reference before using recycle predictions. R2-B02 is then resolved by retiring
-legacy 0.737-based predictive propagation in favour of the validated nested
-solver.
+Resolve **R2-B02** next by removing the legacy purge-blind ~0.737 fresh-feed
+fraction from lifecycle/energy/economic predictive propagation and replacing it
+with outputs from the thermodynamically constrained nested full-species solver.
+Then address R2-M01 PSA uncertainty before closing Review 2.
