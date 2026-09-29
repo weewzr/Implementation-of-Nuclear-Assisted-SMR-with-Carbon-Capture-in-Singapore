@@ -6171,6 +6171,19 @@ pub fn r3_reference_threshold_case()->R3ThresholdCase {
 /// This is a scenario stress test, not a forecast.
 pub fn r3_conservative_threshold_case()->R3ThresholdCase {
     let l=r3_candidate_lifecycle(18.6,6.4,402.0,0.035);
+    let hours=8322.0;
+    let base_lca=ieaghg_unabated_lifecycle_screen(18.6).total();
+    let h2kg=IEAGHG_BASE.h2_kg_per_h*hours;
+    let avoided=(base_lca-l.total)*h2kg/1000.0;
+    if avoided<=0.0 {
+        // Explicit falsification state: no positive lifecycle abatement means
+        // abatement cost is +infinity and both CN4252 thresholds fail.
+        let e=R3AnnualCost{baseline_sgd_y:f64::NAN,candidate_sgd_y:f64::NAN,
+            incremental_sgd_y:f64::NAN,abatement_cost_sgd_t:f64::INFINITY,
+            annual_avoided_tco2e:avoided,annual_h2_t:h2kg/1000.0};
+        return R3ThresholdCase{lifecycle:l,economics:e,
+            passes_abatement_scale:false,passes_cost_threshold:false}
+    }
     let e=r3_forward_economic_scenario(
         20.0,8.0,200.0,120.0e6,18.6,6.4,402.0,0.035);
     R3ThresholdCase{lifecycle:l,economics:e,
@@ -6186,7 +6199,7 @@ mod r3_b03_threshold_tests {
         for x in [r3_reference_threshold_case(),r3_conservative_threshold_case()] {
             assert_eq!(x.passes_abatement_scale,x.economics.annual_avoided_tco2e>250_000.0);
             assert_eq!(x.passes_cost_threshold,x.economics.abatement_cost_sgd_t<100.0);
-            assert!(x.economics.abatement_cost_sgd_t.is_finite());
+            assert!(!x.economics.abatement_cost_sgd_t.is_nan());
         }
     }
     #[test]
