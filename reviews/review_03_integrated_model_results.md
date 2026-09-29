@@ -873,3 +873,143 @@ Canonical disposition/evidence is recorded in
 This closure does not reverse the adverse scientific results: the conservative
 case fails both CN4252 thresholds and the corrected 64-point coupled uncertainty
 design has zero joint passes.
+
+
+---
+
+# Current-state Review-3 re-verification addendum — 2026-09-30
+
+## Repository state reviewed
+
+- Current frozen commit: `fbbd3eccc137749c71b563069f6666271ac8feac`.
+- Current STATUS: Gate 4 CLOSED; Gate 5 CLOSED; Gate 6 complete first manuscript / ready for Independent Review 4.
+- Research CI run `36638378449`: PASS.
+- Paper/reproducibility run `36638378430`: PASS.
+- Original Review-3 freeze and findings above remain historical evidence; this addendum evaluates whether the corrected current implementation still satisfies the Review-3 gate.
+
+## Scope
+
+This is a current-state regression/re-verification of Independent Review 3, not a repetition of Reviews 1-2 and not an implementation pass. No scientific implementation was modified.
+
+## Canonical model identified
+
+The current canonical physical path is the corrected R3 chain:
+external NG/steam-derived feed + recycle -> coupled reformer/WGS -> explicit CO2 removal -> PSA -> inert purge -> recycle/purge treatment -> candidate-specific CCS -> corrected heat cascade -> secondary-He parasitics -> lifecycle ledger -> annual abatement -> forward economics.
+
+Canonical results are defined by `r3_canonical_results()`, `results/r3_canonical_results.md`, and the Gate-5 generated result contract. Superseded 0.737 fresh-feed and representative 162 MWth assumptions remain provenance only.
+
+## Independent checks performed
+
+1. Re-checked the corrected B01/B02/B03 call chain and its current tests.
+2. Verified that captured process CO2 is removed before PSA/recycle and that the external plant boundary closes C/H/O/N and total mass to the declared (10^{-6}) criterion.
+3. Verified that the heat cascade enforces a 900 C process hot end, 920 C secondary-He hot end and 950 C primary outlet for the reference 20 K process / 30 K IHX approaches.
+4. Verified that the CCS and heat ledgers consume the same candidate-scaled MDEA duty and that recovered heat is credited once.
+5. Reconstructed the common production scale independently: 8994 kg H2/h * 8322 h/y = 74.848068 kt H2/y. The 0.25 MtCO2e/y threshold therefore requires about 3.34 tCO2e avoided per t H2 at this scale.
+6. Reconstructed IEAGHG Case 1A direct avoidance from the source values: (0.8091-0.3704) kgCO2/Nm3 H2 * 100000 Nm3/h * 8322 h/y is about 0.365 MtCO2/y, independently confirming that the annual scale threshold is not uniquely enabled by nuclear heat.
+7. Re-checked the coupled uncertainty contract: 64 cases, zero joint passes, conservative case non-positive lifecycle abatement with infinite rather than fabricated finite abatement cost.
+8. Checked later changes from Review-3 closure to the frozen state. They add Gate-5 experiments, deterministic renderers and paper/reproducibility infrastructure; no evidence was found that the corrected R3 physical chain was replaced by the retired model.
+
+## Review-2 regression check
+
+PASS. Interval-safe thermochemistry, full-species recycle, explicit inert purge, fixed-H2 closure, coupled SMR/WGS equilibrium, candidate-specific CCS, bounded PSA uncertainty, candidate-driven helium sizing and corrected lifecycle/economic propagation remain present. No retired 0.737 fresh-feed, 162 MWth, purge-free recycle or universal-PSA assumption was found on the canonical R3 predictive path.
+
+## Work that survived review
+
+- Source-stream reconstruction and NIST thermochemistry.
+- Corrected external-feed/recycle/capture process ordering.
+- Explicit plant C/H/O/N and mass closure.
+- Fixed-H2 PSA/recycle/purge architecture.
+- Candidate-specific CCS scaling.
+- Positive-temperature-approach heat cascade and candidate-driven helium flow.
+- Forward lifecycle and economic propagation.
+- Explicit non-positive-abatement failure handling.
+- 64-case coupled threshold falsification with 0 joint passes.
+- Common-scale Case-1A direct-abatement comparator.
+- Deterministic external/integrated/adversarial tests and result generation.
+
+## Blockers
+
+None found in the current corrected R3 implementation for its declared screening-model scope.
+
+## Major findings
+
+None found that invalidate Gate-4 use for generating bounded experiments/results.
+
+## Minor findings
+
+### R3-m05 — Real-gas sensitivity remains outside the equilibrium screen
+The reformer/WGS solver remains ideal-gas based at 20-28 bar. Pressure effects are represented thermodynamically, but fugacity corrections are not. This does not invalidate the stated screening result, because the repository does not claim a kinetic or rigorous high-pressure reactor prediction, but a future higher-fidelity model should quantify real-gas sensitivity before upgrading process predictions.
+
+### R3-m06 — Uncertainty design is falsification-oriented, not exhaustive
+The 64-case design couples the dominant declared temperature, pressure, PSA, capture, carbon/electricity and heat/fixed-cost corners, but it does not independently span every possible variable listed in the Review-3 brief (for example S/C, purge/inert target, compressor efficiency, helium pressure drop and methane leakage). The repository correctly limits its conclusion to the tested domain; therefore this is not evidence for a hidden passing region, nor proof that none exists outside the domain.
+
+### R3-m07 — Comparator economics remain intentionally incomplete on a matched Singapore basis
+Case 1A has a defensible common-scale direct-abatement comparison, but eSMR/electrolysis and Case-1A Singapore total CAC lack a fully harmonised currency-year/lifecycle/economic boundary. The repository explicitly states this limitation and does not declare an economic winner.
+
+## Integrated mass/energy verification
+
+The current canonical external boundary explicitly treats recycle as internal and fresh external feed against H2 product, captured CO2 and purge as outlets. CI requires normalized C/H/O/N and total-mass residuals below (10^{-6}). The corrected capture operation removes CO2 from the downstream state before PSA.
+
+The R3 heat cascade uses the same corrected physical state as CCS. The reference temperature hierarchy has strictly positive approaches (950 C primary > 920 C secondary He > 900 C process), candidate-scaled MDEA duty is shared between CCS and energy ledgers, recovered heat is bounded by available WHB heat and credited once, and the first-law residual is tested.
+
+## Lifecycle verification
+
+The lifecycle ledger propagates residual direct carbon, upstream NG, nuclear-heat allocation, auxiliary electricity including CCS/helium parasitics and CCS transport. The conservative credible case produces non-positive lifecycle abatement and is represented as a threshold failure with infinite abatement cost rather than forced through the denominator.
+
+The functional unit remains kgCO2e/kgH2, with annualisation on 8994 kg/h and 8322 h/y. The independently reconstructed annual H2 scale is 74.848068 kt/y.
+
+## Economic verification
+
+The economic screen is forward: annual baseline/candidate costs are constructed before division by annual avoided emissions. S$100/t is a threshold test, not a fitted input. Non-positive abatement is rejected as having no finite abatement cost.
+
+Economic quantities remain scenario results rather than predicted project costs. The repository does not mix IEAGHG EUR2014 non-T&S cost with Singapore SGD T&S contributions into a false common-basis total.
+
+## CN4252 threshold assessment
+
+Within the verified declared domain:
+- conservative credible nuclear case: fails annual abatement and cost thresholds;
+- coupled nuclear design: 64 cases, 0 joint passes;
+- no robust passing region is established;
+- IEAGHG Case 1A exceeds 0.25 Mt/y direct avoided CO2 on the common source production basis;
+- the evidence does not establish a preferred Singapore technology on a fully matched economic basis.
+
+## Comparator fairness
+
+The conventional baseline and Case 1A share the source H2/output-hours basis. The repository explicitly refuses to fabricate fully matched eSMR/electrolysis economics where evidence is insufficient. Remaining comparator incompleteness is disclosed rather than used to advantage the nuclear case.
+
+## Falsification results
+
+The central nuclear hypothesis does not survive as a demonstrated robust CN4252 solution in the tested domain. Upstream/auxiliary carbon and heat/fixed-cost conditions can eliminate lifecycle abatement or make cost non-finite. Conventional Case 1A independently clears the annual direct-abatement scale. Singapore nuclear and cross-border CCS availability remain conditional deployment assumptions.
+
+## Singapore-scale assessment
+
+The corrected R3 state derives annual H2, fresh NG, captured/storage CO2, residual direct CO2, nuclear process heat and helium-loop scale. These are screening quantities. The repository does not infer reactor-module count, footprint, contracted storage or a Singapore nuclear deployment decision from them.
+
+## Claim-strength corrections
+
+No new claim-strength upgrade is required for Gate 4. The current repository consistently distinguishes source values, reconstructed/source-backed values, verified model results, screening results, sensitivity results, bounded estimates and unresolved comparator predictions.
+
+## Missing falsification tests
+
+Future higher-fidelity extensions should test:
+1. fugacity/real-gas sensitivity at the 20-28 bar reformer pressure range;
+2. coupled S/C and purge/inert variation rather than only fixed screening settings;
+3. explicit compressor/helium pressure-drop efficiency uncertainty;
+4. explicit methane-leakage parameterisation if upstream NG factors are decomposed;
+5. a fully matched Singapore currency-year/lifecycle comparator if defensible data become available.
+
+These are not prerequisites for preserving the present adverse tested-domain result.
+
+## Gate-4 decision
+
+Gate 4 remains verified for the declared screening-model scope. This decision means the computational framework is sufficiently internally consistent, falsifiable and reproducible to generate bounded experiments/results. It does not mean nuclear-assisted SMR+CCS satisfies either CN4252 threshold, is commercially deployable, or is preferred.
+
+## Main Research Handoff
+
+No BLOCKER or MAJOR corrective action is required by this current-state Review-3 re-verification. Preserve the adverse 0/64 result and the stated screening limitations; do not expand claims beyond the tested domain.
+
+GATE 4 VERIFIED — READY FOR EXPERIMENTS AND RESULTS
+
+MAIN RESEARCH HANDOFF
+
+None.
