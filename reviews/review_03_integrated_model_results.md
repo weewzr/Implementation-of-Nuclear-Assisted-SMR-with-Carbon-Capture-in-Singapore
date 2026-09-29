@@ -850,3 +850,26 @@ numerically reproducible yet describe inconsistent physical plants.
 # Final decision
 
 GATE 4 NOT YET VERIFIED
+
+
+---
+
+## Closure addendum — 2026-09-29
+
+The original decision above applies to frozen commit
+`763113d4e3d217bb31995a73caec57460fb66f8d`.
+
+Main Research subsequently resolved R3-B01/B02/B03 and R3-M01/M02/M03/M04.
+A focused closure check at commit
+`c384e053e8ea1ec42f1d471fe7f7733dda022b75` verified the original acceptance
+criteria against the corrected implementation and current CI (run
+`36545720485`, PASS).
+
+Canonical disposition/evidence is recorded in
+`reviews/review_03_resolution.md`.
+
+**Updated Gate-4 decision: VERIFIED FOR EXPERIMENTS/RESULTS.**
+
+This closure does not reverse the adverse scientific results: the conservative
+case fails both CN4252 thresholds and the corrected 64-point coupled uncertainty
+design has zero joint passes.
