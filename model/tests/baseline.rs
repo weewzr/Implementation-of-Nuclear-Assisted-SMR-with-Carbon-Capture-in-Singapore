@@ -991,3 +991,12 @@ fn iapws_region4_tsat_reproduces_normal_boiling_point() {
     let t=iapws_if97_tsat_k_from_mpa(0.101325)-273.15;
     assert!((t-99.974).abs()<0.02, "normal boiling point {t} C");
 }
+
+
+#[test]
+fn full_shift_sensible_heat_to_170c_is_now_bounded_without_nist_extrapolation() {
+    use nuclear_assisted_smr::ieaghg_shift_sensible_412_to_target_bounds_mw;
+    let (lo,hi)=ieaghg_shift_sensible_412_to_target_bounds_mw(170.0);
+    assert!(lo>18.0 && hi<22.0, "412->170 C sensible heat {lo}..{hi} MW");
+    assert!(hi-lo<0.5, "water-Cp uncertainty unexpectedly large");
+}
