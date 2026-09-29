@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Extend the first common-service direct-heat vs nuclear-electric screen into a consistent emissions/CCS/tail-gas comparison rather than comparing energy conversion alone.
+Add lifecycle terms to the now-matched direct-heat/eSMR emissions boundary, beginning with Singapore-relevant upstream natural-gas uncertainty and a defensible nuclear-process-heat allocation.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -149,6 +149,15 @@ At the 625 C reformer-preheat sensitivity the service range is ~132.5-149.5 MWth
 
 This establishes a reactor-thermal-utilisation hypothesis in favour of direct heat, not an overall ranking. A 2026 peer-reviewed direct comparison reports lower LCOH for helium-heated SMR ($2.37/kg vs $2.99/kg) but slightly lower GWP for eSMR (3.18 vs 3.5 kgCO2/kgH2), showing the tradeoff is multidimensional.
 
+## Matched emissions comparison established
+A controlled direct-heat/eSMR comparison now holds H2 output, NG feed, carbon conversion/capture, PSA recovery/tail-gas disposition, CCS boundary and upstream NG supply chain identical. Under those conditions, plant-gate feedstock-carbon emissions are identical by construction; only the energy-delivery architecture differs.
+
+The IEAGHG feedstock contains ~1578.56 kmol-C/h, equivalent to ~7.72 kgCO2/kgH2 if all feed carbon ultimately becomes CO2. A 90% permanent feedstock-carbon capture screening case therefore leaves ~0.77 kgCO2/kgH2 plant-gate feedstock-carbon emissions before lifecycle additions.
+
+This makes an important interpretation explicit: Ahn & Lee's 2026 h-SMR/eSMR GWP difference (3.5 vs 3.18 kgCO2/kgH2) cannot be attributed intrinsically to helium versus electricity under matched chemistry. It must reflect process/resource/lifecycle differences in their configurations. Their result remains an external benchmark, not a value to import.
+
+DOE 45VH2-GREET confirms a well-to-gate methodology including feedstock extraction/delivery, electricity, facility emissions, CO2 capture/delivery and potential storage leakage. IEA reports 10-12 kgCO2e/kgH2 for unabated NG hydrogen and warns upstream/midstream emissions remain material after CCS. UNECE provides a 5.1-6.4 gCO2e/kWh nuclear-electric lifecycle range, but a defensible allocation to direct nuclear process heat remains unresolved.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -189,4 +198,4 @@ This establishes a reactor-thermal-utilisation hypothesis in favour of direct he
   remain.
 
 ## Next highest-priority task
-Build matched direct-heat and nuclear-electric configurations with identical H2 output, feedstock, CCS target and PSA-tail-gas disposition. Add direct-path IHX/loop loss and circulator electricity versus electric-path HTGR generation and heater efficiencies, then calculate plant-gate and lifecycle CO2e consistently. Use the 2026 Ahn & Lee comparison as an external validation/contradiction benchmark, not as a substitute for this project's model.
+Build the lifecycle layer without importing US defaults as Singapore facts: establish an upstream-NG emissions sensitivity appropriate to Singapore's imported gas supply, define CO2 transport/storage terms, and derive a defensible lifecycle allocation for direct nuclear heat versus nuclear electricity. Then calculate kgCO2e/kgH2 and CN4252 annual-abatement scale for the matched cases.
