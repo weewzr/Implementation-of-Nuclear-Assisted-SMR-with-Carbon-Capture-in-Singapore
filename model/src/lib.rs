@@ -1122,3 +1122,59 @@ pub fn required_h2_kt_per_year_for_abatement(
     assert!(delta>0.0);
     target_mtco2e_per_year*1000.0/delta
 }
+
+
+/// IEAGHG feedstock-NG energy for the 100,000 Nm3/h H2 reference case.
+/// 12.197 GJ per 1000 Nm3 H2 * 100 = 1219.7 GJ/h.
+pub const IEAGHG_FEEDSTOCK_NG_GJ_H: f64 = 1219.7;
+
+/// Convert an upstream gas-supply intensity (gCO2e/MJ delivered gas) to
+/// kgCO2e/kgH2 for the IEAGHG fixed-output feedstock basis.
+pub fn upstream_ng_kgco2e_per_kgh2(intensity_g_per_mj: f64) -> f64 {
+    assert!(intensity_g_per_mj >= 0.0);
+    let upstream_kg_h=IEAGHG_FEEDSTOCK_NG_GJ_H*1000.0*intensity_g_per_mj/1000.0;
+    upstream_kg_h/IEAGHG_BASE.h2_kg_per_h
+}
+
+/// Nuclear-electric lifecycle contribution, kgCO2e/kgH2.
+pub fn nuclear_electric_lca_kgco2e_per_kgh2(
+    electric_load_mwe:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+)->f64 {
+    electric_load_mwe*1000.0*nuclear_gco2e_per_kwh_e/1000.0/IEAGHG_BASE.h2_kg_per_h
+}
+
+/// Derived proxy for direct nuclear heat lifecycle intensity.
+///
+/// If an electricity LCA factor E [g/kWh_e] is associated with a reactor whose
+/// net electric efficiency is eta_e, the implied lifecycle burden per unit
+/// reactor thermal throughput is approximated as E*eta_e [g/kWh_th].
+/// This is an allocation proxy, NOT a published process-heat LCA result.
+pub fn nuclear_heat_lca_proxy_gco2e_per_kwh_th(
+    nuclear_gco2e_per_kwh_e:f64,
+    net_electric_efficiency:f64,
+)->f64 {
+    assert!(net_electric_efficiency>0.0 && net_electric_efficiency<=1.0);
+    nuclear_gco2e_per_kwh_e*net_electric_efficiency
+}
+
+pub fn direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(
+    thermal_service_mw:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+    net_electric_efficiency:f64,
+)->f64 {
+    let g_per_kwh_th=nuclear_heat_lca_proxy_gco2e_per_kwh_th(
+        nuclear_gco2e_per_kwh_e,net_electric_efficiency);
+    thermal_service_mw*1000.0*g_per_kwh_th/1000.0/IEAGHG_BASE.h2_kg_per_h
+}
+
+/// CO2 transport-chain emissions represented as a fraction of captured CO2.
+/// Useful for transparent sensitivity before a Singapore-specific route is fixed.
+pub fn ccs_transport_kgco2e_per_kgh2(
+    captured_co2_kg_per_kgh2:f64,
+    transport_emission_fraction:f64,
+)->f64 {
+    assert!(captured_co2_kg_per_kgh2>=0.0);
+    assert!((0.0..1.0).contains(&transport_emission_fraction));
+    captured_co2_kg_per_kgh2*transport_emission_fraction
+}
