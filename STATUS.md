@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Quantify IHX/secondary-helium-loop/reformer-modification cost allowance for the only surviving shared-reactor overlap; dedicated large-HTGR allocation is already outside the current S$100/t screening boundary.
+Map the remaining favourable shared-reactor feasibility region after adding the source-backed IAEA USD69m IHX+secondary-loop anchor; the previous representative midpoint no longer fits.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -401,6 +401,15 @@ Against ~S$52m/y headroom:
 
 Thus a dedicated large HTGR is strongly disfavoured by the current economic screen, while a large shared/cogeneration reactor is **not yet falsified** but survives only in a narrow favourable region.
 
+## Source-backed integration cost closes the midpoint shared-reactor overlap
+IAEA TECDOC-1682 gives a directly relevant GTHTR300C component estimate: **USD69.0m for the IHX + secondary helium loop** in a 600 MWth cogeneration system delivering 170 MW high-temperature process heat and 202 MWe. This is preliminary/legacy and estimated from HTTR construction cost, but its process-heat scale closely matches the project's 145-179 MWth envelope. citeturn0search48
+
+At 8%/25y, USD69m annualises to ~USD6.46m/y before integration-specific O&M, or order ~S$8.2m/y at 1.276 SGD/USD. General Atomics independently estimated an intermediate helium loop at USD43/kWth and USD0.1/MWth-h O&M, confirming nonzero integration cost but with materially different scope/basis. citeturn0search49 JAEA also identifies high-temperature creep/material requirements as an IHX manufacturing-cost issue. citeturn0search0
+
+The previously surviving representative midpoint had only order ~S$2m/y residual after the MHR-T thermal-share reactor allocation. Therefore that midpoint **fails once the IAEA IHX/secondary-loop anchor is added**, even before reformer modification, tail-gas recycle equipment, additional O&M or contingency.
+
+This does not yet falsify all shared-reactor cases: higher NG value, lower T&S, smaller allocation fraction or lower integration cost can reopen headroom. The next task is to quantify that surviving sensitivity region rather than treating the midpoint as feasible.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -441,4 +450,4 @@ Thus a dedicated large HTGR is strongly disfavoured by the current economic scre
   remain.
 
 ## Next highest-priority task
-Quantify the integration-cost margin for the surviving shared-reactor case: source or bound IHX, secondary-helium loop, circulator, reformer modification and tail-gas recycle CAPEX/O&M. Test these against the ~S$2m/y residual midpoint margin and broader NG/T&S sensitivities. If credible integration costs eliminate overlap, record economic falsification of the shared architecture under the S$100/t criterion; otherwise preserve the feasible region and advance toward Gate 4 model verification.
+Solve the shared-reactor feasibility boundary after reserving the IAEA USD69m IHX+secondary-loop annualised cost plus an explicit nonzero reformer/recycle integration allowance. Determine the minimum NG price / maximum CCS T&S / maximum reactor allocation fraction combinations that still satisfy S$100/t. Use modern eSMR retrofit literature only to bound reformer-modification scope; do not set helium-reformer retrofit CAPEX to zero without evidence.
