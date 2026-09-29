@@ -1457,3 +1457,23 @@ pub fn case1a_singapore_cac_sgd_screen(
 )->f64 {
     case1a_cac_with_replacement_ts(non_ts_sgd_per_t_avoided,ts_sgd_per_t_captured)
 }
+
+
+/// Required reduction in annual incremental cost to move an existing
+/// abatement-cost comparator down to a target, at fixed annual avoided emissions.
+/// Positive means savings are required; negative means premium headroom exists.
+pub fn required_annual_savings_to_target(
+    current_cost_per_t:f64,
+    target_cost_per_t:f64,
+    annual_avoided_t:f64,
+)->f64 {
+    assert!(annual_avoided_t>0.0);
+    (current_cost_per_t-target_cost_per_t)*annual_avoided_t
+}
+
+/// IEAGHG Case-1A annual direct plant CO2 avoided at its stated 8322 h/y.
+pub fn ieaghg_case1a_annual_direct_co2_avoided_t() -> f64 {
+    let avoided_kg_per_nm3=IEAGHG_BASE_EMITTED_KG_PER_NM3_H2
+        -IEAGHG_CASE1A_EMITTED_KG_PER_NM3_H2;
+    avoided_kg_per_nm3*100_000.0*8322.0/1000.0
+}
