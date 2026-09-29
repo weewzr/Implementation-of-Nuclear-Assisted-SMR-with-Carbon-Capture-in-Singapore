@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Propagate the source-bounded recycle HTGR envelope into annual operating economics and test whether the 80% tail-recycle case still leaves any credible S$100/tCO2e feasibility region.
+Solve the inverse economic feasibility surface: maximum delivered nuclear-heat price and allocated HTGR/integration annual cost compatible with S$100/tCO2e across NG-price and Singapore CCS-T&S sensitivities.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -360,6 +360,18 @@ This interval is now propagated into the HTGR service model. At the 625 C reform
 
 This replaces the earlier optimistic ~3 MW recycle-heat assumption with a defensible source-bounded uncertainty.
 
+## 80% recycle operating-energy economics propagated
+The source-bounded recycle architecture now has a full pre-CAPEX operating-energy screen. At 80% recycle, ~90.0 MW_LHV fresh-feed NG plus 55.94 MW_LHV purchased supplementary furnace NG are displaced, ~145.95 MW combined. The source-bounded reactor-side process-service range is approximately 145-179 MWth before nuclear-loop thermal losses; Case-2A separation remains 6.309 MWe.
+
+JAEA's legacy HTGR hydrogen study used 0.7 JPY/MJ nuclear heat and 5.8 JPY/kWh electricity. At late-Sep-2026 FX (~0.00813 SGD/JPY), 0.7 JPY/MJ is numerically ~S$5.69/GJ. This is explicitly a legacy technology-cost anchor, not a current Singapore nuclear-heat tariff. citeturn0search0turn1search0
+
+At S$150/MWh separation electricity and S$5.69/GJ nuclear heat, annual operating-energy net value before CAPEX/fixed O&M is:
+- gas S$10/GJ: ~S$5.3-11.1m/y;
+- gas S$15/GJ: ~S$27.2-33.0m/y;
+- gas S$20/GJ: ~S$49.1-54.9m/y.
+
+The corresponding operating-energy-only gas break-even is ~S$7.45-8.78/GJ across 145-179 MWth service. Therefore the concept is not yet economically falsified: at ~S$15/GJ gas the operating-energy benefit is comparable to the previously identified ~S$17-29m/y fixed-denominator savings gap, but there is little/no room for CAPEX at the low-gas case and substantial sensitivity to CCS T&S.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -400,4 +412,4 @@ This replaces the earlier optimistic ~3 MW recycle-heat assumption with a defens
   remain.
 
 ## Next highest-priority task
-Update the 80% recycle economic screen using the source-bounded ~13-28 MWth incremental thermal requirement, Case-2A 6.309 MWe separation anchor, fresh-feed NG displacement and supplementary-furnace-NG removal. Price nuclear heat transparently using source/sensitivity ranges and compare annual real savings/costs with the S$17-29m/y threshold gap. If no credible region remains, record economic falsification rather than refining unavailable exchanger duties further.
+Derive an analytical break-even surface rather than choosing a speculative nuclear price: for NG prices S$10-20/GJ, CCS T&S Group-A sensitivities, and the 145-179 MWth service range, solve the maximum delivered nuclear-heat price and maximum allocated annual HTGR/IHX/recycle CAPEX/O&M compatible with S$100/tCO2e. Compare dedicated versus cogeneration allocation. If the feasible region requires nuclear heat/capital below credible literature anchors, record economic falsification.
