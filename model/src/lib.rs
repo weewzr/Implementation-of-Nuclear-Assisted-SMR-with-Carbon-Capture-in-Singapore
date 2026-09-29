@@ -4336,3 +4336,148 @@ mod review2_b03_external_equilibrium_tests {
         assert!(k1223>k1173 && k1173>0.0);
     }
 }
+
+
+/// Full wet-gas state used for Review-2 physical recycle work, kmol/h.
+/// Unlike the legacy CHO surrogate this state carries steam and inert N2.
+#[derive(Debug,Clone,Copy,Default)]
+pub struct WetGas6 {
+    pub h2:f64, pub h2o:f64, pub co:f64, pub co2:f64, pub ch4:f64, pub n2:f64,
+}
+impl WetGas6 {
+    pub fn total(self)->f64 {self.h2+self.h2o+self.co+self.co2+self.ch4+self.n2}
+    pub fn carbon(self)->f64 {self.co+self.co2+self.ch4}
+    pub fn hydrogen_atoms(self)->f64 {2.0*self.h2+2.0*self.h2o+4.0*self.ch4}
+    pub fn oxygen_atoms(self)->f64 {self.h2o+self.co+2.0*self.co2}
+    pub fn nitrogen_atoms(self)->f64 {2.0*self.n2}
+    pub fn nonnegative(self)->bool {
+        [self.h2,self.h2o,self.co,self.co2,self.ch4,self.n2].iter().all(|x|*x>=0.0&&x.is_finite())
+    }
+    pub fn scale(self,a:f64)->Self {Self{
+        h2:self.h2*a,h2o:self.h2o*a,co:self.co*a,co2:self.co2*a,ch4:self.ch4*a,n2:self.n2*a}}
+    pub fn add(self,b:Self)->Self {Self{
+        h2:self.h2+b.h2,h2o:self.h2o+b.h2o,co:self.co+b.co,
+        co2:self.co2+b.co2,ch4:self.ch4+b.ch4,n2:self.n2+b.n2}}
+}
+
+/// Authoritative IEAGHG once-through HTS inlet/outlet represented in WetGas6.
+pub fn ieaghg_hts_inlet_wet6()->WetGas6 {
+    let s=ieaghg_hts_inlet();
+    WetGas6{h2:s.flow(s.h2),h2o:s.flow(s.h2o),co:s.flow(s.co),
+        co2:s.flow(s.co2),ch4:s.flow(s.ch4),n2:s.flow(s.n2)}
+}
+pub fn ieaghg_hts_outlet_wet6()->WetGas6 {
+    let s=ieaghg_hts_outlet();
+    WetGas6{h2:s.flow(s.h2),h2o:s.flow(s.h2o),co:s.flow(s.co),
+        co2:s.flow(s.co2),ch4:s.flow(s.ch4),n2:s.flow(s.n2)}
+}
+
+/// Apply WGS extent xi to a wet gas. Positive xi is CO+H2O->CO2+H2.
+/// Invalid extents are rejected rather than clipped.
+pub fn apply_wgs(s:WetGas6,xi:f64)->WetGas6 {
+    let o=WetGas6{h2:s.h2+xi,h2o:s.h2o-xi,co:s.co-xi,
+        co2:s.co2+xi,ch4:s.ch4,n2:s.n2};
+    assert!(o.nonnegative(),"nonphysical WGS extent");
+    o
+}
+
+/// Apply SMR extent xi: CH4+H2O->CO+3H2.
+pub fn apply_smr(s:WetGas6,xi:f64)->WetGas6 {
+    let o=WetGas6{h2:s.h2+3.0*xi,h2o:s.h2o-xi,co:s.co+xi,
+        co2:s.co2,ch4:s.ch4-xi,n2:s.n2};
+    assert!(o.nonnegative(),"nonphysical SMR extent");
+    o
+}
+
+pub fn wet6_element_residual(a:WetGas6,b:WetGas6)->[f64;4] {
+    [b.carbon()-a.carbon(),b.hydrogen_atoms()-a.hydrogen_atoms(),
+     b.oxygen_atoms()-a.oxygen_atoms(),b.nitrogen_atoms()-a.nitrogen_atoms()]
+}
+
+/// Solve a single WGS equilibrium extent by bisection at fixed T,P.
+/// This is an ideal-gas equilibrium reactor layer, not a kinetic reactor.
+pub fn solve_wgs_equilibrium(mut s:WetGas6,t_k:f64,p_bar:f64)->WetGas6 {
+    assert!(s.nonnegative()&&p_bar>0.0);
+    let eps=1e-10;
+    let lo=-s.co2.min(s.h2)+eps;
+    let hi=s.co.min(s.h2o)-eps;
+    assert!(hi>lo);
+    let residual=|xi:f64| {
+        let x=apply_wgs(s,xi); let n=x.total();
+        let q=wgs_reaction_quotient(x.co/n,x.h2o/n,x.co2/n,x.h2/n,p_bar);
+        q.ln()-wgs_equilibrium_constant_piecewise(t_k).ln()
+    };
+    let mut a=lo; let mut b=hi; let mut fa=residual(a); let fb=residual(b);
+    assert!(fa*fb<=0.0,"WGS equilibrium root not bracketed");
+    for _ in 0..120 {
+        let m=0.5*(a+b); let fm=residual(m);
+        if fm.abs()<1e-11 {return apply_wgs(s,m);}
+        if fa*fm<=0.0 {b=m;} else {a=m;fa=fm;}
+    }
+    s=apply_wgs(s,0.5*(a+b)); s
+}
+
+/// Composition-aware reduced PSA separator.
+/// H2 recovery decreases linearly with non-H2 dry impurity loading relative to
+/// the IEAGHG once-through PSA feed; the slope is an explicit uncertainty
+/// parameter. Product is pure-H2 in this reduced separator, so common-basis
+/// purity >=99.9% is enforced by construction while component balances remain exact.
+#[derive(Debug,Clone,Copy)]
+pub struct Psa6Result {pub product_h2:f64,pub tail:WetGas6,pub recovery:f64}
+pub fn psa6_bounded(s:WetGas6,impurity_sensitivity:f64)->Psa6Result {
+    assert!(s.nonnegative()&&impurity_sensitivity>=0.0);
+    let dry=s.h2+s.co+s.co2+s.ch4+s.n2;
+    assert!(dry>0.0&&s.h2>0.0);
+    let impurity=(dry-s.h2)/dry;
+    let refi=ieaghg_psa_inlet_cho();
+    let refdry=refi.h2+refi.co+refi.co2+refi.ch4+ieaghg_process_n2_feed_kmol_h();
+    let refimp=(refdry-refi.h2)/refdry;
+    let r0=ieaghg_reconstructed_psa_h2_recovery();
+    let recovery=(r0-impurity_sensitivity*(impurity-refimp)).clamp(0.50,0.98);
+    let product=s.h2*recovery;
+    let tail=WetGas6{h2:s.h2-product,h2o:s.h2o,co:s.co,co2:s.co2,ch4:s.ch4,n2:s.n2};
+    assert!(tail.nonnegative());
+    Psa6Result{product_h2:product,tail,recovery}
+}
+
+#[cfg(test)]
+mod review2_fullspecies_foundation_tests {
+    use super::*;
+    #[test]
+    fn wgs_stoichiometry_conserves_all_elements() {
+        let a=ieaghg_hts_inlet_wet6(); let b=apply_wgs(a,100.0);
+        for e in wet6_element_residual(a,b) {assert!(e.abs()<1e-9);}
+    }
+    #[test]
+    fn source_hts_wgs_extent_reproduces_outlet_species() {
+        let a=ieaghg_hts_inlet_wet6();
+        let xi=ieaghg_hts_wgs_extent_from_co_kmol_h();
+        let b=apply_wgs(a,xi); let r=ieaghg_hts_outlet_wet6();
+        assert!((b.co-r.co).abs()<2.0);
+        assert!((b.co2-r.co2).abs()<2.0);
+        assert!((b.h2-r.h2).abs()<2.0);
+        assert!((b.h2o-r.h2o).abs()<2.0);
+    }
+    #[test]
+    fn equilibrium_wgs_closes_elements_and_q_over_k() {
+        let a=ieaghg_hts_inlet_wet6();
+        let b=solve_wgs_equilibrium(a,685.15,27.7);
+        for e in wet6_element_residual(a,b) {assert!(e.abs()<1e-8);}
+        let n=b.total();
+        let q=wgs_reaction_quotient(b.co/n,b.h2o/n,b.co2/n,b.h2/n,27.7);
+        assert!((q/wgs_equilibrium_constant_piecewise(685.15)-1.0).abs()<1e-8);
+    }
+    #[test]
+    fn psa_once_through_recovers_source_recovery_at_zero_sensitivity() {
+        let s=ieaghg_hts_outlet_wet6();
+        let p=psa6_bounded(s,0.0);
+        assert!((p.recovery-ieaghg_reconstructed_psa_h2_recovery()).abs()<1e-12);
+        assert!((p.product_h2+p.tail.h2-s.h2).abs()<1e-10);
+    }
+    #[test]
+    fn psa_recovery_degrades_with_added_inert() {
+        let s=ieaghg_hts_outlet_wet6();
+        let dirty=WetGas6{n2:s.n2+500.0,..s};
+        assert!(psa6_bounded(dirty,0.5).recovery<psa6_bounded(s,0.5).recovery);
+    }
+}
