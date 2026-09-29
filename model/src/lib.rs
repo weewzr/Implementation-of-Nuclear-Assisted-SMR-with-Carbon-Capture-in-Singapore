@@ -819,3 +819,78 @@ pub fn current_furnace_service_lower_bound_mw() -> (f64,f64) {
     let q_feed_min=feed_preheater_ch4_only_lower_bound_mw();
     (lo+q_feed_min,hi+q_feed_min)
 }
+
+
+/// NIST SRD 69 Shomate coefficients used for the non-hydrocarbon minor
+/// components of the IEAGHG natural-gas feed.
+pub const NIST_CO2_298_1200: Shomate = Shomate {
+    a:24.99735,b:55.18696,c:-33.69137,d:7.948387,
+    e:-0.136638,f:-403.6075,g:228.2431,h:-393.5224,
+};
+pub const NIST_N2_100_500: Shomate = Shomate {
+    a:28.98641,b:1.853978,c:-9.647459,d:16.63537,
+    e:0.000117,f:-8.671914,g:226.4168,h:0.0,
+};
+pub const NIST_N2_500_2000: Shomate = Shomate {
+    a:19.50583,b:19.88705,c:-8.598535,d:1.369784,
+    e:0.527601,f:-4.935202,g:212.3900,h:0.0,
+};
+
+/// Piecewise-linear integration of tabulated ideal-gas Cp data.
+/// Temperatures K; Cp J/mol-K; result kJ/mol.
+pub fn integrate_cp_table_kj_mol(points: &[(f64,f64)], t1: f64, t2: f64) -> f64 {
+    assert!(t2 > t1 && points.len() >= 2);
+    let cp_at = |t:f64| -> f64 {
+        for w in points.windows(2) {
+            if t >= w[0].0 && t <= w[1].0 {
+                let x=(t-w[0].0)/(w[1].0-w[0].0);
+                return w[0].1+x*(w[1].1-w[0].1);
+            }
+        }
+        panic!("temperature outside Cp table");
+    };
+    let mut knots=vec![t1];
+    for &(t,_) in points { if t>t1 && t<t2 { knots.push(t); } }
+    knots.push(t2);
+    let mut area=0.0;
+    for w in knots.windows(2) {
+        area += 0.5*(cp_at(w[0])+cp_at(w[1]))*(w[1]-w[0]);
+    }
+    area/1000.0
+}
+
+const NIST_C2H6_CP: &[(f64,f64)] = &[
+    (400.0,65.46),(500.0,77.94),(600.0,89.19),(700.0,99.14)
+];
+const NIST_C3H8_CP: &[(f64,f64)] = &[
+    (400.0,94.01),(500.0,112.59),(600.0,128.70),(700.0,142.67)
+];
+const NIST_NC4H10_CP: &[(f64,f64)] = &[
+    (400.0,124.77),(500.0,148.66),(600.0,169.28),(700.0,187.02)
+];
+const NIST_NC5H12_CP: &[(f64,f64)] = &[
+    (400.0,152.55),(500.0,182.59),(600.0,208.78),(700.0,231.38)
+];
+
+fn n2_delta_h_kj_mol(t1:f64,t2:f64)->f64 {
+    assert!(t1 < 500.0 && t2 > 500.0);
+    NIST_N2_100_500.delta_h_kj_mol(t1,500.0)
+        + NIST_N2_500_2000.delta_h_kj_mol(500.0,t2)
+}
+
+/// Complete sensible duty for the published IEAGHG natural-gas mixture,
+/// excluding the separately added recycled-H2 slipstream.
+/// Composition: 2% CO2, 89% CH4, 7% C2H6, 1% C3H8,
+/// 0.1% n-C4H10, 0.01% n-C5H12; the residual 0.89% is treated as N2.
+pub fn feed_preheater_ng_only_duty_mw() -> f64 {
+    let t1=408.15; let t2=643.15; let n=1455.8;
+    let dh =
+        0.0200*NIST_CO2_298_1200.delta_h_kj_mol(t1,t2)
+        +0.8900*NIST_CH4_298_1300.delta_h_kj_mol(t1,t2)
+        +0.0700*integrate_cp_table_kj_mol(NIST_C2H6_CP,t1,t2)
+        +0.0100*integrate_cp_table_kj_mol(NIST_C3H8_CP,t1,t2)
+        +0.0010*integrate_cp_table_kj_mol(NIST_NC4H10_CP,t1,t2)
+        +0.0001*integrate_cp_table_kj_mol(NIST_NC5H12_CP,t1,t2)
+        +0.0089*n2_delta_h_kj_mol(t1,t2);
+    n*dh/3600.0
+}
