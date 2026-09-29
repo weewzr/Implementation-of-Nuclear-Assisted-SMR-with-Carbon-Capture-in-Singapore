@@ -527,3 +527,23 @@ fn project_loop_circulator_sensitivity_is_low_single_digit_mw() {
     close(project_loop_circulator_sensitivity_mw(2.0),4.3350,0.005);
     close(project_loop_circulator_sensitivity_mw(3.0),6.5025,0.005);
 }
+
+
+#[test]
+fn furnace_steam_generation_upper_bound_is_about_sixteen_to_seventeen_mw() {
+    use nuclear_assisted_smr::furnace_steam_generation_upper_bound_mw;
+    let (lo,hi)=furnace_steam_generation_upper_bound_mw();
+    assert!(lo > 16.4 && lo < 16.6);
+    assert!(hi > 16.7 && hi < 16.9);
+}
+
+#[test]
+fn bounded_furnace_service_envelope_is_about_131_to_151_mw() {
+    use nuclear_assisted_smr::bounded_furnace_service_envelope_mw;
+    let a=bounded_furnace_service_envelope_mw(600.0);
+    let c=bounded_furnace_service_envelope_mw(650.0);
+    assert!(a.0 > 130.7 && a.0 < 130.8);
+    assert!(a.1 > 147.7 && a.1 < 147.9);
+    assert!(c.0 > 134.2 && c.0 < 134.3);
+    assert!(c.1 > 151.0 && c.1 < 151.4);
+}
