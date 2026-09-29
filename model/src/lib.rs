@@ -5167,3 +5167,120 @@ mod review2_legacy_retirement_tests {
         assert!((new.fresh_fraction-analytical_tail_recycle_fresh_ng_fraction()).abs()>1e-5);
     }
 }
+
+
+/// Literature-bounded H2 PSA recovery envelope for Review-2 screening.
+/// Conventional high-purity SMR PSA literature commonly reports ~70-90%
+/// recovery; the IEAGHG source-reconstructed recovery remains the central
+/// plant-specific anchor. This is an uncertainty envelope, not a PSA cycle model.
+pub const PSA_H2_RECOVERY_SCREEN_LO:f64=0.70;
+pub const PSA_H2_RECOVERY_SCREEN_HI:f64=0.90;
+
+/// Fixed-recovery component-conserving PSA used to propagate the literature
+/// envelope without inventing an impurity-response slope.
+pub fn psa6_fixed_recovery(s:WetGas6,recovery:f64)->Psa6Result {
+    assert!(s.nonnegative());
+    assert!((PSA_H2_RECOVERY_SCREEN_LO..=PSA_H2_RECOVERY_SCREEN_HI).contains(&recovery));
+    let product=s.h2*recovery;
+    Psa6Result{product_h2:product,
+        tail:WetGas6{h2:s.h2-product,..s},recovery}
+}
+
+/// Thermodynamic inner recycle solve with externally bounded PSA recovery.
+pub fn solve_recycle6_at_fixed_fresh_psa_recovery(
+    fresh_fraction:f64,reformer_temperature_k:f64,reformer_pressure_bar:f64,
+    shift_temperature_k:f64,shift_pressure_bar:f64,psa_recovery:f64,
+    max_n2_mole_fraction:f64,tolerance:f64,max_iterations:u32,
+)->FixedFreshRecycle6 {
+    let source=ieaghg_hts_inlet_wet6();
+    let mut recycle=WetGas6::default(); let relax=0.20;
+    let mut last=FixedFreshRecycle6{converged:false,iterations:0,fresh_fraction,
+        product_h2:0.0,purge_fraction:0.0,recycle,purge:WetGas6::default(),
+        psa_recovery,max_state_residual:f64::INFINITY};
+    for it in 1..=max_iterations {
+        let feed=source.scale(fresh_fraction).add(recycle);
+        let reformed=solve_smr_wgs_equilibrium(
+            feed,reformer_temperature_k,reformer_pressure_bar,1e-8,10000);
+        let shifted=solve_wgs_equilibrium(reformed,shift_temperature_k,shift_pressure_bar);
+        let psa=psa6_fixed_recovery(shifted,psa_recovery);
+        let external_n2=source.n2*fresh_fraction;
+        let p=(external_n2/psa.tail.n2.max(1e-12)).clamp(1e-12,1.0);
+        let purge=psa.tail.scale(p); let target=psa.tail.scale(1.0-p);
+        let dry=target.h2+target.co+target.co2+target.ch4+target.n2;
+        let n2frac=if dry>0.0{target.n2/dry}else{0.0};
+        if n2frac>max_n2_mole_fraction*(1.0+1e-8){return last;}
+        let next=WetGas6{
+            h2:recycle.h2+relax*(target.h2-recycle.h2),
+            h2o:recycle.h2o+relax*(target.h2o-recycle.h2o),
+            co:recycle.co+relax*(target.co-recycle.co),
+            co2:recycle.co2+relax*(target.co2-recycle.co2),
+            ch4:recycle.ch4+relax*(target.ch4-recycle.ch4),
+            n2:recycle.n2+relax*(target.n2-recycle.n2)};
+        let err=(next.h2-recycle.h2).abs().max((next.h2o-recycle.h2o).abs())
+            .max((next.co-recycle.co).abs()).max((next.co2-recycle.co2).abs())
+            .max((next.ch4-recycle.ch4).abs()).max((next.n2-recycle.n2).abs());
+        recycle=next;
+        last=FixedFreshRecycle6{converged:err<tolerance,iterations:it,
+            fresh_fraction,product_h2:psa.product_h2,purge_fraction:p,recycle,
+            purge,psa_recovery,max_state_residual:err};
+        if err<tolerance{return last;}
+    }
+    last
+}
+
+pub fn solve_full_recycle6_psa_recovery(
+    psa_recovery:f64,target_h2_kmol_h:f64
+)->FullRecycle6Result {
+    let eval=|fresh:f64| solve_recycle6_at_fixed_fresh_psa_recovery(
+        fresh,1173.15,28.0,685.15,27.7,psa_recovery,0.10,1e-6,50000);
+    let mut lo=0.02;let mut hi=2.0;let mut a=eval(lo);let mut b=eval(hi);
+    assert!(a.converged&&b.converged);
+    let mut fa=a.product_h2-target_h2_kmol_h;
+    assert!(fa<=0.0&&b.product_h2-target_h2_kmol_h>=0.0);
+    for outer in 1..=100 {
+        let mid=0.5*(lo+hi);let m=eval(mid);assert!(m.converged);
+        let fm=m.product_h2-target_h2_kmol_h;
+        if (fm/target_h2_kmol_h).abs()<1e-6 {
+            return FullRecycle6Result{converged:true,iterations:outer,
+                fresh_fraction:mid,purge_fraction:m.purge_fraction,
+                product_h2:m.product_h2,recycle:m.recycle,purge:m.purge,
+                psa_recovery:m.psa_recovery};}
+        if fm>0.0{hi=mid;b=m}else{lo=mid;a=m;fa=fm}
+    }
+    panic!("PSA recovery envelope outer solve failed")
+}
+
+pub fn psa_recovery_uncertainty_cases()->[FullRecycle6Result;3] {
+    let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+    let r0=ieaghg_reconstructed_psa_h2_recovery()
+        .clamp(PSA_H2_RECOVERY_SCREEN_LO,PSA_H2_RECOVERY_SCREEN_HI);
+    [
+        solve_full_recycle6_psa_recovery(PSA_H2_RECOVERY_SCREEN_LO,target),
+        solve_full_recycle6_psa_recovery(r0,target),
+        solve_full_recycle6_psa_recovery(PSA_H2_RECOVERY_SCREEN_HI,target),
+    ]
+}
+
+#[cfg(test)]
+mod review2_psa_envelope_tests {
+    use super::*;
+    #[test]
+    fn ieaghg_recovery_lies_inside_literature_screen() {
+        let r=ieaghg_reconstructed_psa_h2_recovery();
+        assert!(r>=PSA_H2_RECOVERY_SCREEN_LO&&r<=PSA_H2_RECOVERY_SCREEN_HI);
+    }
+    #[test]
+    fn all_psa_recovery_cases_converge_and_hold_product() {
+        let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+        for r in psa_recovery_uncertainty_cases() {
+            assert!(r.converged&&r.recycle.nonnegative()&&r.purge_fraction>0.0);
+            assert!((r.product_h2-target).abs()/target<1e-6);
+        }
+    }
+    #[test]
+    fn lower_psa_recovery_requires_no_less_fresh_feed() {
+        let x=psa_recovery_uncertainty_cases();
+        assert!(x[0].fresh_fraction>=x[1].fresh_fraction);
+        assert!(x[1].fresh_fraction>=x[2].fresh_fraction);
+    }
+}
