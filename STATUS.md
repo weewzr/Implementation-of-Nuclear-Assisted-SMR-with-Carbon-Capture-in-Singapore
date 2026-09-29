@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Replace the illustrative 7.5 kgCO2e/kgH2 / S$54m/y economic denominator with a matched lifecycle calculation for the same 80% recycle + shared-reactor case, because recycle changes upstream NG, capture mass and nuclear lifecycle emissions.
+Replace the reduced 80% recycle sensitivity with an iterative fixed-H2 recycle closure so fresh NG, tail-gas composition, captured carbon, heat duty, lifecycle emissions and economics are solved consistently.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -421,6 +421,27 @@ Therefore the shared architecture retains a real but narrow favourable region; i
 
 The next dependency is lifecycle consistency: the S$54m/y budget was derived from an illustrative 7.5 kgCO2e/kgH2 abatement. The 80% recycle case reduces fresh NG and changes upstream emissions/capture mass, so its actual annual abatement and allowable S$100/t budget must now be recomputed on the same physical case.
 
+## Matched lifecycle denominator materially reopens shared-reactor region
+The 80% recycle/shared-HTGR economic case is now matched to its own lifecycle inventory instead of retaining the illustrative 7.5 kgCO2e/kgH2 denominator.
+
+Using the global-gas upstream anchor (11.5 gCO2e/MJ), 90% capture of reduced external feed carbon, 162 MWth direct nuclear service, 5.5 gCO2e/kWh_e nuclear LCA proxy at 50.4% efficiency, and 2.5% captured-CO2 transport-emission sensitivity:
+- unabated IEAGHG lifecycle screen ~= **10.813 kgCO2e/kgH2**;
+- recycle/shared-HTGR candidate ~= **1.890 kgCO2e/kgH2**;
+- specific abatement ~= **8.923 kgCO2e/kgH2**;
+- at 8994 kgH2/h and 8322 h/y, annual abatement ~= **0.668 MtCO2e/y**;
+- matched S$100/t annual cost allowance ~= **S$66.8m/y**.
+
+This replaces the inconsistent ~S$54m/y allowance previously used for the recycle case.
+
+Rerunning the full-cost boundary with ~S$50m/y MHR-T allocation, ~S$8.2m/y IHX/loop, S$5m/y reformer/recycle allowance, 162 MWth, S$5.69/GJ nuclear heat and S$150/MWh separation power:
+- low Group-A T&S (~S$31.9m/y) requires NG value only ~**S$14.6/GJ**;
+- at S$20/GJ gas, maximum T&S rises to ~**S$55.5m/y**, above both prior Group-A sensitivities;
+- at S$15/GJ gas, max T&S is only ~**S$33.7m/y**, so the low Group-A end is marginally feasible but the high end is not.
+
+Thus lifecycle consistency reopens a meaningful part of the shared-reactor feasibility region. Dedicated large HTGR remains outside the current screen.
+
+The central remaining weakness is that 80% recycle and 90% capture are still reduced-model assumptions rather than a converged recycle flowsheet.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -461,4 +482,4 @@ The next dependency is lifecycle consistency: the S$54m/y budget was derived fro
   remain.
 
 ## Next highest-priority task
-Build a matched lifecycle inventory for the 80% recycle/shared-reactor case: reduce upstream NG in proportion to fresh-feed displacement, account separately for eliminated supplementary furnace NG, update captured/residual carbon from the recycle balance, add nuclear heat lifecycle emissions and CCS T&S emissions, and compare against the same unabated-SMR lifecycle baseline. Use the resulting annual MtCO2e avoided to regenerate the S$100/t budget, then rerun the full-cost boundary. This is required before any assignment-level economic verdict.
+Implement an iterative fixed-H2 tail-recycle closure. Starting from the IEAGHG PSA tail composition, remove CO2, recycle H2/CO/CH4, reduce fresh NG to hold H2 product fixed, apply reaction conversion and PSA recovery, regenerate the new tail composition, and iterate to convergence. Then recompute fresh-NG energy, external carbon, capture mass, process heat, lifecycle emissions and the S$100/t boundary from the converged state. Do not tighten economic conclusions further until this physical closure replaces the 80% sensitivity.
