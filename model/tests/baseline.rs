@@ -1224,3 +1224,28 @@ fn matched_lifecycle_budget_changes_full_cost_gas_boundary() {
     println!("MATCHED_LCA_MIN_GAS={p}");
     assert!(p>14.2 && p<14.4);
 }
+
+
+#[test]
+fn singapore_import_mix_screen_is_between_global_gas_and_lng_anchors() {
+    use nuclear_assisted_smr::singapore_2024_ng_mix_screen_gco2e_per_mj;
+    let x=singapore_2024_ng_mix_screen_gco2e_per_mj();
+    assert!(x>15.3 && x<15.5, "Singapore mix screen {x} g/MJ");
+}
+
+#[test]
+fn matched_recycle_meets_abatement_scale_across_credible_lifecycle_bracket() {
+    use nuclear_assisted_smr::matched_recycle_lifecycle_economic_point;
+    // Lower-abatement corner: lower upstream gas burden, higher nuclear LCA,
+    // higher CCS-chain fraction.
+    let low=matched_recycle_lifecycle_economic_point(11.5,6.4,0.035);
+    // Higher-abatement corner: LNG-like upstream burden, lower nuclear LCA,
+    // lower CCS-chain fraction.
+    let high=matched_recycle_lifecycle_economic_point(18.6,5.1,0.025);
+    println!("LCA_LOW={:?};LCA_HIGH={:?}",low,high);
+    assert!(low.annual_abatement_t>600_000.0);
+    assert!(high.annual_abatement_t>700_000.0);
+    assert!(low.min_gas_price_low_ts_sgd_per_gj>high.min_gas_price_low_ts_sgd_per_gj);
+    assert!(low.min_gas_price_low_ts_sgd_per_gj<17.0);
+    assert!(high.min_gas_price_low_ts_sgd_per_gj>10.0);
+}
