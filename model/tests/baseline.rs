@@ -1001,3 +1001,16 @@ fn full_shift_sensible_heat_to_170c_is_now_bounded_without_nist_extrapolation() 
     assert!(lo>18.0 && hi<22.0, "412->170 C sensible heat {lo}..{hi} MW");
     assert!(hi-lo<0.5, "water-Cp uncertainty unexpectedly large");
 }
+
+
+#[test]
+fn preserving_feed_preheat_pushes_mdea_recovery_ceiling_below_thirty_seven_percent() {
+    use nuclear_assisted_smr::{
+        residual_shift_heat_after_feed_preheat_bounds_mw,
+        mdea_fraction_after_feed_preheat_upper_bounds,
+    };
+    let (qlo,qhi)=residual_shift_heat_after_feed_preheat_bounds_mw();
+    assert!(qlo>13.7 && qhi<14.1, "residual shifted heat {qlo}..{qhi} MW");
+    let (flo,fhi)=mdea_fraction_after_feed_preheat_upper_bounds();
+    assert!(flo>0.34 && fhi<0.38, "MDEA upper fraction {flo}..{fhi}");
+}
