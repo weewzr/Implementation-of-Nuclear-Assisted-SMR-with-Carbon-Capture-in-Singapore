@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Replace the Configuration-B carbon-only fresh-NG displacement ceiling with a reduced fixed-H2 recycle/reaction model including PSA recovery, steam and reformer-duty effects.
+Quantify the omitted thermal penalties in the reduced tail-recycle case—recycled CH4/CO conversion heat plus Case-2A solvent-regeneration steam—to determine how much of the apparent operating saving survives.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -277,6 +277,17 @@ At 8322 h/y the ~110 MW upper-bound feed displacement is ~3.3 million GJ/y, so i
 
 IEAGHG Case 2A provides a same-scale utility anchor for tail-gas CO2 removal: 4.575 MWe capture plant + 2.874 MWe CO2 compression/dehydration - 1.140 MWe expander recovery = **6.309 MWe** before other recycle-specific costs and solvent-steam demand.
 
+## Reduced fixed-H2 tail-recycle result
+A reduced stoichiometric model now distinguishes recycled H2, CO and CH4 and uses the source-reconstructed PSA H2 recovery (~90%). It is not yet an equilibrium/recycle-convergence model.
+
+At equal 50/80/100% H2 recovery + CO/CH4 conversion sensitivities, fresh-NG displacement is ~16.6/26.6/33.2%, corresponding to ~56.3/90.0/112.5 MW of fresh-feed energy. The 80% case requires ~563 kmol/h additional stoichiometric water.
+
+The ideal 33.2% fresh-NG displacement slightly exceeds the earlier ~32% carbon-equivalent ceiling because existing recycled H2 can displace fresh NG without carrying carbon; the earlier statement is corrected to apply specifically to carbon-equivalent displacement.
+
+For the 80% case, at illustrative S$150/MWh electricity, the Case-2A 6.309 MWe separation anchor costs ~S$7.88m/y. Gross fresh-feed savings at S$10/15/20 per GJ are ~S$27.0/40.4/53.9m/y, leaving optimistic **partial** net values of ~S$19.1/32.6/46.1m/y before solvent steam, altered reformer duty, recycle compression and CAPEX.
+
+This keeps tail-gas integration economically material but does not establish feasibility.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -317,4 +328,4 @@ IEAGHG Case 2A provides a same-scale utility anchor for tail-gas CO2 removal: 4.
   remain.
 
 ## Next highest-priority task
-Implement a reduced iterative recycle model at fixed H2 output: recover recycled H2, shift CO, reform CH4, apply PSA recovery, reduce fresh NG to restore the H2 target, and iterate recycle to convergence. Recalculate steam/reformer heat and combine fresh-feed + supplementary-fuel savings with Case-2A-anchored separation electricity. Acceptance criterion: replace the 32%/110 MW upper bound with a physically achievable range before assigning an economic credit.
+Calculate the thermal penalty for the reduced recycle cases: reaction heat for recycled CH4 reforming, shift contribution, extra steam generation/superheat and Case-2A MDEA regeneration (~66.9 t/h LP steam). Convert those duties into additional HTGR heat/electricity requirements, then recompute the partial net operating value. After that, add recycle compression and iterate the reduced model toward convergence.
