@@ -3691,7 +3691,7 @@ pub fn reconstructed_reformer_whb_duty_mw(reformer_outlet_c:f64)->f64 {
 /// This is a latent-heat-only benchmark because the exact economizer/evaporator
 /// split is not separately published.
 pub fn source_whb_steam_latent_benchmark_mw()->(f64,f64) {
-    let m=0.75*ieaghg_total_saturated_hp_steam_kg_h()/3600.0;
+    let m=ieaghg_syngas_whb_steam_kg_h_approx()/3600.0;
     (m*STEAM_HFG_4P5MPA_KJ_KG/1000.0,m*STEAM_HFG_4MPA_KJ_KG/1000.0)
 }
 
