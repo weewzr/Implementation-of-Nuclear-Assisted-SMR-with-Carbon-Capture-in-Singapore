@@ -1297,3 +1297,40 @@ pub fn capex_only_break_even_upper_bound(
 )->f64 {
     annual_incremental_cost_budget/capital_recovery_factor(discount_rate,lifetime_years)
 }
+
+
+/// Energy-share allocation of common reactor cost to a process-heat branch.
+/// This is one transparent allocation rule, not a universal accounting rule.
+pub fn reactor_cost_allocation_fraction_by_thermal_service(
+    process_heat_mw: f64,
+    reactor_thermal_mw: f64,
+) -> f64 {
+    assert!(process_heat_mw > 0.0 && reactor_thermal_mw > 0.0);
+    assert!(process_heat_mw <= reactor_thermal_mw);
+    process_heat_mw / reactor_thermal_mw
+}
+
+/// Annualised reactor cost allocated to hydrogen/process heat under a chosen
+/// allocation fraction.
+pub fn allocated_annual_reactor_cost(
+    total_reactor_capex: f64,
+    allocation_fraction: f64,
+    discount_rate: f64,
+    lifetime_years: u32,
+    total_fixed_opex_per_year: f64,
+) -> f64 {
+    assert!((0.0..=1.0).contains(&allocation_fraction));
+    allocation_fraction * (
+        total_reactor_capex * capital_recovery_factor(discount_rate,lifetime_years)
+        + total_fixed_opex_per_year
+    )
+}
+
+/// Residual annual budget left for non-reactor incremental costs while meeting
+/// an abatement-cost ceiling.
+pub fn residual_incremental_budget(
+    total_allowed_incremental_cost_per_year: f64,
+    allocated_reactor_cost_per_year: f64,
+) -> f64 {
+    total_allowed_incremental_cost_per_year - allocated_reactor_cost_per_year
+}
