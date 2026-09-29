@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Place literature-derived HTGR annualised capital/O&M ranges onto the inverse S$100/t feasibility surface and test dedicated versus cogeneration cases against the boundary.
+Quantify IHX/secondary-helium-loop/reformer-modification cost allowance for the only surviving shared-reactor overlap; dedicated large-HTGR allocation is already outside the current S$100/t screening boundary.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -387,6 +387,20 @@ At NG~S$15/GJ and 162 MWth, the boundary is roughly ~S$15.9/GJ under low Group-A
 
 Dedicated reactor allocation uses 100% of hydrogen-side headroom. A GTHTR300C-like 170/600 thermal-share allocation expands allowable total common-reactor annual cost by ~3.53x, but only when hydrogen-side headroom is positive and the other product genuinely bears the remaining cost.
 
+## HTGR source costs mapped onto inverse boundary
+IAEA TECDOC 2075 provides modern multi-module source cases: HTGR-200+SMR has 800 MWth NPP, USD2.065b NPP CAPEX and USD192m/y NPP O&M; MHR-T+SMR has 2400 MWth NPP, USD2.748b CAPEX and USD324m/y O&M. citeturn0search48
+
+At 8%/25y, annual common NPP cost is ~USD385m/y and ~USD581m/y respectively. A simple 162 MWth thermal-share allocation gives ~USD78m/y for HTGR-200 and ~USD39m/y for MHR-T; at ~1.276 SGD/USD these are order ~S$100m/y and ~S$50m/y.
+
+CI exposed and corrected an interpretation error in the inverse boundary: at the illustrative S$15/GJ gas, 162 MWth, S$5.69/GJ legacy heat anchor, S$150/MWh separation power and low Group-A T&S, hydrogen-side annualised capital/fixed-O&M headroom is ~**S$52.2m/y**, not only a few million. The S$54m/y abatement allowance is available in addition to operating savings.
+
+Against ~S$52m/y headroom:
+- HTGR-200 thermal-share allocation does not fit (~S$100m/y before integration);
+- MHR-T thermal-share allocation approximately reaches the boundary (~S$50m/y), leaving little room for IHX/secondary-loop/reformer modifications;
+- charging the full large-reactor annual cost to one hydrogen train is far outside the boundary.
+
+Thus a dedicated large HTGR is strongly disfavoured by the current economic screen, while a large shared/cogeneration reactor is **not yet falsified** but survives only in a narrow favourable region.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -427,4 +441,4 @@ Dedicated reactor allocation uses 100% of hydrogen-side headroom. A GTHTR300C-li
   remain.
 
 ## Next highest-priority task
-Map credible HTGR capital/O&M literature ranges onto the inverse boundary. Annualise source-backed reactor costs under declared financing/lifetime assumptions, distinguish dedicated versus cogeneration/shared allocation, and include IHX/secondary-loop integration allowances. Acceptance criterion: determine whether credible literature cost ranges overlap the S$100/t feasible region; if they do not, record economic falsification of that architecture.
+Quantify the integration-cost margin for the surviving shared-reactor case: source or bound IHX, secondary-helium loop, circulator, reformer modification and tail-gas recycle CAPEX/O&M. Test these against the ~S$2m/y residual midpoint margin and broader NG/T&S sensitivities. If credible integration costs eliminate overlap, record economic falsification of the shared architecture under the S$100/t criterion; otherwise preserve the feasible region and advance toward Gate 4 model verification.
