@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Escalate the now-decomposed IEAGHG Case-1A non-T&S cost from Q4-2014 to a declared analysis-year sensitivity without misusing consumer inflation as an engineering plant-cost index; then combine it with Singapore T&S.
+Quantify the nuclear premium/savings required to bring a Singapore-adjusted CCS pathway below S$100/tCO2e, because the conventional Case-1A screening comparator already exceeds the threshold.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -225,6 +225,19 @@ The Rust model reconstructs the published EUR47.1/t result from these components
 
 This is the correct base for Singapore substitution. The EUR36.48/t term has deliberately NOT yet been inflated to 2026 SGD. Eurostat HICP is a consumer-price index; using it to escalate a chemical-process plant is only a screening proxy. CEPCI/Marshall & Swift are more appropriate for plant/equipment escalation, but a reliable current public index value has not yet been established, so no fabricated engineering escalation is recorded.
 
+## Singapore-adjusted Case-1A screening comparator
+The conventional comparator has now been harmonised to a 2025 screening basis without using consumer HICP for plant-cost escalation.
+
+Source decomposition: IEAGHG Case 1A CAC EUR47.1/t avoided includes EUR10/t captured T&S. With captured/avoided = 1.0622, its non-T&S component is EUR36.48/t avoided in Q4-2014 euros.
+
+Process-cost escalation screen: a peer-reviewed 2025 TEA reports CEPCI 2024=800; Chemical Engineering reports the 2025 annual average 1.6% above 2024, giving a derived 2025 screening index ~812.8. Using the standard 2014 CEPCI 576.1 gives ~EUR51.5/t avoided non-T&S. ECB 31-Dec-2025 EUR/SGD=1.5105 converts this to ~S$77.7/t avoided.
+
+Singapore-source Group-A T&S USD50-75/t captured converts at ~1.2863 SGD/USD to ~S$64.3-96.5/t captured, or ~S$68.3-102.5/t avoided after the 1.0622 captured/avoided ratio.
+
+Combined conventional Case-1A screening CAC is therefore **~S$146-180/t avoided**, above the authoritative S$100/t target. Even without CEPCI escalation, the same arithmetic is roughly S$123-158/t, so the threshold pressure is not solely an escalation artifact.
+
+This remains a screening result: IEAGHG CAC is plant-gate CO2, not lifecycle CO2e; Singapore T&S is a study range, not tariff; and Singapore location/finance factors are not yet applied.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -265,4 +278,4 @@ This is the correct base for Singapore substitution. The EUR36.48/t term has del
   remain.
 
 ## Next highest-priority task
-Establish a defensible escalation range for the EUR36.48/t Q4-2014 non-T&S comparator using available industrial/process cost-index evidence, with consumer HICP only as a clearly labelled lower-information sensitivity if needed. Convert to SGD with a sourced analysis-date FX rate, add Singapore T&S per tonne captured using the 1.0622 captured/avoided ratio, and test whether conventional Case 1A alone crosses S$100/tCO2e before nuclear integration.
+Derive the maximum allowable nuclear/integration premium—or minimum required operating savings/credits—needed to move the Singapore-adjusted pathway from ~S$146-180/t toward <S$100/t. Compare dedicated and cogeneration allocation, avoided furnace NG, electricity/steam credits and carbon-tax effects. If no credible savings region exists, record economic falsification of the initial concept rather than forcing a favourable conclusion.
