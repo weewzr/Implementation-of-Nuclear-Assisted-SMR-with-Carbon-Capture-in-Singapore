@@ -113,8 +113,67 @@ GitHub Actions run 36540973483: PASS.
 R3-B02 is closed as a bounded heat-integration screen. Detailed exchanger
 area/pinch-network design remains outside this scope.
 
+## R3-B03 — Forward lifecycle and economics
+
+**Disposition: RESOLVED AS A FORWARD SCREENING MODEL; conservative case
+falsifies robustness.**
+
+### Correction
+The R3 lifecycle now consumes the physical R3 carbon/capture/purge state,
+R3-B02 nuclear heat, R3 CCS compression/tail-compression loads and the
+R3 full-loop helium circulator parasitic. Auxiliary electricity has an explicit
+emissions factor rather than disappearing from the lifecycle boundary.
+
+The economic screen is forward: baseline and candidate annual energy/fixed
+costs are calculated first and abatement cost is then
+`incremental annual cost / annual avoided tCO2e`. S$100/t is not an input.
+
+### Code/equation location
+`model/src/lib.rs`:
+- `r3_helium_circulator_hi_mwe`
+- `R3Lifecycle`, `r3_candidate_lifecycle`
+- `R3AnnualCost`, `r3_forward_economic_scenario`
+- `R3ThresholdCase`, `r3_reference_threshold_case`,
+  `r3_conservative_threshold_case`
+
+### Validation and falsification evidence
+The model independently reproduces annual H2 from 8994 kg/h * 8322 h/y and
+checks the abatement-cost identity directly. Low-carbon auxiliary electricity
+and Singapore-grid auxiliary electricity produce different lifecycle results,
+as required.
+
+The deliberately conservative credible corner (18.6 gCO2e/MJ upstream gas,
+6.4 g/kWh nuclear LCA, 402 g/kWh auxiliary electricity, 3.5% CCS-chain factor)
+produces **non-positive lifecycle abatement**. The initial threshold test failed
+because the economic function correctly rejected a non-positive denominator.
+The wrapper now records this as a falsification state: annual-abatement and
+economic thresholds both fail and abatement cost is +infinity. The case was not
+weakened to obtain a pass.
+
+### CI evidence
+- `c82c259193c9c4e6101d230cd266e30a4af9828b`: forward lifecycle/economics,
+  CI run 36541546244 PASS.
+- `564964e67de2a992314c8d534a66bf5ebf485537`: conservative threshold test
+  correctly FAILED on non-positive abatement.
+- `2d34384c41ef4c277c740e4fb9657a66abc8dbbc`: explicit no-abatement
+  falsification handling, CI run 36541687545 PASS.
+
+### Acceptance criterion status
+- lifecycle uses actual R3 carbon ledger: PASS
+- auxiliary CCS/helium electricity represented: PASS
+- annual H2/avoided emissions independently reconstructed: PASS
+- baseline/candidate annual costs forward-calculated: PASS for declared
+  scenario-cost inputs
+- S$/t calculated without target budget: PASS
+- reference and conservative cases evaluated: PASS
+- robust CN4252 compliance: **FAIL / FALSIFIED by conservative case**
+
+R3-B03 is closed as a modelling blocker because the forward model now answers
+the question correctly; its scientific result is that threshold robustness is
+not established.
+
 ## Next corrective action
 
-R3-B03 — rebuild lifecycle and economics as forward calculations using the R3
-carbon, heat, CCS and auxiliary ledgers. Do not use S$100/t as an input to the
-forward result.
+R3-M01 — propagate coupled uncertainty to map the physically compatible
+CN4252 pass/fail region and identify dominant threshold drivers. The
+conservative-case failure must be preserved, not optimized away.
