@@ -907,3 +907,18 @@ fn eighty_percent_recycle_nearly_replaces_removed_fresh_carbon_throughput() {
     assert!(recycled>400.0 && recycled<410.0);
     assert!((removed-recycled).abs()<20.0);
 }
+
+
+#[test]
+fn eighty_percent_recycle_reduces_standard_reaction_heat_vs_displaced_fresh_methane() {
+    use nuclear_assisted_smr::{
+        reduced_tail_recycle_fixed_h2,
+        displaced_fresh_ng_ch4_reaction_heat_lower_bound_mw,
+        recycle_minus_displaced_reaction_heat_screen_mw,
+    };
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let removed=displaced_fresh_ng_ch4_reaction_heat_lower_bound_mw(r);
+    assert!(removed>15.0 && removed<17.0);
+    let net=recycle_minus_displaced_reaction_heat_screen_mw(r,0.80,0.80);
+    assert!(net < -10.0 && net > -13.0, "net reaction heat {net} MW");
+}
