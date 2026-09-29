@@ -6534,3 +6534,84 @@ mod r3_m02_comparator_tests {
             R3ComparatorEvidence::DataLimited);
     }
 }
+
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3SingaporeScale {
+    pub annual_h2_t:f64,
+    pub fresh_ng_feed_mw:f64,
+    pub annual_fresh_ng_gj:f64,
+    pub process_captured_co2_t_y:f64,
+    pub purge_capture_co2_t_y:f64,
+    pub total_co2_to_storage_t_y:f64,
+    pub residual_direct_co2_t_y:f64,
+    pub nuclear_process_heat_hi_mw:f64,
+    pub primary_outlet_c:f64,
+    pub secondary_he_hot_c:f64,
+    pub secondary_he_flow_kg_s:f64,
+    pub jaea_170mw_ihx_equivalent:f64,
+}
+pub fn r3_singapore_scale()->R3SingaporeScale {
+    let s=r3_canonical_recycle_case();
+    let h=r3_heat_cascade(650.0,20.0,30.0,500.0);
+    let c=r3_ccs_ledger(s);
+    let hours=8322.0;
+    let purge_c=c.purge_oxidation_co2_kmol_h;
+    let purge_captured=0.90*purge_c;
+    let residual_c=(s.shifted.co2-s.captured_co2_kmol_h)+0.10*purge_c;
+    let process_capture_t_y=s.captured_co2_kmol_h*44.0095*hours/1000.0;
+    let purge_capture_t_y=purge_captured*44.0095*hours/1000.0;
+    R3SingaporeScale{
+        annual_h2_t:IEAGHG_BASE.h2_kg_per_h*hours/1000.0,
+        fresh_ng_feed_mw:ieaghg_feed_lhv_mw()*s.fresh_fraction,
+        annual_fresh_ng_gj:ieaghg_feed_lhv_mw()*s.fresh_fraction*hours*3.6,
+        process_captured_co2_t_y:process_capture_t_y,
+        purge_capture_co2_t_y:purge_capture_t_y,
+        total_co2_to_storage_t_y:process_capture_t_y+purge_capture_t_y,
+        residual_direct_co2_t_y:residual_c*44.0095*hours/1000.0,
+        nuclear_process_heat_hi_mw:h.nuclear_heat_hi_mw,
+        primary_outlet_c:h.primary_outlet_c,
+        secondary_he_hot_c:h.secondary_he_hot_c,
+        secondary_he_flow_kg_s:h.helium_mass_flow_hi_kg_s,
+        jaea_170mw_ihx_equivalent:h.nuclear_heat_hi_mw/GTHTR300C_IHX_DUTY_MW}
+}
+
+#[derive(Debug,Clone,Copy,PartialEq,Eq)]
+pub enum SingaporeDeploymentCondition {
+    ScenarioConditionNotExistingInfrastructure,
+    CrossBorderInfrastructureUnderDevelopment,
+}
+pub fn r3_singapore_nuclear_condition()->SingaporeDeploymentCondition {
+    SingaporeDeploymentCondition::ScenarioConditionNotExistingInfrastructure
+}
+pub fn r3_singapore_ccs_condition()->SingaporeDeploymentCondition {
+    SingaporeDeploymentCondition::CrossBorderInfrastructureUnderDevelopment
+}
+
+#[cfg(test)]
+mod r3_m03_singapore_scale_tests {
+    use super::*;
+    #[test]
+    fn deployment_scale_is_derived_from_corrected_r3_state() {
+        let x=r3_singapore_scale();
+        assert!((x.annual_h2_t-IEAGHG_BASE.h2_kg_per_h*8322.0/1000.0).abs()<1e-9);
+        assert!(x.fresh_ng_feed_mw>0.0&&x.annual_fresh_ng_gj>0.0);
+        assert!(x.total_co2_to_storage_t_y>0.0);
+        assert!(x.residual_direct_co2_t_y>=0.0);
+        assert!(x.nuclear_process_heat_hi_mw>0.0);
+        assert!(x.secondary_he_flow_kg_s>0.0);
+    }
+    #[test]
+    fn storage_throughput_reconciles_process_and_purge_capture() {
+        let x=r3_singapore_scale();
+        assert!((x.total_co2_to_storage_t_y
+            -x.process_captured_co2_t_y-x.purge_capture_co2_t_y).abs()<1e-9);
+    }
+    #[test]
+    fn deployment_assumptions_are_explicitly_conditional() {
+        assert_eq!(r3_singapore_nuclear_condition(),
+            SingaporeDeploymentCondition::ScenarioConditionNotExistingInfrastructure);
+        assert_eq!(r3_singapore_ccs_condition(),
+            SingaporeDeploymentCondition::CrossBorderInfrastructureUnderDevelopment);
+    }
+}
