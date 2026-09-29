@@ -1,53 +1,38 @@
 # STATUS
 
 ## Current research gate
-Gate 3 — Mathematical/model foundation: REVIEW 2 RECONCILIATION OPEN.
+Gate 3 — Mathematical/model foundation: COMPLETE.
 
 Independent Review 1 gate: CLOSED.
-Independent Review 2 gate: OPEN.
+Independent Review 2 gate: CLOSED.
 
-## Reconciliation result
-The prior Review-2 CLOSED status was premature. Reconciliation against the
-original Review-2 acceptance criteria found one genuine unresolved BLOCKER and
-three dependent MAJOR findings. No completed scientific finding was reopened
-merely because a document was stale.
-
-## Resolved Review-2 findings
-- R2-B01: full-species recycle/purge steady state — RESOLVED by the nested,
-  thermodynamically constrained WetGas6 solver with fixed-H2 outer residual,
-  explicit N2 purge, conservation and CI tests.
-- R2-B03: thermodynamic property-range handling — RESOLVED with interval-safe
-  NIST Shomate dispatch and independent equilibrium checks.
-- R2-M02: PSA behaviour — RESOLVED for screening through the literature-bounded
-  70-90% H2-recovery envelope.
-- R2-M03: independent/system-level falsification — RESOLVED for the declared
-  screening-model scope.
-
-## Open Review-2 findings
-- **R2-B02 BLOCKER:** the integrated candidate temperature-resolved energy
-  balance has not yet been rebuilt on the canonical thermodynamic full-species
-  recycle state. Existing ~162 MWth/recycle heat functions originate from the
-  retired reduced 0.737 surrogate; a closed reaction+sensible+steam/capture/
-  recovery ledger with nuclear heat as residual is still required.
-- **R2-M01:** stream-specific CCS topology is closed, but candidate capture
-  duties are not yet scaled from the current solved stream state on one
-  validated formulation.
-- **R2-M04:** secondary-helium temperature/IHX screening exists, but full-loop
-  candidate pressure loss and circulator power are not closed.
-- **R2-M05:** legacy economic outputs are historical; final lifecycle/economic
-  results have not been regenerated from the eventual closed B02/M01/M04
-  physical ledgers.
-
-## Current verified model state
+## Verified model state
 - Conventional IEAGHG material and temperature-resolved energy reconstruction
-  is source-validated; radiant-duty envelope agrees with the authoritative
-  ~96 MW benchmark to better than 5% at the nearest admissible source-limited
-  bound.
-- Canonical recycle model is the nested full-species ideal-equilibrium solver
-  with explicit N2 purge and fixed-H2 product closure.
-- Legacy analytical ~0.737 fresh-feed fraction is provenance only and is
-  retired from predictive propagation.
-- Recent scientific commits through PSA-envelope closure pass Rust CI.
+  is source-validated; the independent radiant-duty envelope agrees with the
+  authoritative ~96 MW benchmark to better than 5% at the nearest admissible
+  source-limited bound.
+- Canonical recycle model is the nested full-species thermodynamic solver with
+  coupled ideal-gas SMR/WGS equilibrium, explicit N2 purge and fixed-H2 product
+  closure.
+- Legacy analytical ~0.737 fresh-feed fraction is provenance only and retired
+  from predictive propagation.
+- Candidate energy duty is calculated from total enthalpy of the canonical
+  solved reformer inlet/outlet; the old representative 162 MWth value is retired
+  from current predictive propagation.
+- Candidate CCS duties scale from actual solved process/purge carbon throughput
+  using stream-specific IEAGHG source anchors.
+- Secondary-helium mass flow uses the resolved candidate heat duty; full-loop
+  pressure loss and circulator power are explicitly bounded across IHX,
+  process-heater, steam-generator/HX and piping/valve component groups.
+- PSA uncertainty is represented by a literature-bounded 70-90% H2-recovery
+  envelope with the IEAGHG reconstructed recovery as the source anchor.
+- The canonical integrated lifecycle/economic reference screen consumes the
+  corrected recycle, candidate-energy, CCS and helium-loop ledgers. Historical
+  0.737/162-MW economic screens are provenance only.
+
+## Current CI state
+Review-2 closure commits through integrated propagation pass GitHub Rust CI
+(`cargo test --all-targets`). Integrated-screen CI run 36538114531 passed.
 
 ## Retained scientific limitations
 - Reformer chemistry is ideal-gas equilibrium screening, not catalyst kinetics.
@@ -55,15 +40,23 @@ merely because a document was stale.
   cycle simulator.
 - Exact IEAGHG primary-reformer inlet state is unpublished; validation is
   source-limited.
+- Secondary-helium non-IHX component pressure losses are bounded engineering
+  ranges, not a detailed piping/equipment hydraulic design.
+- Economic unit prices, CAPEX allocations and CCS T&S prices remain scenario
+  assumptions rather than validated forecasts.
 
-## Next scientific task
-Resolve R2-B02: construct and validate one integrated candidate
-temperature-resolved energy ledger on the canonical thermodynamic recycle
-state. Do not regenerate economics until R2-B02, R2-M01 and R2-M04 are closed.
+## Blockers
+No unresolved Review-1 or Review-2 mathematical/model-foundation blockers or
+required Review-2 major findings.
 
-Canonical Review-2 disposition record:
+## Next step
+Gate 4 — verified computational model. Begin only in the next research
+iteration; Review-2 closure itself is not a claim of detailed plant-design
+validation.
+
+Canonical review records:
+- `reviews/review_01_resolution.md`
 - `reviews/review_02_resolution.md`
 
-The earlier `reviews/review_02_model_verification.md` CLOSED decision is
-superseded by the acceptance-criterion reconciliation in
-`reviews/review_02_resolution.md`.
+The earlier `reviews/review_02_model_verification.md` is a superseded
+work-in-progress/closure snapshot and is retained only for provenance.
