@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Refine the verified pre-reformer feed-preheat lower bound and propagate the now-implemented 600-650 C reformer-preheater sensitivity into the total HTGR service envelope.
+Isolate/bound the furnace-convection share of saturated HP steam generation, the largest remaining conventional heat-service ambiguity before direct-heat vs nuclear-electric comparison.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -123,6 +123,18 @@ The corrected Pre-Reformer Feed Pre-Heater lower-bound implementation now passes
 
 The standalone IEAGHG summary does not expose the exact primary-reformer inlet temperature. A sensitivity function is therefore implemented rather than a fabricated point value. A related IEAGHG study provides 600-650 C only as contextual range. Rust tests confirm the calculated duty increases monotonically across 600, 625 and 650 C.
 
+## First combined HTGR service envelope
+The current Rust model now produces and CI-locks the first combined furnace-dependent thermal-service envelope at the 100,000 Nm3/h H2 reference scale:
+- 600 C reformer-inlet sensitivity: 130.74-130.97 MWth;
+- 625 C: 132.48-132.71 MWth;
+- 650 C: 134.23-134.46 MWth.
+
+Component values are: 96.034 MW radiant, 16.008-16.240 MW HP-steam superheat, 4.899 MW NG+recycle feed preheat, 7.050 MW conservative pre-reformer feed-preheat lower bound, and 6.750/8.486/10.241 MW reformer-preheat sensitivity at 600/625/650 C.
+
+These remain incomplete lower/service envelopes because furnace-only saturated-steam generation and nuclear-loop thermal losses are unresolved.
+
+For the current ~80.30 kg/s helium screening flow at 5.15 MPa and 80% circulator efficiency, loop pressure loss equal to 1x/2x/3x the published 58 kPa IHX anchor gives ~2.17/4.33/6.50 MWe circulator power. Electrical parasitics remain separate from MWth service.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -163,8 +175,4 @@ The standalone IEAGHG summary does not expose the exact primary-reformer inlet t
   remain.
 
 ## Next highest-priority task
-Extract/report the numerical Pre-Reformer Feed Pre-Heater lower bound from the verified model, extend high-temperature C2+ property coverage where justified, and combine the 600-650 C reformer-preheater sensitivity with radiant, steam-superheat, feed-preheat and helium-parasitic terms to produce the first uncertainty-bounded HTGR thermal-service envelope.
-
-Acceptance criterion: conventional reference energy demand and major duties
-close and reproduce an authoritative published metric within a declared
-tolerance before nuclear heat is substituted.
+Recover or bound the split of the non-syngas-WHB saturated-steam generation between shift heat recovery and the fired-furnace steam-generation coil. Then close the conventional furnace-service ledger and begin a common-service comparison of direct HTGR heat versus HTGR-electric eSMR.
