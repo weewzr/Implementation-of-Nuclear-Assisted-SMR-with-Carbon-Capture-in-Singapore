@@ -3065,3 +3065,78 @@ mod corrected_full_cost_penalty_tests {
         assert!(p>old_p);
     }
 }
+
+
+/// Post-capture recycle compression to an explicit injection pressure.
+/// Inlet is the ~1 MPa MDEA sweet-gas pressure. This exposes pressure
+/// integration as a design variable rather than fixing the JAEA 4.5 MPa point.
+pub fn converged_post_capture_recycle_compressor_to_pressure_mwe(
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+    inlet_c:f64,injection_pressure_mpa:f64,efficiency:f64,
+)->f64 {
+    assert!(injection_pressure_mpa>=SOURCE_ANCHORED_RECYCLE_PRESSURES.mdea_pressure_mpa);
+    converged_recycle_compression_sensitivity_mwe(
+        co_conversion,ch4_conversion,h2_recovery,inlet_c,
+        injection_pressure_mpa/SOURCE_ANCHORED_RECYCLE_PRESSURES.mdea_pressure_mpa,
+        efficiency)
+}
+
+/// Corrected full-cost boundary for arbitrary recycle injection pressure and
+/// compressor efficiency. Case-2A capture + CO2 compression are retained,
+/// while its expander credit is removed because sweet gas is recycled.
+pub fn converged_min_gas_price_with_pressure_integration_sgd_per_gj(
+    injection_pressure_mpa:f64,
+    compressor_efficiency:f64,
+)->f64 {
+    let r=converged_reference_screen();
+    let q_recycle=converged_recycle_sensible_heat_mw(0.8,0.8,0.8,40.0,370.0);
+    let q_total=162.0+q_recycle;
+    let recycle_comp=converged_post_capture_recycle_compressor_to_pressure_mwe(
+        0.8,0.8,0.8,40.0,injection_pressure_mpa,compressor_efficiency);
+    let e_total=IEAGHG_CASE2A_CAPTURE_INCL_TAIL_COMP_MWE
+        +IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE+recycle_comp;
+    let saved_gj_y=converged_recycle_gross_ng_displacement_mw()*8322.0*3.6;
+    let heat=annual_thermal_energy_cost_sgd(q_total,8322.0,5.69);
+    let elec=e_total*8322.0*150.0;
+    let fixed=31.9e6+50.0e6+8.2e6+5.0e6;
+    (fixed+heat+elec-r.annual_s100_budget_sgd)/saved_gj_y
+}
+
+/// Compact sensitivity surface for reporting:
+/// pressures [2, 3, 4.5] MPa x efficiencies [0.65, 0.75, 0.85].
+pub fn recycle_pressure_efficiency_sensitivity()
+    ->[[f64;3];3]
+{
+    let ps=[2.0,3.0,4.5];
+    let etas=[0.65,0.75,0.85];
+    let mut out=[[0.0;3];3];
+    for (i,p) in ps.iter().enumerate() {
+        for (j,e) in etas.iter().enumerate() {
+            out[i][j]=converged_min_gas_price_with_pressure_integration_sgd_per_gj(*p,*e);
+        }
+    }
+    out
+}
+
+#[cfg(test)]
+mod pressure_efficiency_surface_tests {
+    use super::*;
+    #[test]
+    fn higher_injection_pressure_tightens_boundary() {
+        let a=converged_min_gas_price_with_pressure_integration_sgd_per_gj(2.0,0.75);
+        let b=converged_min_gas_price_with_pressure_integration_sgd_per_gj(4.5,0.75);
+        assert!(b>a);
+    }
+    #[test]
+    fn better_compressor_efficiency_relaxes_boundary() {
+        let a=converged_min_gas_price_with_pressure_integration_sgd_per_gj(4.5,0.65);
+        let b=converged_min_gas_price_with_pressure_integration_sgd_per_gj(4.5,0.85);
+        assert!(b<a);
+    }
+    #[test]
+    fn sensitivity_surface_is_monotonic() {
+        let s=recycle_pressure_efficiency_sensitivity();
+        for j in 0..3 { assert!(s[2][j]>s[1][j] && s[1][j]>s[0][j]); }
+        for i in 0..3 { assert!(s[i][0]>s[i][1] && s[i][1]>s[i][2]); }
+    }
+}
