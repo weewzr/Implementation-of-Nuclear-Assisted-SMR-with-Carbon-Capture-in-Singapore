@@ -11,5 +11,8 @@ cargo run --quiet --bin gate5_case1a_comparator_csv > ../results/generated/gate5
 cargo run --quiet --bin gate5_case1a_comparator_table_csv > ../results/generated/gate5_case1a_comparator_table.csv
 cargo run --quiet --bin gate6_singapore_scale_csv > ../results/generated/gate6_singapore_scale.csv
 cargo run --quiet --bin gate6_lifecycle_decomposition_csv > ../results/generated/gate6_lifecycle_decomposition.csv
+cargo run --quiet --bin gate6_domain_table_csv > ../results/generated/gate6_domain_table.csv
+cargo run --quiet --bin gate6_threshold_magnitude_csv > ../results/generated/gate6_threshold_magnitude.csv
+cargo run --quiet --bin gate6_threshold_plot_bounds_csv > ../results/generated/gate6_threshold_plot_bounds.csv
 cargo run --quiet --bin gate5_results_synthesis > ../results/generated/gate5_results_synthesis.md
 cargo run --quiet --bin gate5_figure_manifest > ../results/generated/gate5_figure_manifest.md
