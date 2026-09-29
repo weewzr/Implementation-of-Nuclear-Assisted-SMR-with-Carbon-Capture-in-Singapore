@@ -16,7 +16,7 @@ Requirements:
 - stable Rust/Cargo;
 - a LaTeX distribution providing `latexmk`, `pdflatex`, `natbib`, `siunitx`, `booktabs`, `microtype` and standard AMS packages.
 
-The PDF is generated and must not be edited independently.
+The PDF is generated and must not be edited independently. The GitHub Actions paper workflow also rejects unresolved LaTeX citations/references and uploads the successfully generated PDF as the `cn4252-manuscript` workflow artifact.
 
 ## Scientific provenance
 
