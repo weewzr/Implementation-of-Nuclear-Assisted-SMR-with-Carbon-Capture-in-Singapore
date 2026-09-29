@@ -2669,3 +2669,80 @@ mod converged_report_values {
         );
     }
 }
+
+
+/// First recycle-adjusted HTGR heat-service bound consistent with the verified
+/// fixed point.
+///
+/// This deliberately does NOT scale the whole furnace-service envelope with
+/// fresh NG. JAEA's HTTR steam-reforming architecture couples secondary helium
+/// to reformer, superheater and steam generator; those duties depend on the
+/// integrated circulating process, not simply fresh-feed rate.
+///
+/// The only correction made here is the standard reaction-enthalpy delta:
+/// (i) remove the methane-reforming+shift heat associated with displaced fresh
+/// NG methane; (ii) add reaction heat for the converged recycled CO/CH4 that is
+/// converted each pass. At a positive fixed point, converted CO and CH4 per pass
+/// equal s times their source-tail generation, independent of conversion
+/// coefficient; lower conversion increases inventory rather than net conversion.
+pub fn converged_recycle_reaction_heat_delta_mw()->f64 {
+    let s=analytical_tail_recycle_fresh_ng_fraction();
+    let t=ieaghg_tail_inventory();
+
+    let displaced_ng_kmol_h=1455.8*(1.0-s);
+    let removed_ch4=displaced_ng_kmol_h*IEAGHG_NG.methane;
+    let removed_q=removed_ch4*1000.0*(SMR_DH298_KJ_MOL+WGS_DH298_KJ_MOL)/3.6e6;
+
+    let recycled_q=(
+        s*t.ch4_kmol_h*1000.0*(SMR_DH298_KJ_MOL+WGS_DH298_KJ_MOL)
+        +s*t.co_kmol_h*1000.0*WGS_DH298_KJ_MOL
+    )/3.6e6;
+    recycled_q-removed_q
+}
+
+/// Recycle-adjusted process-heat envelope at a specified reformer inlet.
+/// Base furnace-dependent services remain at their source-anchored values;
+/// the converged reaction-heat delta is applied, followed by the existing
+/// source-bounded incremental MDEA heat range.
+///
+/// This is a controlled bound, not a final integrated heat balance. In
+/// particular, sensible heating of the larger recycle circulation and changes
+/// to steam generation/heat recovery are not yet reconstructed.
+pub fn converged_htgr_service_source_bounded_mw(
+    reformer_inlet_c:f64
+)->(f64,f64) {
+    let (base_lo,base_hi)=bounded_furnace_service_envelope_mw(reformer_inlet_c);
+    let rxn=converged_recycle_reaction_heat_delta_mw();
+    let (mdea_lo,mdea_hi)=mdea_incremental_heat_source_bounded_mw();
+    (base_lo+rxn+mdea_lo,base_hi+rxn+mdea_hi)
+}
+
+#[cfg(test)]
+mod converged_heat_service_tests {
+    use super::*;
+
+    #[test]
+    fn converged_reaction_delta_is_a_saving_for_source_tail() {
+        assert!(converged_recycle_reaction_heat_delta_mw()<0.0);
+    }
+
+    #[test]
+    fn converged_service_bound_is_ordered_and_physical() {
+        let (lo,hi)=converged_htgr_service_source_bounded_mw(625.0);
+        assert!(lo>100.0);
+        assert!(hi>lo);
+        assert!(hi<250.0);
+    }
+
+    #[test]
+    fn lower_conversion_changes_inventory_not_net_fixed_point_reaction_conversion() {
+        let s=analytical_tail_recycle_fresh_ng_fraction();
+        let t=ieaghg_tail_inventory();
+        let a=analytical_tail_recycle_fixed_point(0.50,0.60,0.70);
+        let b=analytical_tail_recycle_fixed_point(0.90,0.95,0.85);
+        assert!((0.50*a.co_kmol_h-s*t.co_kmol_h).abs()<1.0e-9);
+        assert!((0.90*b.co_kmol_h-s*t.co_kmol_h).abs()<1.0e-9);
+        assert!((0.60*a.ch4_kmol_h-s*t.ch4_kmol_h).abs()<1.0e-9);
+        assert!((0.95*b.ch4_kmol_h-s*t.ch4_kmol_h).abs()<1.0e-9);
+    }
+}
