@@ -3568,3 +3568,27 @@ pub fn matched_lifecycle_abatement_budget(
     let budget=avoided_t*target_sgd_per_tco2e;
     (delta,avoided_t,budget)
 }
+
+
+/// Re-run the full-cost shared-reactor boundary with an internally matched
+/// lifecycle budget instead of an externally assumed annual budget.
+pub fn recycle80_min_gas_price_with_matched_lifecycle(
+    baseline:LifecycleCase,
+    candidate:LifecycleCase,
+    hours_per_year:f64,
+    target_sgd_per_tco2e:f64,
+    htgr_service_mw:f64,
+    nuclear_heat_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+    ccs_ts_cost_sgd_y:f64,
+    allocated_reactor_cost_sgd_y:f64,
+    ihx_loop_cost_sgd_y:f64,
+    other_integration_cost_sgd_y:f64,
+)->f64 {
+    let (_,_,budget)=matched_lifecycle_abatement_budget(
+        baseline,candidate,hours_per_year,target_sgd_per_tco2e);
+    recycle80_min_gas_price_for_full_cost_sgd_per_gj(
+        budget,htgr_service_mw,nuclear_heat_sgd_per_gj,electricity_sgd_per_mwh,
+        ccs_ts_cost_sgd_y,allocated_reactor_cost_sgd_y,ihx_loop_cost_sgd_y,
+        other_integration_cost_sgd_y)
+}
