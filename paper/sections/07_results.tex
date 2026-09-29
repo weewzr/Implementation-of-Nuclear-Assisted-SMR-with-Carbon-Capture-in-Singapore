@@ -23,7 +23,9 @@ Figure~\ref{fig:threshold-map} is generated directly from the canonical Rust-pro
   xlabel={Annual avoided emissions (tCO$_2$e/y)},
   ylabel={Forward abatement cost (S\$/tCO$_2$e)},
   grid=major,
+  ymode=log,
   legend pos=north east,
+  xtick distance=50000,
   scaled x ticks=false,
   xticklabel style={/pgf/number format/fixed,/pgf/number format/1000 sep={,}},
   unbounded coords=discard
@@ -35,12 +37,16 @@ Figure~\ref{fig:threshold-map} is generated directly from the canonical Rust-pro
   table/x=annual_avoided_t,
   table/y=abatement_cost_sgd_t
 ] table[col sep=comma] {../results/generated/gate5_threshold_scatter_finite.csv};
-\addlegendentry{64-case nuclear design}
-\draw[dashed] (axis cs:250000,\plotymin) -- (axis cs:250000,\plotymax);
-\draw[densely dashed] (axis cs:\plotxmin,100) -- (axis cs:\plotxmax,100);
+\addlegendentry{Finite-cost nuclear cases}
+\addlegendimage{dashed,thick}
+\addlegendentry{0.25 MtCO$_2$e/y threshold}
+\addlegendimage{densely dashed,thick}
+\addlegendentry{S\$100/tCO$_2$e threshold}
+\draw[dashed,thick] (axis cs:250000,\plotymin) -- (axis cs:250000,\plotymax);
+\draw[densely dashed,thick] (axis cs:\plotxmin,100) -- (axis cs:\plotxmax,100);
 \end{axis}
 \end{tikzpicture}
-\caption{CN4252 threshold map for the verified 64-case coupled nuclear-assisted domain. The vertical and horizontal dashed lines mark 0.25 MtCO$_2$e/y and S\$100/tCO$_2$e, respectively; no tested point occupies their joint-pass region. Axis limits are generated from finite physical cases with controlled margins, so the threshold guides do not distort the data scale. Data are regenerated from \texttt{model/src/lib.rs} by \texttt{model/scripts/generate\_gate5\_results.sh}; the figure is therefore derivative of the canonical computational model rather than manually transcribed.}
+\caption{CN4252 threshold map for the verified 64-case coupled nuclear-assisted domain. The vertical and horizontal dashed lines mark 0.25 MtCO$_2$e/y and S\$100/tCO$_2$e, respectively; no tested point occupies their joint-pass region. The logarithmic cost axis and limits are generated from finite physical cases with controlled margins, so the threshold guides do not distort the data scale. Data are regenerated from \texttt{model/src/lib.rs} by \texttt{model/scripts/generate\_gate5\_results.sh}; the figure is therefore derivative of the canonical computational model rather than manually transcribed.}
 \label{fig:threshold-map}
 \end{figure}
 
