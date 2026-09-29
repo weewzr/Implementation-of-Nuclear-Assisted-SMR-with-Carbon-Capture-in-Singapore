@@ -2392,3 +2392,70 @@ mod iterative_recycle_tests {
         assert!(b.fresh_ng_kmol_h<=a.fresh_ng_kmol_h);
     }
 }
+
+
+/// Analytical fixed point for the reduced recycle equations when all three
+/// recycle/conversion coefficients are strictly positive.
+///
+/// A useful and non-obvious consequence of the reduced model is that the
+/// converged fresh-NG fraction is independent of the assumed CO conversion,
+/// CH4 conversion and recycle-H2 recovery. Those coefficients change the
+/// circulating inventory, but at fixed H2 product the net recoverable H2
+/// equivalent from the source tail is H2 + CO + 4 CH4.
+///
+/// Let P be once-through H2 product and H,C,M the source tail H2,CO,CH4.
+/// Then s = P/(P + H + C + 4M), where s is fresh NG / baseline fresh NG.
+pub fn analytical_tail_recycle_fresh_ng_fraction()->f64 {
+    let t=ieaghg_tail_inventory();
+    let p=ieaghg_reconstructed_h2_product_kmol_per_h();
+    p/(p+t.h2_kmol_h+t.co_kmol_h+4.0*t.ch4_kmol_h)
+}
+
+/// Analytical fixed-point circulating tail for positive conversion/recovery
+/// coefficients. This is an algebraic benchmark for the iterative solver,
+/// not an independent physical model.
+pub fn analytical_tail_recycle_fixed_point(
+    co_conversion:f64,
+    ch4_conversion:f64,
+    recycle_h2_recovery:f64,
+)->TailGasInventory {
+    assert!(co_conversion>0.0 && co_conversion<=1.0);
+    assert!(ch4_conversion>0.0 && ch4_conversion<=1.0);
+    assert!(recycle_h2_recovery>0.0 && recycle_h2_recovery<=1.0);
+    let t=ieaghg_tail_inventory();
+    let s=analytical_tail_recycle_fresh_ng_fraction();
+    let psa=ieaghg_reconstructed_psa_h2_recovery();
+    TailGasInventory {
+        h2_kmol_h:s*(t.h2_kmol_h+(1.0-psa)*(t.co_kmol_h+4.0*t.ch4_kmol_h))
+            /recycle_h2_recovery,
+        co_kmol_h:s*t.co_kmol_h/co_conversion,
+        ch4_kmol_h:s*t.ch4_kmol_h/ch4_conversion,
+        co2_kmol_h:0.0,
+    }
+}
+
+#[cfg(test)]
+mod analytical_recycle_tests {
+    use super::*;
+
+    #[test]
+    fn iterative_solver_matches_analytical_fixed_point() {
+        let i=iterative_tail_recycle_fixed_h2(0.80,0.80,0.80,1.0e-10,100_000);
+        let a=analytical_tail_recycle_fixed_point(0.80,0.80,0.80);
+        let s=analytical_tail_recycle_fresh_ng_fraction();
+        assert!(i.converged);
+        assert!((i.fresh_ng_fraction_of_baseline-s).abs()<1.0e-9);
+        assert!((i.tail_h2_kmol_h-a.h2_kmol_h).abs()<1.0e-7);
+        assert!((i.tail_co_kmol_h-a.co_kmol_h).abs()<1.0e-7);
+        assert!((i.tail_ch4_kmol_h-a.ch4_kmol_h).abs()<1.0e-7);
+    }
+
+    #[test]
+    fn positive_coefficients_change_inventory_not_fresh_feed_fixed_point() {
+        let a=iterative_tail_recycle_fixed_h2(0.50,0.60,0.70,1.0e-10,100_000);
+        let b=iterative_tail_recycle_fixed_h2(0.90,0.95,0.85,1.0e-10,100_000);
+        assert!(a.converged && b.converged);
+        assert!((a.fresh_ng_fraction_of_baseline-b.fresh_ng_fraction_of_baseline).abs()<1.0e-9);
+        assert!((a.tail_co_kmol_h-b.tail_co_kmol_h).abs()>1.0);
+    }
+}
