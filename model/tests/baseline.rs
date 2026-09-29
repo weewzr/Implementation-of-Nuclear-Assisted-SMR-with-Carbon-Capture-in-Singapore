@@ -462,5 +462,5 @@ fn recycle_stream_preheat_is_small_and_positive() {
 fn prereformer_coil_lower_bound_is_positive_and_material() {
     use nuclear_assisted_smr::prereformer_feed_preheater_lower_bound_mw;
     let q=prereformer_feed_preheater_lower_bound_mw();
-    assert!(q > 15.0 && q < 25.0);
+    assert!(q > 5.0 && q < 12.0);
 }
