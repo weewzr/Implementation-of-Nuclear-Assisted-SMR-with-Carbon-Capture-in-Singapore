@@ -25,7 +25,7 @@ pub struct DeploymentResult {
 }
 pub fn crf(i:f64,n:u32)->f64 { i*(1.0+i).powi(n as i32)/((1.0+i).powi(n as i32)-1.0) }
 
-fn params(k:DeploymentCostClass)->(f64,f64,f64,u32,f64,f64,f64,f64) {
+fn params(k:DeploymentCostClass)->(f64,f64,u32,f64,f64,f64,f64,f64) {
  // cf,wacc,life,occ SGD/kWth, O&M SGD/MWhth,T&S SGD/t,integration fraction, gas price
  match k {
   DeploymentCostClass::JaeaMature => (0.80,0.03,40,50.0e9*JPY_TO_SGD/600_000.0,0.0,15.0,0.10,15.0),
