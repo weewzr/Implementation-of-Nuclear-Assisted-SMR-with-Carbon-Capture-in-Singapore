@@ -381,3 +381,37 @@ Evidence:
 Scientific result: Case 1A clears the annual scale threshold on the common
 direct-plant basis, but the current evidence does not establish whether it
 passes or fails S$100/t on a Singapore common-currency/year basis.
+
+
+## Gate 5 Experiment 04 — Binding-constraint map
+
+**Status: COMPLETE.**
+
+Every point in the verified 64-case nuclear domain is now classified as:
+- joint pass / no binding constraint;
+- abatement-only failure;
+- cost-only failure;
+- both thresholds fail.
+
+The experiment also reports mean normalized shortfall relative to 0.25 Mt/y and
+mean normalized excess relative to S$100/t, plus the binding constraint for the
+best-abatement, best-cost and closest-joint cases.
+
+This directly distinguishes whether the no-pass result is emissions-limited,
+economics-limited or split into distinct regimes; it does not expand or optimize
+the parameter domain.
+
+Implementation:
+- `Gate5BindingConstraint`
+- `Gate5BindingSummary`
+- `gate5_binding_constraint`
+- `gate5_binding_summary`
+- `gate5_experiment04_markdown`
+- CLI `model/src/bin/gate5_experiment04.rs`
+
+Evidence:
+- `0a9b9a290b907f7ce0e9290adeb0ed5bf92c74fd`, CI run 36554653224 PASS;
+- `f468f704635e8294feb08d8e4391ea4d7704d82b`, reproducibility CLI.
+
+The experiment locks zero joint-pass cases and requires the four failure classes
+to partition all 64 points exactly.
