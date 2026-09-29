@@ -64,6 +64,21 @@ This result is intentionally conservative in interpretation: recycle sensible he
 
 Commits `21185e05294de8c869ebcdb6ebfb5b54c8230279` and `40bcb9db43fb7e86890c1e4ddb5e47b4f83c0cec` implement and regression-lock this bound.
 
+## Recycle pressure topology fixed for screening
+Primary/source literature now constrains the recycle pressure architecture more tightly.
+
+IEAGHG Case 2A states that low-pressure PSA tail gas is compressed to around 10 bar (~1 MPa) to enable MDEA CO2 capture. Independent IEAGHG supporting literature notes ~0.3 barg as typical for an SMR PSA tail-gas side. JAEA's HTTR hydrogen-production design specifies process gas at ~4.5 MPa. Therefore a direct tail-gas-capture-and-recycle architecture cannot treat the Case-2A compressor as the whole recycle pressure penalty: after MDEA, CO2-depleted recycle still needs a pressure lift from ~1 MPa toward the multi-MPa reformer feed unless the PSA/capture topology is redesigned.
+
+The Rust model now encodes a transparent source-anchored screening topology:
+1. PSA tail ~0.13 MPa -> MDEA ~1.0 MPa;
+2. CO2-depleted recycle ~1.0 MPa -> JAEA-like reformer process pressure ~4.5 MPa.
+
+Both compressor stages use an ideal-gas/intercooled sensitivity with explicit efficiency; they are not claimed as detailed compressor designs. This makes the post-capture pressure ratio (~4.5) visible instead of hiding it in the prior Case-2A 6.309 MWe electricity anchor.
+
+The implementation and topology tests pass CI at commit `152d9df5804444cd479e89236360907ebdb313a4`.
+
+Scientific implication: the current economic model likely understates recycle electricity if it charges only the Case-2A separation/compression anchor. The next calculation must avoid double counting the Case-2A first-stage compression while adding the incremental post-capture recycle compressor and the recycle sensible-heat term.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
