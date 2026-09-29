@@ -10,6 +10,11 @@ Table~\ref{tab:deployment-evidence} separates source evidence from project conve
 \caption{International nuclear/process-heat evidence used by the deployment-scale extension. JAEA values are mature-design/target estimates; INL values are modern meta-analysis screening points, not Singapore bids.}
 \label{tab:deployment-evidence}
 \resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,
+columns={source,technology,thermal_mw,cost,cost_basis,capacity_factor,finance,class},
+columns/source/.style={column name={Source}},columns/technology/.style={column name={Technology}},
+columns/thermal_mw/.style={column name={Thermal MW}},columns/cost/.style={column name={Cost}},
+columns/cost_basis/.style={column name={Cost basis}},columns/capacity_factor/.style={column name={CF}},
+columns/finance/.style={column name={Finance}},columns/class/.style={column name={Class}},
 every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]
 {../results/generated/deployment_evidence.csv}}
 \end{table}
@@ -30,6 +35,10 @@ The best-abatement verified Gate-5 physical corner requires approximately the ge
 \caption{Deployment-scale cases. Reactor MWth is installed module capacity; process heat is the service actually delivered to H$_2$ production.}
 \label{tab:deployment-summary}
 \resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,
+columns={case,h2_t_y,annual_scale,reactor_mwth,process_heat_mw,co2_stored_t_y},
+columns/case/.style={column name={Case}},columns/h2_t_y/.style={column name={H2 t/y}},
+columns/annual_scale/.style={column name={Annual scale}},columns/reactor_mwth/.style={column name={Reactor MWth}},
+columns/process_heat_mw/.style={column name={Process heat MW}},columns/co2_stored_t_y/.style={column name={CO2 stored t/y}},
 every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]
 {../results/generated/deployment_summary.csv}}
 \end{table}
@@ -85,6 +94,12 @@ Table~\ref{tab:deployment-principal} gives the three literature/scenario classes
 \caption{Principal Singapore deployment-scale results for cogeneration allocation.}
 \label{tab:deployment-principal}
 \resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,
+columns={case,h2_t_y,reactor_mwth,process_heat_mw,co2_stored_t_y,avoided_t_y,incremental_sgd,cost_sgd_t,abatement_pass,cost_pass,joint_pass},
+columns/case/.style={column name={Case}},columns/h2_t_y/.style={column name={H2 t/y}},columns/reactor_mwth/.style={column name={Reactor MWth}},
+columns/process_heat_mw/.style={column name={Heat MW}},columns/co2_stored_t_y/.style={column name={CO2 stored t/y}},
+columns/avoided_t_y/.style={column name={Avoided t/y}},columns/incremental_sgd/.style={column name={Incremental S\$}},
+columns/cost_sgd_t/.style={column name={S\$/t}},columns/abatement_pass/.style={column name={A pass}},
+columns/cost_pass/.style={column name={C pass}},columns/joint_pass/.style={column name={Joint}},
 every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]
 {../results/generated/deployment_principal.csv}}
 \end{table}
