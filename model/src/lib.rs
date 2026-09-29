@@ -7011,3 +7011,102 @@ mod gate5_experiment03_tests {
         assert!(x.singapore_ts_high_sgd_t_avoided>x.singapore_ts_low_sgd_t_avoided);
     }
 }
+
+
+#[derive(Debug,Clone,Copy,PartialEq,Eq)]
+pub enum Gate5BindingConstraint {
+    None,
+    AbatementOnly,
+    CostOnly,
+    Both,
+}
+#[derive(Debug,Clone,Copy)]
+pub struct Gate5BindingSummary {
+    pub n:usize,pub none:usize,pub abatement_only:usize,pub cost_only:usize,
+    pub both:usize,pub mean_abatement_shortfall_fraction:f64,
+    pub mean_cost_excess_fraction:f64,
+}
+pub fn gate5_binding_constraint(x:&R3UncertaintyPoint)->Gate5BindingConstraint {
+    match (x.pass_abatement,x.pass_cost) {
+        (true,true)=>Gate5BindingConstraint::None,
+        (false,true)=>Gate5BindingConstraint::AbatementOnly,
+        (true,false)=>Gate5BindingConstraint::CostOnly,
+        (false,false)=>Gate5BindingConstraint::Both,
+    }
+}
+pub fn gate5_binding_summary()->Gate5BindingSummary {
+    let v=r3_uncertainty_design();
+    let mut none=0;let mut ao=0;let mut co=0;let mut both=0;
+    let mut sa=0.0;let mut sc=0.0;
+    for x in &v {
+        match gate5_binding_constraint(x) {
+            Gate5BindingConstraint::None=>none+=1,
+            Gate5BindingConstraint::AbatementOnly=>ao+=1,
+            Gate5BindingConstraint::CostOnly=>co+=1,
+            Gate5BindingConstraint::Both=>both+=1,
+        }
+        sa+=(250_000.0-x.annual_avoided_t).max(0.0)/250_000.0;
+        sc+=if x.abatement_cost_sgd_t.is_finite(){
+            (x.abatement_cost_sgd_t-100.0).max(0.0)/100.0
+        }else{1.0};
+    }
+    Gate5BindingSummary{n:v.len(),none,abatement_only:ao,cost_only:co,both,
+        mean_abatement_shortfall_fraction:sa/v.len() as f64,
+        mean_cost_excess_fraction:sc/v.len() as f64}
+}
+
+pub fn gate5_experiment04_markdown()->String {
+    let s=gate5_binding_summary();
+    let n=gate5_nearest_cases();
+    let bind=|x:&R3UncertaintyPoint|match gate5_binding_constraint(x){
+        Gate5BindingConstraint::None=>"none",
+        Gate5BindingConstraint::AbatementOnly=>"abatement",
+        Gate5BindingConstraint::CostOnly=>"cost",
+        Gate5BindingConstraint::Both=>"both"};
+    format!(
+"# Gate 5 Experiment 04 — Binding-constraint map\n\n\
+## Failure classes across verified 64-case domain\n\n\
+- Joint pass / no binding constraint: {}\n\
+- Abatement-only failures: {}\n\
+- Cost-only failures: {}\n\
+- Both thresholds fail: {}\n\
+- Mean normalized abatement shortfall: {:.6}\n\
+- Mean normalized cost excess: {:.6}\n\n\
+## Nearest cases\n\n\
+- Best-abatement case binding constraint: {}\n\
+  - avoided: {:.3} t/y\n\
+  - cost: {:.3} S$/t\n\
+- Best-cost case binding constraint: {}\n\
+  - avoided: {:.3} t/y\n\
+  - cost: {:.3} S$/t\n\
+- Closest-joint case binding constraint: {}\n\
+  - avoided: {:.3} t/y\n\
+  - cost: {:.3} S$/t\n\n\
+This is a classification of the fixed evidence-backed domain, not an \
+optimization search.\n",
+s.none,s.abatement_only,s.cost_only,s.both,
+s.mean_abatement_shortfall_fraction,s.mean_cost_excess_fraction,
+bind(&n.best_abatement),n.best_abatement.annual_avoided_t,
+n.best_abatement.abatement_cost_sgd_t,
+bind(&n.best_cost),n.best_cost.annual_avoided_t,n.best_cost.abatement_cost_sgd_t,
+bind(&n.closest_joint),n.closest_joint.annual_avoided_t,
+n.closest_joint.abatement_cost_sgd_t)
+}
+
+#[cfg(test)]
+mod gate5_experiment04_tests {
+    use super::*;
+    #[test]
+    fn binding_classes_partition_the_verified_domain() {
+        let s=gate5_binding_summary();
+        assert_eq!(s.n,64);
+        assert_eq!(s.n,s.none+s.abatement_only+s.cost_only+s.both);
+        assert_eq!(s.none,0);
+    }
+    #[test]
+    fn binding_summary_retains_nonzero_failure_distance() {
+        let s=gate5_binding_summary();
+        assert!(s.mean_abatement_shortfall_fraction>0.0
+            ||s.mean_cost_excess_fraction>0.0);
+    }
+}
