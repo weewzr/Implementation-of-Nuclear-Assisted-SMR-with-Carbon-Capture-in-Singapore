@@ -4598,3 +4598,34 @@ mod review2_full_recycle_tests {
         assert!((a.fresh_fraction-b.fresh_fraction).abs()>1e-4);
     }
 }
+
+
+#[cfg(test)]
+mod review2_structural_diagnostics {
+    use super::*;
+
+    /// Documents a current model limitation: the reduced analytical fixed point
+    /// does not feed nonselective purge losses back into fresh-NG demand.
+    /// This test is intentionally descriptive and should be replaced when the
+    /// purge-aware fixed-H2 solver is implemented.
+    #[test]
+    fn current_fresh_feed_solution_is_purge_blind() {
+        let s=analytical_tail_recycle_fresh_ng_fraction();
+        let p=purge_fraction_for_max_n2_mole_fraction(0.05,0.8,0.8,0.8);
+        assert!(p>0.0);
+        // There is currently only one fresh-feed fraction: no purge argument.
+        assert!((s-analytical_tail_recycle_fresh_ng_fraction()).abs()<1e-15);
+    }
+
+    /// Thermodynamic equilibrium functions exist, but the reduced recycle solver
+    /// still accepts arbitrary fixed conversion coefficients. Numerical
+    /// convergence therefore cannot be interpreted as equilibrium validation.
+    #[test]
+    fn reduced_recycle_accepts_distinct_non_equilibrium_conversion_assumptions() {
+        let a=iterative_tail_recycle_fixed_h2(0.5,0.5,0.8,1e-9,100000);
+        let b=iterative_tail_recycle_fixed_h2(0.9,0.9,0.8,1e-9,100000);
+        assert!(a.converged && b.converged);
+        assert!((a.fresh_ng_fraction_of_baseline-b.fresh_ng_fraction_of_baseline).abs()<1e-8);
+        assert!((a.tail_co_kmol_h-b.tail_co_kmol_h).abs()>1.0);
+    }
+}
