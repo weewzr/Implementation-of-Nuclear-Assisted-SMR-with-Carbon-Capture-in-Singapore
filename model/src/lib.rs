@@ -3021,3 +3021,47 @@ mod case2a_electric_decomposition_tests {
         assert!((b-a-IEAGHG_CASE2A_TAIL_EXPANDER_GENERATION_MWE).abs()<1.0e-12);
     }
 }
+
+
+/// Corrected representative full-cost screen including post-capture recycle
+/// recompression and no expander credit (sweet gas is recycled, not expanded
+/// to furnace burners). Sensible recycle heating is added to the 162 MWth
+/// representative service as a conservative incremental screen.
+pub fn converged_representative_full_cost_with_recycle_penalties()
+    ->(f64,f64,f64,f64,f64)
+{
+    let r=converged_reference_screen();
+    let q_recycle=converged_recycle_sensible_heat_mw(0.8,0.8,0.8,40.0,370.0);
+    let q_total=162.0+q_recycle;
+    let e_total=converged_capture_and_recycle_electricity_mwe(
+        0.8,0.8,0.8,40.0,0.75,false);
+
+    let saved_gj_y=converged_recycle_gross_ng_displacement_mw()*8322.0*3.6;
+    let heat=annual_thermal_energy_cost_sgd(q_total,8322.0,5.69);
+    let elec=e_total*8322.0*150.0;
+    let fixed=31.9e6+50.0e6+8.2e6+5.0e6;
+    let min_gas=(fixed+heat+elec-r.annual_s100_budget_sgd)/saved_gj_y;
+
+    let max_ts_15=r.annual_s100_budget_sgd
+        +annual_thermal_energy_cost_sgd(
+            converged_recycle_gross_ng_displacement_mw(),8322.0,15.0)
+        -heat-elec-50.0e6-8.2e6-5.0e6;
+    let max_ts_20=r.annual_s100_budget_sgd
+        +annual_thermal_energy_cost_sgd(
+            converged_recycle_gross_ng_displacement_mw(),8322.0,20.0)
+        -heat-elec-50.0e6-8.2e6-5.0e6;
+    (q_recycle,q_total,e_total,min_gas,max_ts_15.min(max_ts_20))
+}
+
+#[cfg(test)]
+mod corrected_full_cost_penalty_tests {
+    use super::*;
+    #[test]
+    fn recycle_penalties_tighten_economic_boundary() {
+        let (_,q,e,p,_)=converged_representative_full_cost_with_recycle_penalties();
+        let (old_p,_,_)=converged_representative_full_cost_screen();
+        assert!(q>162.0);
+        assert!(e>case2a_capture_chain_net_mwe());
+        assert!(p>old_p);
+    }
+}
