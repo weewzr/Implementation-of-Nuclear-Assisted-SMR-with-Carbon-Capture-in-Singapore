@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Begin the common-service comparison of direct HTGR heat versus HTGR-electric reforming, using the now-bounded conventional furnace-service envelope.
+Extend the first common-service direct-heat vs nuclear-electric screen into a consistent emissions/CCS/tail-gas comparison rather than comparing energy conversion alone.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -142,6 +142,13 @@ The entire ~25% non-WHB remainder is ~35.34 t/h. Assigning all of it to the furn
 
 Combining this with the verified service calculations yields a current conventional furnace-service bound of approximately **131-151 MWth** at 100,000 Nm3/h H2, before nuclear-loop thermal losses. This converts the missing steam split from an unbounded blocker into a <=~17 MW uncertainty.
 
+## First direct-heat vs nuclear-electric screen
+The unresolved furnace steam-generation contribution is now rigorously bounded without inventing the shift/furnace split. Assigning the entire ~25% non-syngas-WHB steam remainder to the furnace gives a deliberately conservative ~16.45-16.82 MW upper bound. The current conventional furnace-service range is therefore approximately 131-151 MWth.
+
+At the 625 C reformer-preheat sensitivity the service range is ~132.5-149.5 MWth. Using a conservative 90% eSMR electricity-to-heat efficiency and JAEA's optimistic 50.4% GTHTR300 net generation efficiency gives ~147-166 MWe and ~292-330 MWth reactor heat for the nuclear-electric route. A 45.8% power-cycle benchmark raises the reactor-thermal requirement to roughly 321-363 MWth.
+
+This establishes a reactor-thermal-utilisation hypothesis in favour of direct heat, not an overall ranking. A 2026 peer-reviewed direct comparison reports lower LCOH for helium-heated SMR ($2.37/kg vs $2.99/kg) but slightly lower GWP for eSMR (3.18 vs 3.5 kgCO2/kgH2), showing the tradeoff is multidimensional.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -182,4 +189,4 @@ Combining this with the verified service calculations yields a current conventio
   remain.
 
 ## Next highest-priority task
-Construct a fair direct-heat versus nuclear-electric comparison on the same 100,000 Nm3/h H2 service basis. Translate the 131-151 MWth process-service envelope into reactor thermal requirements for direct heat (IHX/loop losses) and into electrical/primary-thermal requirements for eSMR using literature-backed electric-heater and nuclear power-cycle efficiencies. Keep CCS and tail-gas disposition identical where possible so the comparison isolates heat-delivery architecture.
+Build matched direct-heat and nuclear-electric configurations with identical H2 output, feedstock, CCS target and PSA-tail-gas disposition. Add direct-path IHX/loop loss and circulator electricity versus electric-path HTGR generation and heater efficiencies, then calculate plant-gate and lifecycle CO2e consistently. Use the 2026 Ahn & Lee comparison as an external validation/contradiction benchmark, not as a substitute for this project's model.
