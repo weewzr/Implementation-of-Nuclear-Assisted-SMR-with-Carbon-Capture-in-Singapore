@@ -2651,3 +2651,21 @@ mod converged_full_cost_tests {
         assert!(ts20>ts15);
     }
 }
+
+
+#[cfg(test)]
+mod converged_report_values {
+    use super::*;
+    #[test]
+    fn print_converged_reference_and_full_cost_values() {
+        let r=converged_reference_screen();
+        let (p,ts15,ts20)=converged_representative_full_cost_screen();
+        println!(
+            "CONVERGED_SCREEN fresh_fraction={:.9} fresh_ng_kmol_h={:.3} fresh_feed_mw={:.3} gross_displacement_mw={:.3} baseline_ci={:.6} candidate_ci={:.6} specific_abatement={:.6} annual_abatement_mt={:.6} annual_budget_sgd={:.3} min_gas_sgd_gj={:.6} max_ts_15_sgd_y={:.3} max_ts_20_sgd_y={:.3}",
+            r.fresh_ng_fraction,r.fresh_ng_kmol_h,r.fresh_feed_mw,
+            r.gross_ng_displacement_mw,r.baseline_ci,r.candidate_ci,
+            r.specific_abatement,r.annual_abatement_mt,r.annual_s100_budget_sgd,
+            p,ts15,ts20
+        );
+    }
+}
