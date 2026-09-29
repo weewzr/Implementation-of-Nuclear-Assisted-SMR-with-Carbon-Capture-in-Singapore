@@ -27,3 +27,5 @@ The PDF is generated and must not be edited independently. The GitHub Actions pa
 - manuscript: `paper/main.tex` + `paper/sections/*.tex`.
 
 The historical `manuscript/` skeleton is superseded and is not a competing manuscript.
+
+Review-4 manuscript inputs are generated deterministically as `gate6_domain_table.csv`, `gate6_threshold_magnitude.csv`, and `gate6_threshold_plot_bounds.csv`; these expose the tested 64-case domain, threshold-failure magnitudes, and finite-data plot bounds without duplicating scientific values in LaTeX.
