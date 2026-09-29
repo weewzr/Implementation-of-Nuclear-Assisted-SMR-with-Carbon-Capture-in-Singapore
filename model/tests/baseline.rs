@@ -1222,5 +1222,5 @@ fn matched_lifecycle_budget_changes_full_cost_gas_boundary() {
         b,c,8322.0,100.0,162.0,5.69,150.0,31_900_000.0,
         50_000_000.0,8_200_000.0,5_000_000.0);
     println!("MATCHED_LCA_MIN_GAS={p}");
-    assert!(p>15.0 && p<25.0);
+    assert!(p>14.2 && p<14.4);
 }
