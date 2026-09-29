@@ -3724,3 +3724,44 @@ mod conventional_temperature_balance_tests {
         assert!(q>0.5*lo && q<2.0*hi);
     }
 }
+
+
+/// Dimensionless comparison of reconstructed syngas-WHB sensible recovery to
+/// the source's approximate 75% saturated-HP-steam latent duty.
+/// Values near unity are not required because economizer/feedwater sensible
+/// heating is omitted from the latent benchmark; the ratio is a validation
+/// diagnostic, not a fitted closure.
+pub fn reformer_whb_to_source_latent_ratio(reformer_outlet_c:f64)->(f64,f64) {
+    let q=reconstructed_reformer_whb_duty_mw(reformer_outlet_c);
+    let (lo,hi)=source_whb_steam_latent_benchmark_mw();
+    (q/hi,q/lo)
+}
+
+/// Published reformer radiant duty versus the reconstructed WHB recovery.
+/// These are different control-volume terms but together provide two
+/// independent authoritative checks on the conventional temperature hierarchy.
+pub fn conventional_temperature_validation_metrics()
+    ->(f64,(f64,f64),(f64,f64))
+{
+    (
+        ieaghg_reformer_radiant_duty_mw(),
+        (reconstructed_reformer_whb_duty_mw(900.0),
+         reconstructed_reformer_whb_duty_mw(950.0)),
+        reformer_whb_to_source_latent_ratio(925.0),
+    )
+}
+
+#[cfg(test)]
+mod conventional_validation_metric_tests {
+    use super::*;
+    #[test]
+    fn published_radiant_conversion_is_exact() {
+        let expected=82.63*4.184/3.6;
+        assert!((ieaghg_reformer_radiant_duty_mw()-expected).abs()<1e-12);
+    }
+    #[test]
+    fn whb_reconstruction_brackets_source_temperature_uncertainty() {
+        let (_,q,_)=conventional_temperature_validation_metrics();
+        assert!(q.1>q.0 && q.0>0.0);
+    }
+}
