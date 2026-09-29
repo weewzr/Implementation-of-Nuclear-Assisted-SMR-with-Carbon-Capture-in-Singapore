@@ -945,3 +945,29 @@ pub fn prereformer_feed_preheater_lower_bound_mw() -> f64 {
     let q_h2o=s.flow(s.h2o)*NIST_H2O_500_1700.delta_h_kj_mol(t_steam_in,t_out);
     (q_ch4+q_co2+q_h2+q_n2+q_h2o)/3600.0
 }
+
+
+/// Sensitivity model for the fired-furnace Reformer Pre-Heater Coil.
+///
+/// Source-resolved inlet composition is approximated here by stream 4 after
+/// pre-reforming only as a screening composition. The standalone IEAGHG report
+/// does not expose the exact post-pre-reformer / post-second-steam-addition
+/// intermediate stream in its summary table, so this function is explicitly
+/// a sensitivity, not a reconstructed source duty.
+///
+/// It heats CH4/CO2/H2/N2/H2O from 500 C to a caller-specified primary
+/// reformer inlet temperature. C2+ are omitted because a functioning
+/// pre-reformer should strongly reduce them and because their exact outlet
+/// composition is not source-resolved here.
+pub fn reformer_preheater_sensitivity_mw(reformer_inlet_c: f64) -> f64 {
+    assert!(reformer_inlet_c > 500.0 && reformer_inlet_c <= 700.0);
+    let s=ieaghg_prereformer_feed();
+    let t1=500.0+273.15;
+    let t2=reformer_inlet_c+273.15;
+    let q_ch4=s.flow(s.ch4)*NIST_CH4_298_1300.delta_h_kj_mol(t1,t2);
+    let q_co2=s.flow(s.co2)*NIST_CO2_298_1200.delta_h_kj_mol(t1,t2);
+    let q_h2=s.flow(s.h2)*NIST_H2_298_1000.delta_h_kj_mol(t1,t2);
+    let q_n2=s.flow(s.n2)*NIST_N2_500_2000.delta_h_kj_mol(t1,t2);
+    let q_h2o=s.flow(s.h2o)*NIST_H2O_500_1700.delta_h_kj_mol(t1,t2);
+    (q_ch4+q_co2+q_h2+q_n2+q_h2o)/3600.0
+}
