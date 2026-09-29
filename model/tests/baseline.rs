@@ -547,3 +547,15 @@ fn bounded_furnace_service_envelope_is_about_131_to_151_mw() {
     assert!(c.0 > 134.2 && c.0 < 134.3);
     assert!(c.1 > 151.0 && c.1 < 151.4);
 }
+
+
+#[test]
+fn nuclear_electric_screen_requires_more_reactor_thermal_power_than_process_heat() {
+    use nuclear_assisted_smr::nuclear_electric_reformer_screen_mw;
+    // 90% electricity-to-heat is a conservative literature screening point;
+    // 50.4% is JAEA's high-performance GTHTR300 net generation benchmark.
+    let ((elo,ehi),(rlo,rhi))=nuclear_electric_reformer_screen_mw(625.0,0.90,0.504);
+    assert!(elo > 140.0 && ehi < 175.0);
+    assert!(rlo > 280.0 && rhi < 350.0);
+    assert!(rlo > elo && rhi > ehi);
+}
