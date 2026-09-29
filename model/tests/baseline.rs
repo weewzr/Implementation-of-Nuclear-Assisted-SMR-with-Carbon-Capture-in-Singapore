@@ -367,3 +367,29 @@ fn gthtr300c_ihx_only_pumping_is_low_single_digit_mw() {
         0.80);
     assert!(w > 1.5 && w < 2.2, "IHX-only screening circulator power {w} MW");
 }
+
+
+#[test]
+fn loop_pressure_drop_sensitivity_maps_to_parasitic_fraction() {
+    use nuclear_assisted_smr::{
+        helium_circulator_parasitic_fraction,loop_dp_from_ihx_multiple_kpa,
+        GTHTR300C_SECONDARY_HE_MASS_FLOW_KG_S,GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        GTHTR300C_SECONDARY_HE_INLET_C,GTHTR300C_IHX_DUTY_MW,
+    };
+    let f1=helium_circulator_parasitic_fraction(
+        GTHTR300C_IHX_DUTY_MW,GTHTR300C_SECONDARY_HE_MASS_FLOW_KG_S,
+        loop_dp_from_ihx_multiple_kpa(1.0),GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        GTHTR300C_SECONDARY_HE_INLET_C,0.80);
+    let f3=helium_circulator_parasitic_fraction(
+        GTHTR300C_IHX_DUTY_MW,GTHTR300C_SECONDARY_HE_MASS_FLOW_KG_S,
+        loop_dp_from_ihx_multiple_kpa(3.0),GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        GTHTR300C_SECONDARY_HE_INLET_C,0.80);
+    assert!(f1 > 0.009 && f1 < 0.013);
+    assert!(f3 > 0.028 && f3 < 0.038);
+}
+
+#[test]
+fn pressure_losses_add_linearly_in_screening_budget() {
+    use nuclear_assisted_smr::helium_loop_delta_p_kpa;
+    close(helium_loop_delta_p_kpa(&[58.0,20.0,40.0,15.0]),133.0,1e-12);
+}
