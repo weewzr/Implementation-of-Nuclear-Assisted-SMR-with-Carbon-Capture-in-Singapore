@@ -1506,3 +1506,45 @@ pub fn gas_price_required_for_savings_sgd_per_gj(
     assert!(displaced_fraction>0.0 && displaced_fraction<=1.0);
     required_savings_sgd_per_year/(ieaghg_annual_makeup_furnace_ng_gj()*displaced_fraction)
 }
+
+
+/// Lower-heating-value screening for IEAGHG base-case PSA tail gas.
+/// Uses standard species LHVs for H2, CO and CH4; CO2/inerts contribute zero.
+/// Returned MW_LHV is reconstructed from rounded source composition.
+pub fn ieaghg_psa_tail_gas_lhv_mw() -> f64 {
+    let t=ieaghg_psa_tail_cho();
+    const H2_LHV_MJ_PER_KMOL: f64 = 241.826;
+    const CO_LHV_MJ_PER_KMOL: f64 = 282.99;
+    const CH4_LHV_MJ_PER_KMOL: f64 = 802.30;
+    (t.h2*H2_LHV_MJ_PER_KMOL
+        +t.co*CO_LHV_MJ_PER_KMOL
+        +t.ch4*CH4_LHV_MJ_PER_KMOL)/3600.0
+}
+
+/// Combustible molar flow in PSA tail gas, kmol/h.
+pub fn ieaghg_psa_tail_combustible_kmol_h() -> f64 {
+    ieaghg_psa_tail_cho().combustible_kmol_per_h()
+}
+
+/// If all combustible tail-gas species were recycled and ultimately converted,
+/// this is their chemical LHV inventory per kg current H2 product.
+/// It is an energy-inventory upper context, NOT a recoverable H2 yield.
+pub fn ieaghg_tail_lhv_mj_per_kg_h2() -> f64 {
+    ieaghg_psa_tail_gas_lhv_mw()*3600.0/IEAGHG_BASE.h2_kg_per_h
+}
+
+/// Annual electricity value for an explicit MWe change and SGD/MWh price.
+/// Positive MW means export/value gained; negative means additional import/use.
+pub fn annual_electricity_value_sgd(
+    power_mwe:f64,hours_per_year:f64,electricity_sgd_per_mwh:f64
+)->f64 {
+    power_mwe*hours_per_year*electricity_sgd_per_mwh
+}
+
+/// Annual steam value for an explicit exported steam mass and SGD/t tariff.
+/// This is a market-value sensitivity, not an energy-equivalence calculation.
+pub fn annual_steam_value_sgd(
+    steam_t_per_h:f64,hours_per_year:f64,steam_sgd_per_t:f64
+)->f64 {
+    steam_t_per_h*hours_per_year*steam_sgd_per_t
+}
