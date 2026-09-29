@@ -882,3 +882,28 @@ fn reduced_tail_recycle_is_below_carbon_only_displacement_ceiling_for_mid_case()
     assert!(r.fresh_ng_displaced_fraction
         < tail_recycle_fresh_ng_carbon_displacement_upper_fraction());
 }
+
+
+#[test]
+fn eighty_percent_tail_recycle_has_small_net_standard_reaction_heat_but_large_mdea_heat() {
+    use nuclear_assisted_smr::{
+        reduced_tail_recycle_reaction_heat_screen_mw,
+        case2a_mdea_regeneration_latent_heat_bounds_mw,
+    };
+    let qrxn=reduced_tail_recycle_reaction_heat_screen_mw(0.80,0.80);
+    assert!(qrxn>4.4 && qrxn<4.7, "reaction heat screen {qrxn} MW");
+    let (lo,hi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+    assert!(lo>38.0 && hi<39.3, "MDEA latent heat {lo}..{hi} MW");
+}
+
+#[test]
+fn eighty_percent_recycle_nearly_replaces_removed_fresh_carbon_throughput() {
+    use nuclear_assisted_smr::{
+        reduced_tail_recycle_fixed_h2,reduced_tail_recycle_carbon_replacement,
+    };
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let (removed,recycled)=reduced_tail_recycle_carbon_replacement(r);
+    assert!(removed>400.0 && removed<430.0);
+    assert!(recycled>400.0 && recycled<410.0);
+    assert!((removed-recycled).abs()<20.0);
+}
