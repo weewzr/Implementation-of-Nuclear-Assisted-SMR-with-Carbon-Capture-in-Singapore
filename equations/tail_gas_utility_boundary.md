@@ -23,7 +23,7 @@ Using standard species LHVs:
 
 gives a reconstructed tail-gas chemical inventory of approximately:
 
-**~85 MW_LHV**.
+**~101.95 MW_LHV**.
 
 This is an internal fuel inventory, not purchased energy.
 
@@ -35,7 +35,7 @@ can coexist without violating energy conservation.
 
 ## 2. Nuclear-heated consequence
 
-When the fired furnace disappears, the ~85 MW_LHV tail gas loses its conventional sink.
+When the fired furnace disappears, the ~101.95 MW_LHV tail gas loses its conventional sink.
 
 It must NOT be credited as avoided fuel cost because the baseline did not purchase it.
 
@@ -116,7 +116,7 @@ The model now contains explicit annual electricity- and steam-value functions so
 
 ## 7. Next model
 
-The highest-information next step is a carbon/energy recycle screen for the ~85 MW_LHV PSA tail gas.
+The highest-information next step is a carbon/energy recycle screen for the ~101.95 MW_LHV PSA tail gas.
 
 At minimum compare:
 1. untreated recycle;
