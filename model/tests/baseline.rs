@@ -499,3 +499,22 @@ fn report_htgr_service_breakdown_for_ci_artifact() {
             b.feed_preheat_mw,b.prereformer_preheat_lower_bound_mw,b.reformer_preheat_sensitivity_mw);
     }
 }
+
+
+#[test]
+fn verified_current_htgr_service_envelope_has_expected_values() {
+    use nuclear_assisted_smr::{
+        prereformer_feed_preheater_lower_bound_mw,
+        reformer_preheater_sensitivity_mw,current_htgr_service_envelope_mw,
+    };
+    close(prereformer_feed_preheater_lower_bound_mw(),7.04975,0.002);
+    close(reformer_preheater_sensitivity_mw(600.0),6.74995,0.002);
+    close(reformer_preheater_sensitivity_mw(625.0),8.48606,0.002);
+    close(reformer_preheater_sensitivity_mw(650.0),10.24113,0.002);
+    let a=current_htgr_service_envelope_mw(600.0);
+    let b=current_htgr_service_envelope_mw(625.0);
+    let c=current_htgr_service_envelope_mw(650.0);
+    close(a.0,130.7414,0.01); close(a.1,130.9731,0.01);
+    close(b.0,132.4775,0.01); close(b.1,132.7092,0.01);
+    close(c.0,134.2326,0.01); close(c.1,134.4643,0.01);
+}
