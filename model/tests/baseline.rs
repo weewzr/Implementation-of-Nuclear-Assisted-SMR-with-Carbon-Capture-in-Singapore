@@ -1134,9 +1134,11 @@ fn shared_reactor_full_cost_boundary_requires_favourable_gas_or_ts() {
     let p=recycle80_min_gas_price_for_full_cost_sgd_per_gj(
         54_000_000.0,162.0,5.69,150.0,31_900_000.0,
         50_000_000.0,8_200_000.0,5_000_000.0);
+    println!("FULL_COST_MIN_GAS={p}");
     assert!(p>17.0 && p<20.0, "minimum gas price {p} SGD/GJ");
     let ts=recycle80_max_ccs_ts_cost_sgd_y(
         54_000_000.0,162.0,20.0,5.69,150.0,
         50_000_000.0,8_200_000.0,5_000_000.0);
+    println!("FULL_COST_MAX_TS={ts}");
     assert!(ts>35_000_000.0 && ts<45_000_000.0, "max T&S {ts} SGD/y");
 }
