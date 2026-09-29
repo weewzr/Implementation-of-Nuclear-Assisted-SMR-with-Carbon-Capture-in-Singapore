@@ -2112,3 +2112,30 @@ pub fn reactor_cost_multiplier_headroom(
     assert!(source_allocated_annual_cost>0.0);
     hydrogen_side_headroom/source_allocated_annual_cost
 }
+
+
+/// Annualised IHX + secondary-helium-loop cost from a source component
+/// estimate. No silent inflation or FX conversion occurs here.
+pub fn annualised_integration_component_cost(
+    source_capex:f64,
+    discount_rate:f64,
+    lifetime_years:u32,
+    fixed_om_fraction_of_capex_per_year:f64,
+)->f64 {
+    assert!(fixed_om_fraction_of_capex_per_year>=0.0);
+    source_capex*capital_recovery_factor(discount_rate,lifetime_years)
+        +source_capex*fixed_om_fraction_of_capex_per_year
+}
+
+/// Maximum integration CAPEX supported by an annual hydrogen-side margin,
+/// after reserving an explicit fixed-O&M fraction of CAPEX per year.
+pub fn integration_capex_from_annual_margin(
+    annual_margin:f64,
+    discount_rate:f64,
+    lifetime_years:u32,
+    fixed_om_fraction_of_capex_per_year:f64,
+)->f64 {
+    let denom=capital_recovery_factor(discount_rate,lifetime_years)
+        +fixed_om_fraction_of_capex_per_year;
+    annual_margin/denom
+}
