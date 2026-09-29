@@ -6809,3 +6809,47 @@ mod gate5_experiment01_tests {
         assert!(n.closest_joint.annual_avoided_t.is_finite());
     }
 }
+
+
+/// Compact categorical result for Gate-5 Experiment 01, suitable for a
+/// reproducible persisted artifact without hard-coding unverified prose.
+pub fn gate5_experiment01_markdown()->String {
+    let d=gate5_threshold_diagnostics();
+    let n=gate5_nearest_cases();
+    format!(
+"# Gate 5 Experiment 01 — CN4252 threshold failure topology\n\n\
+Model basis: verified R3 canonical uncertainty design.\n\n\
+## Domain topology\n\n\
+- Total coupled cases: {}\n\
+- Pass both thresholds: {}\n\
+- Pass annual abatement only: {}\n\
+- Pass cost only: {}\n\
+- Pass neither: {}\n\n\
+## Extremes / nearest cases\n\n\
+- Maximum annual avoided emissions: {:.3} tCO2e/y\n\
+- Minimum finite abatement cost: {:.3} S$/tCO2e\n\
+- Minimum normalized joint threshold gap: {:.6}\n\n\
+### Best-abatement case\n\
+- reformer: {:.0} C, pressure: {:.0} bar, PSA recovery: {:.2}, capture: {:.2}\n\
+- avoided: {:.3} t/y, cost: {:.3} S$/t\n\n\
+### Best-cost case\n\
+- reformer: {:.0} C, pressure: {:.0} bar, PSA recovery: {:.2}, capture: {:.2}\n\
+- avoided: {:.3} t/y, cost: {:.3} S$/t\n\n\
+### Closest joint case\n\
+- reformer: {:.0} C, pressure: {:.0} bar, PSA recovery: {:.2}, capture: {:.2}\n\
+- avoided: {:.3} t/y, cost: {:.3} S$/t\n\n\
+## Interpretation\n\n\
+This experiment diagnoses the verified domain; it does not optimize or alter \
+model physics. Zero joint passes must be retained if reproduced.\n",
+d.n,d.both_pass,d.abatement_only,d.cost_only,d.neither,
+d.max_avoided_t,d.min_positive_cost_sgd_t,d.min_joint_normalized_gap,
+n.best_abatement.reformer_c,n.best_abatement.pressure_bar,
+n.best_abatement.psa_recovery,n.best_abatement.capture_fraction,
+n.best_abatement.annual_avoided_t,n.best_abatement.abatement_cost_sgd_t,
+n.best_cost.reformer_c,n.best_cost.pressure_bar,n.best_cost.psa_recovery,
+n.best_cost.capture_fraction,n.best_cost.annual_avoided_t,
+n.best_cost.abatement_cost_sgd_t,n.closest_joint.reformer_c,
+n.closest_joint.pressure_bar,n.closest_joint.psa_recovery,
+n.closest_joint.capture_fraction,n.closest_joint.annual_avoided_t,
+n.closest_joint.abatement_cost_sgd_t)
+}
