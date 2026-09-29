@@ -2,7 +2,42 @@
 The central Gate-5 experiment evaluates 64 physically paired nuclear-assisted cases spanning reformer temperature and pressure, PSA recovery, capture fraction, upstream/auxiliary-carbon conditions and heat/fixed-cost conditions. No case satisfies both CN4252 thresholds simultaneously:
 \begin{equation}
 N_{\mathrm{joint\ pass}}=0\quad\text{of}\quad N=64.
+\label{eq:joint-pass}
 \end{equation}
 The conservative credible case produces non-positive lifecycle abatement and therefore fails both the annual-abatement and economic criteria.
 
-The result is not interpreted as proof that every conceivable nuclear-assisted configuration fails. It is a verified result for the declared evidence-backed domain. Canonical figure/table data are generated directly from Rust under \texttt{results/generated/}.
+Figure~\ref{fig:threshold-map} is generated directly from the canonical Rust-produced Gate-5 CSV during every paper build. The dashed lines are the assignment thresholds, so the upper-left region is the joint-pass region: annual avoided emissions greater than \(0.25\) MtCO2e/y and forward abatement cost below S\$100/tCO2e. Infinite-cost cases, which arise when lifecycle abatement is non-positive, are retained in the canonical CSV but are not assigned an artificial finite plotting coordinate.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.94\linewidth,
+  height=0.60\linewidth,
+  xlabel={Annual avoided emissions (tCO$_2$e/y)},
+  ylabel={Forward abatement cost (S\$/tCO$_2$e)},
+  grid=major,
+  legend pos=north east,
+  scaled x ticks=false,
+  xticklabel style={/pgf/number format/fixed,/pgf/number format/1000 sep={,}},
+  unbounded coords=discard
+]
+\addplot+[
+  only marks,
+  mark=*,
+  mark size=1.8pt,
+  table/x=annual_avoided_t,
+  table/y=abatement_cost_sgd_t
+] table[col sep=comma] {../results/generated/gate5_threshold_scatter.csv};
+\addlegendentry{64-case nuclear design}
+\addplot[dashed] coordinates {(250000,-1e9) (250000,1e9)};
+\addlegendentry{0.25 MtCO$_2$e/y threshold}
+\addplot[densely dashed] coordinates {(-1e9,100) (1e9,100)};
+\addlegendentry{S\$100/tCO$_2$e threshold}
+\end{axis}
+\end{tikzpicture}
+\caption{CN4252 threshold map for the verified 64-case coupled nuclear-assisted domain. No tested point occupies the joint-pass region. Data are regenerated from \texttt{model/src/lib.rs} by \texttt{model/scripts/generate\_gate5\_results.sh}; the figure is therefore derivative of the canonical computational model rather than manually transcribed.}
+\label{fig:threshold-map}
+\end{figure}
+
+The result is not interpreted as proof that every conceivable nuclear-assisted configuration fails. It is a verified experimental result for the declared evidence-backed domain. Canonical figure/table data are generated directly from Rust under \texttt{results/generated/}.
