@@ -314,3 +314,26 @@ fn reduced_298k_reaction_layer_is_below_published_radiant_duty() {
     use nuclear_assisted_smr::radiant_minus_reduced_reaction_duty_mw;
     assert!(radiant_minus_reduced_reaction_duty_mw() > 25.0);
 }
+
+
+#[test]
+fn jAEA_mockup_temperature_is_consistent_with_finite_ihx_drop() {
+    use nuclear_assisted_smr::ihx_hot_end_temperature_budget_k;
+    // JAEA: HTTR primary outlet 950 C; mock-up/HTTR H2 system SR inlet 880 C.
+    // A 20 K reformer hot-end approach leaves 50 K for IHX/transport headroom.
+    close(ihx_hot_end_temperature_budget_k(950.0,860.0,20.0),70.0,1e-12);
+}
+
+#[test]
+fn ninety_six_mw_requires_large_secondary_helium_flow_for_modest_delta_t() {
+    use nuclear_assisted_smr::{helium_mass_flow_kg_s,ieaghg_reformer_radiant_duty_mw};
+    // Screening only: cp=5.2 kJ/kg-K, 880 -> 650 C.
+    let m=helium_mass_flow_kg_s(ieaghg_reformer_radiant_duty_mw(),5.2,880.0,650.0);
+    assert!(m > 75.0 && m < 85.0, "screening helium flow {m} kg/s");
+}
+
+#[test]
+fn 950c_primary_cannot_support_950c_process_with_finite_approach() {
+    use nuclear_assisted_smr::ihx_hot_end_temperature_budget_k;
+    assert!(ihx_hot_end_temperature_budget_k(950.0,950.0,10.0) < 0.0);
+}
