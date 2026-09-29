@@ -965,8 +965,10 @@ fn shifted_syngas_has_material_sensible_heat_above_mdea_temperature() {
         ieaghg_shift_sensible_heat_above_reboiler_mw,
         mdea_fraction_from_shift_sensible_ceiling,
     };
-    let q=ieaghg_shift_sensible_heat_above_reboiler_mw(160.0,10.0);
-    assert!(q>20.0 && q<35.0, "shift sensible heat {q} MW");
-    let (lo,hi)=mdea_fraction_from_shift_sensible_ceiling(160.0,10.0);
-    assert!(lo>0.5 && hi<0.9, "MDEA sensible ceiling fraction {lo}..{hi}");
+    // Use a conservative 226.85 C hot-stream outlet (500 K), staying within
+    // the verified NIST H2O-gas Shomate range rather than extrapolating to 170 C.
+    let q=ieaghg_shift_sensible_heat_above_reboiler_mw(160.0,66.85);
+    assert!(q>13.0 && q<16.0, "shift sensible heat {q} MW");
+    let (lo,hi)=mdea_fraction_from_shift_sensible_ceiling(160.0,66.85);
+    assert!(lo>0.33 && hi<0.42, "MDEA sensible ceiling fraction {lo}..{hi}");
 }
