@@ -5586,3 +5586,95 @@ mod review2_m04_helium_loop_tests {
         assert!(x.useful_heat_mw<GTHTR300C_IHX_DUTY_MW);
     }
 }
+
+
+/// Review-2 regenerated lifecycle/economic screen using only the canonical
+/// physical ledgers. Economic unit prices/cost allowances remain explicit
+/// scenario assumptions; this function updates their physical quantities.
+#[derive(Debug,Clone,Copy)]
+pub struct CanonicalIntegratedScreen {
+    pub fresh_fraction:f64,
+    pub nuclear_heat_mw:f64,
+    pub ccs_electric_mwe:f64,
+    pub helium_circulator_mwe:f64,
+    pub total_incremental_electric_mwe:f64,
+    pub baseline_ci:f64,
+    pub candidate_ci:f64,
+    pub annual_abatement_mt:f64,
+    pub annual_s100_budget_sgd:f64,
+    pub gross_ng_displacement_mw:f64,
+    pub min_gas_value_sgd_per_gj:f64,
+}
+pub fn canonical_integrated_screen()->CanonicalIntegratedScreen {
+    let r=thermo_recycle_reference_case(); assert!(r.converged);
+    let e=candidate_energy_ledger(650.0);
+    let ccs=candidate_ccs_duty_ledger();
+    let he=candidate_helium_loop_ledger(650.0);
+
+    // Conservative high-side physical loads for the reference screen.
+    let q=e.nuclear_process_heat_hi_mw;
+    let ccs_e=ccs.co2_compression_mwe+ccs.tail_feed_compression_mwe;
+    let elec=ccs_e+he.circulator_hi_mwe;
+
+    let base=ieaghg_unabated_lifecycle_screen(11.5);
+    let cand=thermo_recycle_lifecycle_screen(
+        r,0.90,11.5,q,5.5,0.504,0.025);
+    let (mt,budget)=annual_lifecycle_abatement_and_budget(
+        base,cand,IEAGHG_BASE.h2_kg_per_h,8322.0,100.0);
+
+    let saved_mw=thermo_recycle_gross_ng_displacement_mw(r);
+    let saved_gj_y=saved_mw*8322.0*3.6;
+
+    // Preserve the previous economic scenario assumptions, but feed them the
+    // corrected physical quantities. MDEA heat is already included in q via
+    // CandidateEnergyLedger, and CCS/circulator electricity comes from M01/M04.
+    let heat_cost=annual_thermal_energy_cost_sgd(q,8322.0,5.69);
+    let electric_cost=elec*8322.0*150.0;
+    let fixed_costs=31.9e6+50.0e6+8.2e6+5.0e6;
+    let min_gas=(fixed_costs+heat_cost+electric_cost-budget)/saved_gj_y;
+
+    CanonicalIntegratedScreen{
+        fresh_fraction:r.fresh_fraction,nuclear_heat_mw:q,
+        ccs_electric_mwe:ccs_e,helium_circulator_mwe:he.circulator_hi_mwe,
+        total_incremental_electric_mwe:elec,baseline_ci:base.total(),
+        candidate_ci:cand.total(),annual_abatement_mt:mt,
+        annual_s100_budget_sgd:budget,gross_ng_displacement_mw:saved_mw,
+        min_gas_value_sgd_per_gj:min_gas}
+}
+
+#[cfg(test)]
+mod review2_m05_integrated_propagation_tests {
+    use super::*;
+    #[test]
+    fn integrated_screen_uses_canonical_physical_ledgers() {
+        let x=canonical_integrated_screen();
+        let r=thermo_recycle_reference_case();
+        let e=candidate_energy_ledger(650.0);
+        let c=candidate_ccs_duty_ledger();
+        let h=candidate_helium_loop_ledger(650.0);
+        assert!((x.fresh_fraction-r.fresh_fraction).abs()<1e-12);
+        assert!((x.nuclear_heat_mw-e.nuclear_process_heat_hi_mw).abs()<1e-12);
+        assert!((x.ccs_electric_mwe-(c.co2_compression_mwe
+            +c.tail_feed_compression_mwe)).abs()<1e-12);
+        assert!((x.helium_circulator_mwe-h.circulator_hi_mwe).abs()<1e-12);
+    }
+    #[test]
+    fn integrated_screen_is_not_legacy_0737_or_162mw_case() {
+        let x=canonical_integrated_screen();
+        assert!((x.fresh_fraction-analytical_tail_recycle_fresh_ng_fraction()).abs()>1e-5);
+        assert!((x.nuclear_heat_mw-162.0).abs()>1e-5);
+    }
+    #[test]
+    fn integrated_lifecycle_and_cost_outputs_are_finite_and_physical() {
+        let x=canonical_integrated_screen();
+        for v in [x.nuclear_heat_mw,x.ccs_electric_mwe,x.helium_circulator_mwe,
+            x.total_incremental_electric_mwe,x.baseline_ci,x.candidate_ci,
+            x.annual_abatement_mt,x.annual_s100_budget_sgd,
+            x.gross_ng_displacement_mw,x.min_gas_value_sgd_per_gj] {
+            assert!(v.is_finite());
+        }
+        assert!(x.baseline_ci>x.candidate_ci);
+        assert!(x.annual_abatement_mt>0.0&&x.annual_s100_budget_sgd>0.0);
+        assert!(x.gross_ng_displacement_mw>0.0);
+    }
+}
