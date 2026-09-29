@@ -571,6 +571,17 @@ Thus lifecycle consistency reopens a meaningful part of the shared-reactor feasi
 
 The central remaining weakness is that 80% recycle and 90% capture are still reduced-model assumptions rather than a converged recycle flowsheet.
 
+## Matched lifecycle budget now coupled to economics
+The 80% recycle/shared-direct-HTGR case now generates its own lifecycle abatement denominator instead of inheriting the illustrative 7.5 kgCO2e/kgH2 value.
+
+The baseline includes IEAGHG direct plant CO2 plus upstream burden for feedstock and purchased furnace NG. The candidate removes furnace NG, reduces fresh feedstock NG by the 80% recycle result, captures an explicit fraction of remaining fresh-feed carbon, adds a direct-nuclear-heat LCA proxy and adds CCS-chain emissions as a fraction of captured CO2.
+
+A first regression sensitivity uses: upstream NG 15 gCO2e/MJ, nuclear 12 gCO2e/kWh_e with 45% electric-efficiency proxy, 162 MWth, 90% capture of remaining fresh-feed carbon and CCS-chain emissions equal to 2% of captured CO2. These are screening assumptions, not final Singapore values.
+
+Under those assumptions, the lifecycle-generated S$100/t budget moves the full-cost shared-reactor minimum gas-value boundary to **~S$14.28/GJ**, compared with ~S$17.5/GJ when the old fixed S$54m/y budget was used. CI initially failed because the test expected the old boundary; the lifecycle-coupled equation was correct and the regression expectation was corrected.
+
+This demonstrates that upstream NG/LNG lifecycle intensity is now a first-order economic variable: displacing higher-lifecycle-intensity imported gas increases avoided CO2e and therefore the assignment-compatible annual cost budget.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -611,4 +622,4 @@ The central remaining weakness is that 80% recycle and 90% capture are still red
   remain.
 
 ## Next highest-priority task
-Implement an iterative fixed-H2 tail-recycle closure. Starting from the IEAGHG PSA tail composition, remove CO2, recycle H2/CO/CH4, reduce fresh NG to hold H2 product fixed, apply reaction conversion and PSA recovery, regenerate the new tail composition, and iterate to convergence. Then recompute fresh-NG energy, external carbon, capture mass, process heat, lifecycle emissions and the S$100/t boundary from the converged state. Do not tighten economic conclusions further until this physical closure replaces the 80% sensitivity.
+Source a Singapore-relevant upstream natural-gas/LNG lifecycle range (production/methane leakage, liquefaction, shipping and regasification), a defensible nuclear lifecycle range, and CCS shipping/injection emissions for plausible Singapore storage routes. Propagate these as a joint sensitivity through the matched lifecycle/economic model. Acceptance criterion: report whether the >0.25 MtCO2e/y and <S$100/t criteria hold across credible lifecycle ranges rather than a single assumed 15 g/MJ case.
