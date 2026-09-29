@@ -438,3 +438,14 @@ fn current_source_backed_furnace_service_floor_exceeds_116_mw() {
     let (lo,hi)=current_furnace_service_lower_bound_mw();
     assert!(lo > 116.0 && hi < 117.0, "current floor {lo}..{hi} MW");
 }
+
+
+#[test]
+fn complete_ng_feed_preheat_exceeds_methane_only_bound() {
+    use nuclear_assisted_smr::{
+        feed_preheater_ng_only_duty_mw,feed_preheater_ch4_only_lower_bound_mw,
+    };
+    let q=feed_preheater_ng_only_duty_mw();
+    assert!(q > feed_preheater_ch4_only_lower_bound_mw());
+    assert!(q > 4.5 && q < 5.5, "NG-only feed preheat {q} MW");
+}
