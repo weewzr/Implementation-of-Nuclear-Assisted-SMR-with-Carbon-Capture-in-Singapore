@@ -1022,3 +1022,31 @@ pub fn project_loop_circulator_sensitivity_mw(dp_multiple: f64) -> f64 {
     helium_circulator_power_mw(m,loop_dp_from_ihx_multiple_kpa(dp_multiple),
         5.15,650.0,0.80)
 }
+
+
+/// Saturated-steam latent-heat bracket around the IEAGHG 4.23 MPa steam drum.
+/// 4.0 MPa: h_fg=1713.3 kJ/kg; 4.5 MPa: h_fg=1675.6 kJ/kg.
+pub const STEAM_HFG_4MPA_KJ_KG: f64 = 1713.3;
+pub const STEAM_HFG_4P5MPA_KJ_KG: f64 = 1675.6;
+
+/// Strict upper bound on furnace-convection saturated-steam generation duty.
+/// IEAGHG says ~75% of saturated steam is generated in the syngas WHB.
+/// The remaining ~25% is shared by shift heat recovery AND the furnace coil.
+/// Assigning all 25% to the furnace therefore intentionally overestimates
+/// the furnace contribution.
+pub fn furnace_steam_generation_upper_bound_mw() -> (f64,f64) {
+    let m_kg_s=ieaghg_non_syngas_whb_steam_kg_h_upper_group()/3600.0;
+    let q_lo=m_kg_s*STEAM_HFG_4P5MPA_KJ_KG/1000.0;
+    let q_hi=m_kg_s*STEAM_HFG_4MPA_KJ_KG/1000.0;
+    (q_lo,q_hi)
+}
+
+/// Current bounded conventional furnace-service envelope.
+/// Lower: currently quantified services, excluding furnace SG.
+/// Upper: assigns the entire non-syngas-WHB steam-generation remainder to
+/// the furnace coil, even though IEAGHG explicitly says shift recovery shares it.
+pub fn bounded_furnace_service_envelope_mw(reformer_inlet_c:f64)->(f64,f64) {
+    let (service_lo,service_hi)=current_htgr_service_envelope_mw(reformer_inlet_c);
+    let (_,sg_hi)=furnace_steam_generation_upper_bound_mw();
+    (service_lo,service_hi+sg_hi)
+}
