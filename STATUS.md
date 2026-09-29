@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Refine the first assignment-level lifecycle screen with route-specific Singapore gas/CCS data and then test the <S$100/tCO2e economic threshold.
+Populate the newly established abatement-cost framework with defensible HTGR, gas, CCS and financing inputs, then determine the break-even combinations compatible with <S$100/tCO2e.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -180,6 +180,17 @@ Against IEA's 10-12 kgCO2e/kgH2 unabated-NG hydrogen benchmark, the implied spec
 
 The dominant scientific uncertainty after high capture is now upstream imported-gas emissions, not direct-vs-electric nuclear lifecycle emissions.
 
+## Economic framework opened
+The CN4252 economic metric is now formalised as incremental annual cost divided by annual lifecycle CO2e avoided. At the minimum qualifying 0.25 MtCO2e/y abatement, S$100/t implies a maximum incremental annual cost of S$25 million/y; this is a budget identity, not a cost prediction.
+
+IEAGHG's historical standalone SMR+CCS benchmark reports EUR47-70/tCO2 avoided, EUR40-176m additional capital and 18-33% higher H2 operating cost (Q4 2014 basis). These values are useful comparators but cannot be directly compared to S$100/t without price-year/currency/boundary harmonisation.
+
+Singapore MTI stated in April 2025 that clearer estimates for the complete cross-border CCS capture/transport/storage value chain were still being developed, so no official Singapore CCS S$/t value has been fabricated.
+
+Singapore's carbon tax is S$45/tCO2e in 2026-2027, with a previously stated view of S$50-80 by 2030. It is retained as policy/economic context, not substituted for abatement cost.
+
+Rust now implements CRF annualisation, generic annualised cost, incremental abatement cost and the maximum annual incremental-cost budget implied by a target S$/t.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -220,4 +231,4 @@ The dominant scientific uncertainty after high capture is now upstream imported-
   remain.
 
 ## Next highest-priority task
-Refine Singapore-specific lifecycle provenance: identify plausible LNG/pipeline source-route emissions and a candidate cross-border CO2 transport/storage route. In parallel begin the economic foundation needed for the CN4252 <S$100/tCO2e test: define counterfactual, annualised CAPEX/OPEX boundary, nuclear heat/electricity allocation, NG price, CCS T&S cost and financing assumptions without yet claiming compliance.
+Build an economic parameter matrix with price year, currency, evidence type and uncertainty for HTGR CAPEX/O&M, direct-heat IHX/secondary loop, eSMR incremental CAPEX, natural-gas price, CCS capture and cross-border T&S, capacity factor, discount rate and project life. Then solve for break-even nuclear/CCS costs at S$100/tCO2e before selecting any central cost claim.
