@@ -629,3 +629,23 @@ fn lng_anchor_materially_raises_matched_lifecycle_intensity() {
     let lng=matched_direct_lifecycle_screen(0.90,18.6,5.5,0.504,140.0,0.025);
     assert!(lng.total()-gas.total() > 0.9);
 }
+
+
+#[test]
+fn capital_recovery_factor_matches_standard_formula() {
+    use nuclear_assisted_smr::capital_recovery_factor;
+    let crf=capital_recovery_factor(0.08,25);
+    assert!(crf>0.093 && crf<0.094);
+}
+
+#[test]
+fn cn4252_threshold_implies_25m_sgd_per_year_at_minimum_abatement_scale() {
+    use nuclear_assisted_smr::max_incremental_annual_cost;
+    close(max_incremental_annual_cost(100.0,250_000.0),25_000_000.0,1e-6);
+}
+
+#[test]
+fn abatement_cost_uses_incremental_not_total_candidate_cost() {
+    use nuclear_assisted_smr::abatement_cost_per_tco2e;
+    close(abatement_cost_per_tco2e(120.0,100.0,1.0,0.5),40.0,1e-12);
+}
