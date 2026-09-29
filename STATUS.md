@@ -124,6 +124,17 @@ The first source-state diagnostic evaluates Q/K for the published IEAGHG HTS out
 
 Commit `04d876a22fdc5069eab08138d5ed4b13a0cb6084` contains the layer. GitHub Actions was queued at this STATUS update, so no validation claim is made yet.
 
+## IEAGHG WGS equilibrium diagnostic verified
+The NIST/JANAF thermochemistry layer and source-state WGS diagnostic now pass CI.
+
+For IEAGHG stream 6 (HTS outlet: 412 C, 2.77 MPa; published CO2/CO/H2/H2O mole fractions), the model computes the ideal-gas WGS reaction quotient, NIST-derived equilibrium constant, ln(Q/K), and an apparent equilibrium temperature defined by K(T_eq)=Q_source. CI regression bounds establish that Q/K is within one order of magnitude of unity and that the apparent-equilibrium temperature lies within 550-850 K, with source-vs-equilibrium temperature approach within +/-150 K.
+
+This supports using equilibrium as a thermodynamic constraint/diagnostic for the shift section, but not silently forcing the published reactor outlet to exact equilibrium. A finite approach or kinetic effectiveness parameter should be retained when the recycle flowsheet is solved.
+
+Commits `eaca9e54b092ecc825ea3e0711f2c8203cfe8cfa` and `b51c5d382cd945dc7e5ae517f61aa453f91636fc` implement and regression-bound the diagnostic.
+
+Next critical task: reconstruct the IEAGHG primary reformer outlet composition/state and test the simultaneous SMR/WGS equilibrium residuals there. Only after the once-through reformer is reproduced should the equilibrium solver be applied to recycled feed.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
