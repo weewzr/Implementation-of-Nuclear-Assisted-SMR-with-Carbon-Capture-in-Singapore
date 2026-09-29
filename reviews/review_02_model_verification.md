@@ -52,7 +52,7 @@ Evidence: commits `33b9bba5f3b8f229502099758d4b5b5eb7a8d295`,
 `5e3fd0e5f33d79c8feaec05b21f9ef8ef19298a5`; CI run 36533912202 passed.
 
 ### R2-B02 — Legacy analytical recycle fixed point is structurally purge-blind
-**Severity: BLOCKER for any result using the ~0.737 fresh-feed fraction.**
+**Disposition: RESOLVED.**
 
 The legacy analytical result
 `analytical_tail_recycle_fresh_ng_fraction()` has no purge argument and is
@@ -64,10 +64,19 @@ This is mathematically self-consistent only for the reduced no-purge surrogate;
 it is not a closed physical recycle prediction once Review-1 inert control is
 required.
 
-**Acceptance criterion:** retire the legacy 0.737 result from predictive
-lifecycle/energy/economic propagation, or reproduce it as a limiting case of a
-converged purge-aware full-species solver. All headline recycle predictions must
-come from the physically closed solver.
+The legacy analytical 0.737 result is retained only as a mathematical/provenance
+diagnostic. A new canonical reference interface calls the purge-aware,
+thermodynamically constrained nested full-species solver and passes that solved
+fresh-feed fraction into lifecycle and NG-displacement calculations. CI verifies
+that the new solution is not algebraically identical to the legacy fraction and
+that upstream-NG lifecycle burden is computed from the solved fresh feed.
+
+Legacy tests that locked the 0.70-0.77 fraction or downstream economic screens
+to the reduced surrogate have been removed from predictive acceptance and an
+explicit retirement flag/test prevents treating that path as canonical.
+
+Evidence: commits `c22dc1bf8da07d049a88a8e7fad5875859596ddd`
+and `fbe357f3747f647e3c229a2150c17d3522b0ec7e`; CI passed.
 
 ### R2-B03 — Thermodynamic layer is not yet coupled to SMR conversion
 **Disposition: RESOLVED for the ideal-equilibrium screening model.**
@@ -143,7 +152,9 @@ scientific task without deleting provenance held elsewhere.
 
 ## Required next action
 
-Resolve **R2-B02** next by removing the legacy purge-blind ~0.737 fresh-feed
-fraction from lifecycle/energy/economic predictive propagation and replacing it
-with outputs from the thermodynamically constrained nested full-species solver.
-Then address R2-M01 PSA uncertainty before closing Review 2.
+Address **R2-M01** PSA uncertainty. The full-species recycle chemistry and purge
+are now physically coupled, but PSA recovery still uses a linear impurity
+surrogate. Establish a justified recovery/selectivity envelope from authoritative
+SMR-PSA evidence or validate against multiple source conditions, then propagate
+that uncertainty through the thermodynamic recycle solution before deciding
+whether Review 2 can close.
