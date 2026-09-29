@@ -1050,3 +1050,34 @@ pub fn bounded_furnace_service_envelope_mw(reformer_inlet_c:f64)->(f64,f64) {
     let (_,sg_hi)=furnace_steam_generation_upper_bound_mw();
     (service_lo,service_hi+sg_hi)
 }
+
+
+/// Screening conversion from process-heat service to electrical demand for eSMR.
+pub fn electric_heater_power_mwe(process_heat_mw: f64, electricity_to_heat_eff: f64) -> f64 {
+    assert!(process_heat_mw > 0.0);
+    assert!(electricity_to_heat_eff > 0.0 && electricity_to_heat_eff <= 1.0);
+    process_heat_mw / electricity_to_heat_eff
+}
+
+/// Reactor thermal power required to supply an electric load through a power cycle.
+pub fn reactor_thermal_for_electric_load_mw(electric_mw: f64, net_generation_eff: f64) -> f64 {
+    assert!(electric_mw > 0.0);
+    assert!(net_generation_eff > 0.0 && net_generation_eff <= 1.0);
+    electric_mw / net_generation_eff
+}
+
+/// First common-service eSMR screening envelope.
+/// Uses the bounded conventional process-service range and caller-specified
+/// electricity-to-heat and HTGR net generation efficiencies.
+pub fn nuclear_electric_reformer_screen_mw(
+    reformer_inlet_c:f64,
+    electricity_to_heat_eff:f64,
+    net_generation_eff:f64,
+)->((f64,f64),(f64,f64)) {
+    let (qlo,qhi)=bounded_furnace_service_envelope_mw(reformer_inlet_c);
+    let elo=electric_heater_power_mwe(qlo,electricity_to_heat_eff);
+    let ehi=electric_heater_power_mwe(qhi,electricity_to_heat_eff);
+    let rlo=reactor_thermal_for_electric_load_mw(elo,net_generation_eff);
+    let rhi=reactor_thermal_for_electric_load_mw(ehi,net_generation_eff);
+    ((elo,ehi),(rlo,rhi))
+}
