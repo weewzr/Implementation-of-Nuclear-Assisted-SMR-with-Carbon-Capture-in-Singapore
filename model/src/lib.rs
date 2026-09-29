@@ -2881,3 +2881,69 @@ mod recycle_penalty_regression_ranges {
         assert!(p5>p2 && p5<20.0);
     }
 }
+
+
+/// Pressure-topology screen for furnace-free PSA-tail recycle.
+///
+/// Source facts:
+/// - conventional SMR PSA tail gas is near atmospheric pressure;
+/// - IEAGHG Case 2A compresses tail gas to ~10 bar specifically to enable MDEA;
+/// - JAEA HTTR steam-reforming design uses ~4.5 MPa process gas.
+///
+/// A direct "PSA tail -> MDEA at 1 MPa -> reformer feed at multi-MPa" recycle
+/// therefore necessarily requires a second pressure lift unless the capture
+/// topology or PSA pressure architecture is redesigned.
+#[derive(Debug,Clone,Copy)]
+pub struct RecyclePressureTopology {
+    pub psa_tail_mpa:f64,
+    pub mdea_pressure_mpa:f64,
+    pub reformer_process_mpa:f64,
+}
+pub const SOURCE_ANCHORED_RECYCLE_PRESSURES:RecyclePressureTopology=
+    RecyclePressureTopology{
+        psa_tail_mpa:0.13,       // ~0.3 barg typical SMR PSA tail context
+        mdea_pressure_mpa:1.0,   // IEAGHG Case 2A: around 10 bar
+        reformer_process_mpa:4.5,// JAEA HTTR H2 system design
+    };
+
+/// Minimum pressure ratio from CO2-depleted MDEA outlet to the JAEA-like
+/// reformer process pressure if no pressure recovery/integration is credited.
+pub fn post_capture_recycle_pressure_ratio()->f64 {
+    SOURCE_ANCHORED_RECYCLE_PRESSURES.reformer_process_mpa
+        /SOURCE_ANCHORED_RECYCLE_PRESSURES.mdea_pressure_mpa
+}
+
+/// Minimum two-stage ideal-gas recycle compression sensitivity:
+/// stage 1 PSA-tail -> MDEA pressure; stage 2 sweet recycle -> reformer pressure.
+/// Intercooling is conservatively represented by resetting both stage inlets to
+/// the supplied inlet temperature. This is a topology screen, not compressor design.
+pub fn converged_two_stage_recycle_compression_mwe(
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+    inlet_c:f64,efficiency:f64,
+)->(f64,f64,f64) {
+    let p=SOURCE_ANCHORED_RECYCLE_PRESSURES;
+    let stage1=converged_recycle_compression_sensitivity_mwe(
+        co_conversion,ch4_conversion,h2_recovery,inlet_c,
+        p.mdea_pressure_mpa/p.psa_tail_mpa,efficiency);
+    let stage2=converged_recycle_compression_sensitivity_mwe(
+        co_conversion,ch4_conversion,h2_recovery,inlet_c,
+        p.reformer_process_mpa/p.mdea_pressure_mpa,efficiency);
+    (stage1,stage2,stage1+stage2)
+}
+
+#[cfg(test)]
+mod recycle_pressure_topology_tests {
+    use super::*;
+    #[test]
+    fn source_anchored_topology_requires_post_capture_pressure_lift() {
+        assert!(post_capture_recycle_pressure_ratio()>4.0);
+    }
+    #[test]
+    fn two_stage_compression_exceeds_capture_stage_alone() {
+        let (a,b,t)=converged_two_stage_recycle_compression_mwe(
+            0.8,0.8,0.8,40.0,0.75);
+        assert!(a>0.0 && b>0.0);
+        assert!((t-a-b).abs()<1.0e-12);
+        assert!(t>a);
+    }
+}
