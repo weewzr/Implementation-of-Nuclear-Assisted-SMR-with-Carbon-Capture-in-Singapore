@@ -1334,3 +1334,26 @@ pub fn residual_incremental_budget(
 ) -> f64 {
     total_allowed_incremental_cost_per_year - allocated_reactor_cost_per_year
 }
+
+
+/// Maximum total common-reactor annual cost compatible with a hydrogen-side
+/// incremental-cost budget after non-reactor incremental costs are reserved.
+pub fn max_common_reactor_annual_cost(
+    allowed_incremental_cost_per_year:f64,
+    nonreactor_incremental_cost_per_year:f64,
+    reactor_allocation_fraction:f64,
+)->f64 {
+    assert!(reactor_allocation_fraction>0.0 && reactor_allocation_fraction<=1.0);
+    (allowed_incremental_cost_per_year-nonreactor_incremental_cost_per_year)
+        /reactor_allocation_fraction
+}
+
+/// Annual CCS transport/storage charge from captured CO2 mass and unit tariff.
+/// Unit tariff is deliberately currency-agnostic; caller must harmonise FX/year.
+pub fn annual_ccs_transport_storage_cost(
+    captured_co2_t_per_year:f64,
+    tariff_per_tco2:f64,
+)->f64 {
+    assert!(captured_co2_t_per_year>=0.0 && tariff_per_tco2>=0.0);
+    captured_co2_t_per_year*tariff_per_tco2
+}
