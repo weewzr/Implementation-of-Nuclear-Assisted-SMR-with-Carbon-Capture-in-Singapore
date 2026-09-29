@@ -4629,3 +4629,151 @@ mod review2_structural_diagnostics {
         assert!((a.tail_co_kmol_h-b.tail_co_kmol_h).abs()>1.0);
     }
 }
+
+
+/// Inner fixed-fresh recycle solve used by Review-2 nested steady-state method.
+/// This separates recycle-composition convergence from the outer fixed-H2
+/// production solve, avoiding the coupled proportional controller used by the
+/// earlier full-species prototype.
+#[derive(Debug,Clone,Copy)]
+pub struct FixedFreshRecycle6 {
+    pub converged:bool,pub iterations:u32,pub fresh_fraction:f64,
+    pub product_h2:f64,pub purge_fraction:f64,pub recycle:WetGas6,
+    pub purge:WetGas6,pub psa_recovery:f64,pub max_state_residual:f64,
+}
+pub fn solve_recycle6_at_fixed_fresh(
+    fresh_fraction:f64,
+    smr_conversion:f64,
+    wgs_temperature_k:f64,
+    pressure_bar:f64,
+    psa_impurity_sensitivity:f64,
+    max_n2_mole_fraction:f64,
+    tolerance:f64,
+    max_iterations:u32,
+)->FixedFreshRecycle6 {
+    assert!(fresh_fraction>0.0&&fresh_fraction<=2.0);
+    assert!(smr_conversion>0.0&&smr_conversion<=1.0);
+    assert!(tolerance>0.0&&max_iterations>0);
+    let source=ieaghg_hts_inlet_wet6();
+    let mut recycle=WetGas6::default();
+    let relax=0.20;
+    let mut last_product=0.0; let mut last_p=0.0; let mut last_psa=0.0;
+    let mut last_purge=WetGas6::default(); let mut last_err=f64::INFINITY;
+    for it in 1..=max_iterations {
+        let mut feed=source.scale(fresh_fraction).add(recycle);
+        let xi=smr_conversion*feed.ch4.min(feed.h2o);
+        feed=apply_smr(feed,xi);
+        let shifted=solve_wgs_equilibrium(feed,wgs_temperature_k,pressure_bar);
+        let psa=psa6_bounded(shifted,psa_impurity_sensitivity);
+
+        let dry=psa.tail.h2+psa.tail.co+psa.tail.co2+psa.tail.ch4+psa.tail.n2;
+        let non_n2=(dry-psa.tail.n2).max(1e-12);
+        let desired_n2=max_n2_mole_fraction/(1.0-max_n2_mole_fraction)*non_n2;
+        let p=if psa.tail.n2<=desired_n2 {0.0}
+            else {(psa.tail.n2-desired_n2)/psa.tail.n2};
+        let purge=psa.tail.scale(p);
+        let target=psa.tail.scale(1.0-p);
+        let next=WetGas6{
+            h2:recycle.h2+relax*(target.h2-recycle.h2),
+            h2o:recycle.h2o+relax*(target.h2o-recycle.h2o),
+            co:recycle.co+relax*(target.co-recycle.co),
+            co2:recycle.co2+relax*(target.co2-recycle.co2),
+            ch4:recycle.ch4+relax*(target.ch4-recycle.ch4),
+            n2:recycle.n2+relax*(target.n2-recycle.n2),
+        };
+        let err=(next.h2-recycle.h2).abs()
+            .max((next.h2o-recycle.h2o).abs())
+            .max((next.co-recycle.co).abs())
+            .max((next.co2-recycle.co2).abs())
+            .max((next.ch4-recycle.ch4).abs())
+            .max((next.n2-recycle.n2).abs());
+        recycle=next; last_product=psa.product_h2; last_p=p;
+        last_psa=psa.recovery; last_purge=purge; last_err=err;
+        if err<tolerance {
+            // Re-evaluate output on the converged recycle state so reported
+            // product/purge correspond to the returned state.
+            let mut feed=source.scale(fresh_fraction).add(recycle);
+            let xi=smr_conversion*feed.ch4.min(feed.h2o);
+            feed=apply_smr(feed,xi);
+            let shifted=solve_wgs_equilibrium(feed,wgs_temperature_k,pressure_bar);
+            let psa=psa6_bounded(shifted,psa_impurity_sensitivity);
+            return FixedFreshRecycle6{converged:true,iterations:it,
+                fresh_fraction,product_h2:psa.product_h2,purge_fraction:p,
+                recycle,purge,psa_recovery:psa.recovery,max_state_residual:err};
+        }
+    }
+    FixedFreshRecycle6{converged:false,iterations:max_iterations,
+        fresh_fraction,product_h2:last_product,purge_fraction:last_p,
+        recycle,purge:last_purge,psa_recovery:last_psa,max_state_residual:last_err}
+}
+
+/// Nested fixed-H2 recycle solve. Inner loop closes recycle composition at fixed
+/// fresh feed; outer bisection solves product_H2 - target_H2 = 0.
+/// This provides a scalar, bracketed production residual rather than a coupled
+/// proportional controller.
+pub fn solve_full_recycle6_nested(
+    smr_conversion:f64,
+    wgs_temperature_k:f64,
+    pressure_bar:f64,
+    psa_impurity_sensitivity:f64,
+    max_n2_mole_fraction:f64,
+    target_h2_kmol_h:f64,
+    state_tolerance:f64,
+    product_relative_tolerance:f64,
+    max_inner_iterations:u32,
+)->FullRecycle6Result {
+    assert!(target_h2_kmol_h>0.0&&product_relative_tolerance>0.0);
+    let eval=|fresh:f64| solve_recycle6_at_fixed_fresh(
+        fresh,smr_conversion,wgs_temperature_k,pressure_bar,
+        psa_impurity_sensitivity,max_n2_mole_fraction,
+        state_tolerance,max_inner_iterations);
+    let mut lo=0.02; let mut hi=2.0;
+    let mut a=eval(lo); let mut b=eval(hi);
+    assert!(a.converged&&b.converged,"inner recycle solve failed at outer bracket");
+    let mut fa=a.product_h2-target_h2_kmol_h;
+    let fb=b.product_h2-target_h2_kmol_h;
+    assert!(fa<=0.0&&fb>=0.0,"fixed-H2 root not bracketed");
+    for outer in 1..=100 {
+        let mid=0.5*(lo+hi);
+        let m=eval(mid);
+        assert!(m.converged,"inner recycle solve failed during bisection");
+        let fm=m.product_h2-target_h2_kmol_h;
+        if (fm/target_h2_kmol_h).abs()<product_relative_tolerance {
+            return FullRecycle6Result{converged:true,iterations:outer,
+                fresh_fraction:mid,purge_fraction:m.purge_fraction,
+                product_h2:m.product_h2,recycle:m.recycle,purge:m.purge,
+                psa_recovery:m.psa_recovery};
+        }
+        if fm>0.0 {hi=mid;b=m;} else {lo=mid;a=m;fa=fm;}
+    }
+    let m=if (a.product_h2-target_h2_kmol_h).abs()
+        <(b.product_h2-target_h2_kmol_h).abs(){a}else{b};
+    FullRecycle6Result{converged:false,iterations:100,
+        fresh_fraction:m.fresh_fraction,purge_fraction:m.purge_fraction,
+        product_h2:m.product_h2,recycle:m.recycle,purge:m.purge,
+        psa_recovery:m.psa_recovery}
+}
+
+#[cfg(test)]
+mod review2_nested_recycle_tests {
+    use super::*;
+    #[test]
+    fn nominal_nested_solver_closes_state_and_product() {
+        let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+        let r=solve_full_recycle6_nested(
+            0.75,685.15,27.7,0.35,0.05,target,1e-7,1e-7,50000);
+        assert!(r.converged);
+        assert!((r.product_h2-target).abs()/target<1e-7);
+        assert!(r.purge_fraction>0.0&&r.recycle.nonnegative());
+    }
+    #[test]
+    fn nested_fresh_feed_responds_to_model_performance() {
+        let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+        let a=solve_full_recycle6_nested(
+            0.55,685.15,27.7,0.20,0.05,target,1e-6,1e-6,50000);
+        let b=solve_full_recycle6_nested(
+            0.85,685.15,27.7,0.60,0.05,target,1e-6,1e-6,50000);
+        assert!(a.converged&&b.converged);
+        assert!((a.fresh_fraction-b.fresh_fraction).abs()>1e-4);
+    }
+}
