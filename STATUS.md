@@ -1,7 +1,7 @@
 # STATUS
 
 ## Current research gate
-Gate 6 — Paper/reproducibility: COMPLETE FIRST MANUSCRIPT; READY FOR INDEPENDENT REVIEW 4.
+Gate 6 — Paper/reproducibility: REVIEW-4 CORRECTIONS IN PROGRESS.
 
 Gate 5 — Experiments/results: COMPLETE.
 
@@ -10,6 +10,7 @@ Gate 4 — Verified computational model: COMPLETE.
 Independent Review 1 gate: CLOSED.
 Independent Review 2 gate: CLOSED.
 Independent Review 3 / Gate 4 gate: CLOSED.
+Independent Review 4 gate: OPEN — substantive corrections implemented; CI/PDF verification pending.
 
 ## Verified computational state
 - Canonical R3 flowsheet starts from the IEAGHG NG/steam-derived external feed,
