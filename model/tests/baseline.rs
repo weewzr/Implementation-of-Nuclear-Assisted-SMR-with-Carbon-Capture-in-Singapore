@@ -820,3 +820,17 @@ fn utility_value_functions_preserve_sign_and_units() {
     close(annual_electricity_value_sgd(-2.0,8000.0,150.0),-2_400_000.0,1e-6);
     close(annual_steam_value_sgd(46.0,8000.0,20.0),7_360_000.0,1e-6);
 }
+
+
+#[test]
+fn tail_gas_recycle_has_material_h2_and_co2_recovery_potential() {
+    use nuclear_assisted_smr::{
+        tail_gas_ideal_h2_upper_bound_kmol_h,tail_gas_existing_co2_t_h,
+        tail_gas_nonco2_carbon_kmol_h,
+    };
+    let h=tail_gas_ideal_h2_upper_bound_kmol_h();
+    assert!(h>1590.0 && h<1610.0, "ideal tail H2 {h} kmol/h");
+    let c=tail_gas_existing_co2_t_h();
+    assert!(c>47.0 && c<48.0, "tail CO2 {c} t/h");
+    assert!(tail_gas_nonco2_carbon_kmol_h()>500.0);
+}
