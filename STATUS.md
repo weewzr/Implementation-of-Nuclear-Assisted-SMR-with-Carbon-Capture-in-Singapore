@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Quantify the nuclear premium/savings required to bring a Singapore-adjusted CCS pathway below S$100/tCO2e, because the conventional Case-1A screening comparator already exceeds the threshold.
+Quantify real operating/resource savings from nuclear integration—starting with avoided furnace NG and changed power/steam balances—to test whether they can overcome the ~S$17-29m/y fixed-denominator savings requirement before nuclear CAPEX is charged.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -238,6 +238,15 @@ Combined conventional Case-1A screening CAC is therefore **~S$146-180/t avoided*
 
 This remains a screening result: IEAGHG CAC is plant-gate CO2, not lifecycle CO2e; Singapore T&S is a study range, not tariff; and Singapore location/finance factors are not yet applied.
 
+## Nuclear required-savings diagnostic
+At IEAGHG's 8322 h/y, Case 1A directly avoids ~365.1 ktCO2/y versus the base plant. Holding that denominator fixed only as a diagnostic, reducing the current Singapore-adjusted screening comparator from S$146-180/t to S$100/t requires roughly **S$16.8-29.2m/y of net savings** before any positive nuclear premium can be tolerated.
+
+This is not the final lifecycle CN4252 denominator: nuclear integration may increase capture/abatement and therefore enlarge the denominator.
+
+Singapore's 2026-27 carbon tax is S$45/tCO2e. At ~365 kt/y, avoided tax could be order S$16m/y for a fully taxable facility, but tax is a transfer/policy cash-flow effect, not automatically a societal resource saving. The model will therefore keep resource abatement cost separate from private project cash flow.
+
+The next test is whether real savings—avoided furnace NG, utilities, steam/power changes and potentially cogeneration value—are of the same order as S$17-29m/y. Only after that should detailed nuclear CAPEX be imposed.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -278,4 +287,4 @@ This remains a screening result: IEAGHG CAC is plant-gate CO2, not lifecycle CO2
   remain.
 
 ## Next highest-priority task
-Derive the maximum allowable nuclear/integration premium—or minimum required operating savings/credits—needed to move the Singapore-adjusted pathway from ~S$146-180/t toward <S$100/t. Compare dedicated and cogeneration allocation, avoided furnace NG, electricity/steam credits and carbon-tax effects. If no credible savings region exists, record economic falsification of the initial concept rather than forcing a favourable conclusion.
+Quantify the largest real savings channels from the verified process model: supplementary furnace-NG displacement, changed electricity export/import, steam export/value and any avoided conventional furnace capital. Keep carbon-tax savings in a separate private-cash-flow layer. Compare annual savings against the S$17-29m/y requirement, then introduce dedicated/cogeneration HTGR annualised cost.
