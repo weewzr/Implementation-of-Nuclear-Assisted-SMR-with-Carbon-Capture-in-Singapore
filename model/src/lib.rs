@@ -3894,3 +3894,16 @@ mod radiant_acceptance_tests {
         assert!(v.calculated_hi_mw>v.calculated_lo_mw);
     }
 }
+
+
+#[cfg(test)]
+mod radiant_acceptance_numeric_probe {
+    use super::*;
+    #[test]
+    fn classify_radiant_reference_against_independent_envelope() {
+        let v=validate_independent_radiant_envelope();
+        // Classification only: broad bins reveal whether missing physics is
+        // small (<20%), material (20-50%), or gross (>50%) without tuning.
+        assert!(v.nearest_relative_error<0.50);
+    }
+}
