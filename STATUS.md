@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Quantify real operating/resource savings from nuclear integration—starting with avoided furnace NG and changed power/steam balances—to test whether they can overcome the ~S$17-29m/y fixed-denominator savings requirement before nuclear CAPEX is charged.
+Quantify remaining real operating savings/penalties from nuclear integration—especially power/steam and tail-gas changes—after establishing the avoided supplementary-furnace-NG sensitivity.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -247,6 +247,13 @@ Singapore's 2026-27 carbon tax is S$45/tCO2e. At ~365 kt/y, avoided tax could be
 
 The next test is whether real savings—avoided furnace NG, utilities, steam/power changes and potentially cogeneration value—are of the same order as S$17-29m/y. Only after that should detailed nuclear CAPEX be imposed.
 
+## Avoided supplementary-furnace-NG savings sensitivity
+IEAGHG's 55.94 MW_LHV purchased supplementary furnace NG corresponds to ~1.676 million GJ/y at 8322 h/y. The Singapore industrial NG commodity price remains an explicit sensitivity; town-gas retail tariffs are not substituted.
+
+If nuclear integration displaced 100% of this purchased supplementary NG, avoided NG alone would close the current S$16.8-29.2m/y fixed-denominator economic gap only at gas prices of roughly **S$10.0-17.4/GJ**, before any nuclear/IHX/tail-gas/circulator costs are charged.
+
+This shows avoided fuel can be material but is not automatically sufficient. PSA tail gas is not counted as purchased-fuel savings; its furnace sink disappears and must be recycled/treated consistently.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -287,4 +294,4 @@ The next test is whether real savings—avoided furnace NG, utilities, steam/pow
   remain.
 
 ## Next highest-priority task
-Quantify the largest real savings channels from the verified process model: supplementary furnace-NG displacement, changed electricity export/import, steam export/value and any avoided conventional furnace capital. Keep carbon-tax savings in a separate private-cash-flow layer. Compare annual savings against the S$17-29m/y requirement, then introduce dedicated/cogeneration HTGR annualised cost.
+Quantify power and steam economic changes under furnace removal/nuclear integration and construct a tail-gas recycle cost/energy boundary. Then combine avoided NG + utility changes into annual real savings and compare with the S$17-29m/y requirement before imposing annualised dedicated/cogeneration HTGR costs. Maintain a separate private-cash-flow layer for the S$45/t 2026-27 carbon tax.
