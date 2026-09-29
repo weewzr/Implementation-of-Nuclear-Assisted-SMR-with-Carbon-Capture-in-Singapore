@@ -582,6 +582,19 @@ Under those assumptions, the lifecycle-generated S$100/t budget moves the full-c
 
 This demonstrates that upstream NG/LNG lifecycle intensity is now a first-order economic variable: displacing higher-lifecycle-intensity imported gas increases avoided CO2e and therefore the assignment-compatible annual cost budget.
 
+## Singapore-relevant joint lifecycle/economic sensitivity
+EMA reports 11 Mtoe Singapore NG imports in 2024, including 6 Mtoe LNG (~55%). IEA's 2026 supply-chain assessment gives ~11.5 gCO2e/MJ for global-average gas supply and 18.6 gCO2e/MJ for delivered LNG. A simple 6/11 LNG + 5/11 gas screening mix is ~15.37 g/MJ; it is explicitly a proxy because Singapore's pipeline-contract lifecycle intensity is not directly measured by the global 11.5 g/MJ anchor. citeturn0search1turn0search0
+
+UNECE gives nuclear lifecycle emissions of 5.1-6.4 gCO2e/kWh_e. citeturn0search48 The existing CCS-chain sensitivity remains 2.5-3.5% of captured CO2 pending route selection.
+
+Joint corner propagation for the same 80% recycle/shared-HTGR case gives:
+- lower-abatement corner (11.5 g/MJ gas, 6.4 g/kWh nuclear, 3.5% CCS chain): candidate ~1.949 kgCO2e/kgH2, abatement ~8.864 kg/kg, ~0.663 Mt/y, S$66.34m/y S$100/t budget, low-T&S minimum gas value ~S$14.69/GJ;
+- LNG-like higher-abatement corner (18.6 g/MJ, 5.1 g/kWh, 2.5%): candidate ~2.594 kg/kg but baseline rises more, so abatement ~9.341 kg/kg, ~0.699 Mt/y, S$69.92m/y budget, minimum gas value ~S$13.88/GJ.
+
+The >0.25 MtCO2e/y criterion is robust across this screening bracket. The <S$100/t criterion remains conditional: S$10/GJ gas fails the low-T&S full-cost screen, S$15/GJ is narrowly inside, and S$20/GJ has more margin. Upstream gas is a much larger lifecycle lever than nuclear LCA.
+
+CI caught a test expectation of >0.700 Mt/y while the executed upper-corner result is 0.6992 Mt/y; the model was correct and the regression expectation was corrected rather than altering the calculation.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -622,4 +635,4 @@ This demonstrates that upstream NG/LNG lifecycle intensity is now a first-order 
   remain.
 
 ## Next highest-priority task
-Source a Singapore-relevant upstream natural-gas/LNG lifecycle range (production/methane leakage, liquefaction, shipping and regasification), a defensible nuclear lifecycle range, and CCS shipping/injection emissions for plausible Singapore storage routes. Propagate these as a joint sensitivity through the matched lifecycle/economic model. Acceptance criterion: report whether the >0.25 MtCO2e/y and <S$100/t criteria hold across credible lifecycle ranges rather than a single assumed 15 g/MJ case.
+Implement the converged fixed-H2 tail-gas recycle model. Iterate recycle composition, fresh-NG displacement, PSA recovery, carbon conversion/capture and heat duty together until mass/carbon/H2 residuals satisfy explicit tolerances. Then feed that converged result into the lifecycle/economic sensitivity layer. Acceptance criterion: replace the imposed 80% recycle/90% capture screening closure with a reproducible converged process state before advancing the architecture toward Gate 4 verification.
