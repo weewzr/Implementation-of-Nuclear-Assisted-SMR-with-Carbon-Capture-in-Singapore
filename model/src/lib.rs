@@ -6402,3 +6402,46 @@ mod r3_m01_driver_tests {
         }
     }
 }
+
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3ThresholdDriverCounts {
+    pub low_carbon_both_pass:usize,pub grid_both_pass:usize,
+    pub low_cost_both_pass:usize,pub high_cost_both_pass:usize,
+    pub capture85_abatement_pass:usize,pub capture95_abatement_pass:usize,
+    pub psa70_abatement_pass:usize,pub psa90_abatement_pass:usize,
+}
+pub fn r3_threshold_driver_counts()->R3ThresholdDriverCounts {
+    let v=r3_uncertainty_design();
+    let mut z=R3ThresholdDriverCounts{low_carbon_both_pass:0,grid_both_pass:0,
+        low_cost_both_pass:0,high_cost_both_pass:0,capture85_abatement_pass:0,
+        capture95_abatement_pass:0,psa70_abatement_pass:0,psa90_abatement_pass:0};
+    for x in v {
+        if x.pass_abatement&&x.pass_cost {
+            if x.auxiliary_g_kwh<100.0{z.low_carbon_both_pass+=1}else{z.grid_both_pass+=1}
+            if x.fixed_annual_sgd<100e6{z.low_cost_both_pass+=1}else{z.high_cost_both_pass+=1}
+        }
+        if x.pass_abatement {
+            if x.capture_fraction<0.90{z.capture85_abatement_pass+=1}else{z.capture95_abatement_pass+=1}
+            if x.psa_recovery<0.80{z.psa70_abatement_pass+=1}else{z.psa90_abatement_pass+=1}
+        }
+    }
+    z
+}
+
+#[cfg(test)]
+mod r3_m01_falsification_classification_tests {
+    use super::*;
+    #[test]
+    fn current_coupled_design_has_no_joint_cn4252_pass() {
+        let s=r3_uncertainty_summary();
+        assert_eq!(s.both_pass,0);
+        assert!(s.abatement_only+s.cost_only+s.neither>0);
+    }
+    #[test]
+    fn threshold_driver_counts_reconcile_with_zero_joint_pass() {
+        let d=r3_threshold_driver_counts();
+        assert_eq!(d.low_carbon_both_pass+d.grid_both_pass,0);
+        assert_eq!(d.low_cost_both_pass+d.high_cost_both_pass,0);
+    }
+}
