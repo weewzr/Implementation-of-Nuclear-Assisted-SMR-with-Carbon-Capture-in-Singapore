@@ -1,3 +1,4 @@
+pub mod deployment;
 //! Screening-level SMR baseline model.
 //!
 //! The first validation target is IEAGHG 2017-02.  This module intentionally
