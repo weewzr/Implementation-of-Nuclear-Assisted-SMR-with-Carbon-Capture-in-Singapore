@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Test whether dedicated versus cogeneration/shared HTGR cost allocation can fit inside the S$100/tCO2e break-even budget, while refining gas and CCS cost inputs.
+Determine whether any defensible combination of CCS T&S, capture cost and dedicated/cogeneration HTGR allocation can remain below the authoritative CN4252 S$100/tCO2e threshold.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -200,6 +200,15 @@ For the 71.952 ktH2/y reference plant, an illustrative 7.5 kgCO2e/kgH2 specific 
 
 This makes reactor cost allocation a first-order question: dedicated HTGR and cogeneration/shared-reactor architectures must be tested separately.
 
+## Dedicated/cogeneration allocation and Singapore CCS pressure
+The authoritative Project Source was rechecked: CN4252 requires >0.25 MtCO2e/y within Singapore at <S$100/tCO2e. A current public SPEED page has a different <S$250/t desirable threshold, but it is not the assignment source and does not replace the CN4252 target.
+
+JAEA GTHTR300C provides a transparent cogeneration allocation anchor: 170 MWth of a 600 MWth reactor goes to hydrogen and 430 MWth to power, so a thermal-energy-share allocation assigns 28.33% of common reactor cost to hydrogen. JAEA's own IS-process economics show cogeneration materially reducing attributed H2 cost, but those numerical reductions are not transferred to SMR.
+
+More importantly, an IEAGHG 2023 ExxonMobil analysis specifically for Singapore CO2 sources reports T&S cost groups of USD50-75/t (Group A), USD75-150/t (B), and USD150-450/t (C). These are study estimates, not tariffs.
+
+At ~0.50 MtCO2/y captured and an explicit 1.276 SGD/USD FX sensitivity, Group-A T&S alone is ~S$31.9-47.9m/y. Against the illustrative ~S$54m/y incremental-cost budget for 0.54 MtCO2e/y avoided, that consumes ~59-89% of the budget before capture, nuclear integration and O&M. This is now the strongest economic falsification pressure identified.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -240,4 +249,4 @@ This makes reactor cost allocation a first-order question: dedicated HTGR and co
   remain.
 
 ## Next highest-priority task
-Construct dedicated-HTGR and cogeneration/shared-HTGR economic cases. Annualise source-backed HTGR CAPEX/O&M ranges without linear scaling where unsupported, allocate reactor cost by delivered heat/electricity service transparently, and calculate the residual annual budget available for CCS T&S and integration while remaining below S$100/tCO2e. Continue searching for Singapore/Asian industrial gas-price and cross-border CCS service-cost evidence.
+Build the two-dimensional break-even map analytically: CCS T&S tariff versus allocated annual reactor/integration cost, with capture OPEX/CAPEX and lifecycle abatement as explicit parameters. Evaluate dedicated (100% reactor allocation) and cogeneration (28.3% thermal-share anchor plus sensitivity) cases. The goal is to identify whether any credible economic feasibility region remains under S$100/tCO2e, not to force a favourable point estimate.
