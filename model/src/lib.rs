@@ -2579,3 +2579,75 @@ mod converged_reference_screen_tests {
         assert!(r.annual_s100_budget_sgd>25_000_000.0);
     }
 }
+
+
+/// Full-cost boundary using the converged recycle NG displacement rather than
+/// the superseded single-pass 80% screen.
+pub fn converged_min_gas_price_for_full_cost_sgd_per_gj(
+    allowed_incremental_cost_sgd_y:f64,
+    htgr_service_mw:f64,
+    nuclear_heat_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+    ccs_ts_cost_sgd_y:f64,
+    allocated_reactor_cost_sgd_y:f64,
+    ihx_loop_cost_sgd_y:f64,
+    other_integration_cost_sgd_y:f64,
+)->f64 {
+    let saved_gj_y=converged_recycle_gross_ng_displacement_mw()*8322.0*3.6;
+    let heat=annual_thermal_energy_cost_sgd(
+        htgr_service_mw,8322.0,nuclear_heat_sgd_per_gj);
+    let elec=case2a_tail_separation_net_electric_anchor_mwe()
+        *8322.0*electricity_sgd_per_mwh;
+    let required=allocated_reactor_cost_sgd_y+ihx_loop_cost_sgd_y
+        +other_integration_cost_sgd_y+heat+elec+ccs_ts_cost_sgd_y
+        -allowed_incremental_cost_sgd_y;
+    required/saved_gj_y
+}
+
+pub fn converged_max_ccs_ts_cost_sgd_y(
+    allowed_incremental_cost_sgd_y:f64,
+    htgr_service_mw:f64,
+    gas_price_sgd_per_gj:f64,
+    nuclear_heat_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+    allocated_reactor_cost_sgd_y:f64,
+    ihx_loop_cost_sgd_y:f64,
+    other_integration_cost_sgd_y:f64,
+)->f64 {
+    let ng=annual_thermal_energy_cost_sgd(
+        converged_recycle_gross_ng_displacement_mw(),8322.0,gas_price_sgd_per_gj);
+    let heat=annual_thermal_energy_cost_sgd(
+        htgr_service_mw,8322.0,nuclear_heat_sgd_per_gj);
+    let elec=case2a_tail_separation_net_electric_anchor_mwe()
+        *8322.0*electricity_sgd_per_mwh;
+    allowed_incremental_cost_sgd_y+ng-heat-elec-allocated_reactor_cost_sgd_y
+        -ihx_loop_cost_sgd_y-other_integration_cost_sgd_y
+}
+
+/// Reproducible representative full-cost screen using the same explicit
+/// assumptions previously applied to the 80% sensitivity:
+/// 162 MWth process service; S$5.69/GJ nuclear heat; S$150/MWh separation;
+/// S$50m/y allocated reactor cost; S$8.2m/y IHX/loop; S$5m/y other integration;
+/// and S$31.9m/y low Group-A-like CCS T&S.
+/// The abatement budget is taken from the converged lifecycle case itself.
+pub fn converged_representative_full_cost_screen()->(f64,f64,f64) {
+    let r=converged_reference_screen();
+    let min_gas=converged_min_gas_price_for_full_cost_sgd_per_gj(
+        r.annual_s100_budget_sgd,162.0,5.69,150.0,31.9e6,50.0e6,8.2e6,5.0e6);
+    let max_ts_at_15=converged_max_ccs_ts_cost_sgd_y(
+        r.annual_s100_budget_sgd,162.0,15.0,5.69,150.0,50.0e6,8.2e6,5.0e6);
+    let max_ts_at_20=converged_max_ccs_ts_cost_sgd_y(
+        r.annual_s100_budget_sgd,162.0,20.0,5.69,150.0,50.0e6,8.2e6,5.0e6);
+    (min_gas,max_ts_at_15,max_ts_at_20)
+}
+
+#[cfg(test)]
+mod converged_full_cost_tests {
+    use super::*;
+    #[test]
+    fn converged_full_cost_boundary_is_finite_and_ordered() {
+        let (p,ts15,ts20)=converged_representative_full_cost_screen();
+        assert!(p.is_finite() && p>0.0);
+        assert!(ts20>ts15);
+    }
+}
