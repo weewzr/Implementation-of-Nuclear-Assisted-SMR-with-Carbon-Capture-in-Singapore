@@ -3172,3 +3172,17 @@ mod pressure_surface_report_tests {
         assert!(span.is_finite() && span>0.0);
     }
 }
+
+
+#[cfg(test)]
+mod pressure_surface_numeric_lock {
+    use super::*;
+    #[test]
+    fn pressure_surface_is_secondary_scale_under_reference_costs() {
+        let s=recycle_pressure_efficiency_min_gas_table_sgd_per_gj();
+        let span=recycle_pressure_efficiency_boundary_span_sgd_per_gj();
+        assert!(s[0][0]>10.0 && s[0][0]<25.0);
+        assert!(s[2][2]>10.0 && s[2][2]<25.0);
+        assert!(span<5.0);
+    }
+}
