@@ -717,3 +717,20 @@ fn singapore_ccs_group_a_can_consume_most_of_100_sgd_per_t_budget() {
     assert!(budget_fraction_consumed(low,54_000_000.0)>0.59);
     assert!(budget_fraction_consumed(high,54_000_000.0)>0.88);
 }
+
+
+#[test]
+fn zero_other_costs_set_absolute_ccs_tariff_ceiling_near_108_sgd_per_t() {
+    use nuclear_assisted_smr::max_ccs_tariff_per_t_captured;
+    close(max_ccs_tariff_per_t_captured(54_000_000.0,0.0,500_000.0),108.0,1e-12);
+}
+
+#[test]
+fn group_a_like_ccs_leaves_little_room_for_everything_else() {
+    use nuclear_assisted_smr::max_reactor_and_integration_budget_after_ccs;
+    // Approx SGD tariffs from USD50 and USD75 at 1.276 SGD/USD.
+    let low=max_reactor_and_integration_budget_after_ccs(54_000_000.0,500_000.0,63.8);
+    let high=max_reactor_and_integration_budget_after_ccs(54_000_000.0,500_000.0,95.7);
+    close(low,22_100_000.0,1.0);
+    close(high,6_150_000.0,1.0);
+}
