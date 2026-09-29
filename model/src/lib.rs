@@ -5678,3 +5678,181 @@ mod review2_m05_integrated_propagation_tests {
         assert!(x.gross_ng_displacement_mw>0.0);
     }
 }
+
+
+/// R3 canonical external-feed construction.
+///
+/// Start from the actual IEAGHG pre-reformer feed (stream 4), not the already
+/// reformed HTS-inlet state. C2+ hydrocarbons are converted by the explicit
+/// complete-steam-prereforming stoichiometric screen:
+///
+/// CnH(2n+2) + n H2O -> n CO + (2n+1) H2.
+///
+/// This preserves C/H/O exactly in WetGas6 and is deliberately a transparent
+/// screening prereformer, not an equilibrium/kinetic prereformer model.
+/// The source-reconstructed unnumbered interstage water addition is then added
+/// before the primary reformer.
+pub fn r3_ieaghg_external_reformer_feed_wet6()->WetGas6 {
+    let s=ieaghg_prereformer_feed();
+    let mut w=WetGas6{
+        h2:s.flow(s.h2), h2o:s.flow(s.h2o), co:s.flow(s.co),
+        co2:s.flow(s.co2), ch4:s.flow(s.ch4), n2:s.flow(s.n2)};
+    for (flow,n) in [
+        (s.flow(s.c2h6),2.0),(s.flow(s.c3h8),3.0),
+        (s.flow(s.nc4h10),4.0),(s.flow(s.nc5h12),5.0)] {
+        if flow>0.0 {
+            let water=n*flow;
+            assert!(w.h2o>=water,"insufficient steam for prereforming screen");
+            w.h2o-=water;
+            w.co+=n*flow;
+            w.h2+=(2.0*n+1.0)*flow;
+        }
+    }
+    w.h2o+=ieaghg_interstage_water_addition_kmol_h();
+    assert!(w.nonnegative());
+    w
+}
+
+/// Explicit CO2 capture operation. Captured material is physically removed from
+/// the stream passed downstream.
+#[derive(Debug,Clone,Copy)]
+pub struct Co2CaptureResult {pub downstream:WetGas6,pub captured_co2_kmol_h:f64}
+pub fn remove_co2_fraction(s:WetGas6,capture_fraction:f64)->Co2CaptureResult {
+    assert!(s.nonnegative()&&(0.0..=1.0).contains(&capture_fraction));
+    let captured=s.co2*capture_fraction;
+    Co2CaptureResult{
+        downstream:WetGas6{co2:s.co2-captured,..s},
+        captured_co2_kmol_h:captured}
+}
+
+/// R3 physically ordered fixed-fresh loop:
+/// external NG/steam-equivalent feed + recycle -> reformer -> HTS -> CO2 capture
+/// -> PSA -> purge -> recycle.
+#[derive(Debug,Clone,Copy)]
+pub struct R3FixedFreshState {
+    pub converged:bool,pub iterations:u32,pub fresh_fraction:f64,
+    pub reformer_in:WetGas6,pub reformer_out:WetGas6,pub shifted:WetGas6,
+    pub post_capture:WetGas6,pub captured_co2_kmol_h:f64,
+    pub product_h2_kmol_h:f64,pub purge_fraction:f64,
+    pub purge:WetGas6,pub recycle:WetGas6,pub psa_recovery:f64,
+    pub max_state_residual:f64,
+}
+pub fn r3_solve_at_fixed_fresh(
+    fresh_fraction:f64,reformer_t_k:f64,reformer_p_bar:f64,
+    shift_t_k:f64,shift_p_bar:f64,capture_fraction:f64,
+    psa_recovery:f64,tolerance:f64,max_iterations:u32,
+)->R3FixedFreshState {
+    assert!(fresh_fraction>0.0&&fresh_fraction<=2.0);
+    let source=r3_ieaghg_external_reformer_feed_wet6();
+    let mut recycle=WetGas6::default();
+    let relax=0.20;
+    let mut last=None;
+    for it in 1..=max_iterations {
+        let rin=source.scale(fresh_fraction).add(recycle);
+        let rout=solve_smr_wgs_equilibrium(rin,reformer_t_k,reformer_p_bar,1e-8,10000);
+        let shifted=solve_wgs_equilibrium(rout,shift_t_k,shift_p_bar);
+        let cap=remove_co2_fraction(shifted,capture_fraction);
+        let psa=psa6_fixed_recovery(cap.downstream,psa_recovery);
+        let external_n2=source.n2*fresh_fraction;
+        let p=(external_n2/psa.tail.n2.max(1e-12)).clamp(1e-12,1.0);
+        let purge=psa.tail.scale(p);
+        let target=psa.tail.scale(1.0-p);
+        let next=WetGas6{
+            h2:recycle.h2+relax*(target.h2-recycle.h2),
+            h2o:recycle.h2o+relax*(target.h2o-recycle.h2o),
+            co:recycle.co+relax*(target.co-recycle.co),
+            co2:recycle.co2+relax*(target.co2-recycle.co2),
+            ch4:recycle.ch4+relax*(target.ch4-recycle.ch4),
+            n2:recycle.n2+relax*(target.n2-recycle.n2)};
+        let err=(next.h2-recycle.h2).abs().max((next.h2o-recycle.h2o).abs())
+            .max((next.co-recycle.co).abs()).max((next.co2-recycle.co2).abs())
+            .max((next.ch4-recycle.ch4).abs()).max((next.n2-recycle.n2).abs());
+        recycle=next;
+        let state=R3FixedFreshState{converged:err<tolerance,iterations:it,
+            fresh_fraction,reformer_in:rin,reformer_out:rout,shifted,
+            post_capture:cap.downstream,captured_co2_kmol_h:cap.captured_co2_kmol_h,
+            product_h2_kmol_h:psa.product_h2,purge_fraction:p,purge,recycle,
+            psa_recovery:psa.recovery,max_state_residual:err};
+        if err<tolerance{return state}
+        last=Some(state);
+    }
+    last.unwrap()
+}
+
+pub fn r3_canonical_recycle_case()->R3FixedFreshState {
+    let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+    let recovery=ieaghg_reconstructed_psa_h2_recovery()
+        .clamp(PSA_H2_RECOVERY_SCREEN_LO,PSA_H2_RECOVERY_SCREEN_HI);
+    let eval=|f:f64|r3_solve_at_fixed_fresh(
+        f,1173.15,28.0,685.15,27.7,0.90,recovery,1e-7,50000);
+    let mut lo=0.02;let mut hi=2.0;
+    let mut a=eval(lo);let mut b=eval(hi);
+    assert!(a.converged&&b.converged,"R3 inner solve failed at bracket");
+    let mut fa=a.product_h2_kmol_h-target;
+    let fb=b.product_h2_kmol_h-target;
+    assert!(fa<=0.0&&fb>=0.0,"R3 H2 target not bracketed");
+    for _ in 0..100 {
+        let mid=0.5*(lo+hi);let m=eval(mid);
+        assert!(m.converged,"R3 inner solve failed");
+        let fm=m.product_h2_kmol_h-target;
+        if (fm/target).abs()<1e-7{return m}
+        if fm>0.0{hi=mid;b=m}else{lo=mid;a=m;fa=fm}
+    }
+    if (a.product_h2_kmol_h-target).abs()<(b.product_h2_kmol_h-target).abs(){a}else{b}
+}
+
+/// External plant-boundary elemental residuals for the R3 canonical state.
+/// Inputs are fresh external feed; outputs are H2 product, captured CO2 and purge.
+/// Recycle is internal and therefore cancels from the external boundary.
+pub fn r3_external_element_residuals(s:R3FixedFreshState)->[f64;4] {
+    let source=r3_ieaghg_external_reformer_feed_wet6().scale(s.fresh_fraction);
+    let product=WetGas6{h2:s.product_h2_kmol_h,..WetGas6::default()};
+    let captured=WetGas6{co2:s.captured_co2_kmol_h,..WetGas6::default()};
+    let out=product.add(captured).add(s.purge);
+    wet6_element_residual(source,out)
+}
+pub fn r3_external_normalized_element_residuals(s:R3FixedFreshState)->[f64;4] {
+    let source=r3_ieaghg_external_reformer_feed_wet6().scale(s.fresh_fraction);
+    let raw=r3_external_element_residuals(s);
+    let denom=[source.carbon(),source.hydrogen_atoms(),source.oxygen_atoms(),
+        source.nitrogen_atoms()];
+    [raw[0]/denom[0],raw[1]/denom[1],raw[2]/denom[2],raw[3]/denom[3]]
+}
+
+#[cfg(test)]
+mod r3_b01_physical_stream_graph_tests {
+    use super::*;
+    #[test]
+    fn prereformer_reduction_preserves_source_elements_with_added_water() {
+        let s=ieaghg_prereformer_feed();
+        let ext=r3_ieaghg_external_reformer_feed_wet6();
+        let c0=s.carbon_kmol_h();
+        let h0=s.hydrogen_atoms_kmol_h()+2.0*ieaghg_interstage_water_addition_kmol_h();
+        let o0=s.oxygen_atoms_kmol_h()+ieaghg_interstage_water_addition_kmol_h();
+        assert!((ext.carbon()-c0).abs()/c0<1e-12);
+        assert!((ext.hydrogen_atoms()-h0).abs()/h0<1e-12);
+        assert!((ext.oxygen_atoms()-o0).abs()/o0<1e-12);
+    }
+    #[test]
+    fn captured_co2_is_absent_from_downstream_by_exact_amount() {
+        let s=ieaghg_hts_outlet_wet6();
+        let x=remove_co2_fraction(s,0.90);
+        assert!((s.co2-x.downstream.co2-x.captured_co2_kmol_h).abs()<1e-12);
+        assert!((x.downstream.co2-0.10*s.co2).abs()<1e-10);
+    }
+    #[test]
+    fn r3_canonical_case_closes_external_elements() {
+        let s=r3_canonical_recycle_case();
+        assert!(s.converged);
+        for r in r3_external_normalized_element_residuals(s) {
+            assert!(r.abs()<1e-6,"external elemental residual {r}");
+        }
+    }
+    #[test]
+    fn r3_fixed_h2_product_closes() {
+        let s=r3_canonical_recycle_case();
+        let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+        assert!((s.product_h2_kmol_h-target).abs()/target<1e-7);
+        assert!(s.purge_fraction>0.0&&s.recycle.nonnegative());
+    }
+}
