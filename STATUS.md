@@ -95,11 +95,21 @@ The experimental conclusion remains adverse/conditional:
 - Paper/reproducibility GitHub Actions workflow: created.
 - Manuscript build CI: currently being verified.
 
+## Gate-6 progress
+- Single canonical LaTeX manuscript under `paper/`: ESTABLISHED.
+- Abstract through conclusions: FIRST-PASS CONTENT ESTABLISHED.
+- Governing equations / verification / adverse Gate-5 results: INTEGRATED.
+- Canonical bibliography: ESTABLISHED; requires progressive source enrichment.
+- CN4252 requirement traceability: ESTABLISHED.
+- Reproducibility build script: ESTABLISHED.
+- CI LaTeX build: ADDED; first build validation in progress.
+- Historical `manuscript/main.tex`: SUPERSEDED provenance pointer.
+
 ## Next step
-Resolve any LaTeX/build failures, then strengthen citation coverage and connect
-canonical generated result tables/figures into the manuscript. Independent
-Review 4 remains premature until the first manuscript builds successfully with
-its major results and references.
+Resolve the first LaTeX CI build if necessary, then deepen the manuscript with
+canonical generated tables/figures and fuller primary-source citations. Do not
+request Independent Review 4 until the complete first manuscript has all major
+results, figures, discussion, limitations and conclusions.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
