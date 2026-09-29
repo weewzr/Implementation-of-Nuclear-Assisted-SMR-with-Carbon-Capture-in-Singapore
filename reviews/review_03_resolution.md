@@ -347,3 +347,37 @@ Evidence:
 Next experiment should persist and analyse the actual numerical driver table and
 then test comparator threshold behaviour on the common source scale; do not
 expand the nuclear parameter domain merely to search for a pass.
+
+
+## Gate 5 Experiment 03 — Common-scale Case-1A threshold decomposition
+
+**Status: COMPLETE.**
+
+IEAGHG Case 1A is evaluated on the same 100,000 Nm3/h H2 and 8322 h/y source
+scale. The experiment independently confirms that conventional shifted-syngas
+SMR+CCS exceeds the 0.25 Mt/y direct-abatement scale.
+
+Economic evidence is deliberately decomposed:
+- IEAGHG total and non-T&S CAC remain in their source EUR2014 basis;
+- Singapore T&S is represented only as a separate SGD/t-avoided contribution,
+  scaled by captured/avoided tonnes;
+- no EUR2014 + SGD arithmetic is presented as a final Singapore CAC.
+
+The project's 20-30 SGD/t-captured T&S range is retained only as a scenario
+input. Current MTI evidence does not provide a settled projected Singapore CCS
+cost; Government is still studying capture, transport and permanent-storage
+costs and developing the cross-border value chain.
+
+Implementation:
+- `Gate5Case1aThresholdDecomposition`
+- `gate5_case1a_threshold_decomposition`
+- `gate5_experiment03_markdown`
+- CLI `model/src/bin/gate5_experiment03.rs`
+
+Evidence:
+- `0270199baa58a59d70acee0de480ced197b3f2a9`, CI run 36548402965 PASS;
+- `c76c73a560fabc487f004edf6a8fb32f40632e1c`, reproducibility CLI.
+
+Scientific result: Case 1A clears the annual scale threshold on the common
+direct-plant basis, but the current evidence does not establish whether it
+passes or fails S$100/t on a Singapore common-currency/year basis.
