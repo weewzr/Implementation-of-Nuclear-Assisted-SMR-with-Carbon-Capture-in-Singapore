@@ -1749,3 +1749,36 @@ pub fn recycle_minus_displaced_reaction_heat_screen_mw(
     reduced_tail_recycle_reaction_heat_screen_mw(co_conversion,ch4_conversion)
         - displaced_fresh_ng_ch4_reaction_heat_lower_bound_mw(result)
 }
+
+
+/// MDEA regeneration heat integration sensitivity.
+/// waste_heat_fraction is supplied by retained low-grade process heat rather
+/// than incremental nuclear heat. A recent integrated eSMR/CCS study reports
+/// 63% direct post-shift/condensing-syngas contribution; this is an external
+/// sensitivity anchor, not an IEAGHG Case-2A reconstructed value.
+pub fn mdea_incremental_nuclear_heat_bounds_mw(
+    waste_heat_fraction:f64
+)->(f64,f64) {
+    assert!((0.0..=1.0).contains(&waste_heat_fraction));
+    let (lo,hi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+    ((1.0-waste_heat_fraction)*lo,(1.0-waste_heat_fraction)*hi)
+}
+
+pub fn recycle_heat_cascade_screen_80pct(
+    waste_heat_fraction:f64
+)->((f64,f64),f64) {
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    (
+        mdea_incremental_nuclear_heat_bounds_mw(waste_heat_fraction),
+        recycle_minus_displaced_reaction_heat_screen_mw(r,0.80,0.80)
+    )
+}
+
+/// Incomplete net thermal screen: incremental MDEA heat plus standard
+/// reaction-heat change. Sensible/preheat/steam-network changes are omitted.
+pub fn recycle_net_thermal_increment_screen_80pct(
+    waste_heat_fraction:f64
+)->(f64,f64) {
+    let ((lo,hi),rxn)=recycle_heat_cascade_screen_80pct(waste_heat_fraction);
+    (lo+rxn,hi+rxn)
+}
