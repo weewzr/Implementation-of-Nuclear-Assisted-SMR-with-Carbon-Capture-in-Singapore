@@ -1927,3 +1927,26 @@ pub fn ieaghg_shift_sensible_412_to_target_bounds_mw(
         target_c,33.0,36.0);
     (q_hi_t+lo,q_hi_t+hi)
 }
+
+
+/// Residual shifted-syngas sensible heat ceiling after preserving the
+/// source-explicit feed-preheater duty.
+///
+/// IEAGHG states that NG is heated to 135 C in the Feed Pre-heater by shifted
+/// syngas leaving the BFW pre-heater. Therefore this already-verified duty
+/// competes with MDEA for the 412->170 C shifted-syngas heat pool.
+/// This still does NOT subtract shift-WHB, BFW, condensate or demi-water duties,
+/// so it remains an optimistic residual upper bound.
+pub fn residual_shift_heat_after_feed_preheat_bounds_mw()->(f64,f64) {
+    let (lo,hi)=ieaghg_shift_sensible_412_to_target_bounds_mw(170.0);
+    let q_feed=feed_preheater_ng_plus_h2_duty_mw();
+    ((lo-q_feed).max(0.0),(hi-q_feed).max(0.0))
+}
+
+/// Corresponding optimistic MDEA heat-recovery fraction after preserving only
+/// the source-explicit feed-preheater duty.
+pub fn mdea_fraction_after_feed_preheat_upper_bounds()->(f64,f64) {
+    let (qlo,qhi)=residual_shift_heat_after_feed_preheat_bounds_mw();
+    let (mlo,mhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+    ((qlo/mhi).min(1.0),(qhi/mlo).min(1.0))
+}
