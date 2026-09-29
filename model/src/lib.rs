@@ -3280,3 +3280,56 @@ mod equilibrium_layer_tests {
         assert!(x.is_finite() && x>0.0);
     }
 }
+
+
+/// Logarithmic equilibrium departure is numerically and physically clearer:
+/// ln(Q/K)=0 at equilibrium; positive means the written forward WGS reaction
+/// is thermodynamically driven backward, negative means forward.
+pub fn ieaghg_stream6_wgs_ln_q_over_k()->f64 {
+    ieaghg_stream6_wgs_q_over_k().ln()
+}
+
+/// Apparent WGS equilibrium temperature for the published stream-6 composition:
+/// solve K(T)=Q_source over the NIST-valid 500-1000 K interval by bisection.
+/// This converts composition departure into an interpretable temperature
+/// approach without asserting the reactor itself is at equilibrium.
+pub fn ieaghg_stream6_wgs_apparent_equilibrium_temperature_k()->f64 {
+    let q=wgs_reaction_quotient(0.0366,0.2137,0.1283,0.5961,27.7);
+    let mut lo=500.0;
+    let mut hi=1000.0;
+    // WGS K decreases monotonically over this interval.
+    assert!(wgs_equilibrium_constant_nist(lo)>=q);
+    assert!(wgs_equilibrium_constant_nist(hi)<=q);
+    for _ in 0..100 {
+        let mid=0.5*(lo+hi);
+        if wgs_equilibrium_constant_nist(mid)>q { lo=mid; } else { hi=mid; }
+    }
+    0.5*(lo+hi)
+}
+
+pub fn ieaghg_stream6_wgs_temperature_approach_k()->f64 {
+    let actual=412.0+273.15;
+    actual-ieaghg_stream6_wgs_apparent_equilibrium_temperature_k()
+}
+
+#[cfg(test)]
+mod ieaghg_wgs_validation_tests {
+    use super::*;
+    #[test]
+    fn apparent_equilibrium_temperature_is_bracketed() {
+        let t=ieaghg_stream6_wgs_apparent_equilibrium_temperature_k();
+        assert!(t>=500.0 && t<=1000.0);
+    }
+    #[test]
+    fn apparent_temperature_reproduces_source_reaction_quotient() {
+        let t=ieaghg_stream6_wgs_apparent_equilibrium_temperature_k();
+        let q=wgs_reaction_quotient(0.0366,0.2137,0.1283,0.5961,27.7);
+        let k=wgs_equilibrium_constant_nist(t);
+        assert!((q/k-1.0).abs()<1.0e-10);
+    }
+    #[test]
+    fn source_hts_is_not_assumed_exact_equilibrium() {
+        let d=ieaghg_stream6_wgs_ln_q_over_k();
+        assert!(d.is_finite());
+    }
+}
