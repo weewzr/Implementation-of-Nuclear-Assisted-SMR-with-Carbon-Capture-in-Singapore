@@ -6209,3 +6209,152 @@ mod r3_b03_threshold_tests {
         assert!(b.lifecycle.auxiliary_electricity>a.lifecycle.auxiliary_electricity);
     }
 }
+
+
+/// Parametric R3 fixed-H2 solution for coupled uncertainty experiments.
+pub fn r3_solve_case(
+    reformer_t_k:f64,reformer_p_bar:f64,capture_fraction:f64,psa_recovery:f64
+)->R3FixedFreshState {
+    let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+    let eval=|f:f64|r3_solve_at_fixed_fresh(
+        f,reformer_t_k,reformer_p_bar,685.15,27.7,capture_fraction,
+        psa_recovery,1e-6,50000);
+    let mut lo=0.02;let mut hi=2.0;let mut a=eval(lo);let mut b=eval(hi);
+    assert!(a.converged&&b.converged);
+    let mut fa=a.product_h2_kmol_h-target;
+    assert!(fa<=0.0&&b.product_h2_kmol_h-target>=0.0);
+    for _ in 0..100 {
+        let mid=0.5*(lo+hi);let m=eval(mid);assert!(m.converged);
+        let fm=m.product_h2_kmol_h-target;
+        if (fm/target).abs()<1e-6{return m}
+        if fm>0.0{hi=mid;b=m}else{lo=mid;a=m;fa=fm}
+    }
+    if (a.product_h2_kmol_h-target).abs()<(b.product_h2_kmol_h-target).abs(){a}else{b}
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3UncertaintyPoint {
+    pub reformer_c:f64,pub pressure_bar:f64,pub psa_recovery:f64,
+    pub capture_fraction:f64,pub upstream_g_mj:f64,pub auxiliary_g_kwh:f64,
+    pub gas_price_sgd_gj:f64,pub nuclear_heat_sgd_gj:f64,
+    pub electricity_sgd_mwh:f64,pub fixed_annual_sgd:f64,
+    pub fresh_fraction:f64,pub annual_avoided_t:f64,pub abatement_cost_sgd_t:f64,
+    pub pass_abatement:bool,pub pass_cost:bool,
+}
+pub fn r3_uncertainty_point(
+    reformer_c:f64,pressure_bar:f64,psa_recovery:f64,capture_fraction:f64,
+    upstream_g_mj:f64,auxiliary_g_kwh:f64,gas_price:f64,nuclear_heat_price:f64,
+    electricity_price:f64,fixed_annual:f64,
+)->R3UncertaintyPoint {
+    let s=r3_solve_case(reformer_c+273.15,pressure_bar,capture_fraction,psa_recovery);
+    // For the uncertainty map, retain the R3-B02 heat architecture but scale
+    // fresh-NG and direct carbon from the solved parametric state. Heat/cost
+    // uncertainty is represented separately by nuclear heat price/fixed cost.
+    let href=r3_heat_cascade(650.0,20.0,30.0,500.0);
+    let c=r3_ccs_ledger(s);
+    let circ=r3_helium_circulator_hi_mwe(href);
+    let h2=IEAGHG_BASE.h2_kg_per_h;let hours=8322.0;
+    let purge_c=c.purge_oxidation_co2_kmol_h;
+    let residual_c=(s.shifted.co2-s.captured_co2_kmol_h)
+        +(1.0-capture_fraction)*purge_c;
+    let direct=residual_c*44.0095/h2;
+    let upstream=upstream_ng_from_energy_mw_kgco2e_per_kgh2(
+        ieaghg_feed_lhv_mw()*s.fresh_fraction,upstream_g_mj);
+    let nuclear=direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(
+        href.nuclear_heat_hi_mw,5.5,0.504);
+    let aux_mwe=c.co2_compression_mwe+c.tail_compression_mwe+circ;
+    let aux=aux_mwe*auxiliary_g_kwh*1000.0/h2;
+    let captured_c=s.captured_co2_kmol_h+capture_fraction*purge_c;
+    let transport=ccs_transport_kgco2e_per_kgh2(
+        captured_c*44.0095/h2,0.025);
+    let candidate_ci=direct+upstream+nuclear+aux+transport;
+    let base_ci=ieaghg_unabated_lifecycle_screen(upstream_g_mj).total();
+    let avoided=(base_ci-candidate_ci)*h2*hours/1000.0;
+
+    let base_cost=annual_thermal_energy_cost_sgd(
+        ieaghg_total_ng_lhv_mw(),hours,gas_price);
+    let candidate_cost=annual_thermal_energy_cost_sgd(
+        ieaghg_feed_lhv_mw()*s.fresh_fraction,hours,gas_price)
+        +annual_thermal_energy_cost_sgd(
+            href.nuclear_heat_hi_mw,hours,nuclear_heat_price)
+        +aux_mwe*hours*electricity_price+fixed_annual;
+    let ac=if avoided>0.0{(candidate_cost-base_cost)/avoided}else{f64::INFINITY};
+    R3UncertaintyPoint{reformer_c,pressure_bar,psa_recovery,capture_fraction,
+        upstream_g_mj,auxiliary_g_kwh,gas_price_sgd_gj:gas_price,
+        nuclear_heat_sgd_gj:nuclear_heat_price,electricity_sgd_mwh:electricity_price,
+        fixed_annual_sgd:fixed_annual,fresh_fraction:s.fresh_fraction,
+        annual_avoided_t:avoided,abatement_cost_sgd_t:ac,
+        pass_abatement:avoided>250_000.0,pass_cost:ac<100.0}
+}
+
+pub fn r3_uncertainty_design()->Vec<R3UncertaintyPoint> {
+    // Coupled corners: low-carbon auxiliaries pair with lower electricity cost;
+    // grid auxiliaries pair with higher electricity cost. Avoid impossible
+    // cross-pairing of grid carbon with low-carbon electricity price.
+    let mut v=Vec::new();
+    for reformer in [900.0,950.0] {
+      for pressure in [20.0,28.0] {
+       for psa in [0.70,0.90] {
+        for capture in [0.85,0.95] {
+         for (up,aux,gas,elec) in [
+             (11.5,5.5,15.0,150.0),(18.6,402.0,20.0,200.0)] {
+          for (heat,fixed) in [(5.69,80.0e6),(8.0,120.0e6)] {
+            v.push(r3_uncertainty_point(reformer,pressure,psa,capture,
+                up,aux,gas,heat,elec,fixed));
+          }
+         }
+        }
+       }
+      }
+    }
+    v
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3UncertaintySummary {
+    pub n:usize,pub both_pass:usize,pub abatement_only:usize,pub cost_only:usize,
+    pub neither:usize,pub min_avoided_t:f64,pub max_avoided_t:f64,
+    pub min_cost:f64,pub max_finite_cost:f64,
+}
+pub fn r3_uncertainty_summary()->R3UncertaintySummary {
+    let v=r3_uncertainty_design();
+    let mut both=0;let mut ao=0;let mut co=0;let mut neither=0;
+    let mut mina=f64::INFINITY;let mut maxa=f64::NEG_INFINITY;
+    let mut minc=f64::INFINITY;let mut maxc=f64::NEG_INFINITY;
+    for x in &v {
+        match (x.pass_abatement,x.pass_cost) {
+            (true,true)=>both+=1,(true,false)=>ao+=1,(false,true)=>co+=1,
+            (false,false)=>neither+=1}
+        mina=mina.min(x.annual_avoided_t);maxa=maxa.max(x.annual_avoided_t);
+        if x.abatement_cost_sgd_t.is_finite(){
+            minc=minc.min(x.abatement_cost_sgd_t);maxc=maxc.max(x.abatement_cost_sgd_t);}
+    }
+    R3UncertaintySummary{n:v.len(),both_pass:both,abatement_only:ao,
+        cost_only:co,neither,min_avoided_t:mina,max_avoided_t:maxa,
+        min_cost:minc,max_finite_cost:maxc}
+}
+
+#[cfg(test)]
+mod r3_m01_uncertainty_tests {
+    use super::*;
+    #[test]
+    fn uncertainty_design_contains_pass_and_fail_regions() {
+        let s=r3_uncertainty_summary();
+        assert_eq!(s.n,s.both_pass+s.abatement_only+s.cost_only+s.neither);
+        assert!(s.both_pass>0,"no joint passing region");
+        assert!(s.neither+s.abatement_only+ s.cost_only>0,"no failing region");
+        assert!(s.min_avoided_t<s.max_avoided_t);
+    }
+    #[test]
+    fn reformer_temperature_and_pressure_change_fresh_feed() {
+        let a=r3_uncertainty_point(900.0,28.0,0.80,0.90,11.5,5.5,15.0,5.69,150.0,80e6);
+        let b=r3_uncertainty_point(950.0,20.0,0.80,0.90,11.5,5.5,15.0,5.69,150.0,80e6);
+        assert!((a.fresh_fraction-b.fresh_fraction).abs()>1e-5);
+    }
+    #[test]
+    fn grid_auxiliary_corner_is_lifecycle_worse_than_low_carbon_corner() {
+        let low=r3_uncertainty_point(900.0,28.0,0.80,0.90,11.5,5.5,15.0,5.69,150.0,80e6);
+        let high=r3_uncertainty_point(900.0,28.0,0.80,0.90,18.6,402.0,20.0,5.69,200.0,80e6);
+        assert!(high.annual_avoided_t<low.annual_avoided_t);
+    }
+}
