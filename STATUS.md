@@ -111,6 +111,19 @@ Commits `ed469fd0d48f221ff85554587fcdefc3d9796054` and `f63109ec0894dcdc16cf9299
 
 The next scientific critical-path task is to replace the reduced fixed-conversion recycle surrogate with a more physically constrained reformer/shift equilibrium layer, beginning with equilibrium/temperature-pressure constraints and validating against the IEAGHG once-through stream table before applying recycle.
 
+## Thermodynamic equilibrium layer implemented
+A first physically constrained reaction-equilibrium layer has been added from NIST/JANAF Shomate thermochemistry rather than fitted recycle conversion percentages.
+
+The model now computes standard entropy, standard Gibbs energy and dimensionless equilibrium constants for:
+- SMR: CH4 + H2O <=> CO + 3H2;
+- WGS: CO + H2O <=> CO2 + H2.
+
+It also implements ideal-gas reaction quotients with explicit 1-bar standard state and verifies the limiting pressure physics: SMR reaction quotient scales with P^2 because delta-n=+2, while WGS is pressure-independent because delta-n=0.
+
+The first source-state diagnostic evaluates Q/K for the published IEAGHG HTS outlet (412 C, 2.77 MPa; source mole fractions CO2 0.1283, CO 0.0366, H2 0.5961, H2O 0.2137). This is intentionally diagnostic only: it tests whether equilibrium is a defensible approximation before any equilibrium solver is allowed to replace source stream values.
+
+Commit `04d876a22fdc5069eab08138d5ed4b13a0cb6084` contains the layer. GitHub Actions was queued at this STATUS update, so no validation claim is made yet.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
