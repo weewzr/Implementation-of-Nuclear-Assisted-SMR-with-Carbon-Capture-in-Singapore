@@ -2762,3 +2762,107 @@ mod converged_heat_report {
         assert!(hi>165.0 && hi<200.0);
     }
 }
+
+
+/// Ideal-gas isentropic compressor work for a recycle-gas mixture, MW.
+///
+/// cp_kj_kmol_k and k are caller-supplied mixture properties so the screening
+/// does not fabricate a detailed EOS. This is intended for sensitivity bounds.
+pub fn ideal_gas_compressor_power_mw(
+    flow_kmol_h:f64,
+    inlet_k:f64,
+    pressure_ratio:f64,
+    cp_kj_kmol_k:f64,
+    k:f64,
+    isentropic_efficiency:f64,
+)->f64 {
+    assert!(flow_kmol_h>=0.0 && inlet_k>0.0 && pressure_ratio>=1.0);
+    assert!(cp_kj_kmol_k>0.0 && k>1.0);
+    assert!(isentropic_efficiency>0.0 && isentropic_efficiency<=1.0);
+    let tout_over_tin=pressure_ratio.powf((k-1.0)/k);
+    flow_kmol_h*cp_kj_kmol_k*inlet_k*(tout_over_tin-1.0)
+        /(3600.0*1000.0*isentropic_efficiency)
+}
+
+/// Converged combustible recycle molar flow (H2+CO+CH4) for chosen positive
+/// conversion/recovery coefficients.
+pub fn converged_combustible_recycle_kmol_h(
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64
+)->f64 {
+    let t=analytical_tail_recycle_fixed_point(
+        co_conversion,ch4_conversion,h2_recovery);
+    t.h2_kmol_h+t.co_kmol_h+t.ch4_kmol_h
+}
+
+/// Sensible heat required to raise converged recycle H2/CO/CH4 from an inlet
+/// temperature to a process-feed temperature. Uses encoded NIST Shomate
+/// properties and therefore stays within their valid temperature ranges.
+///
+/// This is an incremental recycle-stream duty only; it does not subtract the
+/// sensible duty of fresh NG displaced elsewhere in the plant.
+pub fn converged_recycle_sensible_heat_mw(
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+    inlet_c:f64,outlet_c:f64,
+)->f64 {
+    assert!(outlet_c>inlet_c);
+    let t1=inlet_c+273.15; let t2=outlet_c+273.15;
+    assert!(t1>=298.15 && t2<=1000.0);
+    let r=analytical_tail_recycle_fixed_point(
+        co_conversion,ch4_conversion,h2_recovery);
+    let q=
+        r.h2_kmol_h*NIST_H2_298_1000.delta_h_kj_mol(t1,t2)
+        +r.co_kmol_h*NIST_CO_298_1300.delta_h_kj_mol(t1,t2)
+        +r.ch4_kmol_h*NIST_CH4_298_1300.delta_h_kj_mol(t1,t2);
+    q/3600.0
+}
+
+/// Pressure-ratio sensitivity for recycle recompression.
+///
+/// IEAGHG Case 2A establishes that PSA tail gas can require compression from
+/// about 0.2 MPa to 1 MPa for MDEA capture, but the proposed nuclear recycle
+/// topology has not yet fixed where recycle is withdrawn/reinjected. Therefore
+/// pressure ratio is explicit rather than silently adopting Case-2A compression.
+pub fn converged_recycle_compression_sensitivity_mwe(
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+    inlet_c:f64,pressure_ratio:f64,efficiency:f64,
+)->f64 {
+    let r=analytical_tail_recycle_fixed_point(
+        co_conversion,ch4_conversion,h2_recovery);
+    let total=r.h2_kmol_h+r.co_kmol_h+r.ch4_kmol_h;
+    let yh2=r.h2_kmol_h/total; let yco=r.co_kmol_h/total; let ych4=r.ch4_kmol_h/total;
+    // Representative ideal-gas cp values near ambient/moderate temperature,
+    // kJ/kmol-K. Kept explicit as a screening mixture rather than EOS output.
+    let cp=yh2*28.84+yco*29.14+ych4*35.7;
+    let r_univ=8.314462618;
+    let k=cp/(cp-r_univ);
+    ideal_gas_compressor_power_mw(total,inlet_c+273.15,pressure_ratio,cp,k,efficiency)
+}
+
+#[cfg(test)]
+mod recycle_penalty_tests {
+    use super::*;
+
+    #[test]
+    fn recycle_sensible_heat_is_positive_and_conversion_sensitive() {
+        let q80=converged_recycle_sensible_heat_mw(0.8,0.8,0.8,40.0,370.0);
+        let q50=converged_recycle_sensible_heat_mw(0.5,0.5,0.5,40.0,370.0);
+        assert!(q80>0.0);
+        assert!(q50>q80); // lower removal/recovery -> larger circulating inventory
+    }
+
+    #[test]
+    fn recycle_compression_zero_at_unity_pressure_ratio() {
+        let p=converged_recycle_compression_sensitivity_mwe(
+            0.8,0.8,0.8,40.0,1.0,0.75);
+        assert!(p.abs()<1.0e-12);
+    }
+
+    #[test]
+    fn recycle_compression_rises_with_pressure_ratio() {
+        let p2=converged_recycle_compression_sensitivity_mwe(
+            0.8,0.8,0.8,40.0,2.0,0.75);
+        let p5=converged_recycle_compression_sensitivity_mwe(
+            0.8,0.8,0.8,40.0,5.0,0.75);
+        assert!(p5>p2 && p2>0.0);
+    }
+}
