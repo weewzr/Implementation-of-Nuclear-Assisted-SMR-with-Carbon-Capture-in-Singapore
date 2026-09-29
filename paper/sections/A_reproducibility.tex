@@ -3,7 +3,7 @@ From a fresh repository checkout, the canonical end-to-end reproduction command 
 \begin{verbatim}
 sh paper/build.sh
 \end{verbatim}
-The build script regenerates the canonical Gate-5/Gate-6 manuscript datasets from Rust and then invokes \texttt{latexmk}. For explicit verification, the equivalent sequence is:
+The build script runs the complete Rust test suite, regenerates the canonical Gate-5/Gate-6 manuscript datasets, invokes \texttt{latexmk}, and fails if unresolved LaTeX citations or references remain. For explicit verification, the equivalent sequence is:
 \begin{verbatim}
 cd model
 cargo test --all-targets
@@ -22,4 +22,4 @@ The Rust implementation in \texttt{model/src/lib.rs} is the canonical computatio
 \]
 The PDF is generated from \texttt{paper/main.tex} and is never maintained independently.
 
-The GitHub Actions paper workflow independently performs Rust tests, canonical data generation and LaTeX compilation on a fresh runner. A successful current workflow run, rather than the existence of a locally generated PDF alone, is the Gate-6 reproducibility acceptance evidence.
+The GitHub Actions paper workflow invokes this same canonical build script on a fresh runner, avoiding a separate CI-only reproduction path. A successful current workflow run, rather than the existence of a locally generated PDF alone, is the Gate-6 reproducibility acceptance evidence.
