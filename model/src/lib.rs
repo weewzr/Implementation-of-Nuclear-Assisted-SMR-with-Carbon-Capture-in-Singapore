@@ -1583,3 +1583,44 @@ pub fn tail_gas_nonco2_carbon_kmol_h()->f64 {
     let t=ieaghg_tail_inventory();
     t.co_kmol_h+t.ch4_kmol_h
 }
+
+
+/// Carbon-equivalent fresh-NG displacement upper bound for tail-gas
+/// Configuration B (remove existing CO2, recycle CO+CH4).
+///
+/// At fixed carbon throughput, each kmol-C/h in recycled CO or CH4 can at most
+/// displace one kmol-C/h of fresh NG feed. This is a material-balance upper
+/// bound, not a solved recycle flowsheet.
+pub fn tail_recycle_fresh_ng_carbon_displacement_upper_fraction() -> f64 {
+    tail_gas_nonco2_carbon_kmol_h()/ieaghg_feed_carbon_kmol_per_h()
+}
+
+/// Fresh NG molar-flow displacement corresponding to the carbon-equivalent
+/// upper bound, using the published NG carbon content per kmol mixture.
+pub fn tail_recycle_fresh_ng_displacement_upper_kmol_h() -> f64 {
+    tail_gas_nonco2_carbon_kmol_h()/IEAGHG_NG.carbon_kmol_per_kmol()
+}
+
+/// Upper-bound fresh-NG feed energy displaced if the carbon-equivalent recycle
+/// replaces fresh feed one-for-one. Uses the source feedstock-NG specific LHV
+/// implied by 12.197 GJ/1000 Nm3 H2 and 1455.8 kmol/h NG.
+/// This does NOT include purchased supplementary furnace fuel, which is a
+/// separate saving when the furnace is removed.
+pub fn tail_recycle_fresh_ng_feed_energy_displacement_upper_mw() -> f64 {
+    let feed_energy_mw=IEAGHG_FEEDSTOCK_NG_GJ_H/3.6;
+    feed_energy_mw*tail_recycle_fresh_ng_carbon_displacement_upper_fraction()
+}
+
+/// Annual value of the carbon-equivalent fresh-feed displacement upper bound.
+pub fn tail_recycle_fresh_ng_feed_savings_upper_sgd_y(gas_price_sgd_per_gj:f64)->f64 {
+    assert!(gas_price_sgd_per_gj>=0.0);
+    tail_recycle_fresh_ng_feed_energy_displacement_upper_mw()*8322.0*3.6
+        *gas_price_sgd_per_gj
+}
+
+/// Case-2A anchored electrical penalty for tail-gas CO2 separation and
+/// compression, net of the source-reported tail-gas expander recovery.
+/// This is an anchor for Configuration B, not yet a redesigned nuclear-loop value.
+pub fn case2a_tail_separation_net_electric_anchor_mwe() -> f64 {
+    4.575 + 2.874 - 1.140
+}
