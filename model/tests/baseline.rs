@@ -834,3 +834,25 @@ fn tail_gas_recycle_has_material_h2_and_co2_recovery_potential() {
     assert!(c>47.0 && c<48.0, "tail CO2 {c} t/h");
     assert!(tail_gas_nonco2_carbon_kmol_h()>500.0);
 }
+
+
+#[test]
+fn tail_recycle_can_displace_at_most_about_one_third_of_fresh_feed_carbon() {
+    use nuclear_assisted_smr::{
+        tail_recycle_fresh_ng_carbon_displacement_upper_fraction,
+        tail_recycle_fresh_ng_displacement_upper_kmol_h,
+        tail_recycle_fresh_ng_feed_energy_displacement_upper_mw,
+    };
+    let f=tail_recycle_fresh_ng_carbon_displacement_upper_fraction();
+    assert!(f>0.31 && f<0.33, "carbon displacement fraction {f}");
+    let n=tail_recycle_fresh_ng_displacement_upper_kmol_h();
+    assert!(n>460.0 && n<480.0, "fresh NG upper displacement {n} kmol/h");
+    let q=tail_recycle_fresh_ng_feed_energy_displacement_upper_mw();
+    assert!(q>105.0 && q<115.0, "fresh NG energy upper displacement {q} MW");
+}
+
+#[test]
+fn case2a_tail_separation_anchor_is_over_six_mwe_before_other_recycle_costs() {
+    use nuclear_assisted_smr::case2a_tail_separation_net_electric_anchor_mwe;
+    close(case2a_tail_separation_net_electric_anchor_mwe(),6.309,1e-12);
+}
