@@ -2746,3 +2746,19 @@ mod converged_heat_service_tests {
         assert!((0.95*b.ch4_kmol_h-s*t.ch4_kmol_h).abs()<1.0e-9);
     }
 }
+
+
+#[cfg(test)]
+mod converged_heat_report {
+    use super::*;
+    #[test]
+    fn lock_converged_heat_envelope_ranges() {
+        let d=converged_recycle_reaction_heat_delta_mw();
+        let (lo,hi)=converged_htgr_service_source_bounded_mw(625.0);
+        // Broad regression windows deliberately preserve source/property
+        // uncertainty while detecting accidental reversion to the old 80% case.
+        assert!(d>-20.0 && d<-5.0);
+        assert!(lo>140.0 && lo<170.0);
+        assert!(hi>165.0 && hi<200.0);
+    }
+}
