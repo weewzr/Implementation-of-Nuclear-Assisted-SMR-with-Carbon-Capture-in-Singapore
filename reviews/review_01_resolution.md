@@ -70,31 +70,52 @@ validation probes `d2c9db182bc663026d20593594e5f1590066d155`,
 `974708425ad227dbcc711142a91feaefe5571d2d`.
 
 ### B3 — PSA-tail-gas disposition unresolved when fired reformer is removed
-**Disposition: PARTIALLY RESOLVED — carbon ledger verified by CI; inert/purge closure remains.**
+**Disposition: RESOLVED.**
 
-The furnace-free candidate now has an explicit reduced-CHO disposition rather
-than deleting the conventional PSA tail gas. Existing tail CO2 is routed to the
-high-pressure process-carbon capture train; H2/CO/CH4 are returned to the
-reforming loop; converted CO/CH4 carbon is routed to capture; uncaptured fresh
-feed carbon leaves as residual process CO2. Recycled carbon is treated as an
-internal flow, not a new external carbon source.
+The furnace-free candidate now has an explicit species disposition and a
+steady-state inert purge. CO2 in the PSA-tail/recycle path is removed to a
+high-pressure process-carbon capture train; H2/CO/CH4 are recycled to the
+reformer; source N2 is carried explicitly as an inert and a nonzero purge is
+solved from a specified maximum N2 mole fraction. The purge therefore cannot
+silently accumulate inerts.
 
-A new `ConvergedCarbonLedger` closes external fresh-feed carbon exactly between
-captured and residual-emitted carbon, and a separate function accounts for the
-tail carbon delivered to capture. The remaining limitation is explicit: N2 and
-other inerts are outside the current CHO reduced model, so a purge cannot yet be
-sized. B3 will be marked fully resolved only after the strengthened
-reformer/shift/recycle model retains or explicitly bounds that purge requirement.
+A nonselective purge necessarily carries H2/CO/CH4. Its CO/CH4 carbon is now an
+explicit carbonaceous offgas routed to catalytic oxidation followed by capture,
+rather than disappearing from the ledger. External fresh-feed carbon closes
+exactly between captured and residual-emitted carbon after this purge route is
+included.
 
-Evidence: `model/src/lib.rs`, commit `8b5c40c25afd56a78f5c680dd99cd3e406e74108`
-plus compile fix `27add5ade930a60a7444c63f38f63fefb9b3ab22`; Rust CI run 36524925119 passed.
+Rust CI verifies N2 steady-state closure, monotonic purge requirement with inert
+limit, purge-carbon accounting, and final topology carbon closure.
+
+Evidence: `7ed4181592fd65715c14def44c2536619f0f7ce9`,
+`90e0168480c4e6cbc9ee350e1a01e393a3c7a32d`.
 
 ### B4 — Capture topology cannot be fixed before carbon architecture closes
-**Disposition: ACCEPTED — OPEN BLOCKER, dependent on B3.**
+**Disposition: RESOLVED.**
 
-No universal amine capture fraction will be imposed. Shifted syngas, PSA-tail
-gas and flue-gas capture have materially different pressure/composition and
-solvent/energy requirements.
+With B3 closed, the furnace-free CCS boundary is now stream-specific rather
+than a universal amine fraction:
+
+1. shifted syngas: high-pressure MDEA, analogous to IEAGHG Case 1A (~2.5 MPa);
+2. residual PSA-tail/recycle CO2: compressed-tail MDEA polishing, analogous to
+   IEAGHG Case 2A (~1 MPa absorber feed after tail compression);
+3. H2/CO/CH4: recycle to reformer;
+4. inert-control purge H2/CO/CH4: catalytic oxidation, then CO2 joins the
+   capture/compression chain;
+5. no reformer-flue-gas MEA block exists because the fired reformer is removed.
+
+IEAGHG explicitly distinguishes shifted-syngas MDEA, PSA-tail MDEA and
+low-pressure flue-gas MEA because their pressure/composition differ. The model
+therefore retains separate stream topology and does not use one solvent-duty
+model for all locations.
+
+The final terminal capture fraction remains a scenario parameter for the carbon
+ledger; it is not interpreted as evidence that the same absorber operates on
+all streams.
+
+Evidence: IEAGHG 2017-02 Case 1A/2A/03 topology and Rust commit
+`90e0168480c4e6cbc9ee350e1a01e393a3c7a32d`, CI passed.
 
 ### B5 — Functional unit/common comparison boundary needs freezing
 **Disposition: RESOLVED.**
@@ -116,8 +137,11 @@ Evidence: IEAGHG 2017-02 base-case heat/material and equipment tables; Rust
 `d9cac760df2a534c1d6a5039b0ec72f35cf8c150`.
 
 ### M1 — CCS literature needs stream-specific treatment
-**Disposition: ACCEPTED.**
-Resolve with B4; do not create a generic MEA penalty.
+**Disposition: RESOLVED with B4.**
+IEAGHG's distinct shifted-syngas MDEA, compressed PSA-tail MDEA and flue-gas
+MEA cases are now reflected explicitly in the topology. The furnace-free
+candidate has no flue-gas MEA block; purge oxidation CO2 joins the process
+capture/compression chain rather than being assigned a generic MEA penalty.
 
 ### M2 — Nuclear heat-integration literature needs quantitative secondary-loop/HX constraints
 **Disposition: ACCEPTED.**
