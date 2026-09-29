@@ -2139,3 +2139,46 @@ pub fn integration_capex_from_annual_margin(
         +fixed_om_fraction_of_capex_per_year;
     annual_margin/denom
 }
+
+
+/// Minimum NG price required for the 80% recycle case to support a specified
+/// annual reactor allocation, IHX/loop and other integration costs while
+/// remaining inside the allowed abatement-cost budget.
+pub fn recycle80_min_gas_price_for_full_cost_sgd_per_gj(
+    allowed_incremental_cost_sgd_y:f64,
+    htgr_service_mw:f64,
+    nuclear_heat_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+    ccs_ts_cost_sgd_y:f64,
+    allocated_reactor_cost_sgd_y:f64,
+    ihx_loop_cost_sgd_y:f64,
+    other_integration_cost_sgd_y:f64,
+)->f64 {
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let saved_mw=ieaghg_makeup_fuel_lhv_mw()+r.fresh_feed_energy_displaced_mw;
+    let saved_gj_y=saved_mw*8322.0*3.6;
+    let heat=annual_thermal_energy_cost_sgd(htgr_service_mw,8322.0,nuclear_heat_sgd_per_gj);
+    let elec=case2a_tail_separation_net_electric_anchor_mwe()*8322.0*electricity_sgd_per_mwh;
+    let required=allocated_reactor_cost_sgd_y+ihx_loop_cost_sgd_y
+        +other_integration_cost_sgd_y+heat+elec+ccs_ts_cost_sgd_y
+        -allowed_incremental_cost_sgd_y;
+    required/saved_gj_y
+}
+
+/// Maximum annual CCS T&S cost compatible with the same full-cost boundary.
+pub fn recycle80_max_ccs_ts_cost_sgd_y(
+    allowed_incremental_cost_sgd_y:f64,
+    htgr_service_mw:f64,
+    gas_price_sgd_per_gj:f64,
+    nuclear_heat_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+    allocated_reactor_cost_sgd_y:f64,
+    ihx_loop_cost_sgd_y:f64,
+    other_integration_cost_sgd_y:f64,
+)->f64 {
+    let ng=recycle80_gross_ng_saving_sgd_y(gas_price_sgd_per_gj);
+    let heat=annual_thermal_energy_cost_sgd(htgr_service_mw,8322.0,nuclear_heat_sgd_per_gj);
+    let elec=case2a_tail_separation_net_electric_anchor_mwe()*8322.0*electricity_sgd_per_mwh;
+    allowed_incremental_cost_sgd_y+ng-heat-elec-allocated_reactor_cost_sgd_y
+        -ihx_loop_cost_sgd_y-other_integration_cost_sgd_y
+}
