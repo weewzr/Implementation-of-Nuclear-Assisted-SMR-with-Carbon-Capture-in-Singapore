@@ -3212,20 +3212,10 @@ impl Shomate {
 /// SMR: CH4 + H2O <=> CO + 3H2.
 /// WGS: CO + H2O <=> CO2 + H2.
 pub fn smr_equilibrium_constant_nist(temperature_k:f64)->f64 {
-    assert!(temperature_k>=500.0 && temperature_k<=1300.0);
-    let dg=NIST_CO_298_1300.standard_gibbs_kj_mol(temperature_k)
-        +3.0*NIST_H2_298_1000.standard_gibbs_kj_mol(temperature_k)
-        -NIST_CH4_298_1300.standard_gibbs_kj_mol(temperature_k)
-        -NIST_H2O_500_1700.standard_gibbs_kj_mol(temperature_k);
-    (-dg*1000.0/(8.314462618*temperature_k)).exp()
+    smr_equilibrium_constant_piecewise(temperature_k)
 }
 pub fn wgs_equilibrium_constant_nist(temperature_k:f64)->f64 {
-    assert!(temperature_k>=500.0 && temperature_k<=1000.0);
-    let dg=NIST_CO2_298_1200.standard_gibbs_kj_mol(temperature_k)
-        +NIST_H2_298_1000.standard_gibbs_kj_mol(temperature_k)
-        -NIST_CO_298_1300.standard_gibbs_kj_mol(temperature_k)
-        -NIST_H2O_500_1700.standard_gibbs_kj_mol(temperature_k);
-    (-dg*1000.0/(8.314462618*temperature_k)).exp()
+    wgs_equilibrium_constant_piecewise(temperature_k)
 }
 
 /// Ideal-gas reaction quotient with partial pressures divided by 1 bar.
@@ -4194,5 +4184,112 @@ mod nuclear_heat_integration_review1_tests {
     fn ihx_pressure_drop_implies_nonzero_circulator_load() {
         let x=nuclear_heat_integration_check(950.0,20.0,1000.0);
         assert!(x.helium_flow_kg_s>0.0 && x.ihx_only_circulator_mw>0.0);
+    }
+}
+
+
+/// Shomate interval with validity metadata. Evaluation outside the documented
+/// interval is rejected at the property object, not delegated to callers.
+#[derive(Debug,Clone,Copy)]
+pub struct ShomateRange {
+    pub coeff:Shomate,
+    pub t_min_k:f64,
+    pub t_max_k:f64,
+}
+impl ShomateRange {
+    pub fn contains(self,t:f64)->bool { t>=self.t_min_k && t<=self.t_max_k }
+    fn checked(self,t:f64)->Shomate {
+        assert!(self.contains(t),"temperature outside Shomate validity interval");
+        self.coeff
+    }
+    pub fn cp_j_mol_k(self,t:f64)->f64 {
+        let s=self.checked(t); let x=t/1000.0;
+        s.a+s.b*x+s.c*x*x+s.d*x*x*x+s.e/(x*x)
+    }
+    pub fn sensible_h_kj_mol(self,t:f64)->f64 { self.checked(t).sensible_h_kj_mol(t) }
+    pub fn entropy_j_mol_k(self,t:f64)->f64 { self.checked(t).entropy_j_mol_k(t) }
+    pub fn standard_gibbs_kj_mol(self,t:f64)->f64 { self.checked(t).standard_gibbs_kj_mol(t) }
+}
+
+pub const H2_LOW:ShomateRange=ShomateRange{
+    coeff:NIST_H2_298_1000,t_min_k:298.0,t_max_k:1000.0};
+pub const H2_HIGH:ShomateRange=ShomateRange{
+    coeff:NIST_H2_1000_2500,t_min_k:1000.0,t_max_k:2500.0};
+pub const CO2_LOW:ShomateRange=ShomateRange{
+    coeff:NIST_CO2_298_1200,t_min_k:298.0,t_max_k:1200.0};
+pub const NIST_CO2_1200_6000:Shomate=Shomate{
+    a:58.16639,b:2.720074,c:-0.492289,d:0.038844,
+    e:-6.447293,f:-425.9186,g:263.6125,h:-393.5224};
+pub const CO2_HIGH:ShomateRange=ShomateRange{
+    coeff:NIST_CO2_1200_6000,t_min_k:1200.0,t_max_k:6000.0};
+
+pub fn h2_shomate(t:f64)->ShomateRange {
+    if t<1000.0 { H2_LOW } else if t<=2500.0 { H2_HIGH }
+    else { panic!("H2 temperature outside supported NIST Shomate intervals") }
+}
+pub fn co2_shomate(t:f64)->ShomateRange {
+    if t<1200.0 { CO2_LOW } else if t<=6000.0 { CO2_HIGH }
+    else { panic!("CO2 temperature outside supported NIST Shomate intervals") }
+}
+pub fn h2_standard_gibbs_kj_mol(t:f64)->f64 { h2_shomate(t).standard_gibbs_kj_mol(t) }
+pub fn co2_standard_gibbs_kj_mol(t:f64)->f64 { co2_shomate(t).standard_gibbs_kj_mol(t) }
+
+/// Interval-safe SMR equilibrium constant. Other species use single NIST
+/// intervals spanning the supported 500-1300 K model range; H2 dispatches at
+/// 1000 K. No coefficient set is extrapolated.
+pub fn smr_equilibrium_constant_piecewise(temperature_k:f64)->f64 {
+    assert!(temperature_k>=500.0 && temperature_k<=1300.0);
+    let dg=NIST_CO_298_1300.standard_gibbs_kj_mol(temperature_k)
+        +3.0*h2_standard_gibbs_kj_mol(temperature_k)
+        -NIST_CH4_298_1300.standard_gibbs_kj_mol(temperature_k)
+        -NIST_H2O_500_1700.standard_gibbs_kj_mol(temperature_k);
+    (-dg*1000.0/(8.314462618*temperature_k)).exp()
+}
+pub fn wgs_equilibrium_constant_piecewise(temperature_k:f64)->f64 {
+    assert!(temperature_k>=500.0 && temperature_k<=1300.0);
+    let dg=co2_standard_gibbs_kj_mol(temperature_k)
+        +h2_standard_gibbs_kj_mol(temperature_k)
+        -NIST_CO_298_1300.standard_gibbs_kj_mol(temperature_k)
+        -NIST_H2O_500_1700.standard_gibbs_kj_mol(temperature_k);
+    (-dg*1000.0/(8.314462618*temperature_k)).exp()
+}
+
+#[cfg(test)]
+mod review2_b03_property_tests {
+    use super::*;
+    fn rel(a:f64,b:f64)->f64 {(a-b).abs()/a.abs().max(b.abs()).max(1e-12)}
+    #[test]
+    fn h2_boundary_is_continuous_to_nist_rounding() {
+        let a=H2_LOW; let b=H2_HIGH; let t=1000.0;
+        assert!(rel(a.cp_j_mol_k(t),b.cp_j_mol_k(t))<5e-4);
+        assert!(rel(a.sensible_h_kj_mol(t),b.sensible_h_kj_mol(t))<5e-4);
+        assert!(rel(a.entropy_j_mol_k(t),b.entropy_j_mol_k(t))<5e-4);
+        assert!(rel(a.standard_gibbs_kj_mol(t),b.standard_gibbs_kj_mol(t))<5e-4);
+    }
+    #[test]
+    fn co2_boundary_is_continuous_to_nist_rounding() {
+        let a=CO2_LOW; let b=CO2_HIGH; let t=1200.0;
+        assert!(rel(a.cp_j_mol_k(t),b.cp_j_mol_k(t))<5e-4);
+        assert!(rel(a.sensible_h_kj_mol(t),b.sensible_h_kj_mol(t))<5e-4);
+        assert!(rel(a.entropy_j_mol_k(t),b.entropy_j_mol_k(t))<5e-4);
+        assert!(rel(a.standard_gibbs_kj_mol(t),b.standard_gibbs_kj_mol(t))<5e-4);
+    }
+    #[test]
+    fn reformer_temperatures_use_high_h2_interval() {
+        for t in [1173.15,1198.15,1223.15] {
+            assert!(h2_shomate(t).t_min_k>=1000.0);
+            let k=smr_equilibrium_constant_piecewise(t);
+            assert!(k.is_finite() && k>0.0);
+        }
+    }
+    #[test]
+    #[should_panic]
+    fn h2_invalid_high_temperature_rejected() {
+        let _=h2_standard_gibbs_kj_mol(2500.1);
+    }
+    #[test]
+    #[should_panic]
+    fn raw_interval_rejects_extrapolation() {
+        let _=H2_LOW.standard_gibbs_kj_mol(1000.1);
     }
 }
