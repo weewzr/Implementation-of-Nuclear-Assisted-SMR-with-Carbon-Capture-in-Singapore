@@ -1162,3 +1162,29 @@ fn recycle80_matched_lifecycle_recomputes_assignment_budget() {
     assert!(mt>0.60 && mt<0.90);
     assert!(budget>60_000_000.0 && budget<90_000_000.0);
 }
+
+
+#[test]
+fn matched_lifecycle_budget_reopens_part_of_shared_reactor_region() {
+    use nuclear_assisted_smr::{
+        ieaghg_unabated_lifecycle_screen,
+        recycle80_shared_direct_lifecycle_screen,
+        annual_lifecycle_abatement_and_budget,
+        recycle80_min_gas_price_for_full_cost_sgd_per_gj,
+        recycle80_max_ccs_ts_cost_sgd_y,
+    };
+    let b=ieaghg_unabated_lifecycle_screen(11.5);
+    let c=recycle80_shared_direct_lifecycle_screen(
+        0.90,11.5,162.0,5.5,0.504,0.025);
+    let (_,budget)=annual_lifecycle_abatement_and_budget(
+        b,c,8994.0,8322.0,100.0);
+    let p=recycle80_min_gas_price_for_full_cost_sgd_per_gj(
+        budget,162.0,5.69,150.0,31_900_000.0,
+        50_000_000.0,8_200_000.0,5_000_000.0);
+    let ts20=recycle80_max_ccs_ts_cost_sgd_y(
+        budget,162.0,20.0,5.69,150.0,
+        50_000_000.0,8_200_000.0,5_000_000.0);
+    println!("MATCHED_FULL_COST_MIN_GAS={p};MAX_TS20={ts20};BUDGET={budget}");
+    assert!(p>14.0 && p<15.5);
+    assert!(ts20>55_000_000.0 && ts20<56_000_000.0);
+}
