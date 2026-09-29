@@ -686,3 +686,18 @@ fn cogeneration_allocation_leaves_more_abatement_budget_than_dedicated_reactor()
     assert!(residual_incremental_budget(allowed,shared)
         > residual_incremental_budget(allowed,dedicated));
 }
+
+
+#[test]
+fn cogeneration_energy_share_expands_common_reactor_cost_headroom_by_three_point_five() {
+    use nuclear_assisted_smr::max_common_reactor_annual_cost;
+    let dedicated=max_common_reactor_annual_cost(54_000_000.0,20_000_000.0,1.0);
+    let cog=max_common_reactor_annual_cost(54_000_000.0,20_000_000.0,170.0/600.0);
+    close(cog/dedicated,600.0/170.0,1e-12);
+}
+
+#[test]
+fn ccs_tariff_can_consume_large_fraction_of_annual_budget() {
+    use nuclear_assisted_smr::annual_ccs_transport_storage_cost;
+    close(annual_ccs_transport_storage_cost(500_000.0,50.0),25_000_000.0,1e-6);
+}
