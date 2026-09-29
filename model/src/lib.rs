@@ -1011,3 +1011,14 @@ pub fn current_htgr_service_breakdown(reformer_inlet_c:f64)->HtgrServiceBreakdow
         reformer_preheat_sensitivity_mw:reformer_preheater_sensitivity_mw(reformer_inlet_c),
     }
 }
+
+
+/// Project-loop circulator sensitivity using the current screening helium flow
+/// (96.04 MW radiant service, 880 -> 650 C, cp=5.2 kJ/kg-K) and total loop
+/// pressure drop expressed as a multiple of the 58 kPa GTHTR300C IHX anchor.
+/// The 5.15 MPa pressure is likewise a benchmark assumption, not a selected design.
+pub fn project_loop_circulator_sensitivity_mw(dp_multiple: f64) -> f64 {
+    let m=helium_mass_flow_kg_s(ieaghg_reformer_radiant_duty_mw(),5.2,880.0,650.0);
+    helium_circulator_power_mw(m,loop_dp_from_ihx_multiple_kpa(dp_multiple),
+        5.15,650.0,0.80)
+}
