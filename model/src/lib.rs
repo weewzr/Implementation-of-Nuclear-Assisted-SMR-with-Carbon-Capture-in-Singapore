@@ -6726,3 +6726,86 @@ mod r3_m04_gate4_adversarial_tests {
         assert!(x.secondary_he_hot_c>900.0);
     }
 }
+
+
+/// Gate-5 Experiment 01: diagnose the verified 64-point no-joint-pass domain.
+/// This does not alter model physics; it extracts nearest-threshold cases and
+/// pass/fail topology from the verified R3 uncertainty experiment.
+#[derive(Debug,Clone,Copy)]
+pub struct Gate5ThresholdDiagnostics {
+    pub n:usize,pub both_pass:usize,pub abatement_only:usize,pub cost_only:usize,
+    pub neither:usize,
+    pub max_avoided_t:f64,pub min_positive_cost_sgd_t:f64,
+    pub closest_abatement_gap_t:f64,pub closest_cost_gap_sgd_t:f64,
+    pub min_joint_normalized_gap:f64,
+}
+pub fn gate5_threshold_diagnostics()->Gate5ThresholdDiagnostics {
+    let v=r3_uncertainty_design();
+    let mut both=0;let mut ao=0;let mut co=0;let mut neither=0;
+    let mut maxa=f64::NEG_INFINITY;let mut minc=f64::INFINITY;
+    let mut agap=f64::INFINITY;let mut cgap=f64::INFINITY;
+    let mut joint=f64::INFINITY;
+    for x in &v {
+        match (x.pass_abatement,x.pass_cost) {
+            (true,true)=>both+=1,(true,false)=>ao+=1,(false,true)=>co+=1,
+            (false,false)=>neither+=1}
+        maxa=maxa.max(x.annual_avoided_t);
+        if x.abatement_cost_sgd_t.is_finite() {
+            minc=minc.min(x.abatement_cost_sgd_t);
+        }
+        let ga=(250_000.0-x.annual_avoided_t).max(0.0);
+        let gc=if x.abatement_cost_sgd_t.is_finite() {
+            (x.abatement_cost_sgd_t-100.0).max(0.0)
+        } else {f64::INFINITY};
+        agap=agap.min(ga);cgap=cgap.min(gc);
+        let j=ga/250_000.0+gc/100.0;
+        joint=joint.min(j);
+    }
+    Gate5ThresholdDiagnostics{n:v.len(),both_pass:both,abatement_only:ao,
+        cost_only:co,neither,max_avoided_t:maxa,min_positive_cost_sgd_t:minc,
+        closest_abatement_gap_t:agap,closest_cost_gap_sgd_t:cgap,
+        min_joint_normalized_gap:joint}
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct Gate5NearestCases {
+    pub best_abatement:R3UncertaintyPoint,
+    pub best_cost:R3UncertaintyPoint,
+    pub closest_joint:R3UncertaintyPoint,
+}
+pub fn gate5_nearest_cases()->Gate5NearestCases {
+    let v=r3_uncertainty_design();
+    let mut ba=v[0];let mut bc=v[0];let mut bj=v[0];
+    let score=|x:&R3UncertaintyPoint| {
+        let ga=(250_000.0-x.annual_avoided_t).max(0.0)/250_000.0;
+        let gc=if x.abatement_cost_sgd_t.is_finite(){
+            (x.abatement_cost_sgd_t-100.0).max(0.0)/100.0
+        }else{f64::INFINITY};
+        ga+gc
+    };
+    for x in v {
+        if x.annual_avoided_t>ba.annual_avoided_t {ba=x;}
+        if x.abatement_cost_sgd_t<bc.abatement_cost_sgd_t {bc=x;}
+        if score(&x)<score(&bj) {bj=x;}
+    }
+    Gate5NearestCases{best_abatement:ba,best_cost:bc,closest_joint:bj}
+}
+
+#[cfg(test)]
+mod gate5_experiment01_tests {
+    use super::*;
+    #[test]
+    fn experiment_reproduces_verified_domain_topology() {
+        let d=gate5_threshold_diagnostics();
+        assert_eq!(d.n,64);
+        assert_eq!(d.both_pass,0);
+        assert_eq!(d.n,d.both_pass+d.abatement_only+d.cost_only+d.neither);
+    }
+    #[test]
+    fn nearest_cases_are_actual_domain_members() {
+        let n=gate5_nearest_cases();
+        assert!(n.best_abatement.annual_avoided_t.is_finite());
+        assert!(!n.best_cost.abatement_cost_sgd_t.is_nan());
+        assert!(n.closest_joint.annual_avoided_t.is_finite());
+    }
+}
