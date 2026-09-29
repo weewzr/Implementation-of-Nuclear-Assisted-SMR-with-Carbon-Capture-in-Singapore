@@ -48,14 +48,24 @@ reproduce an authoritative reference energy/duty metric within a declared
 tolerance before nuclear heat substitution.
 
 ### B3 — PSA-tail-gas disposition unresolved when fired reformer is removed
-**Disposition: ACCEPTED — OPEN BLOCKER.**
+**Disposition: RESOLUTION IMPLEMENTED — CI verification pending.**
 
-The existing carbon reconstruction demonstrates why this is real: conventional
-PSA tail gas carries feed-derived H2/CO/CH4/CO2 and is normally used as furnace
-fuel. Deleting the furnace does not delete this carbon or chemical energy.
+The furnace-free candidate now has an explicit reduced-CHO disposition rather
+than deleting the conventional PSA tail gas. Existing tail CO2 is routed to the
+high-pressure process-carbon capture train; H2/CO/CH4 are returned to the
+reforming loop; converted CO/CH4 carbon is routed to capture; uncaptured fresh
+feed carbon leaves as residual process CO2. Recycled carbon is treated as an
+internal flow, not a new external carbon source.
 
-Acceptance criterion remains: every tail-gas species has a physical destination
-for each candidate nuclear architecture and total carbon closes.
+A new `ConvergedCarbonLedger` closes external fresh-feed carbon exactly between
+captured and residual-emitted carbon, and a separate function accounts for the
+tail carbon delivered to capture. The remaining limitation is explicit: N2 and
+other inerts are outside the current CHO reduced model, so a purge cannot yet be
+sized. B3 will be marked fully resolved only after the strengthened
+reformer/shift/recycle model retains or explicitly bounds that purge requirement.
+
+Evidence: `model/src/lib.rs`, commit `8b5c40c25afd56a78f5c680dd99cd3e406e74108`
+plus compile fix `27add5ade930a60a7444c63f38f63fefb9b3ab22`.
 
 ### B4 — Capture topology cannot be fixed before carbon architecture closes
 **Disposition: ACCEPTED — OPEN BLOCKER, dependent on B3.**
@@ -92,13 +102,23 @@ capacity factor, energy prices, nuclear allocation and CCS transport/storage
 basis remain to be frozen before assignment-level cost results.
 
 ### M5 — Current tests emphasize reconstruction more than predictive validation
-**Disposition: ACCEPTED.**
-Existing provenance/regression tests are retained. Independent duty/model
-validation must be added rather than replacing them.
+**Disposition: PARTIALLY RESOLVED.**
+The model now includes independent thermodynamic checks beyond source-row
+reconstruction: NIST/JANAF SMR/WGS equilibrium constants, pressure-dependence
+limiting tests, an IEAGHG HTS Q/K diagnostic, apparent-equilibrium-temperature
+reconstruction, analytical-vs-iterative recycle fixed-point verification, and
+CI tests for pressure/compression/heat bounds. This is meaningful validation,
+but the primary reformer has not yet been reproduced on an authoritative
+once-through state; therefore M5 is not closed.
 
 ### M6 — Thermodynamic property layer missing
-**Disposition: ACCEPTED.**
-This is part of B2.
+**Disposition: SUBSTANTIALLY RESOLVED, retained under B2 until energy closure.**
+The Rust model now contains NIST Shomate enthalpy and entropy functions for the
+major CH4/H2O/CO/CO2/H2 species, temperature-dependent sensible enthalpies,
+IAPWS saturation calculations used for steam/condensation bounds, and
+NIST/JANAF-derived Gibbs-energy/equilibrium constants for SMR and WGS. The
+remaining property work is tied specifically to closing B2's conventional
+energy balance, not absence of a thermodynamic layer.
 
 ### Minor scope warning
 **Disposition: ACCEPTED.**
