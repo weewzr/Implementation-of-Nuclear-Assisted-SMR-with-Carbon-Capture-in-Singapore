@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Quantify the secondary-helium/IHX feasibility window around the 96.04 MW radiant-duty anchor while resolving remaining convection/steam services.
+Bound total secondary-helium loop pressure drop/circulator parasitics and complete the remaining convection/steam service ledger around the 96.04 MW radiant-duty anchor.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -63,6 +63,20 @@ Using the verified 96.04 MW IEAGHG radiant duty and a temporary screening assump
 
 The first CI run for these tests failed at compile time only because a Rust test function name began with a numeral; the identifier has been corrected and CI rerun is pending. No scientific assertion failed in that run.
 
+## New large-scale helium benchmark
+A published JAEA GTHTR300C IHX design provides a larger-scale comparison without selecting that reactor:
+- 170 MWth IHX duty;
+- secondary He 500 -> 900 C;
+- 81 kg/s secondary-He flow;
+- 5.15 MPa inlet pressure;
+- 58 kPa secondary-side IHX pressure loss.
+
+The project's independent 96.04 MW screening case at 880 -> 650 C and cp=5.2 kJ/kg-K gives ~80 kg/s. The similar mass-flow magnitude is an order-of-magnitude plausibility check, not a design match.
+
+Using the GTHTR300C IHX-only pressure loss and an explicit 80% circulator-efficiency screening assumption gives ~1.8 MW of IHX-only pumping. Total loop pumping must be larger because reformer, steam generator, piping, valves and return-path losses are not yet included.
+
+Rust regression tests for the large-scale helium-flow and IHX-only pumping calculation passed GitHub Actions.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -103,7 +117,7 @@ The first CI run for these tests failed at compile time only because a Rust test
   remain.
 
 ## Next highest-priority task
-Constrain secondary-helium hot/cold temperatures and mass flow using JAEA/HTGR evidence and temperature-dependent helium properties, then add pressure-drop/pumping estimates. In parallel, recover remaining conventional convection/steam duties so the nuclear loop is sized to a complete service ledger rather than radiant duty alone.
+Build a component-wise secondary-helium pressure-drop budget (IHX + hot duct + reformer + steam generator + valves + return) and compute circulator parasitic sensitivity. In parallel, recover the remaining conventional convection/steam duties. Acceptance criterion: bound W_circ/Q_delivered and a complete temperature-resolved service ledger before mapping reactor candidates.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
