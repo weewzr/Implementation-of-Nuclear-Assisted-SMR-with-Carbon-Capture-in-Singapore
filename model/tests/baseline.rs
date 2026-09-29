@@ -922,3 +922,25 @@ fn eighty_percent_recycle_reduces_standard_reaction_heat_vs_displaced_fresh_meth
     let net=recycle_minus_displaced_reaction_heat_screen_mw(r,0.80,0.80);
     assert!(net < -10.0 && net > -13.0, "net reaction heat {net} MW");
 }
+
+
+#[test]
+fn sixty_three_percent_waste_heat_anchor_reduces_mdea_incremental_heat_to_about_fourteen_mw() {
+    use nuclear_assisted_smr::{
+        mdea_incremental_nuclear_heat_bounds_mw,
+        recycle_net_thermal_increment_screen_80pct,
+    };
+    let (lo,hi)=mdea_incremental_nuclear_heat_bounds_mw(0.63);
+    assert!(lo>14.0 && hi<14.6, "incremental MDEA {lo}..{hi} MW");
+    let (nlo,nhi)=recycle_net_thermal_increment_screen_80pct(0.63);
+    assert!(nlo>2.0 && nhi<4.0, "net thermal screen {nlo}..{nhi} MW");
+}
+
+#[test]
+fn heat_cascade_sensitivity_spans_full_external_heat_to_full_waste_heat() {
+    use nuclear_assisted_smr::mdea_incremental_nuclear_heat_bounds_mw;
+    let full=mdea_incremental_nuclear_heat_bounds_mw(0.0);
+    let none=mdea_incremental_nuclear_heat_bounds_mw(1.0);
+    assert!(full.0>38.0 && full.1<39.3);
+    close(none.0,0.0,1e-12); close(none.1,0.0,1e-12);
+}
