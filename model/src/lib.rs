@@ -6615,3 +6615,114 @@ mod r3_m03_singapore_scale_tests {
             SingaporeDeploymentCondition::CrossBorderInfrastructureUnderDevelopment);
     }
 }
+
+
+/// Deterministic Gate-4 canonical results snapshot generated entirely from the
+/// corrected R3 model. This is the single machine-derived source for the
+/// persisted results artifact; adverse results are included, not filtered.
+#[derive(Debug,Clone,Copy)]
+pub struct R3CanonicalResults {
+    pub fresh_fraction:f64,pub purge_fraction:f64,
+    pub annual_h2_t:f64,pub captured_co2_t_y:f64,pub residual_co2_t_y:f64,
+    pub nuclear_heat_hi_mw:f64,pub secondary_he_hot_c:f64,
+    pub secondary_he_flow_kg_s:f64,pub reference_ci:f64,
+    pub reference_avoided_t_y:f64,pub reference_abatement_cost_sgd_t:f64,
+    pub reference_pass_abatement:bool,pub reference_pass_cost:bool,
+    pub conservative_avoided_t_y:f64,pub conservative_pass_abatement:bool,
+    pub conservative_pass_cost:bool,pub uncertainty_points:usize,
+    pub uncertainty_joint_passes:usize,
+}
+pub fn r3_canonical_results()->R3CanonicalResults {
+    let s=r3_canonical_recycle_case();
+    let scale=r3_singapore_scale();
+    let heat=r3_heat_cascade(650.0,20.0,30.0,500.0);
+    let reference=r3_reference_threshold_case();
+    let conservative=r3_conservative_threshold_case();
+    let uncertainty=r3_uncertainty_summary();
+    R3CanonicalResults{
+        fresh_fraction:s.fresh_fraction,purge_fraction:s.purge_fraction,
+        annual_h2_t:scale.annual_h2_t,captured_co2_t_y:scale.total_co2_to_storage_t_y,
+        residual_co2_t_y:scale.residual_direct_co2_t_y,
+        nuclear_heat_hi_mw:heat.nuclear_heat_hi_mw,
+        secondary_he_hot_c:heat.secondary_he_hot_c,
+        secondary_he_flow_kg_s:heat.helium_mass_flow_hi_kg_s,
+        reference_ci:reference.lifecycle.total,
+        reference_avoided_t_y:reference.economics.annual_avoided_tco2e,
+        reference_abatement_cost_sgd_t:reference.economics.abatement_cost_sgd_t,
+        reference_pass_abatement:reference.passes_abatement_scale,
+        reference_pass_cost:reference.passes_cost_threshold,
+        conservative_avoided_t_y:conservative.economics.annual_avoided_tco2e,
+        conservative_pass_abatement:conservative.passes_abatement_scale,
+        conservative_pass_cost:conservative.passes_cost_threshold,
+        uncertainty_points:uncertainty.n,
+        uncertainty_joint_passes:uncertainty.both_pass}
+}
+
+#[cfg(test)]
+mod r3_m04_gate4_adversarial_tests {
+    use super::*;
+
+    // G: integrated external-boundary conservation.
+    #[test]
+    fn g_plant_boundary_closes_and_capture_is_removed() {
+        let s=r3_canonical_recycle_case();
+        for r in r3_external_normalized_element_residuals(s) {
+            assert!(r.abs()<1e-6);
+        }
+        assert!(r3_external_mass_residual_fraction(s).abs()<1e-6);
+        assert!(s.post_capture.co2<s.shifted.co2);
+        assert!((s.shifted.co2-s.post_capture.co2-s.captured_co2_kmol_h).abs()<1e-9);
+    }
+
+    // H: the exact zero-approach defect identified by Review 3 must be rejected.
+    #[test]
+    #[should_panic]
+    fn h_zero_process_temperature_approach_is_rejected() {
+        let _=r3_heat_cascade(650.0,0.0,30.0,500.0);
+    }
+
+    // G/H: CCS and heat cascade must consume the same candidate MDEA duty.
+    #[test]
+    fn gh_ccs_energy_duty_cannot_diverge() {
+        let s=r3_canonical_recycle_case();
+        let c=r3_ccs_ledger(s);
+        let h=r3_heat_cascade(650.0,20.0,30.0,500.0);
+        assert_eq!(c.mdea_heat_lo_mw,h.mdea_heat_lo_mw);
+        assert_eq!(c.mdea_heat_hi_mw,h.mdea_heat_hi_mw);
+    }
+
+    // G: lifecycle must respond to a physical auxiliary electricity source.
+    #[test]
+    fn g_auxiliary_electricity_is_inside_lifecycle_boundary() {
+        let low=r3_candidate_lifecycle(11.5,5.5,5.5,0.025);
+        let grid=r3_candidate_lifecycle(11.5,5.5,402.0,0.025);
+        assert!(low.auxiliary_electricity>0.0);
+        assert!(grid.total>low.total);
+    }
+
+    // H: adverse scientific findings are acceptance evidence, not test failures.
+    #[test]
+    fn h_adverse_threshold_results_are_preserved() {
+        let c=r3_conservative_threshold_case();
+        assert!(!c.passes_abatement_scale&&!c.passes_cost_threshold);
+        let u=r3_uncertainty_summary();
+        assert_eq!(u.n,128);
+        assert_eq!(u.both_pass,0);
+    }
+
+    // F/G: source comparator independently falsifies uniqueness of scale claim.
+    #[test]
+    fn fg_case1a_source_comparator_exceeds_annual_scale_threshold() {
+        assert!(r3_case1a_comparator().direct_avoided_t_y>250_000.0);
+    }
+
+    // Deterministic canonical snapshot.
+    #[test]
+    fn g_canonical_results_snapshot_is_self_consistent() {
+        let x=r3_canonical_results();
+        assert_eq!(x.uncertainty_points,128);
+        assert_eq!(x.uncertainty_joint_passes,0);
+        assert!(x.annual_h2_t>0.0&&x.captured_co2_t_y>0.0);
+        assert!(x.secondary_he_hot_c>900.0);
+    }
+}
