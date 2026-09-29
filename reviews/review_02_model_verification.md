@@ -20,7 +20,7 @@ to validated predictions.
 ## Findings
 
 ### R2-B01 — Full-species recycle steady-state solver fails acceptance cases
-**Severity: BLOCKER.**
+**Disposition: RESOLVED.**
 
 The new `solve_full_recycle6` couples a six-species wet-gas state, SMR
 conversion, equilibrium WGS, composition-sensitive PSA recovery, inert purge and
@@ -35,16 +35,21 @@ The first failure means the nominal finite-purge case does not reach the stated
 steady-state tolerance. The second means both contrasting reformer/PSA cases do
 not converge, so the intended physical dependence cannot yet be demonstrated.
 
-**Acceptance criterion:** replace/tune the numerical method on mathematical
-grounds (residual formulation, scaling, damping/root solve), then demonstrate
-for the reference and bracketing cases:
-1. convergence of every independent state residual;
-2. fixed H2 product within declared tolerance;
-3. C/H/O/N elemental closure including purge;
-4. nonnegative species;
-5. finite nonzero purge for nonzero inert feed; and
-6. fresh-feed/recycle response to reaction and PSA parameters.
-Do not weaken tests merely to obtain green CI.
+The unstable simultaneous proportional controller has been superseded by a
+nested numerical formulation. The inner solve closes recycle composition at
+fixed fresh feed; the outer scalar bisection solves the fixed-H2 production
+residual. The inert purge is imposed from the steady-state balance
+purge_N2 = fresh external N2, eliminating the unphysical zero-purge switch.
+
+The new nominal and bracketing cases converge. CI verifies fixed-H2 product
+closure, nonnegative species, exact inert balance, C/H/O/N conservation through
+SMR and WGS steps, and sensitivity of fresh-feed demand to reformer/PSA
+performance. The old proportional-controller tests were retired only after the
+new acceptance tests passed; their tolerances were not weakened.
+
+Evidence: commits `33b9bba5f3b8f229502099758d4b5b5eb7a8d295`,
+`331d231afe4a325b338f86b2b4f35f650f6ca49b`,
+`5e3fd0e5f33d79c8feaec05b21f9ef8ef19298a5`; CI run 36533912202 passed.
 
 ### R2-B02 — Legacy analytical recycle fixed point is structurally purge-blind
 **Severity: BLOCKER for any result using the ~0.737 fresh-feed fraction.**
@@ -124,7 +129,9 @@ scientific task without deleting provenance held elsewhere.
 
 ## Required next action
 
-Resolve **R2-B01 first**. Reformulate the full-species recycle steady-state
-numerics so the physical residuals converge without weakening conservation or
-acceptance tests. Then address R2-B03 and revalidate the once-through case before
-using recycle outputs.
+Resolve **R2-B03** next: replace arbitrary SMR conversion in the nested
+full-species solver with equilibrium/finite-approach reformer physics and
+validate that formulation against the authoritative IEAGHG once-through
+reference before using recycle predictions. R2-B02 is then resolved by retiring
+legacy 0.737-based predictive propagation in favour of the validated nested
+solver.
