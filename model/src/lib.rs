@@ -1950,3 +1950,34 @@ pub fn mdea_fraction_after_feed_preheat_upper_bounds()->(f64,f64) {
     let (mlo,mhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
     ((qlo/mhi).min(1.0),(qhi/mlo).min(1.0))
 }
+
+
+/// Conservative MDEA incremental-heat envelope after the source-based pinch work.
+/// Recoverable shifted-syngas heat is bounded from 0 to the residual ceiling
+/// after preserving the verified feed-preheater duty. Other downstream duties
+/// are unresolved, so zero recovery is the conservative end.
+pub fn mdea_incremental_heat_source_bounded_mw()->(f64,f64) {
+    let (mlo,mhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+    let (_,recoverable_hi)=residual_shift_heat_after_feed_preheat_bounds_mw();
+    ((mlo-recoverable_hi).max(0.0),mhi)
+}
+
+/// Current 80%-recycle thermal increment envelope: MDEA incremental heat plus
+/// conservative standard reaction-heat change. Still excludes sensible/feed
+/// network changes and recycle compression.
+pub fn recycle_80pct_thermal_increment_source_bounded_mw()->(f64,f64) {
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let rxn=recycle_minus_displaced_reaction_heat_screen_mw(r,0.80,0.80);
+    let (lo,hi)=mdea_incremental_heat_source_bounded_mw();
+    (lo+rxn,hi+rxn)
+}
+
+/// Propagate the recycle thermal increment into the existing HTGR service
+/// envelope for a specified reformer-inlet sensitivity.
+pub fn htgr_service_with_recycle_source_bounded_mw(
+    reformer_inlet_c:f64
+)->(f64,f64) {
+    let (base_lo,base_hi)=bounded_furnace_service_envelope_mw(reformer_inlet_c);
+    let (dlo,dhi)=recycle_80pct_thermal_increment_source_bounded_mw();
+    (base_lo+dlo,base_hi+dhi)
+}
