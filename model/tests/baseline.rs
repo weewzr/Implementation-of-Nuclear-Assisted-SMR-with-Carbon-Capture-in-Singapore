@@ -856,3 +856,29 @@ fn case2a_tail_separation_anchor_is_over_six_mwe_before_other_recycle_costs() {
     use nuclear_assisted_smr::case2a_tail_separation_net_electric_anchor_mwe;
     close(case2a_tail_separation_net_electric_anchor_mwe(),6.309,1e-12);
 }
+
+
+#[test]
+fn reduced_tail_recycle_respects_physical_monotonicity() {
+    use nuclear_assisted_smr::reduced_tail_recycle_fixed_h2;
+    let low=reduced_tail_recycle_fixed_h2(0.50,0.50,0.50);
+    let mid=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let high=reduced_tail_recycle_fixed_h2(1.00,1.00,1.00);
+    assert!(low.recovered_h2_kmol_h < mid.recovered_h2_kmol_h);
+    assert!(mid.recovered_h2_kmol_h < high.recovered_h2_kmol_h);
+    assert!(low.fresh_ng_displaced_fraction < mid.fresh_ng_displaced_fraction);
+    assert!(mid.fresh_ng_displaced_fraction < high.fresh_ng_displaced_fraction);
+    assert!(high.extra_water_consumed_kmol_h>0.0);
+}
+
+#[test]
+fn reduced_tail_recycle_is_below_carbon_only_displacement_ceiling_for_mid_case() {
+    use nuclear_assisted_smr::{
+        reduced_tail_recycle_fixed_h2,
+        tail_recycle_fresh_ng_carbon_displacement_upper_fraction,
+    };
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    assert!(r.fresh_ng_displaced_fraction>0.15);
+    assert!(r.fresh_ng_displaced_fraction
+        < tail_recycle_fresh_ng_carbon_displacement_upper_fraction());
+}
