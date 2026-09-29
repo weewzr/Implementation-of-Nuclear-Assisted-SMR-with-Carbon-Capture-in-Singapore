@@ -106,16 +106,34 @@ Evidence: commits `66fbcaaf51f59b3fa6d7308a67ee9dd239f883ea`
 and `aab7779e81a462bd02eb65f84c40a552b542b0be`; CI passed.
 
 ### R2-M01 — PSA model is a bounded surrogate, not adsorption validation
-**Severity: MAJOR.**
+**Disposition: RESOLVED AS BOUNDED SCREENING UNCERTAINTY.**
 
 `psa6_bounded` conserves H2 but imposes pure-H2 product and a linear impurity
 penalty with an arbitrary sensitivity parameter. This is useful for sensitivity,
 not predictive PSA performance.
 
-**Acceptance criterion:** either calibrate/validate the reduced PSA response
-against authoritative multi-condition data, or explicitly bound recycle
-conclusions across a justified recovery/selectivity envelope and label them
-screening results.
+A universal impurity-response slope is not supported by the literature and is
+no longer required for the canonical uncertainty screen. Published high-purity
+SMR PSA studies support a broad conventional H2-recovery range around 70-90%,
+with detailed examples near 75-82%, strong N2 sensitivity, and optimized modern
+carbon-captured SMR VPSA above 88%. The IEAGHG reconstructed recovery lies
+inside this range.
+
+The model now propagates fixed PSA recoveries of 70%, the IEAGHG source anchor,
+and 90% through the same thermodynamic/purge-aware nested recycle solver.
+Component balances remain exact, every envelope case converges at fixed H2
+product, and CI verifies the physically expected monotonic result that lower
+PSA recovery requires no less fresh feed.
+
+This resolves PSA treatment only as a bounded screening uncertainty; it does
+not claim adsorption-cycle validation or predict purity/recovery outside the
+declared envelope.
+
+Evidence: commit `5e88e46a5712321db4c89c9442cb85354f98f109`,
+CI passed. Literature basis includes Li et al. (2019, SMR PSA >99.95% purity,
+~80% recovery design), Golmakani et al. (2020, impurity/N2 sensitivity),
+and industrial/validated SMR-VPSA literature reporting high-purity recoveries
+within/above the selected envelope.
 
 ### R2-M02 — Review-1 radiant validation is source-limited, not unique state validation
 **Severity: MAJOR / limitation, not a reopened Review-1 blocker.**
@@ -152,9 +170,7 @@ scientific task without deleting provenance held elsewhere.
 
 ## Required next action
 
-Address **R2-M01** PSA uncertainty. The full-species recycle chemistry and purge
-are now physically coupled, but PSA recovery still uses a linear impurity
-surrogate. Establish a justified recovery/selectivity envelope from authoritative
-SMR-PSA evidence or validate against multiple source conditions, then propagate
-that uncertainty through the thermodynamic recycle solution before deciding
-whether Review 2 can close.
+Reassess the remaining Review-2 findings and CI state. If no valid mathematical
+or computational blocker remains, close Review 2 while retaining the explicit
+limitations: ideal-gas equilibrium reformer screening, bounded rather than
+adsorption-resolved PSA, and source-limited reformer inlet reconstruction.
