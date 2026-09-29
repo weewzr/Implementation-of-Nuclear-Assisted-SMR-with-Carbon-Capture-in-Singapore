@@ -7110,3 +7110,90 @@ mod gate5_experiment04_tests {
             ||s.mean_cost_excess_fraction>0.0);
     }
 }
+
+
+/// Gate-5 canonical CSV for the full verified uncertainty domain.
+/// Rows are deterministic and retain all pass/fail cases.
+pub fn gate5_uncertainty_csv()->String {
+    let mut s=String::from(
+"reformer_c,pressure_bar,psa_recovery,capture_fraction,upstream_g_mj,auxiliary_g_kwh,gas_price_sgd_gj,nuclear_heat_sgd_gj,electricity_sgd_mwh,fixed_annual_sgd,fresh_fraction,annual_avoided_t,abatement_cost_sgd_t,pass_abatement,pass_cost,binding\n");
+    for x in r3_uncertainty_design() {
+        let binding=match gate5_binding_constraint(&x) {
+            Gate5BindingConstraint::None=>"none",
+            Gate5BindingConstraint::AbatementOnly=>"abatement",
+            Gate5BindingConstraint::CostOnly=>"cost",
+            Gate5BindingConstraint::Both=>"both",
+        };
+        s.push_str(&format!(
+"{:.0},{:.0},{:.2},{:.2},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.9},{:.6},{:.6},{},{},{}\n",
+x.reformer_c,x.pressure_bar,x.psa_recovery,x.capture_fraction,
+x.upstream_g_mj,x.auxiliary_g_kwh,x.gas_price_sgd_gj,
+x.nuclear_heat_sgd_gj,x.electricity_sgd_mwh,x.fixed_annual_sgd,
+x.fresh_fraction,x.annual_avoided_t,x.abatement_cost_sgd_t,
+x.pass_abatement,x.pass_cost,binding));
+    }
+    s
+}
+
+pub fn gate5_driver_csv()->String {
+    let mut s=String::from(
+"driver,delta_avoided_t,delta_cost_sgd_t,normalized_abatement_effect,normalized_cost_effect\n");
+    for d in gate5_driver_effects() {
+        s.push_str(&format!("{},{:.6},{:.6},{:.9},{:.9}\n",
+            d.name,d.delta_avoided_t,d.delta_cost_sgd_t,
+            d.normalized_abatement_effect,d.normalized_cost_effect));
+    }
+    s
+}
+
+pub fn gate5_results_summary_markdown()->String {
+    let d=gate5_threshold_diagnostics();
+    let b=gate5_binding_summary();
+    let c=gate5_case1a_threshold_decomposition(20.0,30.0);
+    format!(
+"# Gate 5 canonical results summary\n\n\
+## Verified nuclear-domain experiment\n\n\
+- Cases: {}\n\
+- Joint CN4252 passes: {}\n\
+- Abatement-only failures: {}\n\
+- Cost-only failures: {}\n\
+- Both-threshold failures: {}\n\
+- Maximum annual avoided emissions: {:.3} tCO2e/y\n\
+- Minimum finite abatement cost: {:.3} S$/tCO2e\n\
+- Mean normalized abatement shortfall: {:.6}\n\
+- Mean normalized cost excess: {:.6}\n\n\
+## Source-backed comparator\n\n\
+- IEAGHG Case 1A direct annual avoided CO2: {:.3} t/y\n\
+- Case 1A passes 0.25 Mt/y direct scale: {}\n\
+- IEAGHG source CAC: {:.3} EUR2014/t avoided\n\
+- Singapore T&S scenario contribution only: {:.3}-{:.3} SGD/t avoided\n\n\
+## Scientific interpretation\n\n\
+The verified nuclear uncertainty domain contains no joint pass. This is an \
+experimental result, not a solver failure. Case 1A independently clears the \
+annual direct-abatement scale, but its Singapore S$/t result remains unverified \
+because the source non-T&S cost and Singapore T&S scenario are on different \
+currency/year bases.\n",
+d.n,d.both_pass,b.abatement_only,b.cost_only,b.both,d.max_avoided_t,
+d.min_positive_cost_sgd_t,b.mean_abatement_shortfall_fraction,
+b.mean_cost_excess_fraction,c.annual_direct_avoided_t,c.passes_abatement_scale,
+c.source_total_cac_eur2014_t,c.singapore_ts_low_sgd_t_avoided,
+c.singapore_ts_high_sgd_t_avoided)
+}
+
+#[cfg(test)]
+mod gate5_materialized_results_tests {
+    use super::*;
+    #[test]
+    fn uncertainty_csv_has_header_plus_64_rows() {
+        assert_eq!(gate5_uncertainty_csv().lines().count(),65);
+    }
+    #[test]
+    fn driver_csv_has_header_plus_six_rows() {
+        assert_eq!(gate5_driver_csv().lines().count(),7);
+    }
+    #[test]
+    fn summary_preserves_zero_joint_pass_result() {
+        let s=gate5_results_summary_markdown();
+        assert!(s.contains("Joint CN4252 passes: 0"));
+    }
+}
