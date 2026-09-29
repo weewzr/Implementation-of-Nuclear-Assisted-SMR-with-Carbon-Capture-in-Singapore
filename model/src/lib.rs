@@ -3907,3 +3907,14 @@ mod radiant_acceptance_numeric_probe {
         assert!(v.nearest_relative_error<0.50);
     }
 }
+
+
+#[cfg(test)]
+mod radiant_acceptance_tighter_classification {
+    use super::*;
+    #[test]
+    fn radiant_nearest_mismatch_is_below_twenty_percent() {
+        let v=validate_independent_radiant_envelope();
+        assert!(v.nearest_relative_error<0.20);
+    }
+}
