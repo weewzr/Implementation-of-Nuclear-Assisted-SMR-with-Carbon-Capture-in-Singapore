@@ -1624,3 +1624,60 @@ pub fn tail_recycle_fresh_ng_feed_savings_upper_sgd_y(gas_price_sgd_per_gj:f64)-
 pub fn case2a_tail_separation_net_electric_anchor_mwe() -> f64 {
     4.575 + 2.874 - 1.140
 }
+
+
+/// Reduced fixed-output tail-recycle model.
+/// This is intentionally not a full equilibrium flowsheet.
+#[derive(Debug,Clone,Copy)]
+pub struct ReducedTailRecycleResult {
+    pub recovered_h2_kmol_h:f64,
+    pub fresh_ng_displaced_kmol_h:f64,
+    pub fresh_ng_displaced_fraction:f64,
+    pub fresh_feed_energy_displaced_mw:f64,
+    pub extra_water_consumed_kmol_h:f64,
+    pub converted_tail_carbon_kmol_h:f64,
+}
+
+pub fn reduced_tail_recycle_fixed_h2(
+    co_conversion:f64,
+    ch4_conversion:f64,
+    existing_h2_recovery:f64,
+)->ReducedTailRecycleResult {
+    for x in [co_conversion,ch4_conversion,existing_h2_recovery] {
+        assert!((0.0..=1.0).contains(&x));
+    }
+    let t=ieaghg_tail_inventory();
+    let psa=ieaghg_reconstructed_psa_h2_recovery();
+    let recovered_h2 =
+        existing_h2_recovery*t.h2_kmol_h
+        + psa*(co_conversion*t.co_kmol_h + 4.0*ch4_conversion*t.ch4_kmol_h);
+    let baseline_product_per_ng =
+        ieaghg_reconstructed_h2_product_kmol_per_h()/1455.8;
+    let ng_displaced=(recovered_h2/baseline_product_per_ng).min(1455.8);
+    let frac=ng_displaced/1455.8;
+    let water=co_conversion*t.co_kmol_h + 2.0*ch4_conversion*t.ch4_kmol_h;
+    let carbon=co_conversion*t.co_kmol_h + ch4_conversion*t.ch4_kmol_h;
+    let feed_energy_mw=IEAGHG_FEEDSTOCK_NG_GJ_H/3.6*frac;
+    ReducedTailRecycleResult{
+        recovered_h2_kmol_h:recovered_h2,
+        fresh_ng_displaced_kmol_h:ng_displaced,
+        fresh_ng_displaced_fraction:frac,
+        fresh_feed_energy_displaced_mw:feed_energy_mw,
+        extra_water_consumed_kmol_h:water,
+        converted_tail_carbon_kmol_h:carbon,
+    }
+}
+
+/// Partial operating-value screen: fresh-feed NG saving minus the Case-2A
+/// anchored electricity cost. Solvent steam, recycle compression changes,
+/// reformer-duty changes and CAPEX are deliberately excluded.
+pub fn reduced_tail_recycle_partial_net_value_sgd_y(
+    result:ReducedTailRecycleResult,
+    gas_price_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+)->f64 {
+    let gas=result.fresh_feed_energy_displaced_mw*8322.0*3.6*gas_price_sgd_per_gj;
+    let power=case2a_tail_separation_net_electric_anchor_mwe()
+        *8322.0*electricity_sgd_per_mwh;
+    gas-power
+}
