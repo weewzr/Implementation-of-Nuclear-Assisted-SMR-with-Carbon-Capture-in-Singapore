@@ -665,3 +665,24 @@ fn capex_only_break_even_is_an_upper_bound_not_a_project_cost() {
     let cap=capex_only_break_even_upper_bound(25_000_000.0,0.08,25);
     assert!(cap>265_000_000.0 && cap<268_000_000.0);
 }
+
+
+#[test]
+fn gthtr300c_energy_share_allocates_about_twenty_eight_percent_to_process_heat() {
+    use nuclear_assisted_smr::reactor_cost_allocation_fraction_by_thermal_service;
+    close(reactor_cost_allocation_fraction_by_thermal_service(170.0,600.0),
+          170.0/600.0,1e-12);
+}
+
+#[test]
+fn cogeneration_allocation_leaves_more_abatement_budget_than_dedicated_reactor() {
+    use nuclear_assisted_smr::{
+        allocated_annual_reactor_cost,residual_incremental_budget,
+    };
+    let allowed=54_000_000.0;
+    let dedicated=allocated_annual_reactor_cost(500_000_000.0,1.0,0.08,25,10_000_000.0);
+    let shared=allocated_annual_reactor_cost(500_000_000.0,170.0/600.0,0.08,25,10_000_000.0);
+    assert!(shared < dedicated);
+    assert!(residual_incremental_budget(allowed,shared)
+        > residual_incremental_budget(allowed,dedicated));
+}
