@@ -7254,6 +7254,19 @@ pub fn gate5_driver_csv()->String {
     s
 }
 
+/// Plotting-only driver CSV: preserves all abatement contrasts but emits cost
+/// rows only where the normalized cost effect is finite. Canonical driver data
+/// remain unchanged in gate5_driver_csv().
+pub fn gate5_driver_cost_finite_csv()->String {
+    let mut s=String::from("driver,normalized_cost_effect\n");
+    for d in gate5_driver_effects() {
+        if d.normalized_cost_effect.is_finite() {
+            s.push_str(&format!("{},{:.9}\n",d.name,d.normalized_cost_effect));
+        }
+    }
+    s
+}
+
 pub fn gate5_results_summary_markdown()->String {
     let d=gate5_threshold_diagnostics();
     let b=gate5_binding_summary();

@@ -19,7 +19,7 @@ Table~\ref{tab:binding-counts} is populated directly from the generated binding-
 
 The uncertainty study therefore serves two purposes: it identifies binding constraints and actively attempts to falsify the nuclear hypothesis. The absence of a joint passing point in the declared design is retained as a scientific finding rather than treated as a numerical failure.
 
-Figure~\ref{fig:driver-effects} reports the six local one-factor driver contrasts relative to the same favourable anchor used by Gate-5 Experiment 02. The effects are normalized by the corresponding CN4252 threshold: \(\Delta A/(250{,}000~\mathrm{tCO_2e/y})\) for annual abatement and \(\Delta C/(100~\mathrm{S\$/tCO_2e})\) for cost. These quantities are sensitivity contrasts, not global causal coefficients; coupled behaviour remains represented by the 64-case design.
+Figure~\ref{fig:driver-effects} reports the six local one-factor driver contrasts relative to the same favourable anchor used by Gate-5 Experiment 02. The effects are normalized by the corresponding CN4252 threshold: \(\Delta A/(250{,}000~\mathrm{tCO_2e/y})\) for annual abatement and \(\Delta C/(100~\mathrm{S\$/tCO_2e})\) for cost. These quantities are sensitivity contrasts, not global causal coefficients; coupled behaviour remains represented by the 64-case design. The \texttt{gas\_aux\_carbon\_price} perturbation produces non-positive lifecycle abatement, so its abatement cost is infinite and has no finite cost-bar ordinate. That falsification state remains explicit in the canonical driver CSV and is omitted only from the finite cost plotting layer.
 
 \begin{figure}[htbp]
 \centering
@@ -38,10 +38,10 @@ Figure~\ref{fig:driver-effects} reports the six local one-factor driver contrast
 ]
 \addplot table[col sep=comma,x=driver,y=normalized_abatement_effect] {../results/generated/gate5_driver_effects.csv};
 \addlegendentry{Abatement effect}
-\addplot table[col sep=comma,x=driver,y=normalized_cost_effect] {../results/generated/gate5_driver_effects.csv};
+\addplot table[col sep=comma,x=driver,y=normalized_cost_effect] {../results/generated/gate5_driver_cost_finite.csv};
 \addlegendentry{Cost effect}
 \end{axis}
 \end{tikzpicture}
-\caption{Local Gate-5 driver contrasts normalized to the two CN4252 thresholds. Positive cost effect worsens the cost metric; negative abatement effect worsens the annual-abatement metric. The plotted CSV is regenerated directly from the verified Rust model during the manuscript build.}
+\caption{Local Gate-5 driver contrasts normalized to the two CN4252 thresholds. Positive cost effect worsens the cost metric; negative abatement effect worsens the annual-abatement metric. The abatement series uses the full canonical driver CSV. The cost series uses a build-generated finite-only view; any infinite cost remains explicit in the canonical data and is described in the text rather than assigned an artificial finite bar.}
 \label{fig:driver-effects}
 \end{figure}
