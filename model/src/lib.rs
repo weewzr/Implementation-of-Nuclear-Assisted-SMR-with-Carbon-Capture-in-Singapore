@@ -1233,3 +1233,42 @@ pub fn matched_electric_lifecycle_screen(
             feed*capture_fraction,ccs_transport_fraction),
     }
 }
+
+
+/// Capital recovery factor for annualising CAPEX.
+pub fn capital_recovery_factor(discount_rate:f64,lifetime_years:u32)->f64 {
+    assert!(discount_rate>=0.0);
+    assert!(lifetime_years>0);
+    if discount_rate==0.0 { return 1.0/lifetime_years as f64; }
+    let n=lifetime_years as i32;
+    discount_rate*(1.0+discount_rate).powi(n)/((1.0+discount_rate).powi(n)-1.0)
+}
+
+/// Generic annualised cost, in the caller's currency/year.
+pub fn annualised_cost(
+    capex:f64,discount_rate:f64,lifetime_years:u32,
+    fixed_opex_per_year:f64,variable_opex_per_year:f64,
+)->f64 {
+    capex*capital_recovery_factor(discount_rate,lifetime_years)
+        +fixed_opex_per_year+variable_opex_per_year
+}
+
+/// Incremental cost of CO2e abatement.
+/// Costs must use the same currency/year and annual emissions the same tCO2e/y.
+pub fn abatement_cost_per_tco2e(
+    candidate_annual_cost:f64,baseline_annual_cost:f64,
+    baseline_tco2e_y:f64,candidate_tco2e_y:f64,
+)->f64 {
+    let avoided=baseline_tco2e_y-candidate_tco2e_y;
+    assert!(avoided>0.0);
+    (candidate_annual_cost-baseline_annual_cost)/avoided
+}
+
+/// Maximum annual incremental cost compatible with an abatement-cost target.
+pub fn max_incremental_annual_cost(
+    target_currency_per_tco2e:f64,
+    annual_avoided_tco2e:f64,
+)->f64 {
+    assert!(target_currency_per_tco2e>=0.0 && annual_avoided_tco2e>0.0);
+    target_currency_per_tco2e*annual_avoided_tco2e
+}
