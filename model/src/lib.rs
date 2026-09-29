@@ -6617,6 +6617,44 @@ mod r3_m03_singapore_scale_tests {
 }
 
 
+/// Deterministic Singapore deployment-scale CSV for manuscript generation.
+pub fn gate6_singapore_scale_csv()->String {
+    let x=r3_singapore_scale();
+    format!(
+"quantity,value,unit,claim_class\n\
+Annual H2 production,{:.3},t/y,VERIFIED MODEL RESULT\n\
+Fresh natural-gas feed,{:.3},MW LHV,VERIFIED MODEL RESULT\n\
+Annual fresh natural-gas energy,{:.3},GJ/y,VERIFIED MODEL RESULT\n\
+Process CO2 captured,{:.3},t/y,VERIFIED MODEL RESULT\n\
+Purge-carbon CO2 captured,{:.3},t/y,VERIFIED MODEL RESULT\n\
+Total CO2 to storage,{:.3},t/y,VERIFIED MODEL RESULT\n\
+Residual direct CO2,{:.3},t/y,VERIFIED MODEL RESULT\n\
+High-grade nuclear process heat,{:.3},MWth,SCREENING RESULT\n\
+Primary helium outlet,{:.1},degC,SCREENING ASSUMPTION\n\
+Secondary helium hot end,{:.1},degC,SCREENING RESULT\n\
+Secondary helium mass flow,{:.3},kg/s,SCREENING RESULT\n\
+170 MW IHX duty equivalent,{:.4},dimensionless,BOUNDED SCALE INDICATOR\n",
+x.annual_h2_t,x.fresh_ng_feed_mw,x.annual_fresh_ng_gj,
+x.process_captured_co2_t_y,x.purge_capture_co2_t_y,x.total_co2_to_storage_t_y,
+x.residual_direct_co2_t_y,x.nuclear_process_heat_hi_mw,x.primary_outlet_c,
+x.secondary_he_hot_c,x.secondary_he_flow_kg_s,x.jaea_170mw_ihx_equivalent)
+}
+
+#[cfg(test)]
+mod gate6_singapore_scale_csv_tests {
+    use super::*;
+    #[test]
+    fn generated_scale_preserves_claim_strength_and_storage_reconciliation() {
+        let x=r3_singapore_scale();
+        assert!((x.total_co2_to_storage_t_y-x.process_captured_co2_t_y-x.purge_capture_co2_t_y).abs()<1e-9);
+        let s=gate6_singapore_scale_csv();
+        assert!(s.contains("VERIFIED MODEL RESULT"));
+        assert!(s.contains("SCREENING RESULT"));
+        assert!(s.contains("BOUNDED SCALE INDICATOR"));
+        assert!(!s.contains("reactor modules required"));
+    }
+}
+
 /// Deterministic Gate-4 canonical results snapshot generated entirely from the
 /// corrected R3 model. This is the single machine-derived source for the
 /// persisted results artifact; adverse results are included, not filtered.
