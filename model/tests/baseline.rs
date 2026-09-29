@@ -734,3 +734,28 @@ fn group_a_like_ccs_leaves_little_room_for_everything_else() {
     close(low,22_100_000.0,1.0);
     close(high,6_150_000.0,1.0);
 }
+
+
+#[test]
+fn ieaghg_case1a_cac_decomposition_reconstructs_reported_47_point_1() {
+    use nuclear_assisted_smr::{
+        ieaghg_case1a_captured_per_avoided_ratio,
+        ieaghg_case1a_non_ts_cac_eur2014_per_t_avoided,
+        case1a_cac_with_replacement_ts,
+    };
+    close(ieaghg_case1a_captured_per_avoided_ratio(),1.06223,0.0001);
+    let non_ts=ieaghg_case1a_non_ts_cac_eur2014_per_t_avoided();
+    close(non_ts,36.4777,0.01);
+    close(case1a_cac_with_replacement_ts(non_ts,10.0),47.1,0.001);
+}
+
+#[test]
+fn each_unit_of_ts_tariff_moves_case1a_cac_by_captured_per_avoided_ratio() {
+    use nuclear_assisted_smr::{
+        ieaghg_case1a_captured_per_avoided_ratio,case1a_cac_with_replacement_ts,
+    };
+    let r=ieaghg_case1a_captured_per_avoided_ratio();
+    let a=case1a_cac_with_replacement_ts(40.0,50.0);
+    let b=case1a_cac_with_replacement_ts(40.0,51.0);
+    close(b-a,r,1e-12);
+}
