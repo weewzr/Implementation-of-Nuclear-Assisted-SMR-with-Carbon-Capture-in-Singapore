@@ -751,3 +751,26 @@ pub fn ieaghg_syngas_whb_steam_kg_h_approx() -> f64 {
 pub fn ieaghg_non_syngas_whb_steam_kg_h_upper_group() -> f64 {
     ieaghg_total_superheated_hp_steam_kg_h() * (1.0 - IEAGHG_SYNGAS_WHB_STEAM_FRACTION_APPROX)
 }
+
+
+/// IAPWS-consistent steam-property bracket around the IEAGHG HP steam pressure.
+/// At 4.0 MPa: h_g,sat=2800.9 and h(400C)=3214.5 kJ/kg.
+/// At 4.5 MPa: h_g,sat=2797.9 and h(400C)=3205.6 kJ/kg.
+/// The source steam pressure 4.23-4.29 MPa lies between these anchors.
+pub const STEAM_SUPERHEAT_DH_4MPA_KJ_KG: f64 = 3214.5 - 2800.9;
+pub const STEAM_SUPERHEAT_DH_4P5MPA_KJ_KG: f64 = 3205.6 - 2797.9;
+
+pub fn ieaghg_hp_steam_superheat_duty_bounds_mw() -> (f64, f64) {
+    let m_kg_s = ieaghg_total_superheated_hp_steam_kg_h() / 3600.0;
+    let q4p5 = m_kg_s * STEAM_SUPERHEAT_DH_4P5MPA_KJ_KG / 1000.0;
+    let q4 = m_kg_s * STEAM_SUPERHEAT_DH_4MPA_KJ_KG / 1000.0;
+    (q4p5.min(q4), q4p5.max(q4))
+}
+
+/// Minimum currently quantified furnace-replacement thermal services:
+/// verified reformer radiant duty plus bounded HP steam superheat.
+/// This excludes feed-preheat and furnace-convection steam-generation duties.
+pub fn quantified_furnace_replacement_service_bounds_mw() -> (f64, f64) {
+    let (lo,hi)=ieaghg_hp_steam_superheat_duty_bounds_mw();
+    (ieaghg_reformer_radiant_duty_mw()+lo, ieaghg_reformer_radiant_duty_mw()+hi)
+}
