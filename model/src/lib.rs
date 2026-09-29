@@ -1178,3 +1178,58 @@ pub fn ccs_transport_kgco2e_per_kgh2(
     assert!((0.0..1.0).contains(&transport_emission_fraction));
     captured_co2_kg_per_kgh2*transport_emission_fraction
 }
+
+
+#[derive(Debug,Clone,Copy)]
+pub struct LifecycleCase {
+    pub plant_carbon: f64,
+    pub upstream_ng: f64,
+    pub nuclear: f64,
+    pub ccs_transport: f64,
+}
+impl LifecycleCase {
+    pub fn total(self)->f64 {
+        self.plant_carbon+self.upstream_ng+self.nuclear+self.ccs_transport
+    }
+}
+
+/// Matched direct-heat lifecycle screening case.
+/// CCS transport fraction is applied to captured feedstock-carbon CO2.
+pub fn matched_direct_lifecycle_screen(
+    capture_fraction:f64,
+    upstream_gco2e_per_mj:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+    net_electric_efficiency:f64,
+    thermal_service_mw:f64,
+    ccs_transport_fraction:f64,
+)->LifecycleCase {
+    let feed=feedstock_carbon_co2_equivalent_kg_per_kg_h2();
+    LifecycleCase {
+        plant_carbon:feed*(1.0-capture_fraction),
+        upstream_ng:upstream_ng_kgco2e_per_kgh2(upstream_gco2e_per_mj),
+        nuclear:direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(
+            thermal_service_mw,nuclear_gco2e_per_kwh_e,net_electric_efficiency),
+        ccs_transport:ccs_transport_kgco2e_per_kgh2(
+            feed*capture_fraction,ccs_transport_fraction),
+    }
+}
+
+/// Matched nuclear-electric lifecycle screening case.
+pub fn matched_electric_lifecycle_screen(
+    capture_fraction:f64,
+    upstream_gco2e_per_mj:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+    process_service_mw:f64,
+    electric_heater_efficiency:f64,
+    ccs_transport_fraction:f64,
+)->LifecycleCase {
+    let feed=feedstock_carbon_co2_equivalent_kg_per_kg_h2();
+    let electric=electric_heater_power_mwe(process_service_mw,electric_heater_efficiency);
+    LifecycleCase {
+        plant_carbon:feed*(1.0-capture_fraction),
+        upstream_ng:upstream_ng_kgco2e_per_kgh2(upstream_gco2e_per_mj),
+        nuclear:nuclear_electric_lca_kgco2e_per_kgh2(electric,nuclear_gco2e_per_kwh_e),
+        ccs_transport:ccs_transport_kgco2e_per_kgh2(
+            feed*capture_fraction,ccs_transport_fraction),
+    }
+}
