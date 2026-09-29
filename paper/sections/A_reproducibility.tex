@@ -1,0 +1,10 @@
+\section{Reproducibility}
+From a fresh repository checkout:
+\begin{verbatim}
+cd model
+cargo test --all-targets
+sh scripts/generate_gate5_results.sh
+cd ../paper
+latexmk -pdf main.tex
+\end{verbatim}
+The Rust implementation is the canonical computational source. Generated Gate-5 CSV/Markdown files are derivative artifacts. The PDF is generated from this LaTeX manuscript and is not independently maintained.
