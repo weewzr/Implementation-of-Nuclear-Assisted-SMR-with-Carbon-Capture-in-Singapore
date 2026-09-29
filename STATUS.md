@@ -1,7 +1,7 @@
 # STATUS
 
 ## Current research gate
-Gate 5 — Experiments/results: IN PROGRESS.
+Gate 5 — Experiments/results: COMPLETE.
 
 Gate 4 — Verified computational model: COMPLETE.
 
@@ -74,10 +74,21 @@ Gate-5 result contract: `results/GATE5_RESULTS.md`.
 The experimental evidence currently remains adverse to a robust nuclear case:
 0/64 coupled cases pass both CN4252 thresholds. Do not optimize this result away.
 
+## Gate-5 closure
+Gate 5 is CLOSED. Closure record: `results/gate5_closure.md`.
+
+The experimental conclusion remains adverse/conditional:
+- 0/64 tested nuclear cases pass both CN4252 thresholds;
+- the conservative case fails both;
+- Case 1A exceeds the annual direct-abatement scale;
+- no technology is established as a definitive Singapore economic winner on a
+  fully matched basis.
+
 ## Next step
-Assess Gate-5 completion against the scientific acceptance questions. Do not
-add experiments or plotting dependencies unless a specific unresolved
-scientific question requires them.
+Gate 6 — paper/reproducibility. Synthesize the verified model, experiments,
+falsification results, comparator evidence and limitations into the canonical
+LaTeX manuscript and reproducibility package. Do not reopen completed modelling
+solely to seek a favourable nuclear result.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
