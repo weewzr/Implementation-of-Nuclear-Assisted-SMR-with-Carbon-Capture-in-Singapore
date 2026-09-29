@@ -1981,3 +1981,56 @@ pub fn htgr_service_with_recycle_source_bounded_mw(
     let (dlo,dhi)=recycle_80pct_thermal_increment_source_bounded_mw();
     (base_lo+dlo,base_hi+dhi)
 }
+
+
+/// Annual energy cost/value for a continuous thermal service.
+pub fn annual_thermal_energy_cost_sgd(
+    thermal_mw:f64,hours_per_year:f64,price_sgd_per_gj:f64
+)->f64 {
+    assert!(thermal_mw>=0.0 && hours_per_year>=0.0 && price_sgd_per_gj>=0.0);
+    thermal_mw*hours_per_year*3.6*price_sgd_per_gj
+}
+
+/// Gross annual NG resource saving in the 80% recycle screen:
+/// purchased supplementary furnace NG + reduced fresh-feed NG.
+/// The two physical savings channels remain separately auditable in the model.
+pub fn recycle80_gross_ng_saving_sgd_y(gas_price_sgd_per_gj:f64)->f64 {
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let saved_mw=ieaghg_makeup_fuel_lhv_mw()+r.fresh_feed_energy_displaced_mw;
+    annual_thermal_energy_cost_sgd(saved_mw,8322.0,gas_price_sgd_per_gj)
+}
+
+/// Operating-energy net value for the 80% recycle architecture before CAPEX,
+/// fixed O&M, CCS T&S and other unresolved integration costs.
+/// Nuclear heat is charged on the full reactor-side process-service envelope,
+/// not merely on the recycle increment. Separation electricity uses the
+/// Case-2A 6.309 MWe anchor.
+pub fn recycle80_operating_energy_net_bounds_sgd_y(
+    htgr_service_lo_mw:f64,
+    htgr_service_hi_mw:f64,
+    gas_price_sgd_per_gj:f64,
+    nuclear_heat_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+)->(f64,f64) {
+    assert!(htgr_service_hi_mw>=htgr_service_lo_mw);
+    let saving=recycle80_gross_ng_saving_sgd_y(gas_price_sgd_per_gj);
+    let elec=case2a_tail_separation_net_electric_anchor_mwe()*8322.0*electricity_sgd_per_mwh;
+    let heat_lo=annual_thermal_energy_cost_sgd(htgr_service_lo_mw,8322.0,nuclear_heat_sgd_per_gj);
+    let heat_hi=annual_thermal_energy_cost_sgd(htgr_service_hi_mw,8322.0,nuclear_heat_sgd_per_gj);
+    // lower net corresponds to higher nuclear-heat requirement.
+    (saving-elec-heat_hi,saving-elec-heat_lo)
+}
+
+/// Gas price required for zero operating-energy net value, before CAPEX/O&M.
+pub fn recycle80_break_even_gas_price_sgd_per_gj(
+    htgr_service_mw:f64,
+    nuclear_heat_sgd_per_gj:f64,
+    electricity_sgd_per_mwh:f64,
+)->f64 {
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let saved_mw=ieaghg_makeup_fuel_lhv_mw()+r.fresh_feed_energy_displaced_mw;
+    let annual_saved_gj=saved_mw*8322.0*3.6;
+    let heat=annual_thermal_energy_cost_sgd(htgr_service_mw,8322.0,nuclear_heat_sgd_per_gj);
+    let elec=case2a_tail_separation_net_electric_anchor_mwe()*8322.0*electricity_sgd_per_mwh;
+    (heat+elec)/annual_saved_gj
+}
