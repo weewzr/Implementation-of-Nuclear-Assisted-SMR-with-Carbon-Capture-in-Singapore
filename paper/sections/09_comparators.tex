@@ -2,3 +2,33 @@
 IEAGHG Case 1A~\cite{ieaghg2017smr} provides the strongest source-backed conventional SMR+CCS comparator on the common H2 scale. Using source direct-emission values, its annual direct avoided CO2 exceeds 0.25 Mt/y. Thus the assignment-scale abatement requirement is not unique to nuclear integration.
 
 The source Case-1A capture-avoidance cost is retained in its original EUR2014 basis. Singapore T\&S scenario contributions are reported separately in SGD per tonne avoided after correcting the captured/avoided denominator. These quantities are not added across currency years and called a Singapore project cost. Current evidence therefore does not establish whether Case 1A passes the S\$100/t threshold in Singapore, nor does it establish a definitive eSMR/electrolysis winner.
+
+
+Table~\ref{tab:case1a-comparator} exposes the evidence classes rather than collapsing unlike quantities into a single comparison. The first five rows are direct IEAGHG source values~\cite{ieaghg2017smr}. Annual avoided CO$_2$ and the non-T\&S CAC are reconstructed from those source values. The Singapore T\&S range is retained only as the project's screening scenario input, and its contribution is converted from a captured-CO$_2$ denominator to an avoided-CO$_2$ denominator. No EUR2014-to-SGD escalation or foreign-exchange conversion is introduced without an explicit evidence basis.
+
+\begin{table}[htbp]
+\centering
+\caption{IEAGHG Case-1A comparator quantities and claim strength. The table is regenerated from the Rust comparator implementation during every manuscript build.}
+\label{tab:case1a-comparator}
+\small
+\pgfplotstabletypeset[
+  col sep=comma,
+  columns={quantity,value,unit,claim_class},
+  columns/quantity/.style={string type,column name={Quantity},column type={p{0.27\linewidth}}},
+  columns/value/.style={string type,column name={Value},column type={p{0.15\linewidth}}},
+  columns/unit/.style={string type,column name={Unit},column type={p{0.20\linewidth}}},
+  columns/claim_class/.style={string type,column name={Claim class},column type={p{0.25\linewidth}}},
+  every head row/.style={before row=\toprule,after row=\midrule},
+  every last row/.style={after row=\bottomrule}
+]{../results/generated/gate5_case1a_comparator.csv}
+\end{table}
+
+On the source production basis, the direct avoided quantity is
+\begin{equation}
+E_{\mathrm{avoided,1A}}=
+(0.8091-0.3704)\,
+\frac{\mathrm{kg\,CO_2}}{\mathrm{Nm^3\,H_2}}
+(100{,}000~\mathrm{Nm^3\,H_2/h})
+(8322~\mathrm{h/y}),
+\end{equation}
+with the kg-to-tonne conversion applied in the generated result. This exceeds the \(0.25\) Mt/y assignment scale. That statement concerns direct plant emissions on the common source basis; it is not a lifecycle comparison with the nuclear candidate.
