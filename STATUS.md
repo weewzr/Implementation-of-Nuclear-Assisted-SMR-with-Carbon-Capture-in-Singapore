@@ -255,7 +255,7 @@ If nuclear integration displaced 100% of this purchased supplementary NG, avoide
 This shows avoided fuel can be material but is not automatically sufficient. PSA tail gas is not counted as purchased-fuel savings; its furnace sink disappears and must be recycled/treated consistently.
 
 ## PSA tail-gas and utility boundary quantified
-The IEAGHG base PSA tail gas is now reconstructed energetically from its published 2106.3 kmol/h composition. H2+CO+CH4 combustible flow is ~1004 kmol/h and the standard-LHV chemical inventory is ~85 MW_LHV. This is internal fuel, not purchased energy, so it cannot be credited as avoided fuel cost when the furnace disappears.
+The IEAGHG base PSA tail gas is now reconstructed energetically from its published 2106.3 kmol/h composition. H2+CO+CH4 combustible flow is ~1004 kmol/h and the standard-LHV chemical inventory is ~101.95 MW_LHV. This is internal fuel, not purchased energy, so it cannot be credited as avoided fuel cost when the furnace disappears.
 
 IEAGHG explicitly sends base tail gas to the SMR burners. Ahn & Lee (2026) independently eliminate the fired furnace in HTGR h-SMR/eSMR and recycle PSA tail gas as process feed, reporting 18.8% and 23.3% NG reductions versus their gray baseline. Those percentages are external validation of the architecture, not values imported into our IEAGHG model. A 2025 hybrid cryogenic/two-stage-PSA study provides a competing tail-gas recovery route with additional H2 recovery and >90% CO2 removal.
 
