@@ -3441,3 +3441,57 @@ mod review1_closure_tests {
         assert!(v.net_power_export_mwe>0.0);
     }
 }
+
+
+/// Frozen common comparison basis from the authoritative IEAGHG base case.
+/// Product purity is >99.9%; PSA equipment lists 2.58/2.51 MPa on H2 side,
+/// so plant-gate product is compared at 2.51 MPa without downstream merchant
+/// compression. Annual results scale from the fixed 100,000 Nm3/h product.
+#[derive(Debug,Clone,Copy)]
+pub struct ComparisonBasis {
+    pub h2_kg_per_h:f64,
+    pub h2_nm3_per_h:f64,
+    pub purity_min_mol_fraction:f64,
+    pub plant_gate_pressure_mpa:f64,
+}
+pub const COMMON_H2_BASIS:ComparisonBasis=ComparisonBasis{
+    h2_kg_per_h:8994.0,
+    h2_nm3_per_h:100000.0,
+    purity_min_mol_fraction:0.999,
+    plant_gate_pressure_mpa:2.51,
+};
+
+#[derive(Debug,Clone,Copy,PartialEq,Eq)]
+pub enum SystemBoundary {
+    ProcessGate,
+    PlantGate,
+    Lifecycle,
+}
+
+/// Boundary nesting is strict: process-gate terms are a subset of plant-gate,
+/// and lifecycle adds upstream NG, nuclear LCA and CCS-chain burdens.
+pub fn boundary_rank(b:SystemBoundary)->u8 {
+    match b {
+        SystemBoundary::ProcessGate=>0,
+        SystemBoundary::PlantGate=>1,
+        SystemBoundary::Lifecycle=>2,
+    }
+}
+
+#[cfg(test)]
+mod common_basis_tests {
+    use super::*;
+    #[test]
+    fn common_product_basis_matches_ieaghg_scale() {
+        assert!((COMMON_H2_BASIS.h2_kg_per_h-IEAGHG_BASE.h2_kg_per_h).abs()<1e-12);
+        assert!(COMMON_H2_BASIS.purity_min_mol_fraction>=0.999);
+        assert!((COMMON_H2_BASIS.plant_gate_pressure_mpa-2.51).abs()<1e-12);
+    }
+    #[test]
+    fn system_boundaries_are_strictly_nested() {
+        assert!(boundary_rank(SystemBoundary::ProcessGate)
+            <boundary_rank(SystemBoundary::PlantGate));
+        assert!(boundary_rank(SystemBoundary::PlantGate)
+            <boundary_rank(SystemBoundary::Lifecycle));
+    }
+}
