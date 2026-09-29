@@ -20,15 +20,3 @@ jobs:
         with:
           toolchain: stable
       - run: cargo test --all-targets
-
-  paper:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: stable
-      - name: Install LaTeX
-        run: sudo apt-get update && sudo apt-get install -y latexmk texlive-latex-extra texlive-science
-      - name: Build canonical paper
-        run: sh paper/build.sh

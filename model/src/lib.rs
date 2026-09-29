@@ -7309,6 +7309,20 @@ mod gate5_materialized_results_tests {
 
 /// Gate-5 figure-ready threshold scatter CSV. Infinite costs are emitted as
 /// "inf" and remain explicit falsification points rather than being clipped.
+/// Finite-cost subset for plotting only. The canonical scatter CSV retains
+/// explicit "inf" costs for non-positive-abatement falsification states.
+pub fn gate5_threshold_scatter_finite_csv()->String {
+    let full=gate5_threshold_scatter_csv();
+    let mut out=String::new();
+    for (i,line) in full.lines().enumerate() {
+        if i==0 || !line.split(',').nth(2).map(|x|x=="inf").unwrap_or(false) {
+            out.push_str(line);
+            out.push('\n');
+        }
+    }
+    out
+}
+
 pub fn gate5_threshold_scatter_csv()->String {
     let mut s=String::from(
 "case_id,annual_avoided_t,abatement_cost_sgd_t,abatement_threshold_t,cost_threshold_sgd_t,binding,reformer_c,pressure_bar,psa_recovery,capture_fraction,carbon_corner,cost_corner\n");
@@ -7398,7 +7412,7 @@ mod gate5_synthesis_tests {
 pub fn gate5_binding_counts_csv()->String {
     let b=gate5_binding_summary();
     format!(
-"binding,count\njoint_pass,{}\nabatement_only,{}\ncost_only,{}\nboth,{}\n",
+"binding,count\njoint pass,{}\nabatement only,{}\ncost only,{}\nboth thresholds,{}\n",
 b.none,b.abatement_only,b.cost_only,b.both)
 }
 
