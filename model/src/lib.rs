@@ -3940,3 +3940,121 @@ mod radiant_acceptance_five_percent_probe {
         assert!(v.nearest_relative_error<0.05);
     }
 }
+
+
+/// Source-reconstructed N2 generation into the PSA-tail/recycle system.
+/// IEAGHG stream 5 carries 0.15 mol% N2 at 8370.3 kmol/h. N2 is chemically
+/// inert through HTS/cooling/PSA, so this is the best source-backed external
+/// inert feed available without inventing an NG nitrogen fraction.
+pub fn ieaghg_process_n2_feed_kmol_h()->f64 {
+    ieaghg_hts_inlet().flow(ieaghg_hts_inlet().n2)
+}
+
+/// Steady-state inert purge closure for a recycle loop.
+/// If fraction p of the post-capture recycle stream is purged each pass and
+/// N2 has no other sink, circulating N2 before purge is F_N2/p and purge N2
+/// equals the external N2 feed exactly.
+#[derive(Debug,Clone,Copy)]
+pub struct InertPurgeClosure {
+    pub purge_fraction:f64,
+    pub circulating_n2_kmol_h:f64,
+    pub purge_n2_kmol_h:f64,
+    pub external_n2_kmol_h:f64,
+    pub closure_error_kmol_h:f64,
+}
+pub fn inert_purge_closure(purge_fraction:f64)->InertPurgeClosure {
+    assert!(purge_fraction>0.0 && purge_fraction<=1.0);
+    let feed=ieaghg_process_n2_feed_kmol_h();
+    let circ=feed/purge_fraction;
+    let purge=purge_fraction*circ;
+    InertPurgeClosure{
+        purge_fraction,
+        circulating_n2_kmol_h:circ,
+        purge_n2_kmol_h:purge,
+        external_n2_kmol_h:feed,
+        closure_error_kmol_h:feed-purge,
+    }
+}
+
+/// Purge fraction required to cap N2 at a specified mole fraction in the
+/// combustible recycle stream. The combustible inventory comes from the
+/// analytically verified reduced fixed point. This is a transparent screening
+/// closure; a rigorous PSA model may change the species split.
+pub fn purge_fraction_for_max_n2_mole_fraction(
+    max_n2_mole_fraction:f64,
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+)->f64 {
+    assert!(max_n2_mole_fraction>0.0 && max_n2_mole_fraction<1.0);
+    let combustible=converged_combustible_recycle_kmol_h(
+        co_conversion,ch4_conversion,h2_recovery);
+    let n2_max=max_n2_mole_fraction/(1.0-max_n2_mole_fraction)*combustible;
+    (ieaghg_process_n2_feed_kmol_h()/n2_max).min(1.0)
+}
+
+/// Carbon lost with a nonselective purge of the post-capture H2/CO/CH4 recycle.
+/// CO2 has already been removed to the process-carbon capture train.
+pub fn recycle_purge_carbon_kmol_h(
+    purge_fraction:f64,
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+)->f64 {
+    assert!((0.0..=1.0).contains(&purge_fraction));
+    let r=analytical_tail_recycle_fixed_point(
+        co_conversion,ch4_conversion,h2_recovery);
+    purge_fraction*(r.co_kmol_h+r.ch4_kmol_h)
+}
+
+/// Complete external carbon ledger including a nonselective inert-control purge.
+/// Purged CO/CH4 carbon is an explicit plant-gate carbonaceous offgas requiring
+/// oxidation/capture or another disposition; it is not silently counted as CO2.
+#[derive(Debug,Clone,Copy)]
+pub struct PurgedCarbonLedger {
+    pub fresh_feed_c:f64,
+    pub captured_c:f64,
+    pub residual_process_c:f64,
+    pub purge_carbon_c:f64,
+    pub closure_error:f64,
+}
+pub fn converged_carbon_ledger_with_purge(
+    capture_fraction:f64,purge_fraction:f64,
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+)->PurgedCarbonLedger {
+    assert!((0.0..=1.0).contains(&capture_fraction));
+    let fresh=ieaghg_feed_carbon_kmol_per_h()*analytical_tail_recycle_fresh_ng_fraction();
+    let purge_c=recycle_purge_carbon_kmol_h(
+        purge_fraction,co_conversion,ch4_conversion,h2_recovery);
+    // Capture fraction applies to non-purged fresh carbon in this screening ledger.
+    let available=(fresh-purge_c).max(0.0);
+    let captured=available*capture_fraction;
+    let residual=available*(1.0-capture_fraction);
+    PurgedCarbonLedger{
+        fresh_feed_c:fresh,captured_c:captured,residual_process_c:residual,
+        purge_carbon_c:purge_c,
+        closure_error:fresh-captured-residual-purge_c,
+    }
+}
+
+#[cfg(test)]
+mod inert_and_purge_closure_tests {
+    use super::*;
+    #[test]
+    fn inert_purge_closes_n2_exactly() {
+        for p in [0.01,0.05,0.10] {
+            let x=inert_purge_closure(p);
+            assert!(x.closure_error_kmol_h.abs()<1e-12);
+            assert!((x.purge_n2_kmol_h-x.external_n2_kmol_h).abs()<1e-12);
+        }
+    }
+    #[test]
+    fn tighter_n2_limit_requires_more_purge() {
+        let p1=purge_fraction_for_max_n2_mole_fraction(0.01,0.8,0.8,0.8);
+        let p5=purge_fraction_for_max_n2_mole_fraction(0.05,0.8,0.8,0.8);
+        assert!(p1>p5 && p5>0.0);
+    }
+    #[test]
+    fn carbon_closes_when_purge_is_explicit() {
+        let p=purge_fraction_for_max_n2_mole_fraction(0.05,0.8,0.8,0.8);
+        let c=converged_carbon_ledger_with_purge(0.90,p,0.8,0.8,0.8);
+        assert!(c.closure_error.abs()<1e-10);
+        assert!(c.purge_carbon_c>0.0);
+    }
+}
