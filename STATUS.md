@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Solve the inverse economic feasibility surface: maximum delivered nuclear-heat price and allocated HTGR/integration annual cost compatible with S$100/tCO2e across NG-price and Singapore CCS-T&S sensitivities.
+Place literature-derived HTGR annualised capital/O&M ranges onto the inverse S$100/t feasibility surface and test dedicated versus cogeneration cases against the boundary.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -372,6 +372,21 @@ At S$150/MWh separation electricity and S$5.69/GJ nuclear heat, annual operating
 
 The corresponding operating-energy-only gas break-even is ~S$7.45-8.78/GJ across 145-179 MWth service. Therefore the concept is not yet economically falsified: at ~S$15/GJ gas the operating-energy benefit is comparable to the previously identified ~S$17-29m/y fixed-denominator savings gap, but there is little/no room for CAPEX at the low-gas case and substantial sensitivity to CCS T&S.
 
+## Inverse S$100/t economic feasibility surface
+The economic screen is now inverted so no speculative Singapore nuclear-heat tariff is required. For allowed annual budget B, NG saving S_NG, separation electricity C_e, CCS T&S C_TS and delivered nuclear heat Q_N:
+
+p_N,max = (B + S_NG - C_e - C_TS - C_other)/Q_N.
+
+At an assumed heat price, the remaining hydrogen-side annualised HTGR/IHX/integration headroom is B + S_NG - C_e - C_TS - p_N Q_N.
+
+Using the illustrative B~S$54m/y, 80% recycle (~145.95 MW NG displacement), 6.309 MWe separation at S$150/MWh, 145/162/179 MWth process service, and Group-A-like T&S (~S$31.9m/y low; ~S$47.85m/y high), the maximum delivered nuclear-heat price spans roughly:
+- low Group-A T&S: ~S$10-23/GJ across NG S$10-20/GJ and service 145-179 MW;
+- high Group-A T&S: ~S$7-19/GJ.
+
+At NG~S$15/GJ and 162 MWth, the boundary is roughly ~S$15.9/GJ under low Group-A T&S and ~S$12.6/GJ under high Group-A T&S before other fixed incremental costs. These are screening boundaries, not predicted nuclear prices.
+
+Dedicated reactor allocation uses 100% of hydrogen-side headroom. A GTHTR300C-like 170/600 thermal-share allocation expands allowable total common-reactor annual cost by ~3.53x, but only when hydrogen-side headroom is positive and the other product genuinely bears the remaining cost.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -412,4 +427,4 @@ The corresponding operating-energy-only gas break-even is ~S$7.45-8.78/GJ across
   remain.
 
 ## Next highest-priority task
-Derive an analytical break-even surface rather than choosing a speculative nuclear price: for NG prices S$10-20/GJ, CCS T&S Group-A sensitivities, and the 145-179 MWth service range, solve the maximum delivered nuclear-heat price and maximum allocated annual HTGR/IHX/recycle CAPEX/O&M compatible with S$100/tCO2e. Compare dedicated versus cogeneration allocation. If the feasible region requires nuclear heat/capital below credible literature anchors, record economic falsification.
+Map credible HTGR capital/O&M literature ranges onto the inverse boundary. Annualise source-backed reactor costs under declared financing/lifetime assumptions, distinguish dedicated versus cogeneration/shared allocation, and include IHX/secondary-loop integration allowances. Acceptance criterion: determine whether credible literature cost ranges overlap the S$100/t feasible region; if they do not, record economic falsification of that architecture.
