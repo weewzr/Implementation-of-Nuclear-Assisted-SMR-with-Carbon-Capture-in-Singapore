@@ -987,3 +987,27 @@ pub fn current_htgr_service_envelope_mw(reformer_inlet_c: f64) -> (f64,f64) {
         + reformer_preheater_sensitivity_mw(reformer_inlet_c);
     (fixed+steam_lo,fixed+steam_hi)
 }
+
+
+/// Break down the current service envelope into named terms for reproducible
+/// reporting and uncertainty analysis.
+#[derive(Debug,Clone,Copy)]
+pub struct HtgrServiceBreakdown {
+    pub radiant_mw: f64,
+    pub hp_steam_superheat_lo_mw: f64,
+    pub hp_steam_superheat_hi_mw: f64,
+    pub feed_preheat_mw: f64,
+    pub prereformer_preheat_lower_bound_mw: f64,
+    pub reformer_preheat_sensitivity_mw: f64,
+}
+pub fn current_htgr_service_breakdown(reformer_inlet_c:f64)->HtgrServiceBreakdown {
+    let (lo,hi)=ieaghg_hp_steam_superheat_duty_bounds_mw();
+    HtgrServiceBreakdown {
+        radiant_mw:ieaghg_reformer_radiant_duty_mw(),
+        hp_steam_superheat_lo_mw:lo,
+        hp_steam_superheat_hi_mw:hi,
+        feed_preheat_mw:feed_preheater_ng_plus_h2_duty_mw(),
+        prereformer_preheat_lower_bound_mw:prereformer_feed_preheater_lower_bound_mw(),
+        reformer_preheat_sensitivity_mw:reformer_preheater_sensitivity_mw(reformer_inlet_c),
+    }
+}
