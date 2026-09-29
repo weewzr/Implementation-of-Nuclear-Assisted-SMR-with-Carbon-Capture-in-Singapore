@@ -1100,6 +1100,7 @@ fn iaea_htgr_source_costs_are_large_relative_to_current_hydrogen_headroom() {
     // MHR-T+SMR: 4x600 MWth, NPP CAPEX 2748, O&M 324/y.
     let mhrt=source_reactor_annual_cost_allocated_by_heat(
         2748.0,324.0,2400.0,162.0,0.08,25);
+    println!("IAEA_ALLOCATED_MUSD_Y_HTGR200={htgr200};MHRT={mhrt}");
     assert!(htgr200>70.0 && htgr200<90.0, "HTGR200 allocated MUSD/y {htgr200}");
     assert!(mhrt>35.0 && mhrt<45.0, "MHR-T allocated MUSD/y {mhrt}");
     // Example hydrogen-side headroom of 20 MUSD/y cannot carry either source case.
