@@ -4915,3 +4915,132 @@ mod review2_smr_equilibrium_tests {
         }
     }
 }
+
+
+/// Thermodynamically constrained inner recycle solve.
+/// Reformer chemistry is coupled SMR/WGS ideal-gas equilibrium at declared
+/// reformer T/P; the separate lower-temperature shift is then equilibrated at
+/// its own declared T/P before PSA.
+pub fn solve_recycle6_at_fixed_fresh_thermo(
+    fresh_fraction:f64,
+    reformer_temperature_k:f64,
+    reformer_pressure_bar:f64,
+    shift_temperature_k:f64,
+    shift_pressure_bar:f64,
+    psa_impurity_sensitivity:f64,
+    max_n2_mole_fraction:f64,
+    tolerance:f64,
+    max_iterations:u32,
+)->FixedFreshRecycle6 {
+    assert!(fresh_fraction>0.0&&fresh_fraction<=2.0);
+    let source=ieaghg_hts_inlet_wet6();
+    let mut recycle=WetGas6::default();
+    let relax=0.20;
+    let mut last=FixedFreshRecycle6{converged:false,iterations:0,
+        fresh_fraction,product_h2:0.0,purge_fraction:0.0,
+        recycle,purge:WetGas6::default(),psa_recovery:0.0,
+        max_state_residual:f64::INFINITY};
+    for it in 1..=max_iterations {
+        // Source is used as a composition/element anchor; thermodynamic
+        // reformer equilibrium is imposed before the separate HTS equilibrium.
+        let feed=source.scale(fresh_fraction).add(recycle);
+        let reformed=solve_smr_wgs_equilibrium(
+            feed,reformer_temperature_k,reformer_pressure_bar,1e-8,10000);
+        let shifted=solve_wgs_equilibrium(
+            reformed,shift_temperature_k,shift_pressure_bar);
+        let psa=psa6_bounded(shifted,psa_impurity_sensitivity);
+
+        let external_n2=source.n2*fresh_fraction;
+        let p=(external_n2/psa.tail.n2.max(1e-12)).clamp(1e-12,1.0);
+        let purge=psa.tail.scale(p);
+        let target=psa.tail.scale(1.0-p);
+        let target_dry=target.h2+target.co+target.co2+target.ch4+target.n2;
+        let n2_fraction=if target_dry>0.0 {target.n2/target_dry}else{0.0};
+        // max_n2 is a design acceptance constraint, not the inert balance.
+        if n2_fraction>max_n2_mole_fraction*(1.0+1e-8) {
+            last=FixedFreshRecycle6{converged:false,iterations:it,fresh_fraction,
+                product_h2:psa.product_h2,purge_fraction:p,recycle,purge,
+                psa_recovery:psa.recovery,max_state_residual:n2_fraction-max_n2_mole_fraction};
+            return last;
+        }
+
+        let next=WetGas6{
+            h2:recycle.h2+relax*(target.h2-recycle.h2),
+            h2o:recycle.h2o+relax*(target.h2o-recycle.h2o),
+            co:recycle.co+relax*(target.co-recycle.co),
+            co2:recycle.co2+relax*(target.co2-recycle.co2),
+            ch4:recycle.ch4+relax*(target.ch4-recycle.ch4),
+            n2:recycle.n2+relax*(target.n2-recycle.n2),
+        };
+        let err=(next.h2-recycle.h2).abs().max((next.h2o-recycle.h2o).abs())
+            .max((next.co-recycle.co).abs()).max((next.co2-recycle.co2).abs())
+            .max((next.ch4-recycle.ch4).abs()).max((next.n2-recycle.n2).abs());
+        recycle=next;
+        last=FixedFreshRecycle6{converged:err<tolerance,iterations:it,
+            fresh_fraction,product_h2:psa.product_h2,purge_fraction:p,recycle,
+            purge,psa_recovery:psa.recovery,max_state_residual:err};
+        if err<tolerance {return last;}
+    }
+    last
+}
+
+pub fn solve_full_recycle6_nested_thermo(
+    reformer_temperature_k:f64,reformer_pressure_bar:f64,
+    shift_temperature_k:f64,shift_pressure_bar:f64,
+    psa_impurity_sensitivity:f64,max_n2_mole_fraction:f64,
+    target_h2_kmol_h:f64,state_tolerance:f64,product_relative_tolerance:f64,
+    max_inner_iterations:u32,
+)->FullRecycle6Result {
+    let eval=|fresh:f64| solve_recycle6_at_fixed_fresh_thermo(
+        fresh,reformer_temperature_k,reformer_pressure_bar,
+        shift_temperature_k,shift_pressure_bar,psa_impurity_sensitivity,
+        max_n2_mole_fraction,state_tolerance,max_inner_iterations);
+    let mut lo=0.02; let mut hi=2.0;
+    let mut a=eval(lo); let mut b=eval(hi);
+    assert!(a.converged&&b.converged,"thermo inner solve failed at bracket");
+    let mut fa=a.product_h2-target_h2_kmol_h;
+    let fb=b.product_h2-target_h2_kmol_h;
+    assert!(fa<=0.0&&fb>=0.0,"thermo fixed-H2 root not bracketed");
+    for outer in 1..=100 {
+        let mid=0.5*(lo+hi); let m=eval(mid);
+        assert!(m.converged,"thermo inner solve failed during bisection");
+        let fm=m.product_h2-target_h2_kmol_h;
+        if (fm/target_h2_kmol_h).abs()<product_relative_tolerance {
+            return FullRecycle6Result{converged:true,iterations:outer,
+                fresh_fraction:mid,purge_fraction:m.purge_fraction,
+                product_h2:m.product_h2,recycle:m.recycle,purge:m.purge,
+                psa_recovery:m.psa_recovery};
+        }
+        if fm>0.0 {hi=mid;b=m;} else {lo=mid;a=m;fa=fm;}
+    }
+    let m=if (a.product_h2-target_h2_kmol_h).abs()
+        <(b.product_h2-target_h2_kmol_h).abs(){a}else{b};
+    FullRecycle6Result{converged:false,iterations:100,
+        fresh_fraction:m.fresh_fraction,purge_fraction:m.purge_fraction,
+        product_h2:m.product_h2,recycle:m.recycle,purge:m.purge,
+        psa_recovery:m.psa_recovery}
+}
+
+#[cfg(test)]
+mod review2_thermo_recycle_tests {
+    use super::*;
+    #[test]
+    fn thermo_nested_solver_converges_at_reference_temperature_screen() {
+        let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+        let r=solve_full_recycle6_nested_thermo(
+            1173.15,28.0,685.15,27.7,0.35,0.10,target,1e-6,1e-6,50000);
+        assert!(r.converged);
+        assert!((r.product_h2-target).abs()/target<1e-6);
+        assert!(r.purge_fraction>0.0&&r.recycle.nonnegative());
+    }
+    #[test]
+    fn thermo_recycle_fresh_feed_responds_to_reformer_temperature() {
+        let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+        let a=solve_full_recycle6_nested_thermo(
+            1173.15,28.0,685.15,27.7,0.35,0.10,target,1e-6,1e-6,50000);
+        let b=solve_full_recycle6_nested_thermo(
+            1223.15,28.0,685.15,27.7,0.35,0.10,target,1e-6,1e-6,50000);
+        assert!(a.converged&&b.converged);
+        assert!((a.fresh_fraction-b.fresh_fraction).abs()>1e-5);
+    }
+}
