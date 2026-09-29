@@ -701,3 +701,19 @@ fn ccs_tariff_can_consume_large_fraction_of_annual_budget() {
     use nuclear_assisted_smr::annual_ccs_transport_storage_cost;
     close(annual_ccs_transport_storage_cost(500_000.0,50.0),25_000_000.0,1e-6);
 }
+
+
+#[test]
+fn singapore_ccs_group_a_can_consume_most_of_100_sgd_per_t_budget() {
+    use nuclear_assisted_smr::{
+        annual_ccs_cost_sgd_from_foreign_tariff,budget_fraction_consumed,
+    };
+    // Screening: 0.50 MtCO2/y captured, USD50-75/t T&S,
+    // 1.276 SGD/USD representative late-Sep-2026 FX.
+    let low=annual_ccs_cost_sgd_from_foreign_tariff(500_000.0,50.0,1.276);
+    let high=annual_ccs_cost_sgd_from_foreign_tariff(500_000.0,75.0,1.276);
+    close(low,31_900_000.0,1.0);
+    close(high,47_850_000.0,1.0);
+    assert!(budget_fraction_consumed(low,54_000_000.0)>0.59);
+    assert!(budget_fraction_consumed(high,54_000_000.0)>0.88);
+}
