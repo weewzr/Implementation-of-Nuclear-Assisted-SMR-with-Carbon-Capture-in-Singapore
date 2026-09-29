@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Determine whether any defensible combination of CCS T&S, capture cost and dedicated/cogeneration HTGR allocation can remain below the authoritative CN4252 S$100/tCO2e threshold.
+Harmonise the conventional IEAGHG SMR+CCS economic comparator to a declared SGD price year and replace its low EUR10/t storage assumption with Singapore cross-border T&S sensitivities before adding any nuclear premium.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -209,6 +209,15 @@ More importantly, an IEAGHG 2023 ExxonMobil analysis specifically for Singapore 
 
 At ~0.50 MtCO2/y captured and an explicit 1.276 SGD/USD FX sensitivity, Group-A T&S alone is ~S$31.9-47.9m/y. Against the illustrative ~S$54m/y incremental-cost budget for 0.54 MtCO2e/y avoided, that consumes ~59-89% of the budget before capture, nuclear integration and O&M. This is now the strongest economic falsification pressure identified.
 
+## Analytical S$100/t feasibility boundary
+For the illustrative reference case (71.952 ktH2/y, 7.5 kgCO2e/kgH2 avoided), the S$100/t threshold permits ~S$54m/y incremental cost. With ~0.50 MtCO2/y captured, the absolute T&S ceiling is S$108/t captured only if every other incremental cost were zero.
+
+The IEAGHG 2023 Singapore-source Group-A T&S range (USD50-75/t) is ~S$63.8-95.7/t at an explicit 1.276 SGD/USD sensitivity, costing ~S$31.9-47.85m/y at 0.50 Mt/y. That leaves only ~S$22.1m/y to ~S$6.15m/y for capture, nuclear, IHX/loop, tail-gas integration and all other incremental costs before credits.
+
+Under a GTHTR300C-like 28.33% thermal-energy-share allocation, cogeneration expands the total common-reactor annual-cost ceiling by 600/170 ~= 3.53 relative to dedicated allocation, but it cannot remove the T&S constraint.
+
+IEAGHG Case 1A conventional SMR+CCS already reports EUR47.1/tCO2 avoided on Q4-2014 assumptions including only EUR10/t stored. This makes a Singapore-adjusted conventional SMR+CCS comparator the next critical economic baseline before nuclear cost is added.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -249,4 +258,4 @@ At ~0.50 MtCO2/y captured and an explicit 1.276 SGD/USD FX sensitivity, Group-A 
   remain.
 
 ## Next highest-priority task
-Build the two-dimensional break-even map analytically: CCS T&S tariff versus allocated annual reactor/integration cost, with capture OPEX/CAPEX and lifecycle abatement as explicit parameters. Evaluate dedicated (100% reactor allocation) and cogeneration (28.3% thermal-share anchor plus sensitivity) cases. The goal is to identify whether any credible economic feasibility region remains under S$100/tCO2e, not to force a favourable point estimate.
+Harmonise IEAGHG Case 1A economics: separate its capture/integration cost from the EUR10/t stored T&S assumption, escalate the 2014Q4 capture component to a declared analysis year, convert with a sourced FX rate, and substitute Singapore T&S sensitivities. Then test whether conventional SMR+CCS alone can meet S$100/tCO2e; nuclear integration should only be credited/debited relative to that comparator.
