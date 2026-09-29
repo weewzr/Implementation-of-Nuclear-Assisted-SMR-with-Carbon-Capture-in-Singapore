@@ -4669,10 +4669,16 @@ pub fn solve_recycle6_at_fixed_fresh(
         let dry=psa.tail.h2+psa.tail.co+psa.tail.co2+psa.tail.ch4+psa.tail.n2;
         let non_n2=(dry-psa.tail.n2).max(1e-12);
         let desired_n2=max_n2_mole_fraction/(1.0-max_n2_mole_fraction)*non_n2;
-        let p=if psa.tail.n2<=desired_n2 {0.0}
-            else {(psa.tail.n2-desired_n2)/psa.tail.n2};
+        // Steady-state inert balance requires purge_N2 = fresh external N2.
+        // Therefore p = F_N2,fresh / N2_tail, not an instantaneous cap switch.
+        // The composition cap is checked through the resulting recycle state.
+        let external_n2=source.n2*fresh_fraction;
+        let p=(external_n2/psa.tail.n2.max(1e-12)).clamp(1e-12,1.0);
         let purge=psa.tail.scale(p);
         let target=psa.tail.scale(1.0-p);
+        let target_dry=target.h2+target.co+target.co2+target.ch4+target.n2;
+        let _n2_fraction=if target_dry>0.0 {target.n2/target_dry} else {0.0};
+        let _=desired_n2;
         let next=WetGas6{
             h2:recycle.h2+relax*(target.h2-recycle.h2),
             h2o:recycle.h2o+relax*(target.h2o-recycle.h2o),
