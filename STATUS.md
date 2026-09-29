@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Quantify the remaining furnace-convection feed-preheat and steam-generation duties beyond the now-bounded ~112 MW radiant+superheat service floor.
+Extend the NIST/IAPWS property layer to the remaining NG/H2/H2O species and quantify the pre-reformer/reformer convection-coil duties without inventing missing inlet temperatures.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -100,6 +100,13 @@ Adding this to the verified 96.04 MW radiant reformer duty yields a currently qu
 
 This is not final HTGR duty: feed/pre-reformer/reformer preheat, furnace-convection steam generation and nuclear-loop losses remain unresolved. Conversely, syngas/shift heat recovery must not be double-counted as nuclear duty.
 
+## New convection-duty lower bound
+IEAGHG states that feedstock NG is heated from 135 C to 370 C in the fired-furnace Feed Pre-Heater Coil. Using the published 1455.8 kmol/h NG feed, 89 mol% CH4, and NIST SRD 69 methane Shomate enthalpy, the methane contribution alone is 4.05 MW.
+
+This is a rigorous partial lower bound because CO2/C2+/N2 and recycled H2 sensible duties are omitted. Adding it to the verified 96.04 MW radiant duty and ~16.0-16.25 MW HP-steam superheat raises the currently demonstrated furnace-dependent service floor above ~116 MW.
+
+The next model layer will add remaining species rather than applying an arbitrary mixture cp.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -140,7 +147,7 @@ This is not final HTGR duty: feed/pre-reformer/reformer preheat, furnace-convect
   remain.
 
 ## Next highest-priority task
-Recover or derive the remaining furnace-convection duties: reformer/pre-reformer/feed preheat and the furnace-only share of saturated-steam generation. Then combine them with the 112 MW quantified floor and helium-loop parasitics to obtain the first complete direct-nuclear-heat service envelope.
+Implement NIST Shomate/IAPWS enthalpies for the remaining feed and steam species, complete the 135->370 C feed-preheater duty, then quantify the pre-reformer/reformer preheat coils using source temperatures or explicit sensitivity ranges. Continue to keep the furnace-only saturated-steam generation share separate until it can be isolated from shift heat recovery.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
