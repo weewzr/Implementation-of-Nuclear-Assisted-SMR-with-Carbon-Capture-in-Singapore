@@ -649,3 +649,19 @@ fn abatement_cost_uses_incremental_not_total_candidate_cost() {
     use nuclear_assisted_smr::abatement_cost_per_tco2e;
     close(abatement_cost_per_tco2e(120.0,100.0,1.0,0.5),40.0,1e-12);
 }
+
+
+#[test]
+fn reference_plant_abatement_budget_is_tens_of_millions_per_year() {
+    use nuclear_assisted_smr::annual_cost_budget_from_h2;
+    // 71.952 ktH2/y and 7.5 kgCO2e/kgH2 avoided -> 0.53964 Mt/y.
+    let b=annual_cost_budget_from_h2(71.952,7.5,100.0);
+    close(b,53_964_000.0,1.0);
+}
+
+#[test]
+fn capex_only_break_even_is_an_upper_bound_not_a_project_cost() {
+    use nuclear_assisted_smr::capex_only_break_even_upper_bound;
+    let cap=capex_only_break_even_upper_bound(25_000_000.0,0.08,25);
+    assert!(cap>265_000_000.0 && cap<268_000_000.0);
+}
