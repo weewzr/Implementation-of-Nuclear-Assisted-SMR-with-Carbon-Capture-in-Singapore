@@ -944,3 +944,16 @@ fn heat_cascade_sensitivity_spans_full_external_heat_to_full_waste_heat() {
     assert!(full.0>38.0 && full.1<39.3);
     close(none.0,0.0,1e-12); close(none.1,0.0,1e-12);
 }
+
+
+#[test]
+fn ieaghg_non_whb_steam_group_can_cover_less_than_half_mdea_duty_at_most() {
+    use nuclear_assisted_smr::{
+        non_syngas_whb_steam_latent_heat_upper_bounds_mw,
+        mdea_waste_heat_fraction_upper_from_ieaghg_steam_group,
+    };
+    let (qlo,qhi)=non_syngas_whb_steam_latent_heat_upper_bounds_mw();
+    assert!(qlo>16.4 && qhi<16.9);
+    let (flo,fhi)=mdea_waste_heat_fraction_upper_from_ieaghg_steam_group();
+    assert!(flo>0.41 && fhi<0.45, "source upper fraction {flo}..{fhi}");
+}
