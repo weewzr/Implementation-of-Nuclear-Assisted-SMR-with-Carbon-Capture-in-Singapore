@@ -2947,3 +2947,77 @@ mod recycle_pressure_topology_tests {
         assert!(t>a);
     }
 }
+
+
+/// IEAGHG Case-2A electrical decomposition, MWe.
+/// CO2 capture plant consumption explicitly INCLUDES the tail-gas compressor.
+/// Equipment list gives tail-gas compressor brake power = 4.280 MW for
+/// 0.126 -> 1.0 MPa, so it must not be added again to the 4.575 MWe capture load.
+pub const IEAGHG_CASE2A_CAPTURE_INCL_TAIL_COMP_MWE:f64=4.575;
+pub const IEAGHG_CASE2A_TAIL_COMP_BRAKE_MW:f64=4.280;
+pub const IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE:f64=2.874;
+pub const IEAGHG_CASE2A_TAIL_EXPANDER_GENERATION_MWE:f64=1.140;
+
+/// Net Case-2A capture-chain electricity exactly reproducing the source ledger.
+pub fn case2a_capture_chain_net_mwe()->f64 {
+    IEAGHG_CASE2A_CAPTURE_INCL_TAIL_COMP_MWE
+        +IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE
+        -IEAGHG_CASE2A_TAIL_EXPANDER_GENERATION_MWE
+}
+
+/// Incremental post-capture compressor for the proposed recycle topology only:
+/// ~1 MPa sweet recycle -> ~4.5 MPa reformer process pressure.
+/// The Case-2A 0.126->1 MPa compressor remains inside the 4.575 MWe anchor.
+pub fn converged_post_capture_recycle_compressor_mwe(
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+    inlet_c:f64,efficiency:f64,
+)->f64 {
+    converged_recycle_compression_sensitivity_mwe(
+        co_conversion,ch4_conversion,h2_recovery,inlet_c,
+        post_capture_recycle_pressure_ratio(),efficiency)
+}
+
+/// Corrected electricity screen for capture + CO2 compression + source expander
+/// + incremental post-capture recycle recompression.
+///
+/// Important topology caveat: if sweet tail gas is no longer expanded because it
+/// is recycled directly, the 1.140 MWe generation credit must be removed. The
+/// caller selects whether that source expander credit survives.
+pub fn converged_capture_and_recycle_electricity_mwe(
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64,
+    inlet_c:f64,efficiency:f64,retain_source_expander_credit:bool,
+)->f64 {
+    let expander=if retain_source_expander_credit {
+        IEAGHG_CASE2A_TAIL_EXPANDER_GENERATION_MWE
+    } else { 0.0 };
+    IEAGHG_CASE2A_CAPTURE_INCL_TAIL_COMP_MWE
+        +IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE
+        -expander
+        +converged_post_capture_recycle_compressor_mwe(
+            co_conversion,ch4_conversion,h2_recovery,inlet_c,efficiency)
+}
+
+#[cfg(test)]
+mod case2a_electric_decomposition_tests {
+    use super::*;
+    #[test]
+    fn source_ledger_reproduces_old_anchor() {
+        assert!((case2a_capture_chain_net_mwe()
+            -case2a_tail_separation_net_electric_anchor_mwe()).abs()<1.0e-12);
+    }
+    #[test]
+    fn recycle_topology_adds_only_post_capture_compression() {
+        let old=case2a_capture_chain_net_mwe();
+        let new=converged_capture_and_recycle_electricity_mwe(
+            0.8,0.8,0.8,40.0,0.75,true);
+        assert!(new>old);
+    }
+    #[test]
+    fn removing_expander_credit_increases_net_load_by_source_generation() {
+        let a=converged_capture_and_recycle_electricity_mwe(
+            0.8,0.8,0.8,40.0,0.75,true);
+        let b=converged_capture_and_recycle_electricity_mwe(
+            0.8,0.8,0.8,40.0,0.75,false);
+        assert!((b-a-IEAGHG_CASE2A_TAIL_EXPANDER_GENERATION_MWE).abs()<1.0e-12);
+    }
+}
