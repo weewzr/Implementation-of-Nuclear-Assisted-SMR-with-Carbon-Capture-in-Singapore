@@ -957,3 +957,16 @@ fn ieaghg_non_whb_steam_group_can_cover_less_than_half_mdea_duty_at_most() {
     let (flo,fhi)=mdea_waste_heat_fraction_upper_from_ieaghg_steam_group();
     assert!(flo>0.41 && fhi<0.45, "source upper fraction {flo}..{fhi}");
 }
+
+
+#[test]
+fn shifted_syngas_has_material_sensible_heat_above_mdea_temperature() {
+    use nuclear_assisted_smr::{
+        ieaghg_shift_sensible_heat_above_reboiler_mw,
+        mdea_fraction_from_shift_sensible_ceiling,
+    };
+    let q=ieaghg_shift_sensible_heat_above_reboiler_mw(160.0,10.0);
+    assert!(q>20.0 && q<35.0, "shift sensible heat {q} MW");
+    let (lo,hi)=mdea_fraction_from_shift_sensible_ceiling(160.0,10.0);
+    assert!(lo>0.5 && hi<0.9, "MDEA sensible ceiling fraction {lo}..{hi}");
+}
