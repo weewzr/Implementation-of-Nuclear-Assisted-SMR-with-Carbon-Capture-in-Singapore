@@ -4513,7 +4513,7 @@ pub fn solve_full_recycle6(
     let mut last_product=0.0;
     let mut last_purge=0.0;
     let mut last_psa=0.0;
-    let relax=0.35;
+    let relax=0.08;
     for it in 1..=max_iterations {
         // Fresh source-consistent process state plus returned dry recycle.
         let mut feed=source.scale(fresh).add(recycle);
@@ -4535,7 +4535,7 @@ pub fn solve_full_recycle6(
 
         // Product-control feedback changes fresh feed, so displacement is
         // composition/reaction/PSA dependent rather than structurally invariant.
-        let ratio=(target_h2_kmol_h/psa.product_h2.max(1e-12)).clamp(0.5,1.5);
+        let ratio=(target_h2_kmol_h/psa.product_h2.max(1e-12)).clamp(0.9,1.1);
         let new_fresh=(fresh*ratio).clamp(0.01,2.0);
         let mixed=WetGas6{
             h2:recycle.h2+relax*(next.h2-recycle.h2),
