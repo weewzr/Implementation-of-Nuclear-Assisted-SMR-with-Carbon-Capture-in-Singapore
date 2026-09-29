@@ -1,9 +1,10 @@
-pub mod deployment;
 //! Screening-level SMR baseline model.
 //!
 //! The first validation target is IEAGHG 2017-02.  This module intentionally
 //! keeps the published reference case separate from later Singapore and nuclear
 //! assumptions.
+
+pub mod deployment;
 
 /// kg H2 per normal cubic metre implied by IEAGHG's own base-case pair:
 /// 8.994 t/h = 100,000 Nm3/h.
