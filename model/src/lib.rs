@@ -3414,7 +3414,7 @@ pub fn converged_tail_carbon_to_capture_kmol_h(
     let loop_tail=analytical_tail_recycle_fixed_point(
         co_conversion,ch4_conversion,h2_recovery);
     // fresh-feed-scaled CO2 entering tail separator plus converted loop carbon
-    s*source.co2
+    s*source.co2_kmol_h
         +co_conversion*loop_tail.co_kmol_h
         +ch4_conversion*loop_tail.ch4_kmol_h
 }
