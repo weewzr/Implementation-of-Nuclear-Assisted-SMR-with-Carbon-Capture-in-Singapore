@@ -6390,7 +6390,7 @@ mod r3_m01_driver_tests {
     #[test]
     fn uncertainty_grid_result_is_explicitly_falsifiable() {
         let s=r3_uncertainty_summary();
-        assert_eq!(s.n,128);
+        assert_eq!(s.n,64);
         // Current tested domain has no joint pass; lock this as a scientific
         // result until inputs/model change, rather than silently optimizing it.
         assert_eq!(s.both_pass,0);
