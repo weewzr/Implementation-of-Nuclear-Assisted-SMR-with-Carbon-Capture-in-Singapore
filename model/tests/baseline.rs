@@ -1068,7 +1068,7 @@ fn inverse_recycle_economics_shows_ccs_can_erase_capital_headroom() {
     let h=recycle80_max_allocated_capital_opex_sgd_y(
         54_000_000.0,162.0,15.0,5.69,150.0,31_900_000.0);
     println!("INVERSE_HEADROOM_GAS15_LOWCCS={h}");
-    assert!(h> -5_000_000.0 && h<10_000_000.0, "hydrogen-side headroom {h}");
+    assert!(h>52_000_000.0 && h<52_400_000.0, "hydrogen-side headroom {h}");
     let total=total_common_reactor_headroom_sgd_y(h.max(0.0),170.0/600.0);
     assert!(total>=h.max(0.0));
 }
