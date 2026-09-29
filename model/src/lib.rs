@@ -6966,6 +6966,45 @@ pub fn gate5_case1a_threshold_decomposition(
             r3_case1a_ts_contribution_sgd_per_t_avoided(ts_high_sgd_t_captured)}
 }
 
+
+/// Deterministic Gate-5 Case-1A comparator table for manuscript generation.
+/// SOURCE values remain in their published units; derived values are labelled.
+pub fn gate5_case1a_comparator_csv()->String {
+    let x=gate5_case1a_threshold_decomposition(20.0,30.0);
+    format!(
+"quantity,value,unit,claim_class\n\
+H2 production,100000,Nm3/h,SOURCE VALUE\n\
+Operating hours,8322,h/y,SOURCE VALUE\n\
+Base direct emissions,{:.4},kg CO2/Nm3 H2,SOURCE VALUE\n\
+Case 1A direct emissions,{:.4},kg CO2/Nm3 H2,SOURCE VALUE\n\
+Case 1A captured CO2,{:.4},kg CO2/Nm3 H2,SOURCE VALUE\n\
+Annual direct avoided CO2,{:.3},t/y,SOURCE-BACKED DERIVED RESULT\n\
+IEAGHG total CAC,{:.3},EUR2014/t avoided,SOURCE VALUE\n\
+IEAGHG non-T&S CAC,{:.3},EUR2014/t avoided,SOURCE-BACKED DERIVED RESULT\n\
+Singapore T&S scenario,20-30,SGD/t captured,SCREENING SCENARIO INPUT\n\
+Singapore T&S contribution,{:.3}-{:.3},SGD/t avoided,SCREENING DERIVED RESULT\n",
+IEAGHG_BASE_DIRECT_KG_CO2_NM3_H2,
+IEAGHG_CASE1A_DIRECT_KG_CO2_NM3_H2,
+IEAGHG_CASE1A_CAPTURED_KG_CO2_NM3_H2,
+x.annual_direct_avoided_t,x.source_total_cac_eur2014_t,
+x.source_non_ts_cac_eur2014_t,x.singapore_ts_low_sgd_t_avoided,
+x.singapore_ts_high_sgd_t_avoided)
+}
+
+#[cfg(test)]
+mod gate5_case1a_csv_tests {
+    use super::*;
+    #[test]
+    fn comparator_csv_preserves_source_and_screening_classes() {
+        let s=gate5_case1a_comparator_csv();
+        assert!(s.contains("SOURCE VALUE"));
+        assert!(s.contains("SOURCE-BACKED DERIVED RESULT"));
+        assert!(s.contains("SCREENING SCENARIO INPUT"));
+        assert!(s.contains("EUR2014/t avoided"));
+        assert!(!s.contains("Singapore total CAC"));
+    }
+}
+
 pub fn gate5_experiment03_markdown()->String {
     // 20-30 SGD/t captured is retained as the project's earlier Singapore T&S
     // screening range; it is a scenario input, not a current market quote.
