@@ -172,8 +172,60 @@ R3-B03 is closed as a modelling blocker because the forward model now answers
 the question correctly; its scientific result is that threshold robustness is
 not established.
 
+## R3-M01 — Coupled uncertainty and threshold region
+
+**Disposition: RESOLVED AS A FALSIFICATION RESULT.**
+
+### Correction
+A 64-point coupled uncertainty design now propagates reformer temperature
+(900/950 C), pressure (20/28 bar), PSA recovery (70/90%), capture fraction
+(85/95%), paired upstream-gas/auxiliary-electricity carbon conditions, and
+paired nuclear-heat/fixed-cost conditions through the R3 fixed-H2 flowsheet and
+forward threshold calculations. Grid-carbon auxiliary electricity is paired
+with its higher electricity-price scenario rather than combined arbitrarily
+with the low-carbon case.
+
+### Scientific result
+The first CI run deliberately required evidence of a joint passing region and
+FAILED because **zero of the 64 tested physically paired cases passed both
+CN4252 thresholds**. The model/domain was not made more favourable. The final
+test locks `both_pass == 0` as the current falsification result until model
+physics or evidence-backed inputs change.
+
+Driver contrasts explicitly perturb reformer temperature, PSA recovery,
+gas/auxiliary-carbon conditions and heat/fixed costs and require a measurable
+change in abatement and/or S$/t.
+
+### Code/equation location
+`model/src/lib.rs`:
+- `r3_solve_case`
+- `R3UncertaintyPoint`, `r3_uncertainty_point`
+- `r3_uncertainty_design`, `R3UncertaintySummary`,
+  `r3_uncertainty_summary`
+- `R3DriverContrast`, `r3_driver_contrasts`
+
+### CI evidence
+- `e46e8956d1d60f974410c67cce7a6f4e00921d74`: first uncertainty grid;
+  CI 36542375779 FAILED because there was no joint passing region.
+- `3b12b4017abdb70225ffe7f85d6b46131d8d2013`: preserves no-pass
+  falsification and driver diagnostics; subsequent failure exposed only an
+  incorrect expected design cardinality.
+- `f16b3cf967d587109a9d0977ab4f72684ff5db02`: cardinality corrected to 64;
+  CI 36542537230 PASS.
+
+### Acceptance criterion status
+- coupled physically compatible uncertainty region: PASS for declared design
+- both CN4252 thresholds mapped jointly: PASS
+- conservative failure preserved: PASS
+- dominant driver contrasts represented: PASS
+- robust connected passing region: **ABSENT / FALSIFIED in tested domain**
+
+R3-M01 is closed as an uncertainty-analysis task. Its result does not support a
+robust CN4252 pass.
+
 ## Next corrective action
 
-R3-M01 — propagate coupled uncertainty to map the physically compatible
-CN4252 pass/fail region and identify dominant threshold drivers. The
-conservative-case failure must be preserved, not optimized away.
+R3-M02 — complete common-boundary comparator falsification. Compare the
+corrected nuclear case with conventional SMR, conventional SMR+CCS and
+electrified reforming on matched H2/output/lifecycle/economic boundaries;
+include electrolysis only where source data support a defensible screen.
