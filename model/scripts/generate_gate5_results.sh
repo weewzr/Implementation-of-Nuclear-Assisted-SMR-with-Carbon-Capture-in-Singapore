@@ -8,6 +8,7 @@ cargo run --quiet --bin gate5_binding_counts_csv > ../results/generated/gate5_bi
 cargo run --quiet --bin gate5_driver_csv > ../results/generated/gate5_driver_effects.csv
 cargo run --quiet --bin gate5_driver_cost_finite_csv > ../results/generated/gate5_driver_cost_finite.csv
 cargo run --quiet --bin gate5_case1a_comparator_csv > ../results/generated/gate5_case1a_comparator.csv
+cargo run --quiet --bin gate5_case1a_comparator_table_csv > ../results/generated/gate5_case1a_comparator_table.csv
 cargo run --quiet --bin gate6_singapore_scale_csv > ../results/generated/gate6_singapore_scale.csv
 cargo run --quiet --bin gate6_lifecycle_decomposition_csv > ../results/generated/gate6_lifecycle_decomposition.csv
 cargo run --quiet --bin gate5_results_synthesis > ../results/generated/gate5_results_synthesis.md

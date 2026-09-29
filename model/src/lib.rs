@@ -7074,6 +7074,30 @@ mod gate5_case1a_csv_tests {
     }
 }
 
+/// Publication-safe Case-1A table CSV. Canonical comparator data remain
+/// unchanged; categorical identifiers avoid TeX-special characters.
+pub fn gate5_case1a_comparator_table_csv()->String {
+    let x=gate5_case1a_threshold_decomposition(20.0,30.0);
+    format!(
+"quantity_id,value,unit_id,claim_id\n\
+h2_production,100000,nm3_per_h,source_value\n\
+operating_hours,8322,h_per_y,source_value\n\
+base_direct_emissions,{:.4},kgco2_per_nm3h2,source_value\n\
+case1a_direct_emissions,{:.4},kgco2_per_nm3h2,source_value\n\
+case1a_captured_co2,{:.4},kgco2_per_nm3h2,source_value\n\
+annual_direct_avoided_co2,{:.3},t_per_y,source_backed_derived\n\
+ieaghg_total_cac,{:.3},eur2014_per_t_avoided,source_value\n\
+ieaghg_non_ts_cac,{:.3},eur2014_per_t_avoided,source_backed_derived\n\
+singapore_ts_scenario,20-30,sgd_per_t_captured,screening_scenario_input\n\
+singapore_ts_contribution,{:.3}-{:.3},sgd_per_t_avoided,screening_derived\n",
+IEAGHG_BASE_DIRECT_KG_CO2_NM3_H2,
+IEAGHG_CASE1A_DIRECT_KG_CO2_NM3_H2,
+IEAGHG_CASE1A_CAPTURED_KG_CO2_NM3_H2,
+x.annual_direct_avoided_t,x.source_total_cac_eur2014_t,
+x.source_non_ts_cac_eur2014_t,x.singapore_ts_low_sgd_t_avoided,
+x.singapore_ts_high_sgd_t_avoided)
+}
+
 pub fn gate5_experiment03_markdown()->String {
     // 20-30 SGD/t captured is retained as the project's earlier Singapore T&S
     // screening range; it is a scenario input, not a current market quote.
