@@ -773,3 +773,17 @@ fn case1a_singapore_screen_exceeds_assignment_threshold_under_group_a_inputs() {
     assert!(low>145.0 && low<147.0);
     assert!(high>179.0 && high<181.0);
 }
+
+
+#[test]
+fn case1a_screen_requires_large_annual_savings_to_reach_s100() {
+    use nuclear_assisted_smr::{
+        ieaghg_case1a_annual_direct_co2_avoided_t,required_annual_savings_to_target,
+    };
+    let a=ieaghg_case1a_annual_direct_co2_avoided_t();
+    assert!(a>365_000.0 && a<365_200.0);
+    let low=required_annual_savings_to_target(146.0,100.0,a);
+    let high=required_annual_savings_to_target(180.0,100.0,a);
+    assert!(low>16_700_000.0 && low<16_900_000.0);
+    assert!(high>29_100_000.0 && high<29_300_000.0);
+}
