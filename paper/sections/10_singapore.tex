@@ -2,3 +2,31 @@
 The corrected model translates the candidate into annual H2, fresh-NG energy, captured/residual CO2, cross-border storage throughput, nuclear process heat and helium-loop scale. Required thermal service is expressed against the source-backed 170 MW JAEA IHX benchmark rather than converted into a fabricated commercial reactor-module count.
 
 Singapore deployment remains conditional~\cite{mti2025nuclear,mti2026inir,mti2025carbon,mti2025indonesiaccs}. Nuclear power has not been assumed to be deployed: current official activity is capability-building and infrastructure-readiness assessment. Cross-border CO2 transport/storage is likewise treated as an emerging regional pathway under bilateral cooperation, not an existing domestic geological storage service. An implementation roadmap would therefore require, at minimum, nuclear regulatory/readiness development, site and safety assessment, a demonstrated process-heat coupling architecture, and contracted cross-border CO2 transport/storage.
+
+
+The canonical deployment-scale quantities are reported in Table~\ref{tab:singapore-scale}. They are generated from the corrected R3 state and deliberately retain claim-strength labels. In particular, the \(170\) MW IHX ratio is a duty-equivalence indicator against the GTHTR300C engineering benchmark~\cite{jaeri2004gthtr300c}; it is not a count of commercial reactor modules.
+
+\begin{table}[htbp]
+\centering
+\caption{Singapore-scale quantities derived from the canonical R3 screening state. Infrastructure availability is not implied by these quantities.}
+\label{tab:singapore-scale}
+\small
+\pgfplotstabletypeset[
+  col sep=comma,
+  columns={quantity,value,unit,claim_class},
+  columns/quantity/.style={string type,column name={Quantity},column type={p{0.30\linewidth}}},
+  columns/value/.style={string type,column name={Value},column type={p{0.14\linewidth}}},
+  columns/unit/.style={string type,column name={Unit},column type={p{0.16\linewidth}}},
+  columns/claim_class/.style={string type,column name={Claim class},column type={p{0.27\linewidth}}},
+  every head row/.style={before row=\toprule,after row=\midrule},
+  every last row/.style={after row=\bottomrule}
+]{../results/generated/gate6_singapore_scale.csv}
+\end{table}
+
+The storage throughput satisfies the model identity
+\begin{equation}
+\dot m_{\mathrm{CO_2,storage}}=
+\dot m_{\mathrm{CO_2,process\ capture}}+
+\dot m_{\mathrm{CO_2,purge\ capture}},
+\end{equation}
+which is regression-tested in Rust. This quantity defines the cross-border CCS service that would have to be available to the candidate; it does not establish that such capacity has been contracted or permitted in Singapore.
