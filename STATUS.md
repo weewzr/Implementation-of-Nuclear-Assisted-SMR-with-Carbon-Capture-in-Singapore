@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Compare credible PSA-tail-gas recycle/recovery configurations after furnace removal, because the ~85 MW_LHV internal tail-gas stream is now the largest unresolved process-integration lever.
+Model the most source-anchored furnace-free tail-gas option: remove PSA-tail CO2 then recycle the combustible H2/CO/CH4 fraction, using IEAGHG Case 2A utility data as the compression/capture anchor.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -261,6 +261,13 @@ IEAGHG explicitly sends base tail gas to the SMR burners. Ahn & Lee (2026) indep
 
 Power/steam economics are now correctly bounded: IEAGHG base exports 9.918 MWe while Case 1A exports 1.492 MWe, but a nuclear architecture cannot claim the 8.426 MWe difference as a credit until its steam/power network is solved. Base steam export is ~46.053 t/h; preserving it is neutral versus baseline, losing it is a penalty, and increasing it is a credit. Rust now contains explicit annual electricity/steam value functions with prices left as inputs.
 
+## Tail-gas configuration screen
+Three competing furnace-free tail-gas pathways are now formalised: (A) untreated recycle, (B) CO2 removal + combustible recycle, and (C) enhanced H2/CO2 recovery.
+
+The source tail gas contains ~499 kmol/h H2, ~1073 kmol/h CO2 (~47.2 t/h), ~306 kmol/h CO and ~199 kmol/h CH4. A stoichiometric upper-bound recovery calculation gives ~1600 kmol/h H2-equivalent potential if existing H2 is recovered, CO fully shifted and CH4 fully reformed+shifted. This is not a process yield; it demonstrates the stream is a first-order chemical resource.
+
+Configuration B is selected for the next model **for information value, not as a final design**. IEAGHG Case 2A provides same-scale source evidence: PSA tail gas compression from ~0.2 to 1 MPa, 4.575 MWe capture-plant consumption, 2.874 MWe CO2 compression/dehydration, 1.140 MWe tail-gas expander recovery, ~1.07 MWe net grid import, and ~66.9 t/h LP steam regeneration demand. Case 2A burns the sweet tail gas; the nuclear variant will instead test recycle to process.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -301,4 +308,4 @@ Power/steam economics are now correctly bounded: IEAGHG base exports 9.918 MWe w
   remain.
 
 ## Next highest-priority task
-Build a reduced tail-gas configuration screen for (A) untreated recycle, (B) CO2 removal plus combustible recycle, and (C) enhanced H2/CO2 recovery. For each, close carbon and H2 potential, estimate compression/separation energy, update reformer feed/duty and quantify purchased-NG displacement. Use this to determine whether tail-gas integration creates enough real operating value to materially narrow the S$17-29m/y economic gap.
+Construct the reduced Configuration-B recycle model at fixed H2 output: strip the source-resolved tail-gas CO2, recycle H2/CO/CH4, solve how much fresh NG can be displaced without violating carbon/H2 balance, add Case-2A-anchored compression/capture utility penalties, and update reformer heat/capture mass. Convert the resulting NG and utility changes into annual real savings and compare with the S$17-29m/y gap.
