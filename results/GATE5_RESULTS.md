@@ -86,3 +86,29 @@ not proof that every conceivable nuclear-assisted configuration fails.**
 Case 1A remains a separate source-backed comparator: its annual direct-abatement
 scale is comparable, while its Singapore economic result is not merged into the
 nuclear S$/t plot without a common currency/year cost basis.
+
+
+## Reproducible figure-data pipeline
+
+Gate-5 figure inputs are now generated in one deterministic command:
+
+```bash
+sh model/scripts/generate_gate5_results.sh
+```
+
+This creates under `results/generated/`:
+- `gate5_threshold_scatter.csv`
+- `gate5_binding_counts.csv`
+- `gate5_driver_effects.csv`
+- `gate5_results_synthesis.md`
+- `gate5_figure_manifest.md`
+
+The figure manifest defines:
+1. threshold scatter: annual avoided CO2e vs S$/t with the two CN4252 threshold
+   lines and binding classes;
+2. binding-class counts;
+3. normalized local driver effects.
+
+The repository intentionally keeps plotted graphics derivative from these
+canonical generated data. No plotting dependency was added solely for
+presentation aesthetics.
