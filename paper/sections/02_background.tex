@@ -29,9 +29,9 @@ Figure~\ref{fig:smr-explainer} introduces the hydrogen pathway at a deliberately
 \node[unit,right=of wgs] (sep) {CO$_2$\\separation};
 \node[unit,right=of sep] (psa) {PSA};
 \node[unit,right=of psa] (h2) {H$_2$\\product};
-\node[unit,below=of sep] (store) {Captured CO$_2$\\compression/storage};
-\node[unit,below=of psa] (tail) {PSA tail gas\\residual carbon};
-\draw[arr] (feed)--node[above,font=\scriptsize]{feed carbon}(ref);
+\node[unit,below=12mm of sep,xshift=-9mm] (store) {Captured CO$_2$\\compression/storage};
+\node[unit,below=12mm of psa,xshift=9mm] (tail) {PSA tail gas\\residual carbon};
+\draw[arr] (feed)--(ref);
 \draw[arr] (ref)--(wgs);\draw[arr](wgs)--(sep);\draw[arr](sep)--(psa);\draw[arr](psa)--(h2);
 \draw[arr] (sep)--(store);\draw[arr](psa)--(tail);
 \end{tikzpicture}
