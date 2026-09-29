@@ -2,3 +2,51 @@
 The corrected configuration begins from the IEAGHG NG/steam-derived external feed. C2+ species are reduced through an element-conserving pre-reforming screen before coupled SMR/WGS equilibrium. Shifted-gas CO2 is removed before PSA; purge-derived CO/CH4 is oxidised and captured separately.
 
 The high-grade heat cascade enforces finite terminal approaches. Candidate MDEA regeneration scales with solved CO2 throughput, while CO2 and tail compression remain stream-specific. Secondary-helium mass flow follows the corrected candidate duty; pressure loss and circulator electricity are bounded engineering quantities rather than detailed piping predictions.
+
+
+Figure~\ref{fig:integrated-system} redraws the model topology as an original project-specific schematic. It is not a vendor process-flow diagram and does not imply detailed equipment sizing. Its purpose is to make the computational control volumes and energy interfaces explicit: external natural-gas/steam feed, reforming and shift, high-pressure process-carbon capture, PSA hydrogen separation, inert-controlled recycle/purge, purge-carbon oxidation/capture, and the nuclear primary-to-secondary helium heat interface.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  >=Latex,
+  node distance=11mm and 13mm,
+  unit/.style={draw,rounded corners,align=center,minimum height=10mm,minimum width=23mm},
+  stream/.style={->,thick},
+  energy/.style={->,thick,dashed}
+]
+\node[unit] (feed) {Natural gas\\+ steam};
+\node[unit,right=of feed] (reform) {Pre-reforming\\+ SMR equilibrium};
+\node[unit,right=of reform] (wgs) {Water--gas\\shift};
+\node[unit,right=of wgs] (cap) {HP process\\CO$_2$ capture};
+\node[unit,right=of cap] (psa) {PSA};
+\node[unit,right=of psa] (h2) {H$_2$ product\\common basis};
+
+\node[unit,below=of psa] (purge) {Recycle +\\inert purge};
+\node[unit,left=of purge] (oxid) {Purge CO/CH$_4$\\oxidation + capture};
+\node[unit,below=of reform] (sec) {Secondary He\\heat loop};
+\node[unit,left=of sec] (ihx) {Intermediate\\heat exchanger};
+\node[unit,left=of ihx] (reactor) {HTGR-class\\reactor envelope};
+
+\draw[stream] (feed) -- (reform);
+\draw[stream] (reform) -- (wgs);
+\draw[stream] (wgs) -- (cap);
+\draw[stream] (cap) -- node[above,font=\scriptsize]{CO$_2$-lean shifted gas} (psa);
+\draw[stream] (psa) -- (h2);
+\draw[stream] (psa) -- (purge);
+\draw[stream] (purge.west) -- (oxid.east);
+\draw[stream] (purge.south) |- ++(0,-7mm) -| node[pos=0.75,below,font=\scriptsize]{recycle} (reform.south);
+\draw[stream] (cap.north) -- ++(0,8mm) node[above,font=\scriptsize]{captured CO$_2$ to compression/T\&S};
+\draw[stream] (oxid.north) -- ++(0,7mm) node[above,font=\scriptsize]{captured purge carbon};
+
+\draw[energy] (reactor) -- node[above,font=\scriptsize]{primary He} (ihx);
+\draw[energy] (ihx) -- node[above,font=\scriptsize]{finite approach} (sec);
+\draw[energy] (sec) -- node[right,font=\scriptsize]{high-grade process heat} (reform);
+
+\node[draw,dotted,fit=(feed)(reform)(wgs)(cap)(psa)(purge)(oxid),inner sep=5mm,label=below:{\scriptsize hydrogen/CCS process boundary}] {};
+\end{tikzpicture}%
+}
+\caption{Original schematic of the corrected nuclear-assisted SMR+CCS screening topology. Solid arrows denote material paths and dashed arrows denote the high-temperature nuclear heat interface. The diagram represents the implemented model architecture, not a detailed plant layout or vendor design.}
+\label{fig:integrated-system}
+\end{figure}
