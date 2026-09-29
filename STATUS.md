@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Close the remaining 226.85->~170 C shifted-syngas sensible-heat interval with authoritative water-vapour properties, because IAPWS dew-point analysis shows condensation latent heat occurs below the 160 C MDEA + 10 K pinch.
+Allocate the now-closed 18.76-18.84 MW shifted-syngas sensible-heat ceiling among the existing shift-WHB/BFW/feed/condensate duties to determine the residual MDEA heat actually available.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -335,6 +335,13 @@ This corrects the prior expectation that condensation might close the gap to the
 
 The remaining direct calculation gap is 226.85 C -> ~170 C sensible cooling. NIST's encoded water-vapour Shomate correlation stops at 500 K, so it will not be extrapolated.
 
+## Full shifted-syngas sensible-heat ceiling closed
+The 412->170 C temperature-feasible stream-6 sensible heat is now **18.756-18.842 MWth**. The already verified 412->226.85 C portion is 14.489 MW; the remaining 226.85->170 C interval is bounded without extrapolating NIST H2O/N2 Shomate fits. IAPWS-IF97 is the authoritative future replacement for the narrow Cp bracket. citeturn0search0turn0search7
+
+Against the ~38.1-39.2 MW Case-2A MDEA latent duty, this is only ~47.8-49.5% availability **before** competing downstream duties. The property-bracket width is only ~0.085 MW, so the dominant uncertainty is now heat allocation, not thermophysical properties.
+
+The IAPWS dew-point result remains decisive: bulk condensation begins below the 170 C hot-side pinch for a 160 C reboiler/10 K approach, so the large latent heat cannot fill the remaining MDEA duty in a simple conventional exchanger.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -375,4 +382,4 @@ The remaining direct calculation gap is 226.85 C -> ~170 C sensible cooling. NIS
   remain.
 
 ## Next highest-priority task
-Add authoritative water-vapour enthalpy/Cp coverage for 443-500 K and calculate the full 412->170 C temperature-feasible shifted-syngas sensible heat. Then subtract the source-required shift-WHB/BFW/feed/condensate duties to obtain residual MDEA heat. Also sensitivity-test reboiler temperature and DeltaTmin; a lower-temperature solvent or heat-pump configuration may recover condensation heat that conventional 160 C MDEA cannot.
+Reconstruct/allocate the existing shifted-syngas cold-service duties (shift-WHB steam generation, BFW preheat, NG/feed preheat, condensate and demi-water preheat) with source temperatures where available and a common DeltaTmin. Subtract them from the 18.76-18.84 MW 412->170 C availability ceiling. If residual heat is insufficient, quantify incremental MDEA heat and evaluate lower-temperature solvent/heat-pump regeneration as a competing configuration rather than forcing conventional MDEA.
