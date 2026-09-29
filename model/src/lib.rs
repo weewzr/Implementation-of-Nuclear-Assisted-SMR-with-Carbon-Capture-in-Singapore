@@ -1847,3 +1847,39 @@ pub fn mdea_fraction_from_shift_sensible_ceiling(
     let (mlo,mhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
     ((q/mhi).min(1.0),(q/mlo).min(1.0))
 }
+
+
+/// IAPWS-IF97 Region-4 saturation temperature from pressure in MPa.
+/// Coefficients from IAPWS R7-97(2012), saturation-line backward equation.
+pub fn iapws_if97_tsat_k_from_mpa(p_mpa:f64)->f64 {
+    assert!(p_mpa>0.000611 && p_mpa<=22.064);
+    let n1=0.11670521452767e4;
+    let n2=-0.72421316703206e6;
+    let n3=-0.17073846940092e2;
+    let n4=0.12020824702470e5;
+    let n5=-0.32325550322333e7;
+    let n6=0.14915108613530e2;
+    let n7=-0.48232657361591e4;
+    let n8=0.40511340542057e6;
+    let n9=-0.23855557567849;
+    let n10=0.65017534844798e3;
+    let beta=p_mpa.powf(0.25);
+    let e=beta*beta+n3*beta+n6;
+    let ff=n1*beta*beta+n4*beta+n7;
+    let g=n2*beta*beta+n5*beta+n8;
+    let d=2.0*g/(-ff-(ff*ff-4.0*e*g).sqrt());
+    (n10+d-((n10+d)*(n10+d)-4.0*(n9+n10*d)).sqrt())/2.0
+}
+
+/// Ideal-mixture water dew point for IEAGHG stream 6 using y_H2O times P.
+pub fn ieaghg_stream6_water_dewpoint_c()->f64 {
+    let p_h2o_mpa=0.2137*2.77;
+    iapws_if97_tsat_k_from_mpa(p_h2o_mpa)-273.15
+}
+
+/// Test whether bulk condensation starts above the required hot-side pinch.
+pub fn stream6_condensation_above_mdea_pinch(
+    reboiler_c:f64,dtmin_c:f64
+)->bool {
+    ieaghg_stream6_water_dewpoint_c() >= reboiler_c+dtmin_c
+}
