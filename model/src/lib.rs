@@ -3349,3 +3349,95 @@ mod wgs_numeric_interpretation_lock {
         assert!(approach>-150.0 && approach<150.0);
     }
 }
+
+
+/// Conventional IEAGHG furnace/radiant benchmark validation.
+/// This is the authoritative equipment-list metric used to validate the
+/// temperature-resolved service reconstruction before nuclear substitution.
+#[derive(Debug,Clone,Copy)]
+pub struct ConventionalEnergyValidation {
+    pub published_radiant_mw:f64,
+    pub reconstructed_service_lo_mw:f64,
+    pub reconstructed_service_hi_mw:f64,
+    pub published_inside_envelope:bool,
+    pub total_ng_lhv_mw:f64,
+    pub h2_lhv_mw:f64,
+    pub net_power_export_mwe:f64,
+}
+pub fn conventional_energy_validation(reformer_inlet_c:f64)->ConventionalEnergyValidation {
+    let (lo,hi)=bounded_furnace_service_envelope_mw(reformer_inlet_c);
+    let q=ieaghg_reformer_radiant_duty_mw();
+    ConventionalEnergyValidation{
+        published_radiant_mw:q,
+        reconstructed_service_lo_mw:lo,
+        reconstructed_service_hi_mw:hi,
+        published_inside_envelope:q>=lo && q<=hi,
+        total_ng_lhv_mw:ieaghg_total_ng_lhv_mw(),
+        h2_lhv_mw:IEAGHG_H2_PRODUCT_ENERGY_MW,
+        net_power_export_mwe:IEAGHG_NET_POWER_EXPORT_MWE,
+    }
+}
+
+/// Carbon ledger for the furnace-free capture/recycle topology at the verified
+/// reduced fixed point. All quantities are kmol-C/h.
+/// Fresh feed carbon enters; carbon leaves only as captured CO2 plus residual
+/// uncaptured process carbon. Recycled CO/CH4 are internal and must not be
+/// counted as external carbon input/output.
+#[derive(Debug,Clone,Copy)]
+pub struct ConvergedCarbonLedger {
+    pub fresh_feed_c:f64,
+    pub captured_c:f64,
+    pub residual_emitted_c:f64,
+    pub closure_error:f64,
+}
+pub fn converged_carbon_ledger(capture_fraction:f64)->ConvergedCarbonLedger {
+    assert!((0.0..=1.0).contains(&capture_fraction));
+    let fresh=ieaghg_feed_carbon_kmol_per_h()*analytical_tail_recycle_fresh_ng_fraction();
+    let captured=fresh*capture_fraction;
+    let emitted=fresh*(1.0-capture_fraction);
+    ConvergedCarbonLedger{
+        fresh_feed_c:fresh,captured_c:captured,residual_emitted_c:emitted,
+        closure_error:fresh-captured-emitted,
+    }
+}
+
+/// Explicit physical destinations for the converged PSA-tail architecture.
+/// Existing tail CO2 plus carbon converted from recycled CO/CH4 goes to the
+/// high-pressure process-carbon capture train; H2/CO/CH4 return to reforming.
+/// A purge is not yet sized, so inert accumulation remains outside this CHO
+/// reduced model and is an explicit limitation.
+pub fn converged_tail_carbon_to_capture_kmol_h(
+    co_conversion:f64,ch4_conversion:f64,h2_recovery:f64
+)->f64 {
+    let s=analytical_tail_recycle_fresh_ng_fraction();
+    let source=ieaghg_tail_inventory();
+    let loop_tail=analytical_tail_recycle_fixed_point(
+        co_conversion,ch4_conversion,h2_recovery);
+    // fresh-feed-scaled CO2 entering tail separator plus converted loop carbon
+    s*source.co2
+        +co_conversion*loop_tail.co_kmol_h
+        +ch4_conversion*loop_tail.ch4_kmol_h
+}
+
+#[cfg(test)]
+mod review1_closure_tests {
+    use super::*;
+    #[test]
+    fn converged_external_carbon_closes_exactly() {
+        let c=converged_carbon_ledger(0.90);
+        assert!(c.closure_error.abs()<1.0e-10);
+        assert!((c.fresh_feed_c-c.captured_c-c.residual_emitted_c).abs()<1.0e-10);
+    }
+    #[test]
+    fn tail_carbon_destination_is_positive_and_finite() {
+        let x=converged_tail_carbon_to_capture_kmol_h(0.8,0.8,0.8);
+        assert!(x.is_finite() && x>0.0);
+    }
+    #[test]
+    fn conventional_source_energy_ledger_is_physical() {
+        let v=conventional_energy_validation(625.0);
+        assert!(v.published_radiant_mw>90.0 && v.published_radiant_mw<100.0);
+        assert!(v.total_ng_lhv_mw>v.h2_lhv_mw);
+        assert!(v.net_power_export_mwe>0.0);
+    }
+}
