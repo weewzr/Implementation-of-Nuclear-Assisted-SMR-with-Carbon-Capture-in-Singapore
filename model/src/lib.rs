@@ -2081,3 +2081,34 @@ pub fn total_common_reactor_headroom_sgd_y(
     assert!(allocation_fraction>0.0 && allocation_fraction<=1.0);
     hydrogen_side_headroom_sgd_y/allocation_fraction
 }
+
+
+/// Annualised common-reactor cost from a source case.
+/// CAPEX and O&M must be in the same currency units (e.g. million USD).
+pub fn source_reactor_annual_cost(
+    capex:f64,annual_om:f64,discount_rate:f64,lifetime_years:u32
+)->f64 {
+    capex*capital_recovery_factor(discount_rate,lifetime_years)+annual_om
+}
+
+/// Allocate a source reactor annual cost by thermal-service share.
+/// This is an energy-share screening allocation, not a market-value allocation.
+pub fn source_reactor_annual_cost_allocated_by_heat(
+    capex:f64,annual_om:f64,source_reactor_mwth:f64,
+    hydrogen_heat_mwth:f64,discount_rate:f64,lifetime_years:u32
+)->f64 {
+    assert!(hydrogen_heat_mwth<=source_reactor_mwth);
+    source_reactor_annual_cost(capex,annual_om,discount_rate,lifetime_years)
+        *hydrogen_heat_mwth/source_reactor_mwth
+}
+
+/// Maximum source-case cost multiplier compatible with a hydrogen-side annual
+/// reactor-cost headroom under thermal-share allocation.
+/// <1 means the source cost must fall; >1 means source cost fits with margin.
+pub fn reactor_cost_multiplier_headroom(
+    hydrogen_side_headroom:f64,
+    source_allocated_annual_cost:f64
+)->f64 {
+    assert!(source_allocated_annual_cost>0.0);
+    hydrogen_side_headroom/source_allocated_annual_cost
+}
