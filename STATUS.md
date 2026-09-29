@@ -52,7 +52,9 @@ LaTeX/PDF compilation.
 
 Subsequent figure/table manuscript commits are queued for GitHub Actions
 verification and must not be described as rendered successfully until those
-runs complete.
+runs complete. The paper workflow now additionally fails on unresolved LaTeX
+citations/references and uploads the generated PDF artifact after a successful
+build.
 
 ## Retained limitations
 - Reformer/prereformer treatment remains a screening model, not catalyst
