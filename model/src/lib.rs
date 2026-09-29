@@ -4131,3 +4131,68 @@ mod ccs_topology_closure_tests {
         assert!(c.captured_c>0.0 && c.residual_emitted_c>0.0);
     }
 }
+
+
+/// Quantitative heat-integration feasibility envelope using the validated
+/// conventional high-grade duty and the retained JAEA GTHTR300C IHX benchmark.
+/// This remains reactor-agnostic: it tests temperature/duty/pressure-drop
+/// constraints, not a vendor selection.
+#[derive(Debug,Clone,Copy)]
+pub struct NuclearHeatIntegrationCheck {
+    pub process_duty_lo_mw:f64,
+    pub process_duty_hi_mw:f64,
+    pub ihx_benchmark_mw:f64,
+    pub duty_within_benchmark:bool,
+    pub required_secondary_hot_c:f64,
+    pub ihx_temperature_budget_k:f64,
+    pub helium_flow_kg_s:f64,
+    pub ihx_only_circulator_mw:f64,
+}
+pub fn nuclear_heat_integration_check(
+    process_hot_c:f64,
+    reformer_approach_k:f64,
+    reactor_primary_out_c:f64,
+)->NuclearHeatIntegrationCheck {
+    let (lo,hi)=independent_radiant_duty_envelope_mw();
+    let sec_hot=required_secondary_he_hot_c(process_hot_c,reformer_approach_k);
+    let budget=ihx_hot_end_temperature_budget_k(
+        reactor_primary_out_c,process_hot_c,reformer_approach_k);
+    // JAEA secondary helium 900 -> 500 C benchmark span; cp screening 5.2.
+    let m=helium_mass_flow_kg_s(hi,5.2,900.0,500.0);
+    let circ=helium_circulator_power_mw(
+        m,GTHTR300C_SECONDARY_IHX_DP_KPA,
+        GTHTR300C_SECONDARY_HE_PRESSURE_MPA,
+        GTHTR300C_SECONDARY_HE_INLET_C,0.80);
+    NuclearHeatIntegrationCheck{
+        process_duty_lo_mw:lo,process_duty_hi_mw:hi,
+        ihx_benchmark_mw:GTHTR300C_IHX_DUTY_MW,
+        duty_within_benchmark:hi<=GTHTR300C_IHX_DUTY_MW,
+        required_secondary_hot_c:sec_hot,
+        ihx_temperature_budget_k:budget,
+        helium_flow_kg_s:m,
+        ihx_only_circulator_mw:circ,
+    }
+}
+
+#[cfg(test)]
+mod nuclear_heat_integration_review1_tests {
+    use super::*;
+    #[test]
+    fn validated_radiant_duty_is_below_japan_ihx_benchmark() {
+        let x=nuclear_heat_integration_check(950.0,20.0,1000.0);
+        assert!(x.duty_within_benchmark);
+        assert!(x.process_duty_hi_mw<x.ihx_benchmark_mw);
+    }
+    #[test]
+    fn temperature_budget_is_explicit_not_assumed() {
+        let feasible=nuclear_heat_integration_check(950.0,20.0,1000.0);
+        let infeasible=nuclear_heat_integration_check(950.0,20.0,960.0);
+        assert!(feasible.ihx_temperature_budget_k>0.0);
+        assert!(infeasible.ihx_temperature_budget_k<0.0);
+    }
+    #[test]
+    fn ihx_pressure_drop_implies_nonzero_circulator_load() {
+        let x=nuclear_heat_integration_check(950.0,20.0,1000.0);
+        assert!(x.helium_flow_kg_s>0.0 && x.ihx_only_circulator_mw>0.0);
+    }
+}
