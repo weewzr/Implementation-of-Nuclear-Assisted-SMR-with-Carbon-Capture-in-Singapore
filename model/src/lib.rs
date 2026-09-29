@@ -694,3 +694,32 @@ pub fn helium_circulator_power_mw(
     let rho = helium_ideal_density_kg_m3(suction_pressure_mpa, suction_temperature_c);
     mass_flow_kg_s * delta_p_kpa * 1000.0 / (rho * efficiency) / 1.0e6
 }
+
+
+/// Sum component pressure losses for a secondary-helium loop.
+pub fn helium_loop_delta_p_kpa(component_losses_kpa: &[f64]) -> f64 {
+    assert!(!component_losses_kpa.is_empty());
+    assert!(component_losses_kpa.iter().all(|x| *x >= 0.0));
+    component_losses_kpa.iter().sum()
+}
+
+/// Circulator parasitic fraction relative to useful delivered heat.
+pub fn helium_circulator_parasitic_fraction(
+    useful_heat_mw: f64,
+    mass_flow_kg_s: f64,
+    total_delta_p_kpa: f64,
+    pressure_mpa: f64,
+    suction_temperature_c: f64,
+    efficiency: f64,
+) -> f64 {
+    helium_circulator_power_mw(
+        mass_flow_kg_s,total_delta_p_kpa,pressure_mpa,suction_temperature_c,efficiency
+    ) / useful_heat_mw
+}
+
+/// Sensitivity multiplier relative to the published GTHTR300C IHX-only
+/// pressure drop. This avoids inventing unverified component pressure losses.
+pub fn loop_dp_from_ihx_multiple_kpa(multiplier: f64) -> f64 {
+    assert!(multiplier >= 1.0);
+    GTHTR300C_SECONDARY_IHX_DP_KPA * multiplier
+}
