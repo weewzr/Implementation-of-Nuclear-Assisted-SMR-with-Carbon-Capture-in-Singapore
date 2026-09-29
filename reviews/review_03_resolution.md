@@ -278,3 +278,35 @@ Current verified scientific conclusion entering Gate 5:
 
 Next milestone: Gate 5 — experiments/results. Do not reinterpret Gate-4 closure
 as a positive feasibility verdict.
+
+
+## Gate 5 Experiment 01 — Threshold failure topology
+
+**Status: STARTED / computational experiment implemented.**
+
+The verified 64-point R3 uncertainty domain is now analysed as an experimental
+result rather than only a Gate-4 falsification assertion. The experiment
+classifies cases into joint pass, abatement-only, cost-only and neither;
+identifies maximum abatement, minimum finite S$/t and the nearest joint-threshold
+case; and records the parameter coordinates of best-abatement, best-cost and
+nearest-joint cases.
+
+No model physics or parameter ranges are changed by this experiment.
+
+Implementation:
+- `gate5_threshold_diagnostics`
+- `gate5_nearest_cases`
+- `gate5_experiment01_markdown`
+- CLI: `model/src/bin/gate5_experiment01.rs`
+
+Evidence:
+- commit `1551edd3e849d875dcda17419105105ca589cad3`, CI run 36547582732 PASS;
+- commit `1f37c41690714bd8915bdfed7ef44228258e5811`, deterministic renderer;
+- commit `70e9ef38ad33c76f465590465017ddc7bf2589df`, reproducibility CLI.
+
+A fresh checkout can generate the experiment Markdown with:
+`cargo run --bin gate5_experiment01`.
+
+The verified domain remains constrained to zero joint passes; Experiment 01 is
+intended to explain the failure topology, not search outside the declared
+evidence-backed design.
