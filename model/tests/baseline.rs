@@ -295,3 +295,22 @@ fn flue_gas_capture_has_larger_energy_penalty_and_more_plant_gate_abatement() {
     close(plant_gate_co2_avoided_t_per_h(IEAGHG_ENERGY_CASE_1A),43.87,0.02);
     close(plant_gate_co2_avoided_t_per_h(IEAGHG_ENERGY_CASE_3),72.03,0.02);
 }
+
+
+#[test]
+fn ieaghg_reformer_radiant_duty_converts_to_about_96_mw() {
+    use nuclear_assisted_smr::ieaghg_reformer_radiant_duty_mw;
+    close(ieaghg_reformer_radiant_duty_mw(),96.04,0.05);
+}
+
+#[test]
+fn radiant_duty_exceeds_makeup_ng_fuel_lhv_because_tail_gas_is_also_fired() {
+    use nuclear_assisted_smr::ieaghg_radiant_to_makeup_fuel_lhv_ratio;
+    assert!(ieaghg_radiant_to_makeup_fuel_lhv_ratio() > 1.6);
+}
+
+#[test]
+fn reduced_298k_reaction_layer_is_below_published_radiant_duty() {
+    use nuclear_assisted_smr::radiant_minus_reduced_reaction_duty_mw;
+    assert!(radiant_minus_reduced_reaction_duty_mw() > 25.0);
+}
