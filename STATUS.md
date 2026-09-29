@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Populate the newly established abatement-cost framework with defensible HTGR, gas, CCS and financing inputs, then determine the break-even combinations compatible with <S$100/tCO2e.
+Test whether dedicated versus cogeneration/shared HTGR cost allocation can fit inside the S$100/tCO2e break-even budget, while refining gas and CCS cost inputs.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -191,6 +191,15 @@ Singapore's carbon tax is S$45/tCO2e in 2026-2027, with a previously stated view
 
 Rust now implements CRF annualisation, generic annualised cost, incremental abatement cost and the maximum annual incremental-cost budget implied by a target S$/t.
 
+## Economic parameter matrix and break-even budget
+A first economic parameter matrix now separates source values, legacy technology anchors and unresolved Singapore inputs. JAEA's GTHTR300 design study reports ~JPY200,000/kWe capital and ~JPY4.2/kWh at 80% utilisation; a JAEA HTGR hydrogen study used 0.7 JPY/MJ nuclear heat and 5.8 JPY/kWh electricity. These are legacy Japanese design-study anchors, not current Singapore prices.
+
+IAEA's recent hydrogen TECDOC provides larger HTGR+SMR cases: e.g. 4x200 MWth HTGR-200 with USD2.065b NPP CAPEX plus USD1.013b hydrogen-plant CAPEX and reported H2 cost USD1.28/kg; an MHR-T+SMR case reports USD2.748b NPP plus USD1.496b H2 plant and USD0.96/kg. These are multi-module external benchmarks and are not linearly scaled to Singapore.
+
+For the 71.952 ktH2/y reference plant, an illustrative 7.5 kgCO2e/kgH2 specific abatement yields ~0.540 Mt/y avoided and therefore ~S$54m/y maximum incremental cost at S$100/t. At 8%/25y, allocating that entire budget to CAPEX alone would imply an optimistic ~S$576m ceiling. At the minimum 0.25 Mt/y assignment scale, the corresponding CAPEX-only ceiling is ~S$267m. Both are upper bounds because real incremental OPEX/CCS/T&S costs consume part of the budget.
+
+This makes reactor cost allocation a first-order question: dedicated HTGR and cogeneration/shared-reactor architectures must be tested separately.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -231,4 +240,4 @@ Rust now implements CRF annualisation, generic annualised cost, incremental abat
   remain.
 
 ## Next highest-priority task
-Build an economic parameter matrix with price year, currency, evidence type and uncertainty for HTGR CAPEX/O&M, direct-heat IHX/secondary loop, eSMR incremental CAPEX, natural-gas price, CCS capture and cross-border T&S, capacity factor, discount rate and project life. Then solve for break-even nuclear/CCS costs at S$100/tCO2e before selecting any central cost claim.
+Construct dedicated-HTGR and cogeneration/shared-HTGR economic cases. Annualise source-backed HTGR CAPEX/O&M ranges without linear scaling where unsupported, allocate reactor cost by delivered heat/electricity service transparently, and calculate the residual annual budget available for CCS T&S and integration while remaining below S$100/tCO2e. Continue searching for Singapore/Asian industrial gas-price and cross-border CCS service-cost evidence.
