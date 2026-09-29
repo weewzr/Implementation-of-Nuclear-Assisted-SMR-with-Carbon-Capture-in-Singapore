@@ -656,3 +656,41 @@ pub fn ihx_hot_end_temperature_budget_k(
 ) -> f64 {
     reactor_primary_out_c - required_secondary_he_hot_c(process_hot_c, reformer_min_approach_k)
 }
+
+
+/// Large-scale JAEA GTHTR300C IHX benchmark reported in the HTGR hydrogen
+/// literature. This is a comparison anchor, not the selected Singapore reactor.
+pub const GTHTR300C_IHX_DUTY_MW: f64 = 170.0;
+pub const GTHTR300C_SECONDARY_HE_MASS_FLOW_KG_S: f64 = 81.0;
+pub const GTHTR300C_SECONDARY_HE_INLET_C: f64 = 500.0;
+pub const GTHTR300C_SECONDARY_HE_OUTLET_C: f64 = 900.0;
+pub const GTHTR300C_SECONDARY_HE_PRESSURE_MPA: f64 = 5.15;
+pub const GTHTR300C_SECONDARY_IHX_DP_KPA: f64 = 58.0;
+
+/// Ideal-gas helium density screening relation.
+pub fn helium_ideal_density_kg_m3(pressure_mpa: f64, temperature_c: f64) -> f64 {
+    const R_HE_J_KG_K: f64 = 2077.1;
+    let p_pa = pressure_mpa * 1.0e6;
+    let t_k = temperature_c + 273.15;
+    p_pa / (R_HE_J_KG_K * t_k)
+}
+
+/// Small-pressure-rise circulator power screening approximation:
+/// W = m_dot * DeltaP / (rho * eta).
+///
+/// This is appropriate only when DeltaP/P is small. It is a lower-layer
+/// estimate; total loop pressure loss must include piping, reformer, steam
+/// generator, valves and other components in addition to the IHX.
+pub fn helium_circulator_power_mw(
+    mass_flow_kg_s: f64,
+    delta_p_kpa: f64,
+    suction_pressure_mpa: f64,
+    suction_temperature_c: f64,
+    efficiency: f64,
+) -> f64 {
+    assert!(mass_flow_kg_s > 0.0);
+    assert!(delta_p_kpa > 0.0);
+    assert!(efficiency > 0.0 && efficiency <= 1.0);
+    let rho = helium_ideal_density_kg_m3(suction_pressure_mpa, suction_temperature_c);
+    mass_flow_kg_s * delta_p_kpa * 1000.0 / (rho * efficiency) / 1.0e6
+}
