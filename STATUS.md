@@ -102,6 +102,15 @@ Acceptance tests require:
 
 Commit `5554a366b10131376343e7c956d88a274b7d9903` contains the implementation. GitHub Actions was still queued at the time of this STATUS update, so this sensitivity is not yet marked verified.
 
+## Pressure-integration sensitivity verified
+The 2.0/3.0/4.5 MPa x 0.65/0.75/0.85 compressor-efficiency surface now passes CI. Additional regression checks confirm that, under the current representative cost assumptions, all nine minimum-NG feasibility boundaries remain between S$10 and S$25/GJ and the full pressure/efficiency spread is <S$5/GJ.
+
+Therefore recycle compressor pressure integration is economically relevant but is not presently the dominant uncertainty. The larger unresolved levers remain reactor-cost allocation, CCS transport/storage, the integrated process-heat duty, and whether the reduced recycle/reformer/PSA surrogate survives rigorous flowsheet validation.
+
+Commits `ed469fd0d48f221ff85554587fcdefc3d9796054` and `f63109ec0894dcdc16cf9299d270b83149332e5b` expose and regression-bound this sensitivity.
+
+The next scientific critical-path task is to replace the reduced fixed-conversion recycle surrogate with a more physically constrained reformer/shift equilibrium layer, beginning with equilibrium/temperature-pressure constraints and validating against the IEAGHG once-through stream table before applying recycle.
+
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
   CN4252 Project conversation.
