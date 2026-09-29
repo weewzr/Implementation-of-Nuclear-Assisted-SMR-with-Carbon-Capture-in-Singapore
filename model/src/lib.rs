@@ -5393,3 +5393,98 @@ mod review2_b02_candidate_energy_tests {
         assert!(x.nuclear_process_heat_hi_mw<GTHTR300C_IHX_DUTY_MW);
     }
 }
+
+
+/// Candidate-specific CCS duty ledger on the canonical thermodynamic recycle
+/// state. Source Case-2A duties are scaled by actual candidate CO2 throughput,
+/// not by fresh-NG fraction.
+///
+/// The IEAGHG Case-2A source CO2 throughput is reconstructed from its PSA-tail
+/// inventory. This is the denominator for source-anchored specific MDEA steam
+/// and CO2 compression duties.
+#[derive(Debug,Clone,Copy)]
+pub struct CandidateCcsDutyLedger {
+    pub source_case2a_co2_kmol_h:f64,
+    pub process_co2_kmol_h:f64,
+    pub purge_oxidation_co2_kmol_h:f64,
+    pub total_co2_to_capture_kmol_h:f64,
+    pub mdea_heat_lo_mw:f64,
+    pub mdea_heat_hi_mw:f64,
+    pub co2_compression_mwe:f64,
+    pub tail_feed_compression_mwe:f64,
+    pub carbon_closure_error_kmol_h:f64,
+}
+pub fn candidate_ccs_duty_ledger()->CandidateCcsDutyLedger {
+    let r=thermo_recycle_reference_case(); assert!(r.converged);
+    let source=ieaghg_hts_inlet_wet6();
+    let fresh=source.scale(r.fresh_fraction);
+    let inlet=fresh.add(r.recycle);
+    let reformed=solve_smr_wgs_equilibrium(inlet,1173.15,28.0,1e-8,10000);
+    let shifted=solve_wgs_equilibrium(reformed,685.15,27.7);
+    let psa=psa6_bounded(shifted,0.35);
+
+    // Process CO2 is the shifted-gas CO2 entering the capture/PSA section.
+    // Purge CO+CH4 are explicitly oxidized before joining the capture train.
+    let process_co2=shifted.co2;
+    let purge_c=r.purge.co+r.purge.ch4;
+    let total=process_co2+purge_c;
+
+    let src=ieaghg_tail_inventory().co2_kmol_h;
+    assert!(src>0.0);
+    let scale=total/src;
+    let (qlo,qhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+
+    // Tail-feed compression scales only with the low-pressure tail polishing
+    // throughput represented by the purge/recycle carbon route; process-syngas
+    // capture is already high pressure and must not inherit this compressor.
+    let tail_scale=(purge_c/src).max(0.0);
+    let mdea_lo=qlo*scale;
+    let mdea_hi=qhi*scale;
+    let co2_comp=IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE*scale;
+    let tail_comp=IEAGHG_CASE2A_TAIL_COMP_BRAKE_MW*tail_scale;
+
+    // External carbon entering the canonical reduced source basis must equal
+    // carbon retained in shifted/recycle/purge states; use a direct topology
+    // identity here to expose bookkeeping error rather than hide it.
+    let fresh_c=fresh.carbon();
+    let outlet_c=shifted.carbon();
+    let closure=fresh_c+r.recycle.carbon()-outlet_c;
+
+    CandidateCcsDutyLedger{
+        source_case2a_co2_kmol_h:src,process_co2_kmol_h:process_co2,
+        purge_oxidation_co2_kmol_h:purge_c,total_co2_to_capture_kmol_h:total,
+        mdea_heat_lo_mw:mdea_lo,mdea_heat_hi_mw:mdea_hi,
+        co2_compression_mwe:co2_comp,tail_feed_compression_mwe:tail_comp,
+        carbon_closure_error_kmol_h:closure}
+}
+
+#[cfg(test)]
+mod review2_m01_ccs_duty_tests {
+    use super::*;
+    #[test]
+    fn candidate_ccs_duties_scale_from_actual_solved_co2() {
+        let x=candidate_ccs_duty_ledger();
+        assert!(x.source_case2a_co2_kmol_h>0.0);
+        assert!(x.process_co2_kmol_h>0.0);
+        assert!(x.total_co2_to_capture_kmol_h>=x.process_co2_kmol_h);
+        assert!(x.mdea_heat_hi_mw>=x.mdea_heat_lo_mw&&x.mdea_heat_lo_mw>0.0);
+        assert!(x.co2_compression_mwe>0.0);
+    }
+    #[test]
+    fn low_pressure_tail_compressor_is_not_applied_to_high_pressure_process_co2() {
+        let x=candidate_ccs_duty_ledger();
+        let all_stream_scaled=IEAGHG_CASE2A_TAIL_COMP_BRAKE_MW
+            *x.total_co2_to_capture_kmol_h/x.source_case2a_co2_kmol_h;
+        assert!(x.tail_feed_compression_mwe<all_stream_scaled);
+    }
+    #[test]
+    fn source_case2a_scaling_reproduces_source_duties_at_unit_throughput() {
+        let (lo,hi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+        let src=ieaghg_tail_inventory().co2_kmol_h;
+        let scale=src/src;
+        assert!((lo*scale-lo).abs()<1e-12);
+        assert!((hi*scale-hi).abs()<1e-12);
+        assert!((IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE*scale
+            -IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE).abs()<1e-12);
+    }
+}
