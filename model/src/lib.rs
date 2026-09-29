@@ -1357,3 +1357,21 @@ pub fn annual_ccs_transport_storage_cost(
     assert!(captured_co2_t_per_year>=0.0 && tariff_per_tco2>=0.0);
     captured_co2_t_per_year*tariff_per_tco2
 }
+
+
+/// Convert a foreign-currency per-tonne CCS tariff to annual SGD cost using
+/// an explicit SGD-per-foreign-currency FX rate.
+pub fn annual_ccs_cost_sgd_from_foreign_tariff(
+    captured_co2_t_per_year:f64,
+    tariff_foreign_per_tco2:f64,
+    sgd_per_foreign_currency:f64,
+)->f64 {
+    annual_ccs_transport_storage_cost(captured_co2_t_per_year,tariff_foreign_per_tco2)
+        *sgd_per_foreign_currency
+}
+
+/// Share of the allowed annual abatement-cost budget consumed by CCS T&S.
+pub fn budget_fraction_consumed(cost_per_year:f64,allowed_budget_per_year:f64)->f64 {
+    assert!(cost_per_year>=0.0 && allowed_budget_per_year>0.0);
+    cost_per_year/allowed_budget_per_year
+}
