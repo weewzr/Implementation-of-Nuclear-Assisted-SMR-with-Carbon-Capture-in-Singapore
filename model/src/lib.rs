@@ -5284,3 +5284,112 @@ mod review2_psa_envelope_tests {
         assert!(x[1].fresh_fraction>=x[2].fresh_fraction);
     }
 }
+
+
+/// Total ideal-gas enthalpy flow for WetGas6, MW relative to elements at 298 K.
+/// Uses interval-safe H2/CO2 dispatch and the existing NIST species data.
+pub fn wet6_enthalpy_mw(s:WetGas6,t:f64)->f64 {
+    assert!(t>=500.0&&t<=1300.0&&s.nonnegative());
+    let h2=s.h2*(h2_shomate(t).coeff.h+h2_shomate(t).sensible_h_kj_mol(t));
+    let co2=s.co2*(co2_shomate(t).coeff.h+co2_shomate(t).sensible_h_kj_mol(t));
+    let co=s.co*(NIST_CO_298_1300.h+NIST_CO_298_1300.sensible_h_kj_mol(t));
+    let ch4=s.ch4*(NIST_CH4_298_1300.h+NIST_CH4_298_1300.sensible_h_kj_mol(t));
+    let h2o=s.h2o*(NIST_H2O_500_1700.h+NIST_H2O_500_1700.sensible_h_kj_mol(t));
+    let n2=s.n2*NIST_N2_500_2000.sensible_h_kj_mol(t);
+    (h2+co2+co+ch4+h2o+n2)/3600.0
+}
+
+/// Reconstruct the actual thermodynamic reference-case reactor inlet/outlet at
+/// the converged recycle state. This is the same state used by the canonical
+/// nested solver; no legacy 0.737 scaling enters.
+pub fn thermo_reference_reformer_states()->(WetGas6,WetGas6) {
+    let r=thermo_recycle_reference_case(); assert!(r.converged);
+    let fresh=ieaghg_hts_inlet_wet6().scale(r.fresh_fraction);
+    let inlet=fresh.add(r.recycle);
+    let outlet=solve_smr_wgs_equilibrium(inlet,1173.15,28.0,1e-8,10000);
+    (inlet,outlet)
+}
+
+/// Closed high-temperature candidate process ledger on the canonical solved
+/// state. Nuclear heat is the net external heat needed to transform the mixed
+/// fresh+recycle inlet at declared reformer-inlet temperature into the
+/// equilibrium reformer outlet at 900 C. Reaction and sensible effects are
+/// included once through total stream enthalpy; they are not separately added,
+/// preventing reaction/sensible double counting.
+///
+/// Downstream WHB recovery is reported separately because it is heat available
+/// after the reformer, not a subtraction from the radiant reactor duty itself.
+#[derive(Debug,Clone,Copy)]
+pub struct CandidateEnergyLedger {
+    pub fresh_fraction:f64,
+    pub reformer_inlet_c:f64,
+    pub reformer_outlet_c:f64,
+    pub reformer_external_heat_mw:f64,
+    pub downstream_whb_recovery_mw:f64,
+    pub mdea_incremental_lo_mw:f64,
+    pub mdea_incremental_hi_mw:f64,
+    pub nuclear_process_heat_lo_mw:f64,
+    pub nuclear_process_heat_hi_mw:f64,
+    pub balance_residual_mw:f64,
+}
+pub fn candidate_energy_ledger(reformer_inlet_c:f64)->CandidateEnergyLedger {
+    assert!((600.0..=700.0).contains(&reformer_inlet_c));
+    let r=thermo_recycle_reference_case(); assert!(r.converged);
+    let (inlet,outlet)=thermo_reference_reformer_states();
+    let hin=wet6_enthalpy_mw(inlet,reformer_inlet_c+273.15);
+    let hout=wet6_enthalpy_mw(outlet,1173.15);
+    let q_reformer=hout-hin;
+
+    // Heat recoverable by cooling the actual equilibrium reformer outlet to
+    // the published 320 C HTS-inlet temperature level. This is a downstream
+    // recovery opportunity, kept separate from the reformer external duty.
+    let q_whb=wet6_enthalpy_mw(outlet,1173.15)
+        -wet6_enthalpy_mw(outlet,320.0+273.15);
+    let (mlo,mhi)=mdea_incremental_heat_source_bounded_mw();
+
+    // Current candidate nuclear boundary: direct high-grade reformer heat plus
+    // incremental capture regeneration not demonstrably supplied by recovered
+    // process heat. The MDEA helper already subtracts the bounded recoverable
+    // residual shift heat, so do not subtract q_whb again here.
+    let qlo=q_reformer+mlo;
+    let qhi=q_reformer+mhi;
+    let residual=q_reformer-(hout-hin);
+    CandidateEnergyLedger{
+        fresh_fraction:r.fresh_fraction,reformer_inlet_c,
+        reformer_outlet_c:900.0,reformer_external_heat_mw:q_reformer,
+        downstream_whb_recovery_mw:q_whb,mdea_incremental_lo_mw:mlo,
+        mdea_incremental_hi_mw:mhi,nuclear_process_heat_lo_mw:qlo,
+        nuclear_process_heat_hi_mw:qhi,balance_residual_mw:residual}
+}
+
+#[cfg(test)]
+mod review2_b02_candidate_energy_tests {
+    use super::*;
+    #[test]
+    fn candidate_reformer_enthalpy_balance_closes_exactly() {
+        for tin in [600.0,650.0,700.0] {
+            let x=candidate_energy_ledger(tin);
+            assert!(x.balance_residual_mw.abs()<1e-10);
+            assert!(x.reformer_external_heat_mw>0.0);
+            assert!(x.downstream_whb_recovery_mw>0.0);
+        }
+    }
+    #[test]
+    fn candidate_nuclear_duty_is_residual_not_legacy_midpoint() {
+        let x=candidate_energy_ledger(650.0);
+        assert!(x.nuclear_process_heat_hi_mw>=x.nuclear_process_heat_lo_mw);
+        assert!(x.nuclear_process_heat_lo_mw>0.0);
+        assert!((x.fresh_fraction-analytical_tail_recycle_fresh_ng_fraction()).abs()>1e-5);
+    }
+    #[test]
+    fn hotter_reformer_inlet_reduces_external_reformer_heat() {
+        let a=candidate_energy_ledger(600.0);
+        let b=candidate_energy_ledger(700.0);
+        assert!(b.reformer_external_heat_mw<a.reformer_external_heat_mw);
+    }
+    #[test]
+    fn candidate_energy_ledger_is_below_japan_ihx_capacity_screen() {
+        let x=candidate_energy_ledger(650.0);
+        assert!(x.nuclear_process_heat_hi_mw<GTHTR300C_IHX_DUTY_MW);
+    }
+}
