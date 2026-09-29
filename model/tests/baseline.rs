@@ -801,3 +801,22 @@ fn furnace_ng_savings_need_double_digit_sgd_per_gj_to_close_current_gap_alone() 
     assert!(p17>9.9 && p17<10.1);
     assert!(p29>17.3 && p29<17.6);
 }
+
+
+#[test]
+fn psa_tail_gas_contains_large_internal_fuel_inventory() {
+    use nuclear_assisted_smr::{
+        ieaghg_psa_tail_gas_lhv_mw,ieaghg_psa_tail_combustible_kmol_h,
+    };
+    let q=ieaghg_psa_tail_gas_lhv_mw();
+    assert!(q>80.0 && q<90.0, "tail gas LHV {q} MW");
+    assert!(ieaghg_psa_tail_combustible_kmol_h()>990.0);
+}
+
+#[test]
+fn utility_value_functions_preserve_sign_and_units() {
+    use nuclear_assisted_smr::{annual_electricity_value_sgd,annual_steam_value_sgd};
+    close(annual_electricity_value_sgd(10.0,8000.0,150.0),12_000_000.0,1e-6);
+    close(annual_electricity_value_sgd(-2.0,8000.0,150.0),-2_400_000.0,1e-6);
+    close(annual_steam_value_sgd(46.0,8000.0,20.0),7_360_000.0,1e-6);
+}
