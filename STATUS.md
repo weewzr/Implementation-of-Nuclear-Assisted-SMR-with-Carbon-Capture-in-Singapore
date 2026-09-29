@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Quantify remaining real operating savings/penalties from nuclear integration—especially power/steam and tail-gas changes—after establishing the avoided supplementary-furnace-NG sensitivity.
+Compare credible PSA-tail-gas recycle/recovery configurations after furnace removal, because the ~85 MW_LHV internal tail-gas stream is now the largest unresolved process-integration lever.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -254,6 +254,13 @@ If nuclear integration displaced 100% of this purchased supplementary NG, avoide
 
 This shows avoided fuel can be material but is not automatically sufficient. PSA tail gas is not counted as purchased-fuel savings; its furnace sink disappears and must be recycled/treated consistently.
 
+## PSA tail-gas and utility boundary quantified
+The IEAGHG base PSA tail gas is now reconstructed energetically from its published 2106.3 kmol/h composition. H2+CO+CH4 combustible flow is ~1004 kmol/h and the standard-LHV chemical inventory is ~85 MW_LHV. This is internal fuel, not purchased energy, so it cannot be credited as avoided fuel cost when the furnace disappears.
+
+IEAGHG explicitly sends base tail gas to the SMR burners. Ahn & Lee (2026) independently eliminate the fired furnace in HTGR h-SMR/eSMR and recycle PSA tail gas as process feed, reporting 18.8% and 23.3% NG reductions versus their gray baseline. Those percentages are external validation of the architecture, not values imported into our IEAGHG model. A 2025 hybrid cryogenic/two-stage-PSA study provides a competing tail-gas recovery route with additional H2 recovery and >90% CO2 removal.
+
+Power/steam economics are now correctly bounded: IEAGHG base exports 9.918 MWe while Case 1A exports 1.492 MWe, but a nuclear architecture cannot claim the 8.426 MWe difference as a credit until its steam/power network is solved. Base steam export is ~46.053 t/h; preserving it is neutral versus baseline, losing it is a penalty, and increasing it is a credit. Rust now contains explicit annual electricity/steam value functions with prices left as inputs.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -294,4 +301,4 @@ This shows avoided fuel can be material but is not automatically sufficient. PSA
   remain.
 
 ## Next highest-priority task
-Quantify power and steam economic changes under furnace removal/nuclear integration and construct a tail-gas recycle cost/energy boundary. Then combine avoided NG + utility changes into annual real savings and compare with the S$17-29m/y requirement before imposing annualised dedicated/cogeneration HTGR costs. Maintain a separate private-cash-flow layer for the S$45/t 2026-27 carbon tax.
+Build a reduced tail-gas configuration screen for (A) untreated recycle, (B) CO2 removal plus combustible recycle, and (C) enhanced H2/CO2 recovery. For each, close carbon and H2 potential, estimate compression/separation energy, update reformer feed/duty and quantify purchased-NG displacement. Use this to determine whether tail-gas integration creates enough real operating value to materially narrow the S$17-29m/y economic gap.
