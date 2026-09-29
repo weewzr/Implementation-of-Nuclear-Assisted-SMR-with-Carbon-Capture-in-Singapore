@@ -7197,3 +7197,90 @@ mod gate5_materialized_results_tests {
         assert!(s.contains("Joint CN4252 passes: 0"));
     }
 }
+
+
+/// Gate-5 figure-ready threshold scatter CSV. Infinite costs are emitted as
+/// "inf" and remain explicit falsification points rather than being clipped.
+pub fn gate5_threshold_scatter_csv()->String {
+    let mut s=String::from(
+"case_id,annual_avoided_t,abatement_cost_sgd_t,abatement_threshold_t,cost_threshold_sgd_t,binding,reformer_c,pressure_bar,psa_recovery,capture_fraction,carbon_corner,cost_corner\n");
+    for (i,x) in r3_uncertainty_design().into_iter().enumerate() {
+        let binding=match gate5_binding_constraint(&x) {
+            Gate5BindingConstraint::None=>"none",
+            Gate5BindingConstraint::AbatementOnly=>"abatement",
+            Gate5BindingConstraint::CostOnly=>"cost",
+            Gate5BindingConstraint::Both=>"both",
+        };
+        let carbon=if x.auxiliary_g_kwh<100.0{"low_carbon"}else{"grid"};
+        let cost=if x.fixed_annual_sgd<100e6{"lower_cost"}else{"higher_cost"};
+        s.push_str(&format!(
+"{},{:.6},{},250000,100,{},{:.0},{:.0},{:.2},{:.2},{},{}\n",
+i+1,x.annual_avoided_t,
+if x.abatement_cost_sgd_t.is_finite(){format!("{:.6}",x.abatement_cost_sgd_t)}else{"inf".into()},
+binding,x.reformer_c,x.pressure_bar,x.psa_recovery,x.capture_fraction,
+carbon,cost));
+    }
+    s
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct Gate5ResultsSynthesis {
+    pub cases:usize,pub joint_passes:usize,
+    pub abatement_failures:usize,pub cost_failures:usize,pub both_failures:usize,
+    pub case1a_direct_avoided_t:f64,
+}
+pub fn gate5_results_synthesis()->Gate5ResultsSynthesis {
+    let b=gate5_binding_summary();
+    Gate5ResultsSynthesis{cases:b.n,joint_passes:b.none,
+        abatement_failures:b.abatement_only,cost_failures:b.cost_only,
+        both_failures:b.both,
+        case1a_direct_avoided_t:r3_case1a_comparator().direct_avoided_t_y}
+}
+
+pub fn gate5_results_synthesis_markdown()->String {
+    let x=gate5_results_synthesis();
+    format!(
+"# Gate 5 results synthesis\n\n\
+## Nuclear-assisted R3 domain\n\n\
+The verified coupled experiment contains **{} cases** and **{} joint passes** \
+of the CN4252 thresholds (>0.25 MtCO2e/y and <S$100/tCO2e).\n\n\
+Failure topology:\n\
+- abatement-only failure: {} cases;\n\
+- cost-only failure: {} cases;\n\
+- both thresholds fail: {} cases.\n\n\
+This is evidence against robust threshold compliance in the tested domain; it \
+is not evidence that every conceivable nuclear-assisted configuration fails.\n\n\
+## Comparator falsification\n\n\
+IEAGHG Case 1A avoids {:.3} tCO2/y on the same source H2 production scale, so \
+the annual-abatement scale is not unique to nuclear integration. A Singapore \
+S$/t comparison remains unresolved on a common currency/year basis.\n\n\
+## Claim strength\n\n\
+- 0/{} joint passes: VERIFIED EXPERIMENTAL RESULT for the declared domain.\n\
+- Conservative nuclear failure: VERIFIED EXPERIMENTAL RESULT for its declared \
+scenario assumptions.\n\
+- Case-1A annual-scale pass: SOURCE-BACKED DERIVED RESULT.\n\
+- Nuclear or Case-1A Singapore economic superiority: NOT ESTABLISHED.\n",
+x.cases,x.joint_passes,x.abatement_failures,x.cost_failures,x.both_failures,
+x.case1a_direct_avoided_t,x.cases)
+}
+
+#[cfg(test)]
+mod gate5_synthesis_tests {
+    use super::*;
+    #[test]
+    fn scatter_has_exactly_64_data_rows() {
+        assert_eq!(gate5_threshold_scatter_csv().lines().count(),65);
+    }
+    #[test]
+    fn synthesis_reconciles_binding_partition() {
+        let x=gate5_results_synthesis();
+        assert_eq!(x.cases,x.joint_passes+x.abatement_failures
+            +x.cost_failures+x.both_failures);
+        assert_eq!(x.joint_passes,0);
+    }
+    #[test]
+    fn synthesis_does_not_claim_global_impossibility() {
+        assert!(gate5_results_synthesis_markdown()
+            .contains("not evidence that every conceivable"));
+    }
+}
