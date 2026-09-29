@@ -1548,3 +1548,38 @@ pub fn annual_steam_value_sgd(
 )->f64 {
     steam_t_per_h*hours_per_year*steam_sgd_per_t
 }
+
+
+/// Tail-gas carbon and combustible inventory for configuration screening.
+#[derive(Debug,Clone,Copy)]
+pub struct TailGasInventory {
+    pub h2_kmol_h:f64,
+    pub co_kmol_h:f64,
+    pub ch4_kmol_h:f64,
+    pub co2_kmol_h:f64,
+}
+pub fn ieaghg_tail_inventory()->TailGasInventory {
+    let t=ieaghg_psa_tail_cho();
+    TailGasInventory{h2_kmol_h:t.h2,co_kmol_h:t.co,ch4_kmol_h:t.ch4,co2_kmol_h:t.co2}
+}
+
+/// Ideal additional H2 molecular flow if tail-gas CO is fully shifted and CH4
+/// is fully steam-reformed+shifted, while existing H2 is recovered:
+/// H2_existing + CO + 4*CH4. This is a stoichiometric upper bound, not a
+/// process yield and excludes equilibrium/PSA losses and added steam duty.
+pub fn tail_gas_ideal_h2_upper_bound_kmol_h()->f64 {
+    let t=ieaghg_tail_inventory();
+    t.h2_kmol_h+t.co_kmol_h+4.0*t.ch4_kmol_h
+}
+
+/// Tail-gas CO2 already present and separable before recycle, t/h.
+pub fn tail_gas_existing_co2_t_h()->f64 {
+    let t=ieaghg_tail_inventory();
+    t.co2_kmol_h*44.0095/1000.0
+}
+
+/// Carbon in tail-gas CO+CH4 requiring conversion/capture if not combusted.
+pub fn tail_gas_nonco2_carbon_kmol_h()->f64 {
+    let t=ieaghg_tail_inventory();
+    t.co_kmol_h+t.ch4_kmol_h
+}
