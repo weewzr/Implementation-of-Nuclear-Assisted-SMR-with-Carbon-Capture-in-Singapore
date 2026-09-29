@@ -559,3 +559,24 @@ fn nuclear_electric_screen_requires_more_reactor_thermal_power_than_process_heat
     assert!(rlo > 280.0 && rhi < 350.0);
     assert!(rlo > elo && rhi > ehi);
 }
+
+
+#[test]
+fn matched_direct_and_electric_cases_have_identical_plant_gate_carbon_by_construction() {
+    use nuclear_assisted_smr::matched_direct_minus_electric_plant_gate_co2;
+    for capture in [0.0,0.55,0.90,0.95,0.99] {
+        close(matched_direct_minus_electric_plant_gate_co2(capture),0.0,1e-12);
+    }
+}
+
+#[test]
+fn feedstock_carbon_equivalent_is_about_seven_point_seven_kg_co2_per_kg_h2() {
+    use nuclear_assisted_smr::feedstock_carbon_co2_equivalent_kg_per_kg_h2;
+    close(feedstock_carbon_co2_equivalent_kg_per_kg_h2(),7.724,0.01);
+}
+
+#[test]
+fn ninety_percent_matched_feedstock_carbon_capture_leaves_about_point_seven_seven_kg() {
+    use nuclear_assisted_smr::matched_furnace_free_residual_co2_kg_per_kg_h2;
+    close(matched_furnace_free_residual_co2_kg_per_kg_h2(0.90),0.7724,0.005);
+}
