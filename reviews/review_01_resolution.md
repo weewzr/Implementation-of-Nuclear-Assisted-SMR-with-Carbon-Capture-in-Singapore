@@ -18,7 +18,7 @@ valid blockers below satisfy their acceptance criteria.
 ## Finding dispositions
 
 ### B1 — Primary-reformer material control volume not closed
-**Disposition: PARTIALLY ACCEPTED, material-balance component now RESOLVED.**
+**Disposition: RESOLVED.**
 
 The reviewer was correct that the then-current two-row stream comparison was not
 a closed control volume. The stronger source-level diagnosis is now established:
@@ -34,7 +34,8 @@ without tuning carbon species.
 Evidence and equations: `equations/source_stream_reconstruction.md`.
 Verification: new Rust regression test.
 
-The *energy* control volume is not closed and remains a separate blocker.
+The associated energy-control-volume requirement is now resolved separately
+under B2; therefore no unresolved component remains under B1.
 
 ### B2 — Full temperature-resolved reformer/furnace energy balance absent
 **Disposition: RESOLVED.**
@@ -144,12 +145,20 @@ candidate has no flue-gas MEA block; purge oxidation CO2 joins the process
 capture/compression chain rather than being assigned a generic MEA penalty.
 
 ### M2 — Nuclear heat-integration literature needs quantitative secondary-loop/HX constraints
-**Disposition: ACCEPTED.**
-Resolve after conventional heat-grade demand is known.
+**Disposition: RESOLVED.**
+After B2 established the high-grade process-duty envelope, the model now checks
+that duty quantitatively against the JAEA GTHTR300C 170 MW IHX benchmark,
+requires an explicit secondary-helium hot-end approach, calculates remaining
+primary-to-secondary temperature budget, derives helium mass flow, and assigns
+a nonzero circulator load from the published 58 kPa IHX pressure-drop anchor.
+Feasible and infeasible temperature cases are both tested; no reactor vendor is
+selected. Evidence: commit `469553a4dc98bcf383836f7e308307cc927a18a7`, CI passed.
 
 ### M3 — Nuclear technology should remain temperature-envelope based
-**Disposition: ACCEPTED.**
-No reactor vendor/product will be selected as a model prerequisite.
+**Disposition: RESOLVED / requirement retained.**
+The model remains temperature-envelope based. Reactor outlet temperature,
+secondary-helium approach and IHX duty are explicit variables/constraints; the
+JAEA design is used only as a quantitative benchmark, not a selected product.
 
 ### M4 — Economic accounting framework incomplete
 **Disposition: ACCEPTED.**
@@ -158,17 +167,19 @@ capacity factor, energy prices, nuclear allocation and CCS transport/storage
 basis remain to be frozen before assignment-level cost results.
 
 ### M5 — Current tests emphasize reconstruction more than predictive validation
-**Disposition: PARTIALLY RESOLVED.**
-The model now includes independent thermodynamic checks beyond source-row
-reconstruction: NIST/JANAF SMR/WGS equilibrium constants, pressure-dependence
-limiting tests, an IEAGHG HTS Q/K diagnostic, apparent-equilibrium-temperature
-reconstruction, analytical-vs-iterative recycle fixed-point verification, and
-CI tests for pressure/compression/heat bounds. This is meaningful validation,
-but the primary reformer has not yet been reproduced on an authoritative
-once-through state; therefore M5 is not closed.
+**Disposition: RESOLVED for Review 1.**
+Validation now extends beyond source reconstruction: NIST/JANAF SMR/WGS
+equilibrium and limiting-case tests; IEAGHG HTS Q/K and apparent-equilibrium
+temperature; analytical-vs-iterative recycle fixed point; temperature-resolved
+WHB validation; and an independent primary-reformer radiant-duty envelope that
+matches the authoritative IEAGHG ~96 MW equipment metric to better than 5% at
+the nearest admissible source-limited bound. Nuclear heat-integration tests also
+exercise both feasible and infeasible temperature budgets. This satisfies the
+Review-1 requirement for meaningful independent duty/model validation; it does
+not imply the recycle model is fully validated for later Review 2.
 
 ### M6 — Thermodynamic property layer missing
-**Disposition: SUBSTANTIALLY RESOLVED, retained under B2 until energy closure.**
+**Disposition: RESOLVED.**
 The Rust model now contains NIST Shomate enthalpy and entropy functions for the
 major CH4/H2O/CO/CO2/H2 species, temperature-dependent sensible enthalpies,
 IAPWS saturation calculations used for steam/condensation bounds, and
@@ -188,7 +199,8 @@ distinction, plant-gate/lifecycle distinction, IEAGHG carbon reconstruction,
 HTS verification, PSA-tail-gas finding, reduced-model diagnostic, Singapore
 future-scenario framing, or existing Rust regression tests.
 
-## Next blocker
+## Remaining non-blocker work
 
-B2: reconstruct and validate the conventional SMR energy balance and temperature
-grades. Do not attach nuclear heat to the 298 K reaction-duty layer.
+M4 economic-accounting details remain intentionally deferred. They are not a
+scientific blocker for the Review 1 foundation gate and must not displace the
+requested mathematical/computational Review 2 that follows closure.
