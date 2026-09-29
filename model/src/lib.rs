@@ -3186,3 +3186,97 @@ mod pressure_surface_numeric_lock {
         assert!(span<5.0);
     }
 }
+
+
+impl Shomate {
+    /// NIST standard molar entropy S°(T), J/mol-K, t=T/1000.
+    pub fn entropy_j_mol_k(self, temperature_k:f64)->f64 {
+        let t=temperature_k/1000.0;
+        self.a*t.ln()+self.b*t+self.c*t*t/2.0+self.d*t*t*t/3.0
+            -self.e/(2.0*t*t)+self.g
+    }
+    /// Standard molar Gibbs energy relative to elements in their standard
+    /// reference states, kJ/mol. Uses ΔfH°298 (=Shomate H parameter) plus
+    /// sensible enthalpy and absolute standard entropy.
+    pub fn standard_gibbs_kj_mol(self, temperature_k:f64)->f64 {
+        self.h+self.sensible_h_kj_mol(temperature_k)
+            -temperature_k*self.entropy_j_mol_k(temperature_k)/1000.0
+    }
+}
+
+/// Dimensionless equilibrium constants at 1-bar standard state.
+/// SMR: CH4 + H2O <=> CO + 3H2.
+/// WGS: CO + H2O <=> CO2 + H2.
+pub fn smr_equilibrium_constant_nist(temperature_k:f64)->f64 {
+    assert!(temperature_k>=500.0 && temperature_k<=1000.0);
+    let dg=NIST_CO_298_1300.standard_gibbs_kj_mol(temperature_k)
+        +3.0*NIST_H2_298_1000.standard_gibbs_kj_mol(temperature_k)
+        -NIST_CH4_298_1300.standard_gibbs_kj_mol(temperature_k)
+        -NIST_H2O_500_1700.standard_gibbs_kj_mol(temperature_k);
+    (-dg*1000.0/(8.314462618*temperature_k)).exp()
+}
+pub fn wgs_equilibrium_constant_nist(temperature_k:f64)->f64 {
+    assert!(temperature_k>=500.0 && temperature_k<=1000.0);
+    let dg=NIST_CO2_298_1200.standard_gibbs_kj_mol(temperature_k)
+        +NIST_H2_298_1000.standard_gibbs_kj_mol(temperature_k)
+        -NIST_CO_298_1300.standard_gibbs_kj_mol(temperature_k)
+        -NIST_H2O_500_1700.standard_gibbs_kj_mol(temperature_k);
+    (-dg*1000.0/(8.314462618*temperature_k)).exp()
+}
+
+/// Ideal-gas reaction quotient with partial pressures divided by 1 bar.
+/// Inputs are mole fractions and total pressure in bar.
+pub fn smr_reaction_quotient(
+    y_ch4:f64,y_h2o:f64,y_co:f64,y_h2:f64,total_pressure_bar:f64
+)->f64 {
+    assert!(total_pressure_bar>0.0);
+    let p=|y:f64| { assert!(y>0.0); y*total_pressure_bar };
+    p(y_co)*p(y_h2).powi(3)/(p(y_ch4)*p(y_h2o))
+}
+pub fn wgs_reaction_quotient(
+    y_co:f64,y_h2o:f64,y_co2:f64,y_h2:f64,total_pressure_bar:f64
+)->f64 {
+    assert!(total_pressure_bar>0.0);
+    let p=|y:f64| { assert!(y>0.0); y*total_pressure_bar };
+    p(y_co2)*p(y_h2)/(p(y_co)*p(y_h2o))
+}
+
+/// IEAGHG stream-6 HTS outlet WGS equilibrium diagnostic.
+/// Published state: 412 C, 2.77 MPa; mole fractions CO2=.1283,
+/// CO=.0366, H2=.5961, H2O=.2137. Q/K near unity would indicate equilibrium;
+/// departure quantifies how inappropriate an equilibrium assumption would be.
+pub fn ieaghg_stream6_wgs_q_over_k()->f64 {
+    let t=412.0+273.15;
+    let q=wgs_reaction_quotient(0.0366,0.2137,0.1283,0.5961,27.7);
+    q/wgs_equilibrium_constant_nist(t)
+}
+
+#[cfg(test)]
+mod equilibrium_layer_tests {
+    use super::*;
+    #[test]
+    fn endothermic_smr_equilibrium_constant_rises_with_temperature() {
+        assert!(smr_equilibrium_constant_nist(1000.0)>smr_equilibrium_constant_nist(700.0));
+    }
+    #[test]
+    fn exothermic_wgs_equilibrium_constant_falls_with_temperature() {
+        assert!(wgs_equilibrium_constant_nist(700.0)>wgs_equilibrium_constant_nist(1000.0));
+    }
+    #[test]
+    fn smr_reaction_quotient_has_expected_pressure_squared_dependence() {
+        let q1=smr_reaction_quotient(0.1,0.3,0.1,0.5,10.0);
+        let q2=smr_reaction_quotient(0.1,0.3,0.1,0.5,20.0);
+        assert!((q2/q1-4.0).abs()<1.0e-12);
+    }
+    #[test]
+    fn wgs_reaction_quotient_is_pressure_independent_for_delta_n_zero() {
+        let q1=wgs_reaction_quotient(0.1,0.3,0.1,0.5,10.0);
+        let q2=wgs_reaction_quotient(0.1,0.3,0.1,0.5,30.0);
+        assert!((q2/q1-1.0).abs()<1.0e-12);
+    }
+    #[test]
+    fn published_hts_outlet_is_finite_equilibrium_diagnostic() {
+        let x=ieaghg_stream6_wgs_q_over_k();
+        assert!(x.is_finite() && x>0.0);
+    }
+}
