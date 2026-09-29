@@ -4,7 +4,15 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Replace the reduced 80% recycle sensitivity with an iterative fixed-H2 recycle closure so fresh NG, tail-gas composition, captured carbon, heat duty, lifecycle emissions and economics are solved consistently.
+Verify and propagate the newly implemented iterative fixed-H2 tail-recycle closure into fresh-NG energy, capture mass, lifecycle emissions and the S$100/t boundary. Do not treat numerical convergence as rigorous flowsheet validation: conversion and PSA-recovery coefficients remain explicit reduced-model assumptions.
+
+## Latest implementation
+- Added `iterative_tail_recycle_fixed_h2` to `model/src/lib.rs`.
+- The solver repeatedly removes tail CO2, recycles H2/CO/CH4, converts recycled CO/CH4, applies the source-reconstructed PSA H2 recovery, adjusts fresh NG to hold H2 product fixed, regenerates the tail, and iterates to a fixed point.
+- Added regression tests for convergence, recovery of the once-through limit when recycle/conversion are zero, and monotonic fresh-NG reduction with stronger conversion/recovery.
+- Commit: `b50a451f22ee1a52456cfa7cfcafa5642fc9a944`.
+- GitHub workflow status could not yet be verified through the connector because its commit-run endpoint exposes pull-request-triggered runs only and returned no run for this direct main-branch commit.
+- Acceptance remains pending until the Rust tests are independently executed and the converged state is propagated through lifecycle/economic calculations.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
