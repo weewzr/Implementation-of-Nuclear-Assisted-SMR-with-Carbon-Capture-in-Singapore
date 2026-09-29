@@ -37,15 +37,30 @@ Verification: new Rust regression test.
 The *energy* control volume is not closed and remains a separate blocker.
 
 ### B2 — Full temperature-resolved reformer/furnace energy balance absent
-**Disposition: ACCEPTED — OPEN BLOCKER.**
+**Disposition: PARTIALLY RESOLVED — OPEN BLOCKER.**
 
-The existing 298 K reaction-duty layer is explicitly not furnace duty. A
-temperature-dependent enthalpy/steam/heat-recovery model and an authoritative
-plant-duty benchmark remain required.
+The earlier 298 K reaction-only layer has now been superseded for heat-grade
+work by temperature-dependent NIST Shomate species enthalpies, IAPWS steam
+properties, named furnace-service terms, and a reconstructed reformer-WHB
+cooling duty over the authoritative 900-950 C reformer-outlet range to the
+published 320 C HTS inlet. The WHB reconstruction is independently checked
+against IEAGHG's statement that approximately 75% of saturated HP steam is
+generated in the syngas WHB. High-temperature H2 properties use the separate
+NIST 1000-2500 K Shomate interval rather than extrapolating the low-T fit.
 
-Acceptance criterion remains: close the conventional energy balance and
-reproduce an authoritative reference energy/duty metric within a declared
-tolerance before nuclear heat substitution.
+The authoritative equipment-list radiant duty remains 82.63 million kcal/h
+(~96.0 MW), and the source total-NG/H2/net-power energy ledger is retained as a
+separate whole-plant check.
+
+However, the exact primary-reformer inlet state after the second steam/BFW
+addition is not published as a numbered stream, so a fully independent
+reformer-only first-law closure to the 96 MW radiant duty has not yet been
+achieved. B2 therefore remains open rather than treating the source radiant
+duty itself as its own validation.
+
+Evidence: `model/src/lib.rs`, temperature-balance CI passing at commit
+`07c106daaf2fd24a8454d306beceb352dc1de9e7`; NIST SRD 69 high-temperature
+H2 interval and IEAGHG 2017-02 source steam/reformer data.
 
 ### B3 — PSA-tail-gas disposition unresolved when fired reformer is removed
 **Disposition: PARTIALLY RESOLVED — carbon ledger verified by CI; inert/purge closure remains.**
