@@ -1120,3 +1120,23 @@ fn gthtr300c_ihx_loop_anchor_is_not_negligible_against_narrow_margin() {
     let cap=integration_capex_from_annual_margin(2.0,0.08,25,0.0);
     assert!(cap>21.0 && cap<22.0);
 }
+
+
+#[test]
+fn shared_reactor_full_cost_boundary_requires_favourable_gas_or_ts() {
+    use nuclear_assisted_smr::{
+        recycle80_min_gas_price_for_full_cost_sgd_per_gj,
+        recycle80_max_ccs_ts_cost_sgd_y,
+    };
+    // Screening midpoint: 162 MWth; JAEA legacy heat 5.69 SGD/GJ;
+    // allocated MHR-T source reactor ~S$50m/y; IAEA IHX/loop ~S$8.2m/y.
+    // Keep reformer/recycle allowance explicit at S$5m/y rather than zero.
+    let p=recycle80_min_gas_price_for_full_cost_sgd_per_gj(
+        54_000_000.0,162.0,5.69,150.0,31_900_000.0,
+        50_000_000.0,8_200_000.0,5_000_000.0);
+    assert!(p>17.0 && p<20.0, "minimum gas price {p} SGD/GJ");
+    let ts=recycle80_max_ccs_ts_cost_sgd_y(
+        54_000_000.0,162.0,20.0,5.69,150.0,
+        50_000_000.0,8_200_000.0,5_000_000.0);
+    assert!(ts>35_000_000.0 && ts<45_000_000.0, "max T&S {ts} SGD/y");
+}
