@@ -2757,7 +2757,7 @@ mod converged_heat_report {
         let (lo,hi)=converged_htgr_service_source_bounded_mw(625.0);
         // Broad regression windows deliberately preserve source/property
         // uncertainty while detecting accidental reversion to the old 80% case.
-        assert!(d>-20.0 && d<-5.0);
+        assert!(d > -20.0 && d < -5.0);
         assert!(lo>140.0 && lo<170.0);
         assert!(hi>165.0 && hi<200.0);
     }
