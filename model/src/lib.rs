@@ -1477,3 +1477,32 @@ pub fn ieaghg_case1a_annual_direct_co2_avoided_t() -> f64 {
         -IEAGHG_CASE1A_EMITTED_KG_PER_NM3_H2;
     avoided_kg_per_nm3*100_000.0*8322.0/1000.0
 }
+
+
+/// Annual purchased supplementary furnace-NG energy in the IEAGHG base case.
+/// Uses the source 55.94 MW_LHV and 8322 h/y.
+pub fn ieaghg_annual_makeup_furnace_ng_gj() -> f64 {
+    ieaghg_makeup_fuel_lhv_mw()*8322.0*3.6
+}
+
+/// Annual resource-cost saving if a fraction of purchased supplementary
+/// furnace NG is displaced, for an explicit SGD/GJ commodity-price assumption.
+pub fn avoided_furnace_ng_cost_sgd_per_year(
+    gas_price_sgd_per_gj:f64,
+    displaced_fraction:f64,
+)->f64 {
+    assert!(gas_price_sgd_per_gj>=0.0);
+    assert!((0.0..=1.0).contains(&displaced_fraction));
+    ieaghg_annual_makeup_furnace_ng_gj()*gas_price_sgd_per_gj*displaced_fraction
+}
+
+/// Gas price that would be required for avoided purchased furnace NG alone to
+/// deliver a specified annual saving. This is a break-even diagnostic.
+pub fn gas_price_required_for_savings_sgd_per_gj(
+    required_savings_sgd_per_year:f64,
+    displaced_fraction:f64,
+)->f64 {
+    assert!(required_savings_sgd_per_year>=0.0);
+    assert!(displaced_fraction>0.0 && displaced_fraction<=1.0);
+    required_savings_sgd_per_year/(ieaghg_annual_makeup_furnace_ng_gj()*displaced_fraction)
+}
