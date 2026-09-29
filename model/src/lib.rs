@@ -3495,3 +3495,76 @@ mod common_basis_tests {
             <boundary_rank(SystemBoundary::Lifecycle));
     }
 }
+
+
+/// Matched lifecycle screen for the 80% recycle + direct-HTGR architecture.
+///
+/// This keeps the same H2 output as IEAGHG, reduces fresh-feed NG according to
+/// the reduced recycle model, removes purchased supplementary furnace NG, and
+/// treats the remaining fresh-feed carbon with an explicit capture fraction.
+/// Upstream NG applies to remaining fresh-feed energy only.
+/// Nuclear and CCS-transport terms remain explicit sensitivities.
+///
+/// IMPORTANT: this is still a screening LCA. It does not yet include
+/// construction/infrastructure, methane-leakage pathway detail beyond the
+/// supplied upstream intensity, or site-specific CO2 shipping/storage LCA.
+pub fn recycle80_direct_lifecycle_screen(
+    capture_fraction:f64,
+    upstream_gco2e_per_mj:f64,
+    nuclear_gco2e_per_kwh_e:f64,
+    net_electric_efficiency:f64,
+    thermal_service_mw:f64,
+    ccs_transport_fraction:f64,
+)->LifecycleCase {
+    assert!((0.0..=1.0).contains(&capture_fraction));
+    let r=reduced_tail_recycle_fixed_h2(0.80,0.80,0.80);
+    let remaining_feed_fraction=1.0-r.fresh_ng_displaced_fraction;
+
+    // Carbon entering as fresh feed after recycle displacement.
+    let fresh_feed_co2eq=feedstock_carbon_co2_equivalent_kg_per_kg_h2()
+        *remaining_feed_fraction;
+
+    LifecycleCase {
+        plant_carbon:fresh_feed_co2eq*(1.0-capture_fraction),
+        upstream_ng:upstream_ng_kgco2e_per_kgh2(upstream_gco2e_per_mj)
+            *remaining_feed_fraction,
+        nuclear:direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(
+            thermal_service_mw,nuclear_gco2e_per_kwh_e,net_electric_efficiency),
+        ccs_transport:ccs_transport_kgco2e_per_kgh2(
+            fresh_feed_co2eq*capture_fraction,ccs_transport_fraction),
+    }
+}
+
+/// Lifecycle baseline including feedstock + separately purchased furnace NG
+/// upstream burden, plus direct plant CO2 from IEAGHG.
+/// Upstream intensity is applied to both NG energy streams.
+pub fn ieaghg_base_lifecycle_screen(
+    upstream_gco2e_per_mj:f64
+)->LifecycleCase {
+    let feed_up=upstream_ng_kgco2e_per_kgh2(upstream_gco2e_per_mj);
+    let fuel_gj_h=ieaghg_makeup_fuel_lhv_mw()*3.6;
+    let fuel_up_kg_h=fuel_gj_h*1000.0*upstream_gco2e_per_mj/1000.0;
+    let fuel_up_per_h2=fuel_up_kg_h/IEAGHG_BASE.h2_kg_per_h;
+    LifecycleCase{
+        plant_carbon:IEAGHG_BASE.co2_emitted_kg_per_kg_h2(),
+        upstream_ng:feed_up+fuel_up_per_h2,
+        nuclear:0.0,
+        ccs_transport:0.0,
+    }
+}
+
+/// Annual lifecycle abatement and corresponding S$100/t budget for a matched
+/// baseline/candidate pair at the IEAGHG fixed H2 output and operating hours.
+pub fn matched_lifecycle_abatement_budget(
+    baseline:LifecycleCase,
+    candidate:LifecycleCase,
+    hours_per_year:f64,
+    target_sgd_per_tco2e:f64,
+)->(f64,f64,f64) {
+    let delta=baseline.total()-candidate.total();
+    assert!(delta>0.0);
+    let annual_h2_kg=IEAGHG_BASE.h2_kg_per_h*hours_per_year;
+    let avoided_t=delta*annual_h2_kg/1000.0;
+    let budget=avoided_t*target_sgd_per_tco2e;
+    (delta,avoided_t,budget)
+}
