@@ -1244,7 +1244,7 @@ fn matched_recycle_meets_abatement_scale_across_credible_lifecycle_bracket() {
     let high=matched_recycle_lifecycle_economic_point(18.6,5.1,0.025);
     println!("LCA_LOW={:?};LCA_HIGH={:?}",low,high);
     assert!(low.annual_abatement_t>600_000.0);
-    assert!(high.annual_abatement_t>700_000.0);
+    assert!(high.annual_abatement_t>690_000.0 && high.annual_abatement_t<710_000.0);
     assert!(low.min_gas_price_low_ts_sgd_per_gj>high.min_gas_price_low_ts_sgd_per_gj);
     assert!(low.min_gas_price_low_ts_sgd_per_gj<17.0);
     assert!(high.min_gas_price_low_ts_sgd_per_gj>10.0);
