@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Map the remaining favourable shared-reactor feasibility region after adding the source-backed IAEA USD69m IHX+secondary-loop anchor; the previous representative midpoint no longer fits.
+Replace the illustrative 7.5 kgCO2e/kgH2 / S$54m/y economic denominator with a matched lifecycle calculation for the same 80% recycle + shared-reactor case, because recycle changes upstream NG, capture mass and nuclear lifecycle emissions.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -410,6 +410,17 @@ The previously surviving representative midpoint had only order ~S$2m/y residual
 
 This does not yet falsify all shared-reactor cases: higher NG value, lower T&S, smaller allocation fraction or lower integration cost can reopen headroom. The next task is to quantify that surviving sensitivity region rather than treating the midpoint as feasible.
 
+## Shared-reactor full-cost region resolved
+A full-cost boundary now reserves: ~S$50m/y MHR-T thermal-share reactor allocation, ~S$8.2m/y annualised IAEA IHX+secondary-loop anchor, and an explicit **S$5m/y reformer/recycle integration sensitivity**. The S$5m/y term is deliberately nonzero but is not claimed as a source-derived helium-reformer retrofit cost. Modern eSMR literature supports reuse of existing reformer infrastructure, but no directly transferable helium-heated retrofit CAPEX was found. citeturn0search1turn0search2
+
+For the 162 MWth midpoint, legacy S$5.69/GJ nuclear-heat operating anchor, S$150/MWh separation power and low Group-A T&S (~S$31.9m/y), the minimum NG value required by the current S$100/t screen is approximately **S$17.5/GJ**. Thus S$10 and S$15/GJ cases fail; S$20/GJ survives this screening combination.
+
+At S$20/GJ gas, maximum compatible T&S is ~**S$42.8m/y**. The low Group-A sensitivity (~S$31.9m/y) fits, while the high Group-A sensitivity (~S$47.85m/y) does not.
+
+Therefore the shared architecture retains a real but narrow favourable region; it is not globally falsified. Dedicated large HTGR remains outside the current region.
+
+The next dependency is lifecycle consistency: the S$54m/y budget was derived from an illustrative 7.5 kgCO2e/kgH2 abatement. The 80% recycle case reduces fresh NG and changes upstream emissions/capture mass, so its actual annual abatement and allowable S$100/t budget must now be recomputed on the same physical case.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -450,4 +461,4 @@ This does not yet falsify all shared-reactor cases: higher NG value, lower T&S, 
   remain.
 
 ## Next highest-priority task
-Solve the shared-reactor feasibility boundary after reserving the IAEA USD69m IHX+secondary-loop annualised cost plus an explicit nonzero reformer/recycle integration allowance. Determine the minimum NG price / maximum CCS T&S / maximum reactor allocation fraction combinations that still satisfy S$100/t. Use modern eSMR retrofit literature only to bound reformer-modification scope; do not set helium-reformer retrofit CAPEX to zero without evidence.
+Build a matched lifecycle inventory for the 80% recycle/shared-reactor case: reduce upstream NG in proportion to fresh-feed displacement, account separately for eliminated supplementary furnace NG, update captured/residual carbon from the recycle balance, add nuclear heat lifecycle emissions and CCS T&S emissions, and compare against the same unabated-SMR lifecycle baseline. Use the resulting annual MtCO2e avoided to regenerate the S$100/t budget, then rerun the full-cost boundary. This is required before any assignment-level economic verdict.
