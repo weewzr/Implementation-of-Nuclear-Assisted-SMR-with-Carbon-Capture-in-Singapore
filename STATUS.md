@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Bound total secondary-helium loop pressure drop/circulator parasitics and complete the remaining convection/steam service ledger around the 96.04 MW radiant-duty anchor.
+Replace the current helium-loop pressure-drop sensitivity with source-backed component losses where possible, and quantify the fired-furnace convection services that disappear under nuclear heating.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -77,6 +77,15 @@ Using the GTHTR300C IHX-only pressure loss and an explicit 80% circulator-effici
 
 Rust regression tests for the large-scale helium-flow and IHX-only pumping calculation passed GitHub Actions.
 
+## New loop-parasitic bound
+No defensible complete component pressure-drop dataset has yet been found for the exact proposed secondary-He loop, so no reformer/pipe/SG pressure losses were fabricated.
+
+The model now parameterises total loop loss as a multiple of the published GTHTR300C IHX loss (58 kPa). At the published 170 MW / 81 kg/s / 5.15 MPa benchmark and an explicit 80% circulator-efficiency assumption:
+- IHX-only lower layer is ~1.1% parasitic;
+- 3x the IHX pressure loss is ~3.2% parasitic.
+
+This is a sensitivity bound, not a final loop result. Rust regression tests passed GitHub Actions.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -117,7 +126,7 @@ Rust regression tests for the large-scale helium-flow and IHX-only pumping calcu
   remain.
 
 ## Next highest-priority task
-Build a component-wise secondary-helium pressure-drop budget (IHX + hot duct + reformer + steam generator + valves + return) and compute circulator parasitic sensitivity. In parallel, recover the remaining conventional convection/steam duties. Acceptance criterion: bound W_circ/Q_delivered and a complete temperature-resolved service ledger before mapping reactor candidates.
+Use the IEAGHG heat/mass balance and equipment tables to quantify or bound the convection-section feed-preheat, steam-superheat and steam-generation duties that disappear with furnace removal. Continue searching primary JAEA/component literature for reformer/SG/duct pressure losses. Acceptance criterion: a non-double-counted heat-service ledger plus a defensible total-loop parasitic envelope.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
