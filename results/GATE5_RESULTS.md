@@ -56,3 +56,33 @@ pass classes and reports normalized threshold gaps.
 
 These are experimental findings. Do not alter ranges or accounting solely to
 create a passing nuclear point.
+
+
+## Results synthesis layer
+
+The repository now provides a figure-ready threshold dataset and a generated
+scientific synthesis:
+
+```bash
+cargo run --bin gate5_threshold_scatter_csv > ../results/gate5_threshold_scatter.csv
+cargo run --bin gate5_results_synthesis > ../results/gate5_results_synthesis.md
+```
+
+The threshold CSV contains all 64 cases with:
+- annual avoided tCO2e/y;
+- forward S$/tCO2e;
+- both assignment threshold coordinates;
+- binding-constraint class;
+- reformer T/P;
+- PSA recovery;
+- capture fraction;
+- carbon/electricity corner;
+- cost corner.
+
+The synthesis deliberately limits claim strength:
+**0/64 joint passes is a verified experimental result for the declared domain,
+not proof that every conceivable nuclear-assisted configuration fails.**
+
+Case 1A remains a separate source-backed comparator: its annual direct-abatement
+scale is comparable, while its Singapore economic result is not merged into the
+nuclear S$/t plot without a common currency/year cost basis.
