@@ -3140,3 +3140,35 @@ mod pressure_efficiency_surface_tests {
         for i in 0..3 { assert!(s[i][0]>s[i][1] && s[i][1]>s[i][2]); }
     }
 }
+
+
+/// Named sensitivity points for deterministic reporting and comparison.
+/// Returns rows for 2.0, 3.0, 4.5 MPa; columns for eta=0.65,0.75,0.85.
+pub fn recycle_pressure_efficiency_min_gas_table_sgd_per_gj()->[[f64;3];3] {
+    recycle_pressure_efficiency_sensitivity()
+}
+
+/// Range width across the pressure/efficiency surface, useful for comparing
+/// compressor-design sensitivity against larger economic uncertainties.
+pub fn recycle_pressure_efficiency_boundary_span_sgd_per_gj()->f64 {
+    let s=recycle_pressure_efficiency_sensitivity();
+    let mut lo=f64::INFINITY;
+    let mut hi=f64::NEG_INFINITY;
+    for row in s {
+        for v in row {
+            lo=lo.min(v);
+            hi=hi.max(v);
+        }
+    }
+    hi-lo
+}
+
+#[cfg(test)]
+mod pressure_surface_report_tests {
+    use super::*;
+    #[test]
+    fn pressure_surface_span_is_finite_and_not_zero() {
+        let span=recycle_pressure_efficiency_boundary_span_sgd_per_gj();
+        assert!(span.is_finite() && span>0.0);
+    }
+}
