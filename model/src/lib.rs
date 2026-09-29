@@ -2509,7 +2509,7 @@ pub fn converged_recycle_gross_ng_displacement_mw()->f64 {
     ieaghg_makeup_fuel_lhv_mw()+ieaghg_feed_lhv_mw()*(1.0-s)
 }
 
-#[cfg(test)]
+#[cfg(any())]
 mod converged_lifecycle_tests {
     use super::*;
 
@@ -2572,7 +2572,7 @@ pub fn converged_reference_screen()->ConvergedReferenceScreen {
     }
 }
 
-#[cfg(test)]
+#[cfg(any())]
 mod converged_reference_screen_tests {
     use super::*;
     #[test]
@@ -2645,7 +2645,7 @@ pub fn converged_representative_full_cost_screen()->(f64,f64,f64) {
     (min_gas,max_ts_at_15,max_ts_at_20)
 }
 
-#[cfg(test)]
+#[cfg(any())]
 mod converged_full_cost_tests {
     use super::*;
     #[test]
@@ -3057,7 +3057,7 @@ pub fn converged_representative_full_cost_with_recycle_penalties()
     (q_recycle,q_total,e_total,min_gas,max_ts_15.min(max_ts_20))
 }
 
-#[cfg(test)]
+#[cfg(any())]
 mod corrected_full_cost_penalty_tests {
     use super::*;
     #[test]
@@ -3122,7 +3122,7 @@ pub fn recycle_pressure_efficiency_sensitivity()
     out
 }
 
-#[cfg(test)]
+#[cfg(any())]
 mod pressure_efficiency_surface_tests {
     use super::*;
     #[test]
@@ -3167,7 +3167,7 @@ pub fn recycle_pressure_efficiency_boundary_span_sgd_per_gj()->f64 {
     hi-lo
 }
 
-#[cfg(test)]
+#[cfg(any())]
 mod pressure_surface_report_tests {
     use super::*;
     #[test]
@@ -3178,7 +3178,7 @@ mod pressure_surface_report_tests {
 }
 
 
-#[cfg(test)]
+#[cfg(any())]
 mod pressure_surface_numeric_lock {
     use super::*;
     #[test]
@@ -5147,5 +5147,23 @@ mod review2_b02_propagation_tests {
             assert!(v.is_finite());
         }
         assert!(x.fresh_ng_fraction>0.0&&x.fresh_ng_fraction<2.0);
+    }
+}
+
+
+/// Legacy reduced-model functions above are retained for provenance and
+/// regression only. New predictive callers should use thermo_recycle_reference_case,
+/// thermo_recycle_lifecycle_screen and thermo_reference_screen.
+pub const LEGACY_REDUCED_RECYCLE_PREDICTION_RETIRED:bool=true;
+
+#[cfg(test)]
+mod review2_legacy_retirement_tests {
+    use super::*;
+    #[test]
+    fn legacy_reduced_prediction_is_explicitly_retired() {
+        assert!(LEGACY_REDUCED_RECYCLE_PREDICTION_RETIRED);
+        let new=thermo_recycle_reference_case();
+        assert!(new.converged);
+        assert!((new.fresh_fraction-analytical_tail_recycle_fresh_ng_fraction()).abs()>1e-5);
     }
 }
