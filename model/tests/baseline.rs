@@ -518,3 +518,12 @@ fn verified_current_htgr_service_envelope_has_expected_values() {
     close(b.0,132.4775,0.01); close(b.1,132.7092,0.01);
     close(c.0,134.2326,0.01); close(c.1,134.4643,0.01);
 }
+
+
+#[test]
+fn project_loop_circulator_sensitivity_is_low_single_digit_mw() {
+    use nuclear_assisted_smr::project_loop_circulator_sensitivity_mw;
+    close(project_loop_circulator_sensitivity_mw(1.0),2.1675,0.005);
+    close(project_loop_circulator_sensitivity_mw(2.0),4.3350,0.005);
+    close(project_loop_circulator_sensitivity_mw(3.0),6.5025,0.005);
+}
