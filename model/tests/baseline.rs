@@ -1055,3 +1055,31 @@ fn recycle80_operating_energy_screen_has_expected_economic_direction() {
     let p=recycle80_break_even_gas_price_sgd_per_gj(162.0,5.69,150.0);
     assert!(p>7.0 && p<10.0);
 }
+
+
+#[test]
+fn inverse_recycle_economics_shows_ccs_can_erase_capital_headroom() {
+    use nuclear_assisted_smr::{
+        recycle80_max_allocated_capital_opex_sgd_y,
+        total_common_reactor_headroom_sgd_y,
+    };
+    // Illustrative 0.54 Mt/y abatement budget = S$54m/y.
+    // Group-A-like low T&S: S$31.9m/y.
+    let h=recycle80_max_allocated_capital_opex_sgd_y(
+        54_000_000.0,162.0,15.0,5.69,150.0,31_900_000.0);
+    assert!(h> -5_000_000.0 && h<10_000_000.0, "hydrogen-side headroom {h}");
+    let total=total_common_reactor_headroom_sgd_y(h.max(0.0),170.0/600.0);
+    assert!(total>=h.max(0.0));
+}
+
+#[test]
+fn maximum_nuclear_heat_price_falls_as_ccs_cost_rises() {
+    use nuclear_assisted_smr::recycle80_max_nuclear_heat_price_sgd_per_gj;
+    let low=recycle80_max_nuclear_heat_price_sgd_per_gj(
+        54_000_000.0,162.0,15.0,150.0,31_900_000.0,0.0);
+    let high=recycle80_max_nuclear_heat_price_sgd_per_gj(
+        54_000_000.0,162.0,15.0,150.0,47_850_000.0,0.0);
+    assert!(low>high);
+    assert!(low>10.0 && low<20.0);
+    assert!(high>5.0 && high<15.0);
+}
