@@ -16,3 +16,7 @@ cargo run --quiet --bin gate6_threshold_magnitude_csv > ../results/generated/gat
 cargo run --quiet --bin gate6_threshold_plot_bounds_csv > ../results/generated/gate6_threshold_plot_bounds.csv
 cargo run --quiet --bin gate5_results_synthesis > ../results/generated/gate5_results_synthesis.md
 cargo run --quiet --bin gate5_figure_manifest > ../results/generated/gate5_figure_manifest.md
+
+cargo run --quiet --bin deployment_cases_csv > ../results/generated/deployment_cases.csv
+cargo run --quiet --bin deployment_cost_breakdown_csv > ../results/generated/deployment_cost_breakdown.csv
+cargo run --quiet --bin deployment_scale_curve_csv > ../results/generated/deployment_scale_curve.csv
