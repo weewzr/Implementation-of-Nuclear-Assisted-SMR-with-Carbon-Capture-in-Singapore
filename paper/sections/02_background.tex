@@ -2,3 +2,57 @@
 Natural-gas SMR combines high-temperature reforming with water--gas shift (WGS), hydrogen purification and substantial process heat. Literature and authoritative sources establish three facts central to this study: lifecycle emissions cannot be inferred from stack capture alone because upstream natural-gas emissions remain material; high-temperature gas-cooled reactors can provide high-grade helium heat in principle, but reactor-to-chemical-plant coupling remains an integration problem rather than a demonstrated Singapore deployment; and CCS energy and cost depend strongly on the pressure and composition of the captured stream.
 
 The structured literature matrix in \texttt{literature/RESEARCH\_MATRIX.md} records the evidence basis and contradictions used in model construction. IEAGHG SMR+CCS cases~\cite{ieaghg2017smr} provide the principal process benchmark; NIST/JANAF thermochemistry~\cite{nistwebbook} underpins equilibrium and enthalpy calculations; JAEA/JAERI HTTR and GTHTR300C work~\cite{jaeahttr,jaeri2004gthtr300c} provides temperature, IHX and helium-loop precedent; Singapore Government sources~\cite{mti2025nuclear,mti2026inir,mti2025carbon,mti2025indonesiaccs} define nuclear and cross-border CCS as future or conditional infrastructure rather than existing assets.
+
+
+\subsection{Visual orientation: from Singapore context to the process}
+Figure~\ref{fig:singapore-context} gives the external-data context before introducing the process model. Singapore's 2024 electricity system remained strongly gas-dependent: natural gas supplied 94.0\% of the generation fuel mix and the average grid emission factor was 0.402 kgCO$_2$/kWh~\cite{ema2024context}; EMA also describes power generation as contributing about 40\% of national carbon emissions~\cite{ema2024futurefund}. These are external Singapore statistics, not outputs of this project.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[box/.style={draw,rounded corners,align=center,minimum width=0.27\linewidth,minimum height=22mm}]
+\node[box] (a) {\Large\textbf{94.0\%}\\[1mm]Natural gas share\\of 2024 electricity fuel mix};
+\node[box,right=8mm of a] (b) {\Large\textbf{0.402}\\[1mm]kgCO$_2$/kWh\\2024 grid factor};
+\node[box,right=8mm of b] (c) {\Large\textbf{$\sim$40\%}\\[1mm]of national carbon emissions\\from power generation};
+\end{tikzpicture}
+\caption{Singapore energy context from EMA 2024 data~\cite{ema2024context,ema2024futurefund}. The panel is reconstructed from authoritative reported values stored in \texttt{data/external/ema\_singapore\_energy\_context\_2024.csv}; it is not a project-model result.}
+\label{fig:singapore-context}
+\end{figure}
+
+Figure~\ref{fig:smr-explainer} introduces the hydrogen pathway at a deliberately simpler level than the detailed model. Feed carbon enters with natural gas. Reforming converts methane and steam to syngas; WGS converts CO and steam toward CO$_2$ and additional H$_2$; CO$_2$ separation removes a concentrated carbon stream; PSA produces high-purity hydrogen and a carbon-bearing tail gas. CCS changes where much of the carbon goes, but it does not remove the feedstock carbon from the chemistry~\cite{ieaghg2017smr}.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,node distance=7mm,unit/.style={draw,rounded corners,align=center,minimum height=10mm,minimum width=19mm},arr/.style={->,thick}]
+\node[unit] (feed) {Natural gas\\+ steam};
+\node[unit,right=of feed] (ref) {Reformer\\CH$_4$+H$_2$O\\$\rightarrow$ syngas};
+\node[unit,right=of ref] (wgs) {WGS\\CO+H$_2$O\\$\rightarrow$ CO$_2$+H$_2$};
+\node[unit,right=of wgs] (sep) {CO$_2$\\separation};
+\node[unit,right=of sep] (psa) {PSA};
+\node[unit,right=of psa] (h2) {H$_2$\\product};
+\node[unit,below=of sep] (store) {Captured CO$_2$\\compression/storage};
+\node[unit,below=of psa] (tail) {PSA tail gas\\residual carbon};
+\draw[arr] (feed)--node[above,font=\scriptsize]{feed carbon}(ref);
+\draw[arr] (ref)--(wgs);\draw[arr](wgs)--(sep);\draw[arr](sep)--(psa);\draw[arr](psa)--(h2);
+\draw[arr] (sep)--(store);\draw[arr](psa)--(tail);
+\end{tikzpicture}
+\caption{Original explanatory schematic of conventional SMR with CCS, based on the IEAGHG merchant-hydrogen architecture~\cite{ieaghg2017smr}. The figure shows the chemical and carbon logic only; the detailed model later adds recycle, purge, capture fractions and energy duties.}
+\label{fig:smr-explainer}
+\end{figure}
+
+The nuclear proposal changes the \emph{heat source}, not the feed-carbon chemistry. Figure~\ref{fig:nuclear-heat-explainer} separates those ideas. A fired reformer supplies high-temperature heat by combustion; the nuclear-assisted concept instead transfers reactor heat through helium and an intermediate heat exchanger. The canonical screening hierarchy is 950$^\circ$C primary helium $\rightarrow$ 920$^\circ$C secondary helium $\rightarrow$ 900$^\circ$C process hot end, consistent with HTGR/GTHTR high-temperature heat-delivery precedent~\cite{jaeri2004gthtr300c}. Feedstock carbon still requires capture and lifecycle accounting.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,node distance=8mm,unit/.style={draw,rounded corners,align=center,minimum height=10mm,minimum width=25mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
+\node[unit] (fire) {Conventional\\fuel combustion};
+\node[unit,right=of fire] (r1) {Reformer\\high-temperature heat};
+\draw[heat](fire)--node[above,font=\scriptsize]{fired heat}(r1);
+\node[below=13mm of fire,unit] (reactor) {HTGR-class reactor\\primary He 950$^\circ$C};
+\node[right=of reactor,unit] (ihx) {IHX\\secondary He 920$^\circ$C};
+\node[right=of ihx,unit] (r2) {Reformer\\process hot end 900$^\circ$C};
+\draw[heat](reactor)--(ihx);\draw[heat](ihx)--(r2);
+\node[right=10mm of r1,align=left] {\textbf{What changes:} heat service\\\textbf{What does not:} feed carbon};
+\end{tikzpicture}
+\caption{Original two-layer explanation of nuclear assistance. The concept substitutes a high-temperature heat-delivery chain for fired reformer heat; it does not eliminate carbon entering as natural-gas feed. Temperatures show the canonical screening hierarchy, not a detailed equipment design~\cite{jaeri2004gthtr300c}.}
+\label{fig:nuclear-heat-explainer}
+\end{figure}
