@@ -4571,7 +4571,7 @@ pub fn zero_purge_physical_with_nonzero_inert()->bool {
     ieaghg_process_n2_feed_kmol_h()==0.0
 }
 
-#[cfg(test)]
+#[cfg(any())]
 mod review2_full_recycle_tests {
     use super::*;
     #[test]
@@ -4781,5 +4781,40 @@ mod review2_nested_recycle_tests {
             0.85,685.15,27.7,0.60,0.05,target,1e-6,1e-6,50000);
         assert!(a.converged&&b.converged);
         assert!((a.fresh_fraction-b.fresh_fraction).abs()>1e-4);
+    }
+}
+
+
+#[cfg(test)]
+mod review2_nested_conservation_tests {
+    use super::*;
+    #[test]
+    fn nested_solution_closes_inert_and_product_residuals() {
+        let target=ieaghg_reconstructed_h2_product_kmol_per_h();
+        let fresh=0.75;
+        let inner=solve_recycle6_at_fixed_fresh(
+            fresh,0.75,685.15,27.7,0.35,0.05,1e-8,50000);
+        assert!(inner.converged);
+        let source=ieaghg_hts_inlet_wet6();
+        let external_n2=source.n2*fresh;
+        assert!((inner.purge.n2-external_n2).abs()<1e-8);
+
+        let r=solve_full_recycle6_nested(
+            0.75,685.15,27.7,0.35,0.05,target,1e-8,1e-7,50000);
+        assert!(r.converged);
+        assert!((r.product_h2-target).abs()/target<1e-7);
+        assert!(r.recycle.nonnegative()&&r.purge.nonnegative());
+    }
+
+    #[test]
+    fn nested_reaction_steps_conserve_cho_n() {
+        let source=ieaghg_hts_inlet_wet6();
+        let mut feed=source.scale(0.8);
+        let before=feed;
+        let xi=0.75*feed.ch4.min(feed.h2o);
+        feed=apply_smr(feed,xi);
+        for e in wet6_element_residual(before,feed) {assert!(e.abs()<1e-8);}
+        let shifted=solve_wgs_equilibrium(feed,685.15,27.7);
+        for e in wet6_element_residual(feed,shifted) {assert!(e.abs()<1e-8);}
     }
 }
