@@ -5902,3 +5902,119 @@ mod r3_b01_mass_and_source_validation_tests {
         assert!(e.n2.abs()<0.02);
     }
 }
+
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3CcsLedger {
+    pub process_captured_co2_kmol_h:f64,
+    pub purge_oxidation_co2_kmol_h:f64,
+    pub total_co2_capture_train_kmol_h:f64,
+    pub mdea_heat_lo_mw:f64,pub mdea_heat_hi_mw:f64,
+    pub co2_compression_mwe:f64,pub tail_compression_mwe:f64,
+}
+pub fn r3_ccs_ledger(s:R3FixedFreshState)->R3CcsLedger {
+    let purge_c=s.purge.co+s.purge.ch4;
+    let total=s.captured_co2_kmol_h+purge_c;
+    let src=ieaghg_tail_inventory().co2_kmol_h;
+    let scale=total/src;
+    let tail_scale=purge_c/src;
+    let (qlo,qhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+    R3CcsLedger{
+        process_captured_co2_kmol_h:s.captured_co2_kmol_h,
+        purge_oxidation_co2_kmol_h:purge_c,
+        total_co2_capture_train_kmol_h:total,
+        mdea_heat_lo_mw:qlo*scale,mdea_heat_hi_mw:qhi*scale,
+        co2_compression_mwe:IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE*scale,
+        tail_compression_mwe:IEAGHG_CASE2A_TAIL_COMP_BRAKE_MW*tail_scale}
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct R3HeatCascade {
+    pub reformer_inlet_c:f64,pub reformer_process_hot_c:f64,
+    pub secondary_he_hot_c:f64,pub secondary_he_cold_c:f64,
+    pub primary_outlet_c:f64,pub process_approach_k:f64,pub ihx_approach_k:f64,
+    pub reformer_external_heat_mw:f64,pub whb_recovery_mw:f64,
+    pub mdea_heat_lo_mw:f64,pub mdea_heat_hi_mw:f64,
+    pub recovered_heat_to_mdea_lo_mw:f64,pub recovered_heat_to_mdea_hi_mw:f64,
+    pub external_mdea_lo_mw:f64,pub external_mdea_hi_mw:f64,
+    pub nuclear_heat_lo_mw:f64,pub nuclear_heat_hi_mw:f64,
+    pub helium_mass_flow_hi_kg_s:f64,pub first_law_residual_mw:f64,
+}
+pub fn r3_heat_cascade(
+    reformer_inlet_c:f64,process_approach_k:f64,ihx_approach_k:f64,
+    secondary_he_cold_c:f64,
+)->R3HeatCascade {
+    assert!((600.0..=700.0).contains(&reformer_inlet_c));
+    assert!(process_approach_k>0.0&&ihx_approach_k>0.0);
+    let s=r3_canonical_recycle_case();assert!(s.converged);
+    let ccs=r3_ccs_ledger(s);
+    let process_hot=900.0;
+    let he_hot=required_secondary_he_hot_c(process_hot,process_approach_k);
+    let primary_out=he_hot+ihx_approach_k;
+    assert!(primary_out>he_hot&&he_hot>process_hot);
+    assert!(he_hot>secondary_he_cold_c);
+
+    let hin=wet6_enthalpy_mw(s.reformer_in,reformer_inlet_c+273.15);
+    let hout=wet6_enthalpy_mw(s.reformer_out,1173.15);
+    let qref=hout-hin;
+    assert!(qref>0.0);
+    let qwhb=wet6_enthalpy_mw(s.reformer_out,1173.15)
+        -wet6_enthalpy_mw(s.reformer_out,320.0+273.15);
+    assert!(qwhb>0.0);
+
+    // MDEA regeneration is low-grade duty. Credit at most available WHB heat,
+    // once, against each independently scaled duty bound.
+    let rec_lo=qwhb.min(ccs.mdea_heat_lo_mw);
+    let rec_hi=qwhb.min(ccs.mdea_heat_hi_mw);
+    let ext_lo=ccs.mdea_heat_lo_mw-rec_lo;
+    let ext_hi=ccs.mdea_heat_hi_mw-rec_hi;
+    let qlo=qref+ext_lo;let qhi=qref+ext_hi;
+    let m=helium_mass_flow_kg_s(qhi,5.2,he_hot,secondary_he_cold_c);
+    let residual=qhi-(qref+ext_hi);
+    R3HeatCascade{
+        reformer_inlet_c,reformer_process_hot_c:process_hot,
+        secondary_he_hot_c:he_hot,secondary_he_cold_c,primary_outlet_c:primary_out,
+        process_approach_k,ihx_approach_k,reformer_external_heat_mw:qref,
+        whb_recovery_mw:qwhb,mdea_heat_lo_mw:ccs.mdea_heat_lo_mw,
+        mdea_heat_hi_mw:ccs.mdea_heat_hi_mw,
+        recovered_heat_to_mdea_lo_mw:rec_lo,recovered_heat_to_mdea_hi_mw:rec_hi,
+        external_mdea_lo_mw:ext_lo,external_mdea_hi_mw:ext_hi,
+        nuclear_heat_lo_mw:qlo,nuclear_heat_hi_mw:qhi,
+        helium_mass_flow_hi_kg_s:m,first_law_residual_mw:residual}
+}
+
+#[cfg(test)]
+mod r3_b02_heat_cascade_tests {
+    use super::*;
+    #[test]
+    fn canonical_heat_cascade_has_positive_terminal_approaches() {
+        let x=r3_heat_cascade(650.0,20.0,30.0,500.0);
+        assert!(x.secondary_he_hot_c-x.reformer_process_hot_c>=20.0);
+        assert!(x.primary_outlet_c-x.secondary_he_hot_c>=30.0);
+        assert!(x.secondary_he_hot_c>x.secondary_he_cold_c);
+    }
+    #[test]
+    fn energy_and_ccs_use_identical_candidate_mdea_duty() {
+        let s=r3_canonical_recycle_case();let c=r3_ccs_ledger(s);
+        let x=r3_heat_cascade(650.0,20.0,30.0,500.0);
+        assert!((x.mdea_heat_lo_mw-c.mdea_heat_lo_mw).abs()<1e-12);
+        assert!((x.mdea_heat_hi_mw-c.mdea_heat_hi_mw).abs()<1e-12);
+    }
+    #[test]
+    fn recovered_heat_is_allocated_once_and_first_law_closes() {
+        let x=r3_heat_cascade(650.0,20.0,30.0,500.0);
+        assert!(x.recovered_heat_to_mdea_hi_mw<=x.whb_recovery_mw+1e-12);
+        assert!((x.external_mdea_hi_mw
+            -(x.mdea_heat_hi_mw-x.recovered_heat_to_mdea_hi_mw)).abs()<1e-12);
+        assert!(x.first_law_residual_mw.abs()<1e-12);
+    }
+    #[test]
+    fn worst_screening_reformer_inlet_still_has_feasible_temperature_order() {
+        for tin in [600.0,650.0,700.0] {
+            let x=r3_heat_cascade(tin,20.0,30.0,500.0);
+            assert!(x.primary_outlet_c>x.secondary_he_hot_c);
+            assert!(x.secondary_he_hot_c>x.reformer_process_hot_c);
+            assert!(x.nuclear_heat_hi_mw>0.0&&x.helium_mass_flow_hi_kg_s>0.0);
+        }
+    }
+}
