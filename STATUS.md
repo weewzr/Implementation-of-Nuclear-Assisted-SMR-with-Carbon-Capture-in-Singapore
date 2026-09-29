@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Quantify the omitted thermal penalties in the reduced tail-recycle case—recycled CH4/CO conversion heat plus Case-2A solvent-regeneration steam—to determine how much of the apparent operating saving survives.
+Build a temperature-grade heat cascade to determine how much of the ~38-39 MW Case-2A MDEA regeneration duty is genuinely incremental reactor heat versus recoverable low-grade syngas/WGS/helium heat.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -288,6 +288,15 @@ For the 80% case, at illustrative S$150/MWh electricity, the Case-2A 6.309 MWe s
 
 This keeps tail-gas integration economically material but does not establish feasibility.
 
+## Tail-recycle thermal penalty screen
+NETL reaction data give DeltaH°298 ~+205.8 kJ/mol for SMR and -41.2 kJ/mol for WGS. In the 80% reduced recycle case, recycled CO/CH4 contributes only ~+4.5 MW of standard reaction heat because WGS offsets part of CH4 reforming. The displaced fresh NG contains enough CH4 that its methane-only standard reform+shift duty is ~15-16 MW, so the recycle case conservatively **reduces** standard reaction heat by order ~11 MW relative to the displaced fresh feed. C2+ omission makes this savings magnitude conservative.
+
+The ~563 kmol/h gross stoichiometric water consumption is not added directly as extra plant steam: ~420 kmol-C/h fresh feed is removed while ~404 kmol-C/h recycled CO+CH4 is converted, so steam must be recomputed from the combined feed/S:C constraint.
+
+The major new thermal penalty is IEAGHG Case-2A MDEA regeneration: ~66.9 t/h LP steam. Saturated-steam latent heat at ~4-7 barg implies **~38.1-39.2 MWth** of low-temperature regeneration service. This is not high-grade reformer heat and may be partly supplied by retained syngas/WGS recovery or the helium temperature cascade.
+
+A crude +38-39 MW MDEA minus ~11 MW standard reaction-heat saving gives order +27-28 MW, but this is explicitly NOT a final HTGR increment because heat-grade integration, sensible duties, feed-preheat reductions and recycle compression remain unresolved.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -328,4 +337,4 @@ This keeps tail-gas integration economically material but does not establish fea
   remain.
 
 ## Next highest-priority task
-Calculate the thermal penalty for the reduced recycle cases: reaction heat for recycled CH4 reforming, shift contribution, extra steam generation/superheat and Case-2A MDEA regeneration (~66.9 t/h LP steam). Convert those duties into additional HTGR heat/electricity requirements, then recompute the partial net operating value. After that, add recycle compression and iterate the reduced model toward convergence.
+Construct the temperature-resolved heat cascade/pinch screen: map primary reformer, preheat, HP-steam superheat and MDEA LP-steam regeneration against secondary-He cooling and retained syngas/WGS heat recovery. Determine the incremental reactor-heat fraction of the ~38-39 MW MDEA duty. Then update the 80% recycle operating-value screen and HTGR thermal envelope before adding recycle compression/CAPEX.
