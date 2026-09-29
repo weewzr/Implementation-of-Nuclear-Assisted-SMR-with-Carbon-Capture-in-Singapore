@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Quantify the furnace-dependent HP-steam superheating duty from IAPWS properties and bound the remaining convection/feed-preheat duties lost under nuclear heating.
+Quantify the remaining furnace-convection feed-preheat and steam-generation duties beyond the now-bounded ~112 MW radiant+superheat service floor.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -93,6 +93,13 @@ IEAGHG states around 75% of saturated HP steam is generated in the reformer syng
 
 Crucially, IEAGHG routes saturated HP steam through the furnace steam-superheater coil before process/export use. Thus furnace removal creates a superheating service for roughly the full 141 t/h steam flow, not merely the non-WHB steam fraction. The next calculation will use NIST/IAPWS steam enthalpies rather than an assumed constant cp.
 
+## New quantified furnace-service floor
+The HP steam superheater service is now bounded from IAPWS-consistent steam properties. The IEAGHG base plant routes ~141.354 t/h HP steam through the furnace superheater. Bracketing the 4.23-4.29 MPa source pressure with 4.0 and 4.5 MPa steam-table states gives approximately 16.0-16.25 MW of superheat duty.
+
+Adding this to the verified 96.04 MW radiant reformer duty yields a currently quantified furnace-dependent thermal-service floor of approximately 112.0-112.3 MW at the 100,000 Nm3/h H2 reference scale.
+
+This is not final HTGR duty: feed/pre-reformer/reformer preheat, furnace-convection steam generation and nuclear-loop losses remain unresolved. Conversely, syngas/shift heat recovery must not be double-counted as nuclear duty.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -133,7 +140,7 @@ Crucially, IEAGHG routes saturated HP steam through the furnace steam-superheate
   remain.
 
 ## Next highest-priority task
-Compute HP steam superheater duty with IAPWS/NIST enthalpies at the source pressures and temperatures, then bound the remaining furnace-convection steam-generation and feed-preheat duties. Acceptance criterion: add these services to the verified 96.04 MW radiant duty without double-counting syngas/shift heat recovery.
+Recover or derive the remaining furnace-convection duties: reformer/pre-reformer/feed preheat and the furnace-only share of saturated-steam generation. Then combine them with the 112 MW quantified floor and helium-loop parasitics to obtain the first complete direct-nuclear-heat service envelope.
 
 Acceptance criterion: conventional reference energy demand and major duties
 close and reproduce an authoritative published metric within a declared
