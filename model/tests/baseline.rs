@@ -475,3 +475,14 @@ fn reformer_preheater_duty_increases_monotonically_with_inlet_temperature() {
     let q650=reformer_preheater_sensitivity_mw(650.0);
     assert!(q600 > 0.0 && q600 < q625 && q625 < q650);
 }
+
+
+#[test]
+fn current_htgr_service_envelope_increases_with_reformer_inlet_temperature() {
+    use nuclear_assisted_smr::current_htgr_service_envelope_mw;
+    let a=current_htgr_service_envelope_mw(600.0);
+    let b=current_htgr_service_envelope_mw(625.0);
+    let c=current_htgr_service_envelope_mw(650.0);
+    assert!(a.0 < b.0 && b.0 < c.0);
+    assert!(a.1 < b.1 && b.1 < c.1);
+}
