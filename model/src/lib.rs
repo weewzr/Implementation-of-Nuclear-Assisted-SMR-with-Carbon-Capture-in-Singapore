@@ -1803,3 +1803,45 @@ pub fn mdea_waste_heat_fraction_upper_from_ieaghg_steam_group()->(f64,f64) {
     let (mlo,mhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
     ((qlo/mhi).min(1.0),(qhi/mlo).min(1.0))
 }
+
+
+/// NIST SRD 69 carbon-monoxide Shomate coefficients, 298-1300 K.
+pub const NIST_CO_298_1300: Shomate = Shomate {
+    a:25.56759,b:6.096130,c:4.054656,d:-2.671301,
+    e:0.131021,f:-118.0089,g:227.3665,h:-110.5271,
+};
+
+/// IEAGHG stream 6: HTS outlet / start of shifted-syngas cooling train.
+/// Source: 412 C, 2.77 MPa, 8370.3 kmol/h.
+/// Returns ideal-gas sensible heat recoverable by cooling to target_c.
+/// This deliberately excludes condensation.
+pub fn ieaghg_hts_outlet_sensible_heat_to_mw(target_c:f64)->f64 {
+    assert!(target_c>=25.0 && target_c<412.0);
+    let n=8370.3;
+    let t1=target_c+273.15;
+    let t2=412.0+273.15;
+    let dh =
+        0.1283*NIST_CO2_298_1200.delta_h_kj_mol(t1,t2)
+        +0.0366*NIST_CO_298_1300.delta_h_kj_mol(t1,t2)
+        +0.5961*NIST_H2_298_1000.delta_h_kj_mol(t1,t2)
+        +0.0015*NIST_N2_500_2000.delta_h_kj_mol(t1,t2)
+        +0.0238*NIST_CH4_298_1300.delta_h_kj_mol(t1,t2)
+        +0.2137*NIST_H2O_500_1700.delta_h_kj_mol(t1,t2);
+    n*dh/3600.0
+}
+
+pub fn ieaghg_shift_sensible_heat_above_reboiler_mw(
+    reboiler_c:f64,dtmin_c:f64
+)->f64 {
+    assert!(dtmin_c>=0.0);
+    ieaghg_hts_outlet_sensible_heat_to_mw(reboiler_c+dtmin_c)
+}
+
+/// Thermodynamic sensible-heat availability ceiling before competing duties.
+pub fn mdea_fraction_from_shift_sensible_ceiling(
+    reboiler_c:f64,dtmin_c:f64
+)->(f64,f64) {
+    let q=ieaghg_shift_sensible_heat_above_reboiler_mw(reboiler_c,dtmin_c);
+    let (mlo,mhi)=case2a_mdea_regeneration_latent_heat_bounds_mw();
+    ((q/mhi).min(1.0),(q/mlo).min(1.0))
+}
