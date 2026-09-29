@@ -1033,3 +1033,23 @@ fn source_bounded_mdea_and_recycle_heat_are_finite_and_ordered() {
     assert!(qlo>144.0 && qlo<148.0);
     assert!(qhi>175.0 && qhi<180.0);
 }
+
+
+#[test]
+fn recycle80_operating_energy_screen_has_expected_economic_direction() {
+    use nuclear_assisted_smr::{
+        recycle80_operating_energy_net_bounds_sgd_y,
+        recycle80_break_even_gas_price_sgd_per_gj,
+    };
+    // Current source-bounded HTGR service screen: representative 145-179 MWth.
+    // 5.69 SGD/GJ corresponds approximately to JAEA's legacy 0.7 JPY/MJ
+    // at ~0.00813 SGD/JPY; it is a technology-cost anchor, not Singapore price.
+    let low_gas=recycle80_operating_energy_net_bounds_sgd_y(
+        145.0,179.0,10.0,5.69,150.0);
+    let high_gas=recycle80_operating_energy_net_bounds_sgd_y(
+        145.0,179.0,20.0,5.69,150.0);
+    assert!(low_gas.0>4_000_000.0 && low_gas.1<13_000_000.0);
+    assert!(high_gas.0>48_000_000.0 && high_gas.1<57_000_000.0);
+    let p=recycle80_break_even_gas_price_sgd_per_gj(162.0,5.69,150.0);
+    assert!(p>7.0 && p<10.0);
+}
