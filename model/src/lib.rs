@@ -1399,3 +1399,33 @@ pub fn max_reactor_and_integration_budget_after_ccs(
     allowed_incremental_cost_per_year
         - annual_ccs_transport_storage_cost(captured_co2_t_per_year,ccs_tariff_per_t_captured)
 }
+
+
+pub const IEAGHG_CASE1A_CAC_EUR2014_PER_T_AVOIDED: f64 = 47.1;
+pub const IEAGHG_CASE1A_TS_EUR2014_PER_T_CAPTURED: f64 = 10.0;
+pub const IEAGHG_CASE1A_CAPTURED_KG_PER_NM3_H2: f64 = 0.4660;
+pub const IEAGHG_BASE_EMITTED_KG_PER_NM3_H2: f64 = 0.8091;
+pub const IEAGHG_CASE1A_EMITTED_KG_PER_NM3_H2: f64 = 0.3704;
+
+pub fn ieaghg_case1a_captured_per_avoided_ratio() -> f64 {
+    IEAGHG_CASE1A_CAPTURED_KG_PER_NM3_H2
+        /(IEAGHG_BASE_EMITTED_KG_PER_NM3_H2-IEAGHG_CASE1A_EMITTED_KG_PER_NM3_H2)
+}
+
+/// Case-1A avoidance cost excluding the report's explicit T&S charge,
+/// retained in original Q4-2014 euros per tonne CO2 avoided.
+pub fn ieaghg_case1a_non_ts_cac_eur2014_per_t_avoided() -> f64 {
+    IEAGHG_CASE1A_CAC_EUR2014_PER_T_AVOIDED
+        - IEAGHG_CASE1A_TS_EUR2014_PER_T_CAPTURED
+          *ieaghg_case1a_captured_per_avoided_ratio()
+}
+
+/// Substitute any T&S tariff expressed in the SAME currency/price basis as
+/// the non-T&S term. Price-year/FX harmonisation must occur before calling.
+pub fn case1a_cac_with_replacement_ts(
+    non_ts_cost_per_t_avoided:f64,
+    replacement_ts_cost_per_t_captured:f64,
+)->f64 {
+    non_ts_cost_per_t_avoided
+        + replacement_ts_cost_per_t_captured*ieaghg_case1a_captured_per_avoided_ratio()
+}
