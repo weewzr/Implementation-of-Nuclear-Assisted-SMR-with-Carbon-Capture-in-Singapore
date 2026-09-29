@@ -1,6 +1,6 @@
 # Independent Review 3 resolution record
 
-Independent Review 3 / Gate 4: **OPEN**.
+Independent Review 3 / Gate 4: **CLOSED — VERIFIED FOR EXPERIMENTS/RESULTS WITH ADVERSE FINDINGS RETAINED**.
 
 This file tracks corrective work against
 `reviews/review_03_integrated_model_results.md`. It is not a new review.
@@ -229,3 +229,52 @@ R3-M02 — complete common-boundary comparator falsification. Compare the
 corrected nuclear case with conventional SMR, conventional SMR+CCS and
 electrified reforming on matched H2/output/lifecycle/economic boundaries;
 include electrolysis only where source data support a defensible screen.
+
+
+## Focused Review-3 closure check
+
+Reviewed repository state: `c384e053e8ea1ec42f1d471fe7f7733dda022b75`.
+Current GitHub Actions run `36545720485`: PASS.
+
+This was a closure check against the original Review-3 acceptance criteria, not
+a new scientific review.
+
+### Closure reconciliation
+
+- R3-B01: PASS — corrected physical external-feed/capture/recycle graph,
+  plant-wide normalized C/H/O/N and mass closure, zero-recycle source
+  compatibility.
+- R3-B02: PASS — positive process/IHX approaches, common candidate-scaled MDEA
+  duty, single heat-recovery allocation, first-law residual and recomputed
+  helium flow.
+- R3-B03: PASS as a forward model — physical carbon/auxiliary lifecycle ledger,
+  forward annual costs and S$/t identity, reference/conservative cases. The
+  conservative case remains a scientific FAIL of the CN4252 thresholds.
+- R3-M01: PASS — coupled 64-point threshold design. Scientific result remains
+  **0 joint passes**; no robust passing region is claimed.
+- R3-M02: PASS to current evidence — Case 1A common-scale falsification is
+  quantitative; eSMR/electrolysis limitations are explicitly labelled rather
+  than filled with fabricated common-boundary data.
+- R3-M03: PASS — Singapore deployment quantities are derived and nuclear/CCS
+  infrastructure is explicitly conditional.
+- R3-M04: PASS — external/integrated/adversarial tests cover the discovered
+  defect classes and the canonical results contract preserves adverse results.
+
+### Gate interpretation
+
+Gate 4 verification means the corrected computational framework is sufficiently
+falsifiable and reproducible to generate experiments/results. It does **not**
+mean the nuclear-assisted candidate satisfies the CN4252 objectives.
+
+Current verified scientific conclusion entering Gate 5:
+- conservative credible case fails both assignment thresholds;
+- the 64-point coupled uncertainty design contains zero joint passes;
+- conventional IEAGHG Case 1A exceeds the annual direct-abatement scale
+  threshold at the common H2 production scale;
+- nuclear-assisted SMR+CCS remains a research scenario, not a demonstrated
+  preferred solution.
+
+**Gate 4 — verified computational model: CLOSED.**
+
+Next milestone: Gate 5 — experiments/results. Do not reinterpret Gate-4 closure
+as a positive feasibility verdict.
