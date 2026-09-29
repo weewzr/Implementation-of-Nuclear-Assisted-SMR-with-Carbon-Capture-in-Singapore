@@ -1,133 +1,52 @@
 # STATUS
 
-## Current research gate
-Gate 6 — Paper/reproducibility: REVIEW-4 CORRECTIONS COMPLETE.
+## Current state
+Reviews 1-4: CLOSED.
+Gate 5 - Experiments/results: COMPLETE.
+Gate 6 - Paper/reproducibility: COMPLETE.
+Review-4 corrections: COMPLETE.
+Bounded visual-communication pass: COMPLETE.
+Final Submission QA: BLOCKED only by unresolved submission author/team line.
 
-Gate 5 — Experiments/results: COMPLETE.
+## Canonical scientific result
+- 64 coupled nuclear-assisted cases were tested; 0/64 pass both CN4252 thresholds.
+- The conservative credible case fails both thresholds.
+- IEAGHG Case 1A conventional SMR+CCS exceeds 0.25 Mt/y direct avoided CO2 on the common H2/output-hours basis.
+- Matched Singapore Case-1A S$/t remains unresolved.
+- eSMR/electrolysis are not ranked without matched evidence.
+- Nuclear-assisted SMR+CCS is not established as CN4252-compliant or preferred.
+- Singapore nuclear deployment and cross-border CCS remain conditional.
 
-Gate 4 — Verified computational model: COMPLETE.
+## Canonical project locations
+- Manuscript: `paper/main.tex`.
+- Reproduction command: `sh paper/build.sh`.
+- Canonical results: `results/GATE5_RESULTS.md`, `results/r3_canonical_results.md`.
+- Gate-5 closure: `results/gate5_closure.md`.
+- Review records/resolutions: `reviews/`.
+- Review-4 resolution: `reviews/review_04_resolution.md`.
+- External visual-data provenance: `results/EXTERNAL_FIGURE_DATA_MANIFEST.md`.
+- Final QA record: `submission/FINAL_QA.md`.
 
-Independent Review 1 gate: CLOSED.
-Independent Review 2 gate: CLOSED.
-Independent Review 3 / Gate 4 gate: CLOSED.
-Independent Review 4 gate: CLOSED.
+## Current release evidence
+Post-visual-pass baseline `6b70bb41bcdda188cc92961bdba092c159231e14`:
+- Research CI `36643555114`: PASS.
+- Paper/reproducibility `36643555098`: PASS.
+- Artifact `11067686037`, SHA-256 `371424d6f0ec5d9ddbdcf21b7be82b24f628d7e86a66abd921fca40d72f09fbf`.
+- Generated PDF: 15 pages; all pages visually inspected during Final Submission QA.
 
-## Verified computational state
-- Canonical R3 flowsheet starts from the IEAGHG NG/steam-derived external feed,
-  then reforming/WGS, explicit CO2 removal, PSA, purge and recycle.
-- Plant-boundary C/H/O/N and total mass closure are CI-tested.
-- Captured CO2 is physically removed before downstream PSA/recycle.
-- Candidate heat integration uses positive process/IHX approaches:
-  900 C process, 920 C secondary-He hot end, 950 C primary outlet in the
-  reference screening hierarchy.
-- Candidate CCS and energy ledgers use the same scaled MDEA duty; recovered heat
-  is allocated once and the first-law ledger is tested.
-- Lifecycle emissions include residual carbon, upstream NG, nuclear heat,
-  CCS/tail-compression and helium-circulator electricity, plus CCS transport.
-- Economics are forward calculations; S$100/t is a test threshold, not an input
-  to the cost equation.
-- Singapore deployment scale is derived from the corrected R3 state and nuclear
-  deployment / cross-border storage remain explicit scenario conditions.
-- Gate-4 F/G/H tests cover external benchmark, integrated-system and adversarial
-  failure modes.
-
-## Canonical results and adverse findings
-Canonical contract: `results/r3_canonical_results.md`.
-
-The verified model does NOT establish CN4252 feasibility:
-- conservative credible case fails both assignment thresholds;
-- coupled uncertainty design contains 64 points and **0 joint passes**;
-- IEAGHG Case 1A conventional SMR+CCS exceeds 0.25 Mt/y direct avoided CO2 at
-  the common H2 scale;
-- nuclear-assisted SMR+CCS is not established as a preferred solution.
-
-These adverse results are retained as scientific findings, not treated as model
-failures.
-
-## Current CI state
-Review-4 corrected state verified at `94cb2daac5c0dc537af9d7af2abf49213855b355`: Research CI `36642345227` PASS; Paper/reproducibility `36642345111` PASS; artifact `11066319048` visually inspected. Resolution: `reviews/review_04_resolution.md`.
-
-Current canonical paper/reproducibility workflow is verified:
-commit `b9ca2896c442071f7694a811b4a4383c71fee7fe`,
-GitHub Actions Paper run `36566879465`: PASS.
-
-Acceptance evidence:
-- canonical Rust tests completed successfully;
-- canonical Gate-5/Gate-6 manuscript datasets regenerated;
-- clean LaTeX/BibTeX build converged;
-- final unresolved citation/reference integrity check passed;
-- `paper/main.pdf` generated successfully (13 pages in the converged CI build);
-- `cn4252-manuscript` artifact uploaded successfully, artifact ID
-  `11032795799`, SHA-256 digest
-  `4ccb56f742cbd55c8b3f139ec01612c23ed4db52d697a2b1630cc364fc32781b`.
-Research CI run `36566879451`: PASS.
-
-First-pass LaTeX warnings for citations/references occurred before BibTeX and
-subsequent LaTeX passes, then resolved during the converged build. They are not
-remaining unresolved citations/references.
+QA found one visual overlap in the introductory conventional-SMR schematic. It was corrected at `45de88474d7d2e566f97a6162082e9947a68a419` without changing scientific content. Research CI `36644207911` passed; final Paper-CI artifact verification is pending/superseded by QA metadata commits and must be rerun after the author line is supplied.
 
 ## Retained limitations
-- Reformer/prereformer treatment remains a screening model, not catalyst
-  kinetics.
-- PSA remains a bounded recovery model, not a bed-resolved adsorption cycle.
+- Reformer/prereformer treatment is an equilibrium screening model, not catalyst kinetics.
+- PSA is a bounded recovery model, not a bed-resolved adsorption cycle.
 - Detailed exchanger area/pinch-network and piping design are outside scope.
-- Economic prices/CAPEX/T&S remain scenario assumptions unless source-labelled.
-- eSMR/electrolysis do not yet have a full matched Singapore forward-cost model.
-- Singapore has not been assumed to have deployed nuclear or domestic CO2
-  storage.
+- Economic/LCA inputs remain scenario assumptions unless source-labelled.
+- eSMR/electrolysis and Case-1A Singapore economics are not fully matched.
+- Singapore nuclear deployment and CO2 storage infrastructure are not assumed deployed.
 
-## Blockers
-No unresolved scientific, manuscript-build or reproducibility blocker prevents
-Independent Review 4. Review 4 has NOT been conducted by Main Research.
+## Submission blocker
+The title page still uses the generic author text `CN4252 Project`. No intended author/team line is present in the repository or recovered project context. Do not invent names.
 
-## Gate-5 progress
-- Experiment 01: threshold failure topology — COMPLETE.
-- Experiment 02: local threshold-driver attribution — COMPLETE.
-- Experiment 03: common-scale IEAGHG Case-1A decomposition — COMPLETE.
-- Experiment 04: binding-constraint map — COMPLETE.
-- Canonical CSV/Markdown renderers and reproduction commands — COMPLETE.
-- Figure-ready 64-case threshold dataset and claim-strength synthesis — COMPLETE.
-- Deterministic figure-data pipeline and manifest — COMPLETE.
+Required next action: obtain the exact submission author/team line, update `paper/main.tex`, run the canonical release build/CI, visually verify the title page and corrected page-3 schematic, then mark **FINAL SUBMISSION CANDIDATE: READY** if clean.
 
-Gate-5 result contract: `results/GATE5_RESULTS.md`.
-
-The experimental evidence currently remains adverse to a robust nuclear case:
-0/64 coupled cases pass both CN4252 thresholds. Do not optimize this result away.
-
-## Gate-5 closure
-Gate 5 is CLOSED. Closure record: `results/gate5_closure.md`.
-
-The experimental conclusion remains adverse/conditional:
-- 0/64 tested nuclear cases pass both CN4252 thresholds;
-- the conservative case fails both;
-- Case 1A exceeds the annual direct-abatement scale;
-- no technology is established as a definitive Singapore economic winner on a
-  fully matched basis.
-
-## Gate-6 progress
-- Single canonical modular LaTeX manuscript under `paper/`: ESTABLISHED.
-- Abstract through conclusions: FIRST COMPLETE TEXT DRAFT.
-- Governing equations / verification / adverse Gate-5 results: INTEGRATED.
-- Baseline LaTeX/PDF CI build: VERIFIED PASS at `eeab77d`.
-- Reproducible Gate-5 threshold map and binding table: INTEGRATED; latest render
-  CI pending.
-- Reproducible local driver/sensitivity figure: INTEGRATED; latest render CI
-  pending.
-- Original integrated nuclear-SMR-CCS system schematic: INTEGRATED; latest
-  render CI pending.
-- IEAGHG Case-1A claim-labelled comparator table: INTEGRATED.
-- Singapore deployment-scale table: INTEGRATED.
-- Lifecycle-emissions decomposition: INTEGRATED with screening limitations
-  explicit.
-- Primary-source coverage strengthened for IEAGHG, NIST, JAERI/JAEA and official
-  Singapore nuclear/CCS context; further citation completeness review remains.
-- Reproducibility script and CN4252 traceability appendix: ESTABLISHED.
-
-## Next step
-Review 4 is closed after verified manuscript/provenance/figure/reproducibility corrections. STOP. The next stage is final submission QA and, if required, presentation/oral-defence preparation; do not start it automatically.
-
-Canonical review records:
-- `reviews/review_01_resolution.md`
-- `reviews/review_02_resolution.md`
-- `reviews/review_03_integrated_model_results.md`
-- `reviews/review_03_resolution.md`
+Do not start another review, research gate or presentation work automatically.
