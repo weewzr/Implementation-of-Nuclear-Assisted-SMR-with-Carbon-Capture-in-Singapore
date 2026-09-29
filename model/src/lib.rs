@@ -1375,3 +1375,27 @@ pub fn budget_fraction_consumed(cost_per_year:f64,allowed_budget_per_year:f64)->
     assert!(cost_per_year>=0.0 && allowed_budget_per_year>0.0);
     cost_per_year/allowed_budget_per_year
 }
+
+
+/// Maximum CCS T&S tariff compatible with an annual abatement-cost budget after
+/// reserving other incremental annual costs.
+pub fn max_ccs_tariff_per_t_captured(
+    allowed_incremental_cost_per_year:f64,
+    other_incremental_cost_per_year:f64,
+    captured_co2_t_per_year:f64,
+)->f64 {
+    assert!(captured_co2_t_per_year>0.0);
+    (allowed_incremental_cost_per_year-other_incremental_cost_per_year)
+        /captured_co2_t_per_year
+}
+
+/// Maximum hydrogen-side annual reactor/integration cost after paying a
+/// specified CCS T&S tariff.
+pub fn max_reactor_and_integration_budget_after_ccs(
+    allowed_incremental_cost_per_year:f64,
+    captured_co2_t_per_year:f64,
+    ccs_tariff_per_t_captured:f64,
+)->f64 {
+    allowed_incremental_cost_per_year
+        - annual_ccs_transport_storage_cost(captured_co2_t_per_year,ccs_tariff_per_t_captured)
+}
