@@ -10,24 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - name: Test model
-        working-directory: model
-        run: cargo test --all-targets
-      - name: Generate canonical Gate-5 data
-        working-directory: model
-        run: sh scripts/generate_gate5_results.sh
       - name: Install LaTeX
         run: sudo apt-get update && sudo apt-get install -y latexmk texlive-latex-extra texlive-science
-      - name: Build paper
-        working-directory: paper
-        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-      - name: Check unresolved references and citations
-        working-directory: paper
-        run: |
-          if grep -E "undefined references|undefined citations|Citation .* undefined|Reference .* undefined" main.log; then
-            echo "Unresolved LaTeX references/citations detected"
-            exit 1
-          fi
+      - name: Reproduce and build manuscript
+        run: sh paper/build.sh
       - name: Upload generated manuscript
         uses: actions/upload-artifact@v4
         with:
