@@ -103,6 +103,17 @@ pub fn deployment_cases_csv()->String {
   }
  } s
 }
+
+pub fn deployment_summary_csv()->String {
+ let min=deployment_minimum_annual_h2_t(); let canon=r3_singapore_scale();
+ let a=deployment_case(DeploymentCostClass::JaeaMature,true);let b=deployment_case(DeploymentCostClass::ModernCentral,true);let d=deployment_case(DeploymentCostClass::FoakAdverse,true);
+ format!("case,h2_t_y,annual_scale,reactor_mwth,process_heat_mw,co2_stored_t_y\nOriginal canonical,{:.3},1.000,600,{:.3},{:.3}\nMinimum abatement scale,{:.3},{:.6},600,not fixed,not fixed\nJAEA mature cogeneration,{:.3},{:.2},{:.1},{:.3},{:.3}\nModern central cogeneration,{:.3},{:.2},{:.1},{:.3},{:.3}\nFOAK adverse cogeneration,{:.3},{:.2},{:.1},{:.3},{:.3}\n",canon.annual_h2_t,canon.nuclear_process_heat_hi_mw,canon.total_co2_to_storage_t_y,min,min/canon.annual_h2_t,a.annual_h2_t,DEPLOYMENT_ANNUAL_SCALE,a.reactor_capacity_mwth,a.process_heat_mw,a.co2_stored_t_y,b.annual_h2_t,DEPLOYMENT_ANNUAL_SCALE,b.reactor_capacity_mwth,b.process_heat_mw,b.co2_stored_t_y,d.annual_h2_t,DEPLOYMENT_ANNUAL_SCALE,d.reactor_capacity_mwth,d.process_heat_mw,d.co2_stored_t_y)
+}
+pub fn deployment_principal_csv()->String {
+ let mut s=String::from("case,h2_t_y,reactor_mwth,process_heat_mw,co2_stored_t_y,avoided_t_y,incremental_sgd,cost_sgd_t,abatement_pass,cost_pass,joint_pass\n");
+ for k in [DeploymentCostClass::JaeaMature,DeploymentCostClass::ModernCentral,DeploymentCostClass::FoakAdverse]{let x=deployment_case(k,true);let n=match k{DeploymentCostClass::JaeaMature=>"JAEA mature",DeploymentCostClass::ModernCentral=>"Modern central",DeploymentCostClass::FoakAdverse=>"FOAK adverse"};s.push_str(&format!("{},{:.3},{:.1},{:.3},{:.3},{:.3},{:.3},{:.3},{},{},{}\n",n,x.annual_h2_t,x.reactor_capacity_mwth,x.process_heat_mw,x.co2_stored_t_y,x.annual_avoided_t,x.annual_incremental_sgd,x.abatement_cost_sgd_t,x.pass_abatement,x.pass_cost,x.joint_pass));} s
+}
+
 pub fn deployment_cost_breakdown_csv()->String {
  let x=deployment_case(DeploymentCostClass::JaeaMature,true);
  format!("component,annual_sgd\nNG and auxiliary net,{:.3}\nNuclear heat service,{:.3}\nCCS capital annualisation,{:.3}\nIntegration/site annualisation,{:.3}\nCO2 transport-storage,{:.3}\n",x.annual_other_incremental_sgd,x.annual_nuclear_sgd,x.annual_ccs_capital_sgd,x.annual_integration_sgd,x.annual_ts_sgd)
