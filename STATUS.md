@@ -1,7 +1,7 @@
 # STATUS
 
 ## Current research gate
-Gate 6 — Paper/reproducibility: REVIEW-4 CORRECTIONS IN PROGRESS.
+Gate 6 — Paper/reproducibility: REVIEW-4 CORRECTIONS COMPLETE.
 
 Gate 5 — Experiments/results: COMPLETE.
 
@@ -10,7 +10,7 @@ Gate 4 — Verified computational model: COMPLETE.
 Independent Review 1 gate: CLOSED.
 Independent Review 2 gate: CLOSED.
 Independent Review 3 / Gate 4 gate: CLOSED.
-Independent Review 4 gate: OPEN — substantive corrections implemented; CI/PDF verification pending.
+Independent Review 4 gate: CLOSED.
 
 ## Verified computational state
 - Canonical R3 flowsheet starts from the IEAGHG NG/steam-derived external feed,
@@ -45,6 +45,8 @@ These adverse results are retained as scientific findings, not treated as model
 failures.
 
 ## Current CI state
+Review-4 corrected state verified at `94cb2daac5c0dc537af9d7af2abf49213855b355`: Research CI `36642345227` PASS; Paper/reproducibility `36642345111` PASS; artifact `11066319048` visually inspected. Resolution: `reviews/review_04_resolution.md`.
+
 Current canonical paper/reproducibility workflow is verified:
 commit `b9ca2896c442071f7694a811b4a4383c71fee7fe`,
 GitHub Actions Paper run `36566879465`: PASS.
@@ -122,9 +124,7 @@ The experimental conclusion remains adverse/conditional:
 - Reproducibility script and CN4252 traceability appendix: ESTABLISHED.
 
 ## Next step
-STOP Main Research manuscript expansion. The complete first manuscript now
-satisfies the Review-4 trigger and is ready for Independent Review 4. Main
-Research must not conduct Review 4 itself.
+Review 4 is closed after verified manuscript/provenance/figure/reproducibility corrections. STOP. The next stage is final submission QA and, if required, presentation/oral-defence preparation; do not start it automatically.
 
 Canonical review records:
 - `reviews/review_01_resolution.md`
