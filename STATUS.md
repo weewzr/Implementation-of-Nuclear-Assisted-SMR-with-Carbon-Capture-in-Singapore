@@ -4,7 +4,7 @@
 Gate 3 — Mathematical/model foundation; Independent Review 1 gate OPEN
 
 ## Current scientific question/task
-Build a temperature-grade heat cascade to determine how much of the ~38-39 MW Case-2A MDEA regeneration duty is genuinely incremental reactor heat versus recoverable low-grade syngas/WGS/helium heat.
+Replace the external 63% MDEA waste-heat sensitivity anchor with a reduced source-based composite-curve/pinch ledger for the IEAGHG streams, including temperature feasibility.
 
 ## Independent Review 1
 - Review-response pass started from the substantive review available in the
@@ -297,6 +297,15 @@ The major new thermal penalty is IEAGHG Case-2A MDEA regeneration: ~66.9 t/h LP 
 
 A crude +38-39 MW MDEA minus ~11 MW standard reaction-heat saving gives order +27-28 MW, but this is explicitly NOT a final HTGR increment because heat-grade integration, sensible duties, feed-preheat reductions and recycle compression remain unresolved.
 
+## First temperature-grade heat-cascade result
+External integrated-SMR evidence materially changes the MDEA penalty interpretation. A recent electrified/convective SMR+CCS study supplies **63% of solvent-regeneration heat directly from post-LTS/condensing syngas** and only 37% from LP steam. A 2025 advanced blue-H2 study independently reports pinch-designed low-quality waste-heat recovery capable of eliminating external heating demand in its integrated configurations. These are external benchmarks, not IEAGHG Case-2A reconstructed values.
+
+The model now carries an explicit MDEA waste-heat fraction f_WH. For the ~38.1-39.2 MW Case-2A regeneration service, f_WH=0/0.5/0.63/0.75 gives incremental heat of ~38-39/~19/~14/~9.5-9.8 MW respectively.
+
+At the external 63% anchor, incremental MDEA heat is ~14.1-14.5 MW. Combining this only with the conservative ~-11 MW standard reaction-heat change from 80% recycle gives an incomplete net thermal increment of order **~3 MW**, rather than the naive +27-28 MW obtained when all MDEA heat was assumed incremental.
+
+This is not yet a design result: the 63% value is external and temperature-approach feasibility for the IEAGHG streams has not been proven. It does establish that f_MDEA,nuclear=1 is unnecessarily conservative.
+
 ## Preserved findings
 - PSA tail gas remains a first-order nuclear-integration constraint.
 - Replacing make-up furnace NG alone does not remove feedstock carbon.
@@ -337,4 +346,4 @@ A crude +38-39 MW MDEA minus ~11 MW standard reaction-heat saving gives order +2
   remain.
 
 ## Next highest-priority task
-Construct the temperature-resolved heat cascade/pinch screen: map primary reformer, preheat, HP-steam superheat and MDEA LP-steam regeneration against secondary-He cooling and retained syngas/WGS heat recovery. Determine the incremental reactor-heat fraction of the ~38-39 MW MDEA duty. Then update the 80% recycle operating-value screen and HTGR thermal envelope before adding recycle compression/CAPEX.
+Build a reduced IEAGHG composite-curve/pinch ledger from source stream temperatures and heat duties for reformer syngas cooling, WGS cooling, steam generation/superheat, feed preheat and the MDEA reboiler. Enforce a declared minimum temperature approach. Acceptance criterion: derive a source-based feasible range for f_WH and replace the external 63% anchor as the central heat-integration estimate.
