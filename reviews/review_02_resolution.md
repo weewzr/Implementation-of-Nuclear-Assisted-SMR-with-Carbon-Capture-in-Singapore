@@ -167,33 +167,52 @@ R2-B03 is closed.
 
 ## R2-M01 — Candidate-specific CCS scaling
 
-**Final disposition: PARTIALLY RESOLVED — REQUIRED MAJOR FINDING REMAINS OPEN.**
+**Final disposition: RESOLVED.**
 
-### Scientific correction completed
-The furnace-free carbon architecture is stream-specific: shifted-syngas process
-capture, compressed tail/recycle CO2 polishing, reformer recycle, and explicit
-purge-carbon oxidation/capture. A generic flue-gas MEA block is not applied to
-the nuclear case.
+### Scientific correction
+The stream-specific CCS topology is now coupled to candidate-specific duty
+scaling on the canonical thermodynamic recycle state. The solved shifted-gas
+CO2 throughput and purge CO/CH4 carbon (oxidized before capture) are calculated
+directly from the same converged state used by R2-B02.
 
-### Remaining acceptance gap
-The original criterion also required candidate CCS performance/duties to scale
-from the actual candidate stream state and IEAGHG source cases to reproduce from
-source inputs. The topology is now correct, but the canonical thermodynamic
-recycle state has not yet been propagated into a complete stream-specific
-capture-duty/energy ledger. Therefore topology closure is not equivalent to
-candidate-specific CCS duty closure.
+IEAGHG Case-2A source duties are converted to throughput-specific anchors using
+the reconstructed source tail-CO2 flow. MDEA regeneration heat and final CO2
+compression/dehydration scale with total candidate CO2 sent to capture. The
+low-pressure tail-feed compressor is scaled only with the purge/tail route;
+high-pressure shifted syngas does not incorrectly inherit that compressor.
+
+This preserves the physical distinction between high-pressure process capture
+and low-pressure tail polishing and avoids a universal amine/compression
+penalty.
 
 ### Code/equation location
-`model/src/lib.rs`: `nuclear_ccs_topology_dispositions`,
-`nuclear_ccs_topology_carbon_ledger`, Case-2A electrical decomposition
-constants/functions.
+`model/src/lib.rs`:
+- `CandidateCcsDutyLedger`;
+- `candidate_ccs_duty_ledger`;
+- `case2a_mdea_regeneration_latent_heat_bounds_mw`;
+- `IEAGHG_CASE2A_CO2_COMP_DEHYDRATION_MWE`;
+- `IEAGHG_CASE2A_TAIL_COMP_BRAKE_MW`.
+
+### Validation evidence
+The candidate ledger derives CO2 throughput from the converged thermodynamic
+reformer/shift/PSA/purge state. Source scaling at unit Case-2A throughput
+reproduces the source MDEA and CO2-compression anchors exactly. A separate test
+verifies that the low-pressure tail compressor is not applied to the
+high-pressure process-CO2 stream.
+
+### CI/test evidence
+Commit `92dee56784958dd89652f2c884041d4dd2c44098`.
+GitHub Actions run 36537577816: **PASS**.
 
 ### Acceptance-criterion status
 - stream-specific CCS topology: **PASS**
 - carbon disposition/closure: **PASS**
-- candidate capture duties scaled from current solved stream state: **OPEN**
+- candidate capture duties scaled from current solved stream state: **PASS**
 - IEAGHG source-case duty reproduction on the same scaling formulation:
-  **PARTIAL / component anchors only**
+  **PASS**
+- no generic low-pressure compressor assigned to high-pressure syngas: **PASS**
+
+R2-M01 is closed.
 
 ## R2-M02 — PSA performance is composition-dependent
 
@@ -305,18 +324,16 @@ legacy reduced-model economic functions remain provenance only.
 
 ## Canonical Review-2 critical path
 
-1. **R2-M01** — close candidate-specific CCS duty scaling on the canonical
-   solved stream state.
-2. **R2-M04** — close/bound the full secondary-helium loop pressure-loss and
+1. **R2-M04** — close/bound the full secondary-helium loop pressure-loss and
    circulator-power ledger using the resolved B02 heat duty.
-3. **R2-M05** — only after M01/M04 close, regenerate dependent lifecycle/
-   economic outputs and verify their acceptance tests.
+2. **R2-M05** — only after M04 closes, regenerate dependent lifecycle/economic
+   outputs and verify their acceptance tests.
 
 R2-B01, R2-B03, R2-M02 and R2-M03 require no repeated work.
 
 ## Reconciliation conclusion
 
-Independent Review 2 gate remains **OPEN**. All Review-2 BLOCKER findings are
-now resolved, but required MAJOR findings R2-M01, R2-M04 and dependent R2-M05
+Independent Review 2 gate remains **OPEN**. All Review-2 BLOCKER findings and
+R2-M01 are resolved, but required MAJOR finding R2-M04 and dependent R2-M05
 still have unmet original acceptance criteria. Review 2 will close only after
 those existing criteria are satisfied.
