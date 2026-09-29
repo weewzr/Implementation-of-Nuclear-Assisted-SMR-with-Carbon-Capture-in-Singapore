@@ -1,4 +1,20 @@
 \section{Sensitivity, uncertainty and falsification}
 The 64-case design maps joint threshold behaviour rather than varying parameters until a favourable point appears. Cases are partitioned into abatement-only failure, cost-only failure, both-threshold failure and joint pass. Local driver contrasts quantify the effect of reformer temperature, reformer pressure, PSA recovery, capture fraction, carbon/electricity conditions and heat/fixed-cost assumptions on both annual abatement and S\$/t.
 
-The uncertainty study therefore serves two purposes: it identifies binding constraints and actively attempts to falsify the nuclear hypothesis. The absence of a connected passing region is retained as a scientific finding rather than treated as a numerical failure.
+Table~\ref{tab:binding-counts} is populated directly from the generated binding-count CSV. It is a compact statement of the threshold-failure topology and provides an independent manuscript-level reconciliation to the 64-case design and Eq.~\eqref{eq:joint-pass}.
+
+\begin{table}[htbp]
+\centering
+\caption{Binding-constraint classification of the coupled Gate-5 nuclear-assisted cases. Counts are generated from the verified Rust model at build time.}
+\label{tab:binding-counts}
+\pgfplotstabletypeset[
+  col sep=comma,
+  columns={binding,count},
+  columns/binding/.style={string type,column name={Classification}},
+  columns/count/.style={column name={Cases},column type=r},
+  every head row/.style={before row=\toprule,after row=\midrule},
+  every last row/.style={after row=\bottomrule}
+]{../results/generated/gate5_binding_counts.csv}
+\end{table}
+
+The uncertainty study therefore serves two purposes: it identifies binding constraints and actively attempts to falsify the nuclear hypothesis. The absence of a joint passing point in the declared design is retained as a scientific finding rather than treated as a numerical failure.
