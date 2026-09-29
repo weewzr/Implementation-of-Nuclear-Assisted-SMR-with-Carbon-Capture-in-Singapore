@@ -3658,7 +3658,7 @@ fn hf298_kj_mol(s:Shomate)->f64 { s.h }
 /// accepted here because this function is used only after the pre-reformer,
 /// where the IEAGHG reformer product contains none.
 pub fn major_stream_enthalpy_mw(s:FullStream,temperature_k:f64)->f64 {
-    assert!(temperature_k>=500.0 && temperature_k<=1200.0);
+    assert!(temperature_k>=500.0 && temperature_k<=1300.0);
     assert!(s.c2h6==0.0 && s.c3h8==0.0 && s.nc4h10==0.0 && s.nc5h12==0.0);
     let h=|n:f64,p:Shomate| n*(hf298_kj_mol(p)+p.sensible_h_kj_mol(temperature_k));
     let mut total=0.0;
