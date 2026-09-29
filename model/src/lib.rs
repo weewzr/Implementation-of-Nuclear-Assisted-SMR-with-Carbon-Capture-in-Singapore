@@ -4481,3 +4481,120 @@ mod review2_fullspecies_foundation_tests {
         assert!(psa6_bounded(dirty,0.5).recovery<psa6_bounded(s,0.5).recovery);
     }
 }
+
+
+/// Full-species recycle steady-state screen. Fresh process gas is represented
+/// by the authoritative IEAGHG HTS-inlet state scaled by fresh-feed fraction;
+/// recycle enters upstream of WGS after a reformer-equivalent SMR conversion.
+/// This is deliberately more constrained than the legacy CHO algebra but remains
+/// a reduced flowsheet pending a rigorous prereformer/PSA adsorption model.
+#[derive(Debug,Clone,Copy)]
+pub struct FullRecycle6Result {
+    pub converged:bool,pub iterations:u32,pub fresh_fraction:f64,
+    pub purge_fraction:f64,pub product_h2:f64,pub recycle:WetGas6,
+    pub purge:WetGas6,pub psa_recovery:f64,
+}
+pub fn solve_full_recycle6(
+    smr_conversion:f64,
+    wgs_temperature_k:f64,
+    pressure_bar:f64,
+    psa_impurity_sensitivity:f64,
+    max_n2_mole_fraction:f64,
+    target_h2_kmol_h:f64,
+    tolerance:f64,
+    max_iterations:u32,
+)->FullRecycle6Result {
+    assert!(smr_conversion>0.0&&smr_conversion<=1.0);
+    assert!(max_n2_mole_fraction>0.0&&max_n2_mole_fraction<1.0);
+    assert!(target_h2_kmol_h>0.0&&tolerance>0.0&&max_iterations>0);
+    let source=ieaghg_hts_inlet_wet6();
+    let mut recycle=WetGas6::default();
+    let mut fresh=1.0;
+    let mut last_product=0.0;
+    let mut last_purge=0.0;
+    let mut last_psa=0.0;
+    let relax=0.35;
+    for it in 1..=max_iterations {
+        // Fresh source-consistent process state plus returned dry recycle.
+        let mut feed=source.scale(fresh).add(recycle);
+        // Reformer-equivalent conversion acts only on available CH4/steam.
+        let xi=smr_conversion*feed.ch4.min(feed.h2o);
+        feed=apply_smr(feed,xi);
+        let shifted=solve_wgs_equilibrium(feed,wgs_temperature_k,pressure_bar);
+        let psa=psa6_bounded(shifted,psa_impurity_sensitivity);
+
+        // Solve purge from inert cap on the dry tail. If source inert is nonzero,
+        // p=0 is forbidden because no finite steady state exists.
+        let dry=psa.tail.h2+psa.tail.co+psa.tail.co2+psa.tail.ch4+psa.tail.n2;
+        let non_n2=(dry-psa.tail.n2).max(1e-12);
+        let desired_n2=max_n2_mole_fraction/(1.0-max_n2_mole_fraction)*non_n2;
+        let p=if psa.tail.n2<=desired_n2 {0.0}
+            else {(psa.tail.n2-desired_n2)/psa.tail.n2};
+        let purge=psa.tail.scale(p);
+        let next=psa.tail.scale(1.0-p);
+
+        // Product-control feedback changes fresh feed, so displacement is
+        // composition/reaction/PSA dependent rather than structurally invariant.
+        let ratio=(target_h2_kmol_h/psa.product_h2.max(1e-12)).clamp(0.5,1.5);
+        let new_fresh=(fresh*ratio).clamp(0.01,2.0);
+        let mixed=WetGas6{
+            h2:recycle.h2+relax*(next.h2-recycle.h2),
+            h2o:recycle.h2o+relax*(next.h2o-recycle.h2o),
+            co:recycle.co+relax*(next.co-recycle.co),
+            co2:recycle.co2+relax*(next.co2-recycle.co2),
+            ch4:recycle.ch4+relax*(next.ch4-recycle.ch4),
+            n2:recycle.n2+relax*(next.n2-recycle.n2),
+        };
+        let err=(new_fresh-fresh).abs()
+            .max((mixed.h2-recycle.h2).abs())
+            .max((mixed.h2o-recycle.h2o).abs())
+            .max((mixed.co-recycle.co).abs())
+            .max((mixed.co2-recycle.co2).abs())
+            .max((mixed.ch4-recycle.ch4).abs())
+            .max((mixed.n2-recycle.n2).abs());
+        fresh=fresh+relax*(new_fresh-fresh);
+        recycle=mixed; last_product=psa.product_h2;last_purge=p;last_psa=psa.recovery;
+        if err<tolerance {
+            return FullRecycle6Result{converged:true,iterations:it,
+                fresh_fraction:fresh,purge_fraction:p,product_h2:psa.product_h2,
+                recycle,purge,psa_recovery:psa.recovery};
+        }
+    }
+    FullRecycle6Result{converged:false,iterations:max_iterations,
+        fresh_fraction:fresh,purge_fraction:last_purge,product_h2:last_product,
+        recycle,purge:recycle.scale(last_purge),psa_recovery:last_psa}
+}
+
+/// Explicit falsification: nonzero inert source with zero purge cannot be a
+/// physical recycle steady state.
+pub fn zero_purge_physical_with_nonzero_inert()->bool {
+    ieaghg_process_n2_feed_kmol_h()==0.0
+}
+
+#[cfg(test)]
+mod review2_full_recycle_tests {
+    use super::*;
+    #[test]
+    fn zero_purge_is_rejected_for_source_inert() {
+        assert!(!zero_purge_physical_with_nonzero_inert());
+    }
+    #[test]
+    fn finite_purge_solution_is_nonnegative_when_converged() {
+        let r=solve_full_recycle6(0.75,685.15,27.7,0.35,0.05,
+            ieaghg_reconstructed_h2_product_kmol_per_h(),1e-7,20000);
+        assert!(r.converged);
+        assert!(r.purge_fraction>0.0&&r.purge_fraction<=1.0);
+        assert!(r.recycle.nonnegative()&&r.purge.nonnegative());
+        assert!((r.product_h2-ieaghg_reconstructed_h2_product_kmol_per_h()).abs()
+            /ieaghg_reconstructed_h2_product_kmol_per_h()<1e-5);
+    }
+    #[test]
+    fn fresh_feed_depends_on_reformer_and_psa_performance() {
+        let a=solve_full_recycle6(0.55,685.15,27.7,0.20,0.05,
+            ieaghg_reconstructed_h2_product_kmol_per_h(),1e-6,20000);
+        let b=solve_full_recycle6(0.85,685.15,27.7,0.60,0.05,
+            ieaghg_reconstructed_h2_product_kmol_per_h(),1e-6,20000);
+        assert!(a.converged&&b.converged);
+        assert!((a.fresh_fraction-b.fresh_fraction).abs()>1e-4);
+    }
+}
