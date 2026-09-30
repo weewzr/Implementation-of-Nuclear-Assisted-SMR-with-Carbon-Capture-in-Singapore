@@ -2,32 +2,30 @@
 
 ## Source-backed final process
 - INL Case-6 HTGR-integrated SMR with carbon capture remains the final chemical-process basis.
-- 871 C reformer outlet, S/C=3.0, 31.7 bar feed compression condition, 78.1% methane conversion and 88% PSA recovery.
-- 925 C INL reactor outlet supplies 900 C process heat and eliminates the fired second reformer.
-- 130 MMSCFD H2 product is retained as the source process scale before annualization.
+- 871 C reformer outlet, S/C=3.0, 78.1% methane conversion and 88% PSA recovery.
+- 925 C INL reactor outlet supplies 900 C process heat.
+- 130 MMSCFD H2; 176.8 MWth process heat; 17.3 MWe process electricity.
+- INL process-side helium state: approximately 900 C supply, 466 C return and 78.49 kg/s.
 
-## Corrected hardware integration
-INL and JAEA are deliberately different evidence layers.
-- INL TEV-961 supplies the chemical-process duty and process-side helium state: 176.8 MWth, 900 C supply, approximately 466 C return and 78.49 kg/s source flow.
-- Nishihara et al. (2007) supplies the coherent mature GTHTR300C economic architecture: 600 MWth reactor, 370 MWth source hydrogen/IHX branch and 88 MWe source gross electricity from the complementary 230 MWth power branch.
-- The project draws only 176.8 MWth. It therefore maps the residual 423.2 MWth through the source-implied 88/230 gross electric conversion efficiency, giving 161.92 MWe gross. This is PROJECT-DERIVED, not a source GTHTR300C operating point.
-- Process electricity is 17.3 MWe, leaving 144.62 MWe net export in the screening mapping.
-- The 70.9 bn JPY / 0.57 JPY/MJ / 5.5 JPY/kWh case is retained only as Nishihara's doubled-IHX/secondary-loop COST sensitivity. It is not a doubled-capacity exchanger.
+## Coherent JAEA/Nishihara architecture
+- Selected source architecture: 600 MWth reactor, 370 MWth source heat/IHX branch, complementary 230 MWth source power branch and 88 MWe source electricity.
+- Project process duty 176.8 MWth is below the 370 MWth source heat-branch capacity.
+- 600 - 176.8 = 423.2 MWth is reported only as remaining reactor thermal capacity.
+- No exact project gross/net/export MWe is claimed. The source does not establish an off-design turbine/internal-load mapping for the changed heat split.
+- The 70.9 bn JPY / 0.57 JPY/MJ / 5.5 JPY/kWh case is an adverse doubled-loop COST sensitivity only, not a capacity claim.
 
 ## Lifecycle
-- Direct source CO2 values come from INL.
-- Upstream NG = 11.5 gCO2e/MJ global source proxy.
-- Nuclear heat lifecycle proxy = 5.5 gCO2e/kWh multiplied by the existing project heat/electric allocation convention.
-- CCS transport burden = 2.5% of captured CO2 as an explicit project screening assumption.
-- Candidate lifecycle intensity is approximately 1.95 kgCO2e/kgH2; t/t and kg/kg are numerically identical.
+- Preserved independently reproduced lifecycle avoided emissions: approximately 917,139 tCO2e/y.
+- Candidate lifecycle intensity: approximately 1.95 kgCO2e/kgH2; the resolved factor-of-1000 defect must not recur.
+- Upstream NG, nuclear direct-heat allocation and CCS transport remain declared screening proxies.
 
 ## Economics
-- Review-5 cost-year/FX methodology is retained.
-- Principal mature case uses Nishihara's coherent reference economics: 59.7 bn JPY plant, 0.52 JPY/MJ heat, 4.9 JPY/kWh electricity.
-- Full source-priced heat and derived power economic burdens are charged; only net electricity after 17.3 MWe process demand receives a scenario value.
-- S$0/MWh is the conservative no-value case; S$100/150/200/MWh are Singapore-context sensitivities.
-- CCS T&S = S$15/t captured low screening scenario; Singapore tariff remains unresolved.
-- 10% integration/site allowance remains a project screening assumption.
+- Principal mature source economics: 59.7 bn JPY plant, 0.52 JPY/MJ heat, 4.9 JPY/kWh electricity, 85% availability.
+- Controlling project test uses electricity export value = S$0/MWh.
+- Full selected source-product economic burden is recovered by charging the source 370 MWth heat product plus source 88 MWe generation at their published source unit costs.
+- This is an economic allocation and does not claim the project produces or exports 88 MWe.
+- CCS, integration/site allowance, T&S and candidate/baseline natural gas remain included.
+- No S$100/150/200-MWh project cases are canonical unless a future independently verified off-design power model supports them.
 
 ## Claim strength
-The final result remains a CONDITIONAL MODEL RESULT using an INL process design mapped onto a separate JAEA mature cogeneration architecture. The part-load heat/power split is project-derived and must not be described as a directly published JAEA operating point.
+The result remains a CONDITIONAL MODEL RESULT pending independent reviewer re-verification.
