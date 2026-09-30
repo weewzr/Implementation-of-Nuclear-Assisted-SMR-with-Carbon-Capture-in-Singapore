@@ -1,13 +1,8 @@
 # STATUS
 
-## TARGETED SCIENTIFIC EXTENSION: REOPENED
+## TARGETED SCIENTIFIC EXTENSION: COMPLETE — READY FOR INDEPENDENT REVIEW
 
-The previously verified **FINAL SUBMISSION CANDIDATE: READY** state remains preserved as an audit milestone. Substantive research is deliberately reopened because the student identified material gaps in:
-1. primary nuclear-engineering literature and claim-level support;
-2. CN4252 feasibility, safety, regulatory/infrastructure and implementation-roadmap coverage;
-3. reproducible Rust-generated scientific visualisation.
-
-This reopening does **not** invalidate the verified quantitative foundation unless new high-quality evidence demonstrates a specific defect.
+The previously verified quantitative foundation remains preserved. The targeted extension requested after Final Submission QA has now completed its literature, nuclear/safety, CN4252 feasibility, implementation-roadmap, Rust visualisation, manuscript-audit and reproducibility milestones.
 
 ## Preserved verified quantitative foundation
 - H2 production: ~97,946 t/y.
@@ -21,32 +16,47 @@ This reopening does **not** invalidate the verified quantitative foundation unle
 - Controlling abatement cost: ~S$3.725/tCO2e.
 - CN4252 numerical thresholds: CONDITIONAL MODEL PASS.
 
-Controlling completed verification remains:
-`reviews/final_design_independent_verification_02_final_rereview.md`.
+No new high-quality evidence in the targeted extension invalidated these verified values.
 
-Previous Final Submission QA remains:
-`results/FINAL_SUBMISSION_QA.md`.
-
-## Current research gate
-Targeted extension substantive work is complete; acceptance now requires final tests/build/PDF inspection. Completed:
-- nuclear primary-source literature expansion and evidence matrix;
-- paragraph/claim-level manuscript citation audit;
-- HTGR/TRISO/IHX/process-heat and safety evidence strengthened;
-- chemical/process-safety analysis;
-- Singapore nuclear/regulatory/infrastructure and CCS feasibility analysis;
-- conservative economic-result interpretation;
+## Extension completed
+- scientific-paper benchmark: `literature/SCIENTIFIC_PAPER_BENCHMARK.md`;
+- nuclear/feasibility evidence matrix: `literature/NUCLEAR_FEASIBILITY_EVIDENCE_MATRIX.md`;
+- paragraph-level active-manuscript claim audit: `literature/MANUSCRIPT_CLAIM_AUDIT.md`;
+- expanded HTGR/TRISO/IHX/process-safety evidence;
+- Singapore nuclear/regulatory/infrastructure and cross-border CCS feasibility;
 - staged implementation roadmap;
-- useful deterministic Rust-generated quantitative figures with data/provenance;
-- coherent manuscript revision;
-- explicit traceability to the complete CN4252 problem statement.
+- simple canonical CO2 and cost ledgers;
+- deterministic Rust data/TikZ/SVG publication pipeline;
+- figure provenance and evidence-tier discipline;
+- full manuscript integration and visual QA.
 
-Pending closure evidence:
-- Rust tests/Research CI;
-- Paper/reproducibility CI;
-- generated-figure rendering and exact-PDF inspection.
+## Final extension verification
+Scientific/layout commit verified:
+`86d7e617ef69d3e84b241b8dda9eb611d5efe3ee`.
 
-## Supervisor-code methodological lesson
-OUTRAM PARK is being used only as a software-methodology reference: explicit V&V status, deterministic Rust computation, evidence-tier discipline, separation of canonical/derived quantities, and reproducible visual outputs. This project will not claim reactor-transient simulation capability it does not possess and will not copy unrelated simulator complexity.
+Research CI `36724044125`: **PASS**.
+Paper/reproducibility CI `36724043876`: **PASS**.
+PDF artifact `11101183481`: **19 pages**.
+Bibliography convergence: **PASS**.
+Undefined citations: **0**.
+Undefined references: **0**.
+Exact-artifact page-by-page visual inspection: **PASS**.
+
+Detailed extension evidence:
+`results/TARGETED_EXTENSION_EVIDENCE.md`.
+
+## Feasibility interpretation
+- Thermodynamic/process: SUPPORTED at screening/model level.
+- Heat-source compatibility: SUPPORTED at screening level.
+- High-temperature IHX/materials: CONDITIONAL.
+- Nuclear safety: CONDITIONAL; project/site case not demonstrated.
+- Chemical/process safety: CONDITIONAL; integrated PHA/QRA absent.
+- Singapore regulation/siting: UNRESOLVED.
+- Cross-border CCS: CONDITIONAL/UNRESOLVED.
+- Economic CN4252 threshold: SUPPORTED within verified model; bankable FOAK economics NOT DEMONSTRATED.
+- Deployment readiness: NOT DEMONSTRATED.
+
+The final scientific conclusion therefore remains an independently verified **CONDITIONAL MODEL PASS**, not demonstrated commercial/regulatory/safety feasibility.
 
 ## Governing distinction
 **VERIFIED QUANTITATIVE FOUNDATION = PRESERVED UNLESS FALSIFIED BY NEW EVIDENCE.**
@@ -54,4 +64,4 @@ OUTRAM PARK is being used only as a software-methodology reference: explicit V&V
 **REPOSITORY = COMPLETE SCIENTIFIC AUDIT TRAIL.**
 
 ## Next step
-Continue the targeted extension along the scientific critical path. Do not begin another Independent Review until the revised manuscript reaches a coherent milestone.
+**STOP MAIN RESEARCH.** Submit the revised manuscript/evidence package to the Independent Reviewer. Do not begin another Main Research expansion before that review unless a concrete reproducibility/build defect is discovered.
