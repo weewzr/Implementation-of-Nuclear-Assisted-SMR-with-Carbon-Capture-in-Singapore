@@ -5,8 +5,11 @@
 Controlling independent evidence:
 `reviews/final_design_independent_verification_02_final_rereview.md`.
 
-Final Submission QA:
+Final closure QA:
 `results/FINAL_SUBMISSION_QA.md`.
+
+Targeted-extension controlling review/resolution:
+`reviews/review_06_targeted_scientific_extension.md` and `reviews/review_06_resolution.md`.
 
 ## Verified INL process result
 - H2: approximately **97,946 t/y** at 85% availability.
