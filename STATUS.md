@@ -60,12 +60,20 @@ Completed deep-feasibility work now includes:
 - Singapore nuclear regulatory/infrastructure readiness matrix.
 
 Key unresolved critical-path questions:
-1. execute/verify the latest gas-backup sensitivity outputs and record exact margins;
-2. CCS availability/partial-capture robustness;
-3. selected-design accident sequence register and V&V/uncertainty maturity matrix;
-4. helium-loop hydraulic/pressure-drop/circulator screen only if defensible inputs can be sourced;
-5. recover the missing second professor/research transcript and slides;
-6. integrate matured deep-feasibility evidence into the manuscript only after these gates are sufficiently closed.
+1. verify the latest combined reliability/CCS Rust sensitivities and record their exact generated margins from CI;
+2. deepen selected-design accident/source-term evidence only where primary citation chains still change conclusions;
+3. recover the missing second professor/research transcript and slides;
+4. reconcile professor traceability/question register after that source recovery;
+5. integrate the now-mature process-heat, reliability, CCS, source-term/EPZ, waste, cooling/siting, regulatory, V&V and accident-register evidence into the manuscript;
+6. generate evidence-backed Rust figures for the most decision-relevant sensitivities;
+7. run full CI/PDF QA before the next Independent Review.
+
+Newly completed since the previous status update:
+- CCS partial-capture/storage screening sensitivity implemented in Rust with base reconciliation and monotonic tests;
+- CCS availability/infrastructure evidence review;
+- deep-feasibility V&V/uncertainty/extrapolation matrix;
+- selected-design accident/transient sequence register;
+- secondary-helium hydraulic compatibility cross-check (INL 78.49 kg/s vs GTHTR300C ~81 kg/s at 900 C; project ΔP still not claimed).
 
 Do not begin the next Independent Review until all mandatory deep-feasibility gates are complete.
 
