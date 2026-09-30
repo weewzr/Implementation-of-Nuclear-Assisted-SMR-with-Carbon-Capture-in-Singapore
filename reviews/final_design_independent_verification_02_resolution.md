@@ -162,3 +162,22 @@ The fatal manuscript issue was traced to unsafe raw dollar signs in prose (for e
 
 ### Handoff status
 Corrections implemented. Research CI, Paper CI and exact PDF visual verification are required before handoff to the Independent Reviewer. Only the Independent Reviewer may close FDV2-B01/M01/M02 and declare the final design verified.
+
+
+## FDV2-FR-M01 — bounded visual correction
+
+The final Independent Reviewer re-review resolved FDV2-B01, FDV2-M01, FDV2-M02 and FDV2-RR-B01 and identified one presentation-only MAJOR: FDV2-FR-M01, overlapping nodes in the page-6 final architecture figure.
+
+Correction:
+- moved the remaining-reactor-capacity node away from the H2/PSA product chain and beneath the IHX;
+- shortened and clarified its text to "Remaining reactor capacity / 423.2 MWth thermal / not claimed as electricity";
+- retained the 600 MWth reactor, 176.8 MWth process duty, process sequence, temperatures and source attribution unchanged;
+- retained the explicit distinction between remaining thermal capacity and unclaimed project electricity output.
+
+Current-facing documentation was also reconciled:
+- `STATUS.md` no longer reports the retired 161.92/144.62-MWe mapping;
+- `results/final_design/SANITY_CHECKS.md` now states that 423.2 MWth is remaining thermal capacity and that no exact project MWe/export is canonical.
+
+No historical review evidence was modified. No scientific model change was made in this visual/documentation correction.
+
+Acceptance remains contingent on fresh Research CI, Paper CI and exact-artifact visual inspection.
