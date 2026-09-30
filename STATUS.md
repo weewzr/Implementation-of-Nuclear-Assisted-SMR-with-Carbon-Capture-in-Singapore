@@ -2,57 +2,55 @@
 
 ## Current state
 Reviews 1-4: CLOSED.
-Gate 5 original experiments/results: COMPLETE and preserved.
-Gate 6 original paper/reproducibility: COMPLETE.
-Review-4 corrections: COMPLETE.
-Bounded visual-communication pass: COMPLETE.
-Final Submission QA: superseded before freeze by the user-authorised deployment-scale extension.
-Singapore deployment-scale techno-economic extension: COMPLETE.
+Original Gate 5: COMPLETE and preserved (64 cases, 0 joint passes).
+Original Gate 6 / visual pass: COMPLETE.
+Independent Review 5: OPEN pending final Paper-CI/PDF verification.
+Final Submission QA: NOT STARTED after Review-5 remediation.
 
-## Original scientific lock
-The original canonical Gate-5 result is unchanged:
-- approximately 74.85 ktH2/y;
-- 64 coupled nuclear-assisted cases;
-- 0/64 joint CN4252 passes;
-- conservative case fails both thresholds.
-No original parameter range was changed retrospectively.
+## Review-5-remediated deployment result
+The previous S$47.637/t deployment conditional pass is superseded and must not be reported as verified.
 
-## Deployment-scale extension result
-The separate post-canonical extension uses JAEA/JAERI mature-design evidence, INL/GAIN modern HTGR cost evidence and IEAGHG CCS capital/finance evidence.
-- Minimum positive-abatement H2 service for 0.25 MtCO2e/y: 96,077.794 t/y (1.283638 x original annual H2).
-- Evaluated deployment: 1.30 annual scale = 97,302.488 tH2/y.
-- Annual avoided emissions: 253,186.727 tCO2e/y.
-- JAEA mature cogeneration: S$47.637/tCO2e -> CONDITIONAL SCENARIO PASS.
-- Modern central cogeneration: S$174.401/tCO2e -> cost fail.
-- FOAK/adverse cogeneration: S$372.814/tCO2e -> cost fail.
-- JAEA hydrogen-only allocation also fails the cost threshold; the conditional pass requires useful cogeneration of remaining reactor output.
-This does not establish commercial feasibility or a preferred Singapore technology.
+Primary JAEA helium-heated steam-reforming evidence is now used for the deployment interface:
+- reactor primary helium outlet: 950 C;
+- GTHTR300C secondary helium at IHX outlet: 900 C benchmark;
+- secondary helium at HTTR steam-reformer inlet: 880 C;
+- reacting process-gas outlet: 600 C source design state.
 
-## Reproducibility / evidence
-- Original model: `model/src/lib.rs`.
-- Deployment extension: `model/src/deployment.rs`.
-- Deployment literature basis: `results/deployment/LITERATURE_BASIS.md`.
-- Deployment results: `results/deployment/RESULTS.md`.
-- Independent sanity checks: `results/deployment/SANITY_CHECKS.md`.
-- Manuscript extension: `paper/sections/10a_deployment_extension.tex`.
-- Canonical build: `sh paper/build.sh`.
+The deployment recycle/reforming/WGS/PSA/capture state is re-solved at 600 C. The corrected state has non-positive lifecycle abatement on the common boundary. Therefore:
+- there is no finite deployment scale that can exceed 0.25 MtCO2e/y by scaling this state;
+- no finite electricity value can create a CN4252 joint pass;
+- the former deployment conditional pass does not survive.
 
-Verified extension build at manuscript/code state `75cb90737e20b93052530eb3d5c2ee574f8aad4e`:
-- Research CI `36647423557`: PASS.
-- Paper/reproducibility `36647423551`: PASS.
-- artifact `11068991762`, SHA-256 `11bfd16ccbdeadc1d311bafc148f4aa6f573167c63ee312632afbf54f6231017`.
-- generated PDF: 20 pages.
-- actual PDF rendered and visually inspected, including all four deployment figures and all deployment tables.
-Subsequent commits add only deployment result/sanity/status documentation and do not change model/manuscript numerics.
+## Corrected mature economics
+Primary one-module GTHTR300C cogeneration evidence is used:
+- plant cost 59.7 bn JPY;
+- IHX + secondary loop 11.2 bn JPY;
+- heat 0.52 JPY/MJ;
+- electricity 4.9 JPY/kWh;
+- availability 85%.
+Doubled-IHX source sensitivity:
+- plant 70.9 bn JPY;
+- heat 0.57 JPY/MJ;
+- electricity 5.5 JPY/kWh.
 
-## Retained limitations
-- JAEA economics are mature-design estimates, not observed Singapore costs.
-- Modern INL/GAIN values are international BOAK/meta-analysis screens, not Singapore bids.
-- FX conversions and integration/site allowances are project screening assumptions.
-- Singapore cross-border CCS tariff remains unknown; T&S is scenario-based.
-- Cogeneration pass requires a useful customer/value allocation for remaining reactor output.
-- Reformer remains an equilibrium screen; PSA remains bounded rather than bed-resolved.
-- Singapore nuclear deployment and cross-border CCS remain conditional.
+Full reactor economic burden is closed through source-priced heat + electricity; electricity value is a separate credit. EMA 2025 S$100-200/MWh wholesale context is evaluated explicitly, plus zero-value surplus. No reactor capacity is free.
+
+## Cost normalization
+Generated machine ledger: `results/generated/review5_cost_ledger.csv`.
+Historical costs are normalized to 2025-price basis using explicit national GDP-deflator screening ratios, then dated FX conversion. These are screening approximations, not nuclear-specific construction indices.
+
+## Canonical files
+- original model: `model/src/lib.rs`;
+- Review-5 deployment model: `model/src/deployment.rs`;
+- Review-5 resolution: `reviews/review_05_resolution.md`;
+- manuscript: `paper/main.tex`;
+- deployment section: `paper/sections/10a_deployment_extension.tex`.
+
+## Verification
+Latest completed Research CI before this status update: PASS on the Review-5-remediated model.
+Final Paper CI / artifact visual verification remains required before Review 5 can close.
 
 ## Next step
-STOP. Do not begin another independent review automatically. Do not mark FINAL SUBMISSION CANDIDATE: READY automatically. The next user-directed step may return to Final Submission QA, including the unresolved submission author/team line.
+Complete only final build/artifact verification for Review 5. If Research CI and Paper CI pass, citations/references converge and the actual PDF visually verifies the corrected temperature/economic/cogeneration presentation, update the resolution and mark **Independent Review 5 gate: CLOSED**, then STOP.
+
+Do not begin Final Submission QA or another review automatically.
