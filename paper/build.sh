@@ -7,6 +7,8 @@ cd "$ROOT"
   cargo test --all-targets
 )
 sh model/scripts/generate_gate5_results.sh
+cat results/final_design/generated/reliability_sensitivity.md
+cargo run --quiet --manifest-path model/Cargo.toml --bin final_design_ccs_summary
 cd paper
 latexmk -C
 latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
