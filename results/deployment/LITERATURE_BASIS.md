@@ -1,44 +1,35 @@
-# Singapore deployment-scale techno-economic extension — literature basis
+# Review-5 deployment remediation — verified evidence basis
 
-Status: targeted evidence basis for the bounded post-Gate-6 deployment-scale extension. This does not modify the original 64-case Gate-5 domain or result.
+## Heat interface
+Primary JAEA HTTR steam-reforming evidence is controlling for the deployment process state:
+- JAEA-Technology 2018-004: HTTR can supply 950 C helium; the chemical reactor receives about 880 C helium; methane steam reforming is an approximately 800 C-class heat application in the programme-level description.
+- JAEA-Technology 2007-022 / HTTR mock-up specifications: process gas 450 C inlet and 580 C outlet; helium 880 C inlet and 585 C outlet at the steam-reformer mock-up.
+- JAERI-Tech 99-080: steam-reformer shell-side helium maximum 880 C and tube-side process gas maximum 600 C.
 
-## JAEA / JAERI mature-design anchor
-- GTHTR300C: 600 MWth reactor, 950 C outlet; original cogeneration arrangement uses a 170 MW IHX for hydrogen heat and the balance for electricity (JAERI-Review 2004-026; JAEA GTHTR300C records).
-- JAEA 2014 HTGR-IS economic screen: 4 x 600 MWth units/plant basis; 80% availability; 40-year reactor life; 3% discount rate for generation cost; revised electricity cost 5.8 JPY/kWh and heat-supply cost 0.7 JPY/MJ at 45% electric efficiency. The study assumes future commercial/mature conditions, learning and equipment rationalisation; land and interest are excluded from the hydrogen-plant construction estimate.
-- Earlier GTHTR300 user requirement: 40-50 billion JPY per 600 MWth unit (160-200 thousand JPY/kWe), >90% availability and 60-year design life. This is a design target/user requirement, not an observed project cost.
-- Project conversion used in the extension: 1 JPY = S$0.0087. This is a screening FX assumption, not a source value.
+The deployment reference therefore uses 880 C helium at the reformer inlet and 600 C reacting-gas outlet. The GTHTR300C 950 C reactor outlet / 900 C secondary-helium IHX outlet is retained as the upstream heat-delivery benchmark, not as the reacting-gas temperature.
 
-## Modern independent HTGR cost anchor
-INL/GAIN 2024 Advanced Reactor Cost Estimation:
-- thermal-only HTGR SMR OCC: US$1,750 / 2,500 / 3,250 per kWth (advanced/moderate/conservative);
-- thermal-only HTGR SMR O&M: approximately US$10 / 12 / 16 per MWhth;
-- general modelling capacity factor: 93%;
-- technical life: 60 years;
-- illustrative central WACC: 7.5%; report shows strong sensitivity between roughly 4% and 10%.
-- Project conversion: US$1 = S$1.30 screening FX.
-- Case B uses moderate US$2,500/kWth, US$12/MWhth, 7.5%, 60 y, 93%.
-- Case C uses conservative US$3,250/kWth, US$16/MWhth, project 10% high-financing screen, 60 y, and 80% availability as an adverse deployment assumption.
+## GTHTR300C cogeneration economics
+Primary Nishihara, Mouri & Kunitomi (ICONE15, 2007) source values:
+- nuclear plant construction cost: 59.7 billion JPY;
+- reactor components 17.1; power conversion 7.8; auxiliary 6.7; electrical/C&I 5.8; IHX + secondary loop 11.2; buildings 11.1 billion JPY;
+- nuclear heat: 0.52 JPY/MJ;
+- electricity: 4.9 JPY/kWh;
+- availability: 85%;
+- doubled IHX+secondary-loop sensitivity: plant 70.9 billion JPY; heat 0.57 JPY/MJ; electricity 5.5 JPY/kWh.
 
-## CCS anchor
-IEAGHG 2017-02:
-- Base TCR EUR222.89m; Case 1A TCR EUR263.91m, giving EUR41.02m incremental capital at Q4-2014 price level for 100,000 Nm3/h H2.
-- Case 1A captured CO2 = 0.466 kg/Nm3 H2.
-- 25-year economic life, 8% discount rate, 95% capacity factor.
-- source T&S = EUR10/t stored; sensitivity extends to EUR40/t.
-- Project conversion: EUR1 = S$1.50 screening FX.
-- Extension scales incremental CCS capital linearly with annual captured-CO2 throughput. Linear scaling is deliberately conservative: no unverified CCS economy-of-scale exponent is applied.
-- T&S scenarios: S$15/t captured (source-converted low), S$30/t central and S$45/t adverse. These are scenarios, not authoritative Singapore tariffs.
+GTHTR300C design literature gives 600 MWth reactor, 170 MWth IHX heat and about 202 MWe at the reference cogeneration point. JAEA load-follow descriptions show electricity increasing toward about 276 MWe as heat extraction is reduced while reactor power remains at 100%.
 
-## Singapore context
-- MTI states cross-border CCS feasibility/cost work is ongoing and clearer capture/transport/storage cost estimates are still being developed.
-- 2026 carbon tax is S$45/tCO2e; it is context only and is not subtracted from CN4252 abatement cost.
+## Singapore electricity context
+EMA Singapore Energy Statistics Chapter 5 reports 2025 USEP largely in the S$100--200/MWh range. Review-5 remediation evaluates zero, 100, 150 and 200 S$/MWh explicitly. Electricity value is a separate credit against the full reactor burden; it is not used as a hidden allocation.
 
-## Integration/site allowance
-No authoritative Singapore nuclear-process-integration cost exists. The extension therefore declares explicit allowances rather than fabricating a source:
-- Case A: 10% of allocated nuclear + incremental CCS capital;
-- Case B: 20%;
-- Case C: 30%.
-These cover IHX/secondary-loop/process-interface/owner/site/contingency uncertainty at screening level. They are sensitivity assumptions, not predicted project costs.
+## Cost-year normalization
+Common basis: 2025-price source currency, then 29 Sep 2026 spot FX to SGD.
+- Japan GDP deflator: 2007 99.59; 2025 112.27 -> factor 1.1273.
+- Germany/euro-area screening proxy: 2014 90.46; 2025 123.84 -> factor 1.3690.
+- JPY/SGD on 29 Sep 2026: 0.008117 SGD/JPY.
+- EUR/SGD on 29 Sep 2026: 1.452 SGD/EUR.
+- USD/SGD on 29 Sep 2026: 1.2776 SGD/USD.
+The GDP deflator is a broad screening index, not a nuclear construction index; this limitation is explicit.
 
-## Allocation
-Hydrogen-only cases pay the full thermal-module nuclear service/capital. Cogeneration cases allocate reactor capital/O&M by process-heat thermal-capacity share; the remaining reactor output must be assigned to useful cogeneration and is not treated as free or discarded without cost.
+## Superseded result
+The pre-Review-5 S$47.637/t conditional pass is superseded. After the source-temperature re-solve and actual-H2 lifecycle normalization, specific lifecycle abatement is non-positive, so no finite deployment scale or electricity value can produce a CN4252 joint pass.
