@@ -6,16 +6,19 @@ This file records an earlier submission-QA state associated with the historical 
 
 ## Current controlling state
 
-The project has since completed final-design consolidation, second independent verification, corrective re-verification, visual correction and Final Submission QA.
+The project has since completed final-design consolidation, second independent verification, corrective re-verification, Final Submission QA, a targeted scientific extension and Independent Review 06.
 
 Use:
 - current status: `STATUS.md`;
-- controlling Final Submission QA: `results/FINAL_SUBMISSION_QA.md`;
+- prior Final Submission QA baseline: `results/FINAL_SUBMISSION_QA.md`;
+- targeted-extension evidence: `results/TARGETED_EXTENSION_EVIDENCE.md`;
+- current targeted-extension review: `reviews/review_06_targeted_scientific_extension.md`;
+- Review-06 resolution: `reviews/review_06_resolution.md`;
 - controlling independent verification: `reviews/final_design_independent_verification_02_final_rereview.md`;
 - canonical manuscript: `paper/main.tex`;
 - final-design result: `results/final_design/FINAL_DESIGN_RESULTS.md`.
 
-The current repository state is **FINAL SUBMISSION CANDIDATE: READY**. The verified manuscript is 13 pages, and the operative conclusion is a **CONDITIONAL MODEL PASS**, not the historical 0/64 result.
+The current targeted-extension manuscript is 19 pages before the bounded Review-06 correction pass; the operative conclusion remains a **CONDITIONAL MODEL PASS**, not the historical 0/64 result. Current closure evidence belongs in `STATUS.md`, not this historical file.
 
 ## Why this file remains
 
