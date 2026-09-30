@@ -27,3 +27,5 @@ mkdir -p ../results/final_design/generated
 cargo run --quiet --bin final_design_results_csv > ../results/final_design/generated/final_design_results.csv
 cargo run --quiet --bin final_design_source_balance_csv > ../results/final_design/generated/source_balance.csv
 cargo run --quiet --bin final_design_temperature_csv > ../results/final_design/generated/temperature_sensitivity.csv
+
+cargo run --quiet --bin final_design_visual_data_csv > ../results/final_design/generated/visual_data.csv
