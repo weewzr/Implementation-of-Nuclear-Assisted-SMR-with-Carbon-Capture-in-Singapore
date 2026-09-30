@@ -1,8 +1,19 @@
 # STATUS
 
-## TARGETED SCIENTIFIC EXTENSION: COMPLETE — READY FOR INDEPENDENT REVIEW
+## REVIEW 06 RESOLVED — REVISED SUBMISSION CANDIDATE READY FOR FINAL CLOSURE
 
-The previously verified quantitative foundation remains preserved. The targeted extension requested after Final Submission QA has now completed its literature, nuclear/safety, CN4252 feasibility, implementation-roadmap, Rust visualisation, manuscript-audit and reproducibility milestones.
+Independent Review 06 of the Targeted Scientific Extension concluded:
+
+**TARGETED SCIENTIFIC EXTENSION VERIFIED — MINOR CORRECTIONS ONLY.**
+
+All four Review-06 findings are now resolved:
+- TE-R01 accident-mechanism citations: **RESOLVED**;
+- TE-R02 NRC PIRT metadata: **RESOLVED**;
+- TE-R03 figure provenance: **RESOLVED**;
+- TE-R04 Section-5 accessibility: **RESOLVED**.
+
+Resolution record:
+`reviews/review_06_resolution.md`.
 
 ## Preserved verified quantitative foundation
 - H2 production: ~97,946 t/y.
@@ -16,52 +27,46 @@ The previously verified quantitative foundation remains preserved. The targeted 
 - Controlling abatement cost: ~S$3.725/tCO2e.
 - CN4252 numerical thresholds: CONDITIONAL MODEL PASS.
 
-No new high-quality evidence in the targeted extension invalidated these verified values.
+No Review-06 correction changed the scientific model or these verified values.
 
-## Extension completed
-- scientific-paper benchmark: `literature/SCIENTIFIC_PAPER_BENCHMARK.md`;
-- nuclear/feasibility evidence matrix: `literature/NUCLEAR_FEASIBILITY_EVIDENCE_MATRIX.md`;
-- paragraph-level active-manuscript claim audit: `literature/MANUSCRIPT_CLAIM_AUDIT.md`;
-- expanded HTGR/TRISO/IHX/process-safety evidence;
-- Singapore nuclear/regulatory/infrastructure and cross-border CCS feasibility;
-- staged implementation roadmap;
-- simple canonical CO2 and cost ledgers;
-- deterministic Rust data/TikZ/SVG publication pipeline;
-- figure provenance and evidence-tier discipline;
-- full manuscript integration and visual QA.
+## Current controlling review/evidence
+- Targeted-extension Independent Review: `reviews/review_06_targeted_scientific_extension.md`.
+- Review-06 resolution: `reviews/review_06_resolution.md`.
+- Quantitative-foundation independent verification: `reviews/final_design_independent_verification_02_final_rereview.md`.
+- Targeted-extension evidence: `results/TARGETED_EXTENSION_EVIDENCE.md`.
+- Prior Final Submission QA baseline: `results/FINAL_SUBMISSION_QA.md`.
+- Canonical manuscript: `paper/main.tex`.
 
-## Final extension verification
-Scientific/layout commit verified:
-`86d7e617ef69d3e84b241b8dda9eb611d5efe3ee`.
+## Final Review-06 correction verification
+Correction/documentation HEAD verified before closure record:
+`a8fd21904679ac180ba490c77e635a8f227b6d25`.
 
-Research CI `36724044125`: **PASS**.
-Paper/reproducibility CI `36724043876`: **PASS**.
-PDF artifact `11101183481`: **19 pages**.
+Research CI `36729090296`: **PASS**.
+Paper/reproducibility CI `36729090266`: **PASS**.
+Canonical PDF artifact `11104450232`: **20 pages**.
 Bibliography convergence: **PASS**.
 Undefined citations: **0**.
 Undefined references: **0**.
 Exact-artifact page-by-page visual inspection: **PASS**.
 
-Detailed extension evidence:
-`results/TARGETED_EXTENSION_EVIDENCE.md`.
+Visual QA specifically confirmed:
+- corrected Section 5 accident-mechanism citations and accessibility text;
+- Rust-generated thermal-capacity figure;
+- CO2 ledger;
+- cost ledger;
+- Singapore feasibility table and roadmap;
+- captions, units and cross-references;
+- no clipping, overlap or accidental blank pages.
 
-## Feasibility interpretation
-- Thermodynamic/process: SUPPORTED at screening/model level.
-- Heat-source compatibility: SUPPORTED at screening level.
-- High-temperature IHX/materials: CONDITIONAL.
-- Nuclear safety: CONDITIONAL; project/site case not demonstrated.
-- Chemical/process safety: CONDITIONAL; integrated PHA/QRA absent.
-- Singapore regulation/siting: UNRESOLVED.
-- Cross-border CCS: CONDITIONAL/UNRESOLVED.
-- Economic CN4252 threshold: SUPPORTED within verified model; bankable FOAK economics NOT DEMONSTRATED.
-- Deployment readiness: NOT DEMONSTRATED.
-
-The final scientific conclusion therefore remains an independently verified **CONDITIONAL MODEL PASS**, not demonstrated commercial/regulatory/safety feasibility.
+## Scientific interpretation
+The project remains an independently verified **CONDITIONAL MODEL PASS**. Numerical CN4252 threshold compliance is supported; commercial, regulatory and site-specific safety feasibility are not demonstrated.
 
 ## Governing distinction
-**VERIFIED QUANTITATIVE FOUNDATION = PRESERVED UNLESS FALSIFIED BY NEW EVIDENCE.**
+**FINAL SUBMISSION = FINAL BEST-SUPPORTED DESIGN.**
 
 **REPOSITORY = COMPLETE SCIENTIFIC AUDIT TRAIL.**
 
 ## Next step
-**STOP MAIN RESEARCH.** Submit the revised manuscript/evidence package to the Independent Reviewer. Do not begin another Main Research expansion before that review unless a concrete reproducibility/build defect is discovered.
+The revised submission candidate is **READY FOR FINAL SUBMISSION QA/CLOSURE**.
+
+**STOP MAIN RESEARCH.** Do not begin Review 07, another broad literature pass or scientific optimisation automatically.
