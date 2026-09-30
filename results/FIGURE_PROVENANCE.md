@@ -20,3 +20,16 @@ Useful technical-reference content observed in supplied images:
 - proposed HTGR-assisted reformer with primary/secondary heat-transfer architecture.
 
 These were used to check equipment ordering and explanatory needs, not as numerical authorities. Primary INL/JAEA/IEAGHG literature remains the technical citation basis. No supplied raster figure is reproduced directly in the final manuscript.
+
+
+## Targeted-extension Rust figures
+
+| Figure/output | Purpose | Generator | Canonical data/model | Publication use |
+|---|---|---|---|---|
+| Rust thermal-capacity figure | Compare 600 MWth reactor, 370 MWth source heat branch, 176.8 MWth process duty and 423.2 MWth remaining thermal capacity | `model/src/bin/final_design_heat_figure_tex.rs` | constants from `model/src/final_design.rs` | generated TikZ included directly in manuscript |
+| CN4252 threshold SVG | Static vector publication plot of abatement multiple versus abatement cost/ceiling | `model/src/figures.rs` via `model/src/bin/final_design_figures.rs` using Rust `plotters` SVG backend | `final_design(0.0,false)` | deterministic SVG reference/publication asset |
+| Visual data CSV | Machine-readable heat/temperature/threshold values | `model/src/bin/final_design_visual_data_csv.rs` | canonical final-design model/constants | provenance/data inspection |
+| Lifecycle ledger CSV | Saved/added lifecycle terms | `model/src/bin/final_design_lifecycle_ledger_csv.rs` | `final_lifecycle_ledger()` | manuscript table via pgfplotstable |
+| Cost ledger CSV | Saved/added annual-cost terms | `model/src/bin/final_design_cost_ledger_csv.rs` | `final_cost_ledger()` | manuscript table via pgfplotstable |
+
+Supervisor-code pattern reference: OUTRAM PARK uses dedicated plot-data/snapshot structures feeding `egui_plot::Plot`, `Line`, and `PlotPoints`, with explicit engineering units and display/physics separation. This project adopts the model/data/plot separation and unit discipline, but uses deterministic static SVG/TikZ rather than GUI screenshots.
