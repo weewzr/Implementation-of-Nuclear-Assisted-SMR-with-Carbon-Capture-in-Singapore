@@ -81,9 +81,21 @@ pub fn break_even_electricity()->f64{
  let z=final_design(0.0,true);let target=100.0*z.lifecycle_avoided_t;
  (z.annual_incremental_sgd-target)/z.annual_export_mwh
 }
+
+pub fn modern_final_cost(occ_usd_kwth:f64,om_usd_mwh:f64,wacc:f64,electricity_value:f64)->FinalDesign{
+ let mut x=final_design(electricity_value,true);
+ let hours=JAEA_AVAIL*8760.0;
+ let cap=occ_usd_kwth*crate::deployment::US_ESC_2024_2025*crate::deployment::USD_SGD_2026_09_29*1000.0*REACTOR_MWTH;
+ let reactor=cap*crf(wacc,60)+om_usd_mwh*crate::deployment::US_ESC_2024_2025*crate::deployment::USD_SGD_2026_09_29*REACTOR_MWTH*hours;
+ let source_reactor=HEAT_MWTH*hours*3.6*jaea_heat_sgd_gj(true)+202.0*hours*jaea_electric_sgd_mwh(true);
+ x.annual_incremental_sgd += reactor-source_reactor;
+ x.abatement_cost_sgd_t=x.annual_incremental_sgd/x.lifecycle_avoided_t;
+ x.pass_cost=x.abatement_cost_sgd_t<100.0;x.joint_pass=x.pass_abatement&&x.pass_cost;x
+}
+
 pub fn results_csv()->String{
  let mut s=String::from("scenario,h2ty,heatmw,heliumkgs,capturedty,avoidedty,incrementalsgd,costsgdt,apass,cpass,joint\n");
- for (n,e) in [("Final baseline",final_design(150.0,true)),("Doubled-IHX zero surplus",final_design(0.0,true)),("Singapore low",final_design(100.0,true)),("Singapore high",final_design(200.0,true)),("Reference-IHX sensitivity",final_design(150.0,false))]{
+ for (n,e) in [("Final baseline",final_design(150.0,true)),("Zero-value cogeneration",final_design(0.0,true)),("Singapore low",final_design(100.0,true)),("Singapore high",final_design(200.0,true)),("Reference-IHX sensitivity",final_design(150.0,false)),("Modern central",modern_final_cost(2500.0,12.0,0.075,150.0)),("FOAK adverse",modern_final_cost(3250.0,16.0,0.10,150.0))]{
  s.push_str(&format!("{},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{},{},{}\n",n,e.annual_h2_t,HEAT_MWTH,e.helium_flow_kg_s,e.captured_t_y,e.lifecycle_avoided_t,e.annual_incremental_sgd,e.abatement_cost_sgd_t,e.pass_abatement,e.pass_cost,e.joint_pass));}s
 }
 pub fn source_balance_csv()->String{format!("parameter,value,unit,class\nReformer outlet,{REFORMER_C},C,SOURCE-BACKED\nProcess heat delivery,{PROCESS_HEAT_C},C,SOURCE-BACKED\nReactor outlet INL,{INL_ROT_C},C,SOURCE-BACKED\nReactor primary JAEA,{REACTOR_OUT_C},C,SOURCE-BACKED\nPressure,{PRESSURE_BAR},bar,SOURCE-BACKED\nSteam-carbon,{STEAM_CARBON},mol/mol,SOURCE-BACKED\nMethane conversion,{METHANE_CONVERSION},fraction,SOURCE-BACKED\nPSA recovery,{PSA_RECOVERY},fraction,SOURCE-BACKED\nHydrogen,{H2_MMSCFD},MMSCFD,SOURCE-BACKED\nNatural gas final,{NG_FINAL_MMSCFD},MMSCFD,SOURCE-BACKED\nProcess heat,{HEAT_MWTH},MWth,SOURCE-BACKED\nProcess electricity,{PROCESS_ELECTRIC_MWE},MWe,SOURCE-BACKED\nCaptured CO2,{CAPTURED_SHORT_T_D},short ton/day,SOURCE-BACKED\nEmitted CO2,{EMITTED_SHORT_T_D},short ton/day,SOURCE-BACKED\n")
@@ -99,5 +111,6 @@ pub fn temperature_sensitivity_csv()->String{
  #[test]fn final_lifecycle_positive_and_threshold(){let x=final_design(150.0,true);assert!(x.lifecycle_avoided_t>250_000.0);}
  #[test]fn no_free_reactor_capacity(){let x=final_design(0.0,true);assert!(x.annual_incremental_sgd>final_design(150.0,true).annual_incremental_sgd);}
  #[test]fn break_even_reproduces_cost_threshold(){let v=break_even_electricity();assert!((final_design(v,true).abatement_cost_sgd_t-100.0).abs()<1e-8);}
+ #[test]fn modern_cost_sensitivity_is_more_expensive(){assert!(modern_final_cost(3250.0,16.0,0.10,150.0).abatement_cost_sgd_t>modern_final_cost(2500.0,12.0,0.075,150.0).abatement_cost_sgd_t);}
  #[test]fn historical_gate5_still_reproduces(){let x=r3_uncertainty_summary();assert_eq!(x.n,64);assert_eq!(x.both_pass,0);}
 }
