@@ -2,19 +2,24 @@
 Figure~\ref{fig:final-system} is the operative final architecture. Natural gas and steam enter a single high-temperature reformer. Nuclear heat is delivered through the HTGR/IHX/secondary-helium chain; downstream WGS, CO$_2$ separation and PSA produce H$_2$, captured CO$_2$ and a residual carbon-bearing stream. The reactor's remaining thermal output supports cogenerated electricity.
 
 \begin{figure}[htbp]\centering
-\begin{tikzpicture}[>=Latex,node distance=8mm,box/.style={draw,rounded corners,align=center,minimum width=24mm,minimum height=10mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
+\begin{tikzpicture}[>=Latex,node distance=7mm and 7mm,box/.style={draw,rounded corners,align=center,minimum width=23mm,minimum height=10mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
 \node[box] (rx) {HTGR\\600 MWth\\950$^\circ$C envelope};
 \node[box,right=of rx] (ihx) {IHX +\\secondary He\\900$^\circ$C};
 \node[box,right=of ihx] (ref) {SMR\\871$^\circ$C\\S/C=3.0};
 \node[box,right=of ref] (wgs) {WGS};
-\node[box,right=of wgs] (cap) {CO$_2$\\capture};
-\node[box,right=of cap] (psa) {PSA\\88\% recovery};
-\node[box,right=of psa] (h2) {H$_2$\\130 MMSCFD};
-\node[box,below=of cap] (co2) {Captured CO$_2$\\to T\&S};
-\node[box,below=of ihx] (pow) {Cogenerated\\electricity};
+\node[box,below=of wgs] (cap) {CO$_2$\\capture};
+\node[box,left=of cap] (psa) {PSA\\88\% recovery};
+\node[box,left=of psa] (h2) {H$_2$\\130 MMSCFD};
+\node[box,right=of cap] (co2) {Captured CO$_2$\\to T\&S};
+\node[box,below=of rx] (pow) {Cogenerated\\electricity};
 \draw[heat](rx)--node[above,font=\scriptsize]{primary He}(ihx);
 \draw[heat](ihx)--node[above,font=\scriptsize]{176.8 MWth}(ref);
-\draw[arr](ref)--(wgs);\draw[arr](wgs)--(cap);\draw[arr](cap)--(psa);\draw[arr](psa)--(h2);\draw[arr](cap)--(co2);\draw[arr](rx)--(pow);
+\draw[arr](ref)--(wgs);
+\draw[arr](wgs)--(cap);
+\draw[arr](cap)--(psa);
+\draw[arr](psa)--(h2);
+\draw[arr](cap)--(co2);
+\draw[arr](rx)--(pow);
 \end{tikzpicture}
 \caption{Final project-specific nuclear-assisted SMR+CCS architecture. Process conditions are anchored to INL TEV-953/961~\cite{inltev953,inltev961}; reactor/IHX/cogeneration architecture is anchored to JAEA GTHTR300C evidence~\cite{jaeri2004gthtr300c,nishihara2007potential}. The 950$^\circ$C value is the selected JAEA hardware envelope; INL Case 6 itself uses 925$^\circ$C ROT to deliver 900$^\circ$C process heat.}
 \label{fig:final-system}
