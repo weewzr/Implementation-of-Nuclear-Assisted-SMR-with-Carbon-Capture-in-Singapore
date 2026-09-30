@@ -3,15 +3,15 @@ Figure~\ref{fig:final-system} is the operative final architecture. Natural gas a
 
 \begin{figure}[htbp]\centering
 \begin{tikzpicture}[>=Latex,node distance=8mm,box/.style={draw,rounded corners,align=center,minimum width=24mm,minimum height=10mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
-\node[box] (rx) {HTGR\600 MWth\950$^\circ$C envelope};
-\node[box,right=of rx] (ihx) {IHX +\secondary He\900$^\circ$C};
-\node[box,right=of ihx] (ref) {SMR\871$^\circ$C\S/C=3.0};
+\node[box] (rx) {HTGR\\600 MWth\\950$^\circ$C envelope};
+\node[box,right=of rx] (ihx) {IHX +\\secondary He\\900$^\circ$C};
+\node[box,right=of ihx] (ref) {SMR\\871$^\circ$C\\S/C=3.0};
 \node[box,right=of ref] (wgs) {WGS};
-\node[box,right=of wgs] (cap) {CO$_2$\capture};
-\node[box,right=of cap] (psa) {PSA\88\% recovery};
-\node[box,right=of psa] (h2) {H$_2$\130 MMSCFD};
-\node[box,below=of cap] (co2) {Captured CO$_2$\to T\&S};
-\node[box,below=of ihx] (pow) {Cogenerated\electricity};
+\node[box,right=of wgs] (cap) {CO$_2$\\capture};
+\node[box,right=of cap] (psa) {PSA\\88\% recovery};
+\node[box,right=of psa] (h2) {H$_2$\\130 MMSCFD};
+\node[box,below=of cap] (co2) {Captured CO$_2$\\to T\&S};
+\node[box,below=of ihx] (pow) {Cogenerated\\electricity};
 \draw[heat](rx)--node[above,font=\scriptsize]{primary He}(ihx);
 \draw[heat](ihx)--node[above,font=\scriptsize]{176.8 MWth}(ref);
 \draw[arr](ref)--(wgs);\draw[arr](wgs)--(cap);\draw[arr](cap)--(psa);\draw[arr](psa)--(h2);\draw[arr](cap)--(co2);\draw[arr](rx)--(pow);
