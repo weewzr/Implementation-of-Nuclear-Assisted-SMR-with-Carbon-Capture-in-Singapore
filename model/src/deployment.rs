@@ -1,151 +1,163 @@
 use crate::*;
 
-pub const DEPLOYMENT_ANNUAL_SCALE:f64=1.30;
-pub const GTHTR_MODULE_MWTH:f64=600.0;
-pub const JPY_TO_SGD:f64=0.0087;
-pub const USD_TO_SGD:f64=1.30;
-pub const EUR_TO_SGD:f64=1.50;
-pub const JAEA_HEAT_JPY_MJ:f64=0.70;
-pub const IEAGHG_CCS_INCREMENTAL_TCR_EUR:f64=41.02e6;
-pub const IEAGHG_CCS_REF_CAPTURE_T_Y:f64=0.4660*100_000.0*8322.0/1000.0;
+pub const REACTOR_MWTH:f64=600.0;
+pub const PRIMARY_OUT_C:f64=950.0;
+pub const IHX_SECONDARY_OUT_C:f64=900.0; // GTHTR300C source IHX
+pub const REFORMER_HE_IN_C:f64=880.0;    // HTTR SMR source condition after hot-duct loss
+pub const REFORMER_HE_OUT_C:f64=585.0;   // HTTR design condition
+pub const PROCESS_GAS_OUT_C:f64=820.0;   // bounded deployment reference below He inlet
+pub const MIN_IHX_APPROACH_K:f64=50.0;
+pub const MIN_PROCESS_APPROACH_K:f64=40.0;
+pub const JAEA_AVAIL:f64=0.85;
+pub const JAEA_PLANT_BJPY:f64=59.7;
+pub const JAEA_IHX_LOOP_BJPY:f64=11.2;
+pub const JAEA_HEAT_JPY_MJ:f64=0.52;
+pub const JAEA_ELEC_JPY_KWH:f64=4.9;
+pub const JAEA_DOUBLE_PLANT_BJPY:f64=70.9;
+pub const JAEA_DOUBLE_HEAT_JPY_MJ:f64=0.57;
+pub const JAEA_DOUBLE_ELEC_JPY_KWH:f64=5.5;
+pub const JPY_SGD_2026_09_29:f64=0.008117;
+pub const USD_SGD_2026_09_29:f64=1.2776;
+pub const EUR_SGD_2026_09_29:f64=1.452;
+pub const JP_DEFLATOR_2007:f64=99.59;
+pub const JP_DEFLATOR_2025:f64=112.27;
+pub const DE_DEFLATOR_2014:f64=90.46;
+pub const DE_DEFLATOR_2025:f64=123.84;
+pub const US_ESC_2024_2025:f64=1.0280;
+pub const CCS_TCR_EUR2014:f64=41.02e6;
+pub const CCS_REF_CAPTURE_T_Y:f64=0.4660*100_000.0*8322.0/1000.0;
 
-#[derive(Debug,Clone,Copy)]
-pub enum DeploymentCostClass { JaeaMature, ModernCentral, FoakAdverse }
-#[derive(Debug,Clone,Copy)]
-pub struct DeploymentResult {
- pub class:DeploymentCostClass,pub cogeneration:bool,
- pub annual_h2_t:f64,pub annual_avoided_t:f64,pub throughput_scale:f64,
- pub process_heat_mw:f64,pub reactor_modules:u32,pub reactor_capacity_mwth:f64,
- pub reactor_utilisation:f64,pub co2_stored_t_y:f64,
- pub nuclear_capex_allocated_sgd:f64,pub ccs_capex_sgd:f64,pub integration_capex_sgd:f64,
- pub annual_nuclear_sgd:f64,pub annual_ccs_capital_sgd:f64,pub annual_integration_sgd:f64,
- pub annual_ts_sgd:f64,pub annual_other_incremental_sgd:f64,
- pub annual_incremental_sgd:f64,pub abatement_cost_sgd_t:f64,
+#[derive(Clone,Copy,Debug)]
+pub struct DeploymentPhysical {
+ pub annual_scale:f64,pub throughput_scale:f64,pub annual_h2_t:f64,
+ pub process_heat_mw:f64,pub helium_flow_kg_s:f64,pub co2_stored_t_y:f64,
+ pub annual_avoided_t:f64,pub specific_abatement_t_t:f64,
+ pub reactor_utilisation:f64,pub gross_electric_mwe:f64,pub net_electric_mwe:f64,
+ pub annual_electric_mwh:f64,pub ihx_approach_k:f64,pub process_approach_k:f64,
+}
+pub fn deployment_physical(annual_scale:f64)->DeploymentPhysical {
+ assert!(annual_scale>0.0);
+ assert!(PRIMARY_OUT_C>IHX_SECONDARY_OUT_C);
+ assert!(REFORMER_HE_IN_C>PROCESS_GAS_OUT_C);
+ let hours=JAEA_AVAIL*8760.0;
+ let throughput_scale=annual_scale*8322.0/hours;
+ let s=r3_solve_case(PROCESS_GAS_OUT_C+273.15,20.0,0.95,0.90);
+ let c=r3_ccs_ledger(s);
+ let hin=wet6_enthalpy_mw(s.reformer_in,650.0+273.15);
+ let hout=wet6_enthalpy_mw(s.reformer_out,PROCESS_GAS_OUT_C+273.15);
+ let qref=(hout-hin).max(0.0);
+ let qwhb=wet6_enthalpy_mw(s.reformer_out,PROCESS_GAS_OUT_C+273.15)
+     -wet6_enthalpy_mw(s.reformer_out,320.0+273.15);
+ let rec=c.mdea_heat_hi_mw.min(qwhb.max(0.0));
+ let q=(qref+(c.mdea_heat_hi_mw-rec))*throughput_scale;
+ let heflow=helium_mass_flow_kg_s(q,5.2,REFORMER_HE_IN_C,REFORMER_HE_OUT_C);
+ let h2=IEAGHG_BASE.h2_kg_per_h*hours*throughput_scale/1000.0;
+ let purge=c.purge_oxidation_co2_kmol_h;
+ let stored=(s.captured_co2_kmol_h+0.95*purge)*44.0095*hours*throughput_scale/1000.0;
+ let residual=((s.shifted.co2-s.captured_co2_kmol_h)+0.05*purge)*44.0095/(IEAGHG_BASE.h2_kg_per_h);
+ let upstream=upstream_ng_from_energy_mw_kgco2e_per_kgh2(ieaghg_feed_lhv_mw()*s.fresh_fraction,11.5);
+ let nuclear=direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(q/throughput_scale,5.5,0.504);
+ let circ=helium_circulator_power_mw(heflow,58.0*4.0,5.15,REFORMER_HE_OUT_C,0.70);
+ let aux=(c.co2_compression_mwe+c.tail_compression_mwe)*throughput_scale+circ;
+ let aux_ci=aux*5.5*1000.0/(IEAGHG_BASE.h2_kg_per_h*throughput_scale);
+ let transport=(stored/h2)*0.025;
+ let ci=residual+upstream+nuclear+aux_ci+transport;
+ let base=ieaghg_unabated_lifecycle_screen(11.5).total();
+ let specific=base-ci;
+ let avoided=specific*h2;
+ // GTHTR300C source: 202 MWe at 170 MW heat; 276 MWe at zero heat.
+ let gross=202.0+(170.0-q).clamp(0.0,170.0)*(74.0/170.0);
+ let net=gross; // source electricity is plant output; no second auxiliary deduction.
+ DeploymentPhysical{annual_scale,throughput_scale,annual_h2_t:h2,process_heat_mw:q,
+  helium_flow_kg_s:heflow,co2_stored_t_y:stored,annual_avoided_t:avoided,
+  specific_abatement_t_t:specific,reactor_utilisation:q/REACTOR_MWTH,
+  gross_electric_mwe:gross,net_electric_mwe:net,annual_electric_mwh:net*hours,
+  ihx_approach_k:PRIMARY_OUT_C-IHX_SECONDARY_OUT_C,
+  process_approach_k:REFORMER_HE_IN_C-PROCESS_GAS_OUT_C}
+}
+pub fn minimum_annual_scale()->f64 {let x=deployment_physical(1.0);250_000.0/x.annual_avoided_t}
+pub fn selected_annual_scale()->f64 {(minimum_annual_scale()*1.10).max(1.40)}
+
+pub fn jp_escalation()->f64{JP_DEFLATOR_2025/JP_DEFLATOR_2007}
+pub fn eu_escalation()->f64{DE_DEFLATOR_2025/DE_DEFLATOR_2014}
+pub fn jaea_heat_sgd_gj(double_ihx:bool)->f64{let x=if double_ihx{JAEA_DOUBLE_HEAT_JPY_MJ}else{JAEA_HEAT_JPY_MJ};x*jp_escalation()*JPY_SGD_2026_09_29*1000.0}
+pub fn jaea_electric_sgd_mwh(double_ihx:bool)->f64{let x=if double_ihx{JAEA_DOUBLE_ELEC_JPY_KWH}else{JAEA_ELEC_JPY_KWH};x*jp_escalation()*JPY_SGD_2026_09_29*1000.0}
+pub fn jaea_plant_capex_sgd(double_ihx:bool)->f64{let x=if double_ihx{JAEA_DOUBLE_PLANT_BJPY}else{JAEA_PLANT_BJPY};x*1e9*jp_escalation()*JPY_SGD_2026_09_29}
+pub fn ccs_capex_sgd(stored:f64)->f64{CCS_TCR_EUR2014*eu_escalation()*EUR_SGD_2026_09_29*(stored/CCS_REF_CAPTURE_T_Y)}
+pub fn crf(i:f64,n:u32)->f64{i*(1.0+i).powi(n as i32)/((1.0+i).powi(n as i32)-1.0)}
+
+#[derive(Clone,Copy,Debug)]
+pub struct EconomicResult {
+ pub annual_scale:f64,pub double_ihx:bool,pub electricity_value_sgd_mwh:f64,
+ pub reactor_burden_sgd_y:f64,pub electricity_value_sgd_y:f64,
+ pub ccs_capex_sgd:f64,pub annual_incremental_sgd:f64,pub cost_sgd_t:f64,
  pub pass_abatement:bool,pub pass_cost:bool,pub joint_pass:bool,
 }
-pub fn crf(i:f64,n:u32)->f64 { i*(1.0+i).powi(n as i32)/((1.0+i).powi(n as i32)-1.0) }
-
-fn params(k:DeploymentCostClass)->(f64,f64,u32,f64,f64,f64,f64,f64) {
- // cf,wacc,life,occ SGD/kWth, O&M SGD/MWhth,T&S SGD/t,integration fraction, gas price
- match k {
-  DeploymentCostClass::JaeaMature => (0.80,0.03,40,50.0e9*JPY_TO_SGD/600_000.0,0.0,15.0,0.10,15.0),
-  DeploymentCostClass::ModernCentral => (0.93,0.075,60,2500.0*USD_TO_SGD,12.0*USD_TO_SGD,30.0,0.20,17.5),
-  DeploymentCostClass::FoakAdverse => (0.80,0.10,60,3250.0*USD_TO_SGD,16.0*USD_TO_SGD,45.0,0.30,20.0),
- }
-}
-pub fn deployment_minimum_annual_h2_t()->f64 {
- let p=r3_uncertainty_point(950.0,20.0,0.90,0.95,11.5,5.5,15.0,5.69,150.0,80e6);
- let specific=p.annual_avoided_t/(IEAGHG_BASE.h2_kg_per_h*8322.0/1000.0);
- 250_000.0/specific
-}
-pub fn deployment_case_at_scale(k:DeploymentCostClass,cogeneration:bool,annual_ratio:f64)->DeploymentResult {
- assert!(annual_ratio>0.0);
- let (cf,wacc,life,occ,om,ts,integ_frac,gas_price)=params(k);
- let hours=cf*8760.0;
- let throughput_scale=annual_ratio*8322.0/hours;
- let s=r3_solve_case(950.0+273.15,20.0,0.95,0.90);
- let h=r3_heat_cascade(650.0,20.0,30.0,500.0);
+pub fn mature_economic(annual_scale:f64,double_ihx:bool,electricity_value:f64)->EconomicResult {
+ let x=deployment_physical(annual_scale);let hours=JAEA_AVAIL*8760.0;
+ // Full source economic burden: source-priced heat + source-priced electricity.
+ let heat_burden=x.process_heat_mw*hours*3.6*jaea_heat_sgd_gj(double_ihx);
+ let power_burden=x.annual_electric_mwh*jaea_electric_sgd_mwh(double_ihx);
+ let reactor_burden=heat_burden+power_burden;
+ let power_value=x.annual_electric_mwh*electricity_value;
+ let ccs=ccs_capex_sgd(x.co2_stored_t_y);
+ let annual_ccs=ccs*crf(0.08,25);
+ let plant=jaea_plant_capex_sgd(double_ihx);
+ let integration=0.10*(plant+ccs)*crf(0.03,40);
+ let ts=x.co2_stored_t_y*15.0;
+ let s=r3_solve_case(PROCESS_GAS_OUT_C+273.15,20.0,0.95,0.90);
+ let base=annual_thermal_energy_cost_sgd(ieaghg_total_ng_lhv_mw()*x.throughput_scale,hours,15.0);
+ let fresh=annual_thermal_energy_cost_sgd(ieaghg_feed_lhv_mw()*s.fresh_fraction*x.throughput_scale,hours,15.0);
  let c=r3_ccs_ledger(s);
- let circ=r3_helium_circulator_hi_mwe(h);
- let process_heat=h.nuclear_heat_hi_mw*throughput_scale;
- let modules=(process_heat/GTHTR_MODULE_MWTH).ceil() as u32;
- let reactor_capacity=modules as f64*GTHTR_MODULE_MWTH;
- let util=process_heat/reactor_capacity;
- let annual_h2=IEAGHG_BASE.h2_kg_per_h*hours*throughput_scale/1000.0;
- let p=r3_uncertainty_point(950.0,20.0,0.90,0.95,11.5,5.5,gas_price,5.69,150.0,0.0);
- let annual_avoided=p.annual_avoided_t*annual_ratio;
- let purge_c=c.purge_oxidation_co2_kmol_h;
- let captured_kmol_h=s.captured_co2_kmol_h+0.95*purge_c;
- let stored=captured_kmol_h*44.0095*hours*throughput_scale/1000.0;
- let ccs_cap=IEAGHG_CCS_INCREMENTAL_TCR_EUR*EUR_TO_SGD*(stored/IEAGHG_CCS_REF_CAPTURE_T_Y);
- let full_reactor_cap=occ*1000.0*reactor_capacity;
- let alloc_cap=if cogeneration{full_reactor_cap*util}else{full_reactor_cap};
- let integration_cap=integ_frac*(alloc_cap+ccs_cap);
- let annual_ccs_cap=ccs_cap*crf(0.08,25);
- let annual_integration=integration_cap*crf(wacc,life);
- let heat_energy_gj=process_heat*hours*3.6;
- let annual_nuclear=match k {
-   DeploymentCostClass::JaeaMature => {
-     let priced_mw=if cogeneration{process_heat}else{reactor_capacity};
-     priced_mw*hours*3.6*(JAEA_HEAT_JPY_MJ*JPY_TO_SGD*1000.0)
-   },
-   _ => alloc_cap*crf(wacc,life)+om*(if cogeneration{process_heat}else{reactor_capacity})*hours,
- };
- let base=annual_thermal_energy_cost_sgd(ieaghg_total_ng_lhv_mw()*throughput_scale,hours,gas_price);
- let fresh=annual_thermal_energy_cost_sgd(ieaghg_feed_lhv_mw()*s.fresh_fraction*throughput_scale,hours,gas_price);
- let aux=(c.co2_compression_mwe+c.tail_compression_mwe+circ)*throughput_scale*hours*175.0;
- let other=fresh+aux-base;
- let annual_ts=stored*ts;
- let incremental=other+annual_nuclear+annual_ccs_cap+annual_integration+annual_ts;
- let ac=incremental/annual_avoided;
- DeploymentResult{class:k,cogeneration,annual_h2_t:annual_h2,annual_avoided_t:annual_avoided,
-  throughput_scale,process_heat_mw:process_heat,reactor_modules:modules,reactor_capacity_mwth:reactor_capacity,
-  reactor_utilisation:util,co2_stored_t_y:stored,nuclear_capex_allocated_sgd:alloc_cap,
-  ccs_capex_sgd:ccs_cap,integration_capex_sgd:integration_cap,
-  annual_nuclear_sgd:annual_nuclear,annual_ccs_capital_sgd:annual_ccs_cap,
-  annual_integration_sgd:annual_integration,annual_ts_sgd:annual_ts,
-  annual_other_incremental_sgd:other,annual_incremental_sgd:incremental,
-  abatement_cost_sgd_t:ac,pass_abatement:annual_avoided>250_000.0,
-  pass_cost:ac<100.0,joint_pass:annual_avoided>250_000.0&&ac<100.0}
+ let aux=(c.co2_compression_mwe+c.tail_compression_mwe)*x.throughput_scale*hours*150.0;
+ let incremental=fresh+aux+reactor_burden+annual_ccs+integration+ts-power_value-base;
+ let cost=incremental/x.annual_avoided_t;
+ EconomicResult{annual_scale,double_ihx,electricity_value_sgd_mwh:electricity_value,
+  reactor_burden_sgd_y:reactor_burden,electricity_value_sgd_y:power_value,
+  ccs_capex_sgd:ccs,annual_incremental_sgd:incremental,cost_sgd_t:cost,
+  pass_abatement:x.annual_avoided_t>250_000.0,pass_cost:cost<100.0,
+  joint_pass:x.annual_avoided_t>250_000.0&&cost<100.0}
 }
-pub fn deployment_case(k:DeploymentCostClass,cogeneration:bool)->DeploymentResult { deployment_case_at_scale(k,cogeneration,DEPLOYMENT_ANNUAL_SCALE) }
-pub fn deployment_break_even_heat_sgd_gj()->f64 {
- let x=deployment_case(DeploymentCostClass::JaeaMature,true);
- let heat_gj=x.process_heat_mw*(0.80*8760.0)*3.6;
- let nonheat=x.annual_incremental_sgd-x.annual_nuclear_sgd;
- (100.0*x.annual_avoided_t-nonheat)/heat_gj
-}
-pub fn deployment_cases_csv()->String {
- let mut s=String::from("case,cogeneration,h2_t_y,throughput_scale,reactor_mwth,process_heat_mw,utilisation,co2_stored_t_y,annual_avoided_t,annual_incremental_sgd,cost_sgd_t,abatement_pass,cost_pass,joint_pass\n");
- for k in [DeploymentCostClass::JaeaMature,DeploymentCostClass::ModernCentral,DeploymentCostClass::FoakAdverse] {
-  for cog in [true,false] { let x=deployment_case(k,cog); let n=match k{DeploymentCostClass::JaeaMature=>"JAEA mature",DeploymentCostClass::ModernCentral=>"Modern central",DeploymentCostClass::FoakAdverse=>"FOAK adverse"};
-   s.push_str(&format!("{},{},{:.3},{:.6},{:.1},{:.3},{:.4},{:.3},{:.3},{:.3},{:.3},{},{},{}\n",n,if cog{"cogeneration"}else{"hydrogen-only"},x.annual_h2_t,x.throughput_scale,x.reactor_capacity_mwth,x.process_heat_mw,x.reactor_utilisation,x.co2_stored_t_y,x.annual_avoided_t,x.annual_incremental_sgd,x.abatement_cost_sgd_t,x.pass_abatement,x.pass_cost,x.joint_pass));
-  }
- } s
+pub fn break_even_electricity_sgd_mwh(annual_scale:f64,double_ihx:bool)->f64 {
+ let z=mature_economic(annual_scale,double_ihx,0.0);let x=deployment_physical(annual_scale);
+ (z.annual_incremental_sgd-100.0*x.annual_avoided_t)/x.annual_electric_mwh
 }
 
-pub fn deployment_summary_csv()->String {
- let min=deployment_minimum_annual_h2_t(); let canon=r3_singapore_scale();
- let a=deployment_case(DeploymentCostClass::JaeaMature,true);let b=deployment_case(DeploymentCostClass::ModernCentral,true);let d=deployment_case(DeploymentCostClass::FoakAdverse,true);
- format!("case,h2_t_y,annual_scale,reactor_mwth,process_heat_mw,co2_stored_t_y\nOriginal canonical,{:.3},1.000,600,{:.3},{:.3}\nMinimum abatement scale,{:.3},{:.6},600,not fixed,not fixed\nJAEA mature cogeneration,{:.3},{:.2},{:.1},{:.3},{:.3}\nModern central cogeneration,{:.3},{:.2},{:.1},{:.3},{:.3}\nFOAK adverse cogeneration,{:.3},{:.2},{:.1},{:.3},{:.3}\n",canon.annual_h2_t,canon.nuclear_process_heat_hi_mw,canon.total_co2_to_storage_t_y,min,min/canon.annual_h2_t,a.annual_h2_t,DEPLOYMENT_ANNUAL_SCALE,a.reactor_capacity_mwth,a.process_heat_mw,a.co2_stored_t_y,b.annual_h2_t,DEPLOYMENT_ANNUAL_SCALE,b.reactor_capacity_mwth,b.process_heat_mw,b.co2_stored_t_y,d.annual_h2_t,DEPLOYMENT_ANNUAL_SCALE,d.reactor_capacity_mwth,d.process_heat_mw,d.co2_stored_t_y)
-}
-pub fn deployment_principal_csv()->String {
- let mut s=String::from("case,h2_t_y,reactor_mwth,process_heat_mw,co2_stored_t_y,avoided_t_y,incremental_sgd,cost_sgd_t,abatement_pass,cost_pass,joint_pass\n");
- for k in [DeploymentCostClass::JaeaMature,DeploymentCostClass::ModernCentral,DeploymentCostClass::FoakAdverse]{let x=deployment_case(k,true);let n=match k{DeploymentCostClass::JaeaMature=>"JAEA mature",DeploymentCostClass::ModernCentral=>"Modern central",DeploymentCostClass::FoakAdverse=>"FOAK adverse"};s.push_str(&format!("{},{:.3},{:.1},{:.3},{:.3},{:.3},{:.3},{:.3},{},{},{}\n",n,x.annual_h2_t,x.reactor_capacity_mwth,x.process_heat_mw,x.co2_stored_t_y,x.annual_avoided_t,x.annual_incremental_sgd,x.abatement_cost_sgd_t,x.pass_abatement,x.pass_cost,x.joint_pass));} s
-}
-
-pub fn deployment_cost_breakdown_csv()->String {
- let x=deployment_case(DeploymentCostClass::JaeaMature,true);
- format!("component,annual_sgd\nNG and auxiliary net,{:.3}\nNuclear heat service,{:.3}\nCCS capital annualisation,{:.3}\nIntegration/site annualisation,{:.3}\nCO2 transport-storage,{:.3}\n",x.annual_other_incremental_sgd,x.annual_nuclear_sgd,x.annual_ccs_capital_sgd,x.annual_integration_sgd,x.annual_ts_sgd)
-}
-
-pub fn deployment_cost_curve_csv()->String {
- let mut s=String::from("annual_scale,scenario_id,case,cost_sgd_t,annual_avoided_t,joint_pass\n");
- for i in 10..=30 {let a=i as f64/10.0;for k in [DeploymentCostClass::JaeaMature,DeploymentCostClass::ModernCentral,DeploymentCostClass::FoakAdverse]{let x=deployment_case_at_scale(k,true,a);let (id,n)=match k{DeploymentCostClass::JaeaMature=>(0,"JAEA mature"),DeploymentCostClass::ModernCentral=>(1,"Modern central"),DeploymentCostClass::FoakAdverse=>(2,"FOAK adverse")};s.push_str(&format!("{:.1},{},{},{:.3},{:.3},{}\n",a,id,n,x.abatement_cost_sgd_t,x.annual_avoided_t,x.joint_pass));}} s
+#[derive(Clone,Copy,Debug)]
+pub enum CostClass{ModernCentral,FoakAdverse}
+pub fn modern_cost(annual_scale:f64,k:CostClass)->EconomicResult {
+ let x=deployment_physical(annual_scale);let hours=match k{CostClass::ModernCentral=>0.93*8760.0,CostClass::FoakAdverse=>0.80*8760.0};
+ let (occ,om,wacc,ts,integ)=match k{CostClass::ModernCentral=>(2500.0*US_ESC_2024_2025*USD_SGD_2026_09_29,12.0*US_ESC_2024_2025*USD_SGD_2026_09_29,0.075,30.0,0.20),CostClass::FoakAdverse=>(3250.0*US_ESC_2024_2025*USD_SGD_2026_09_29,16.0*US_ESC_2024_2025*USD_SGD_2026_09_29,0.10,45.0,0.30)};
+ let cap=occ*1000.0*REACTOR_MWTH;let reactor=cap*crf(wacc,60)+om*REACTOR_MWTH*hours;
+ let ccs=ccs_capex_sgd(x.co2_stored_t_y);let annual_ccs=ccs*crf(0.08,25);
+ let integration=integ*(cap+ccs)*crf(wacc,60);
+ let s=r3_solve_case(PROCESS_GAS_OUT_C+273.15,20.0,0.95,0.90);
+ let base=annual_thermal_energy_cost_sgd(ieaghg_total_ng_lhv_mw()*x.throughput_scale,hours,17.5);
+ let fresh=annual_thermal_energy_cost_sgd(ieaghg_feed_lhv_mw()*s.fresh_fraction*x.throughput_scale,hours,17.5);
+ let incremental=fresh+reactor+annual_ccs+integration+x.co2_stored_t_y*ts-base;
+ let cost=incremental/x.annual_avoided_t;
+ EconomicResult{annual_scale,double_ihx:false,electricity_value_sgd_mwh:0.0,reactor_burden_sgd_y:reactor,electricity_value_sgd_y:0.0,ccs_capex_sgd:ccs,annual_incremental_sgd:incremental,cost_sgd_t:cost,pass_abatement:x.annual_avoided_t>250_000.0,pass_cost:cost<100.0,joint_pass:x.annual_avoided_t>250_000.0&&cost<100.0}
 }
 
-pub fn deployment_heat_feasibility_csv()->String {
- let mut s=String::from("annual_scale,break_even_heat_sgd_gj,annual_avoided_t\n");
- for i in 10..=30 {let a=i as f64/10.0;let x=deployment_case_at_scale(DeploymentCostClass::JaeaMature,true,a);let heat_gj=x.process_heat_mw*(0.80*8760.0)*3.6;let nonheat=x.annual_incremental_sgd-x.annual_nuclear_sgd;let be=(100.0*x.annual_avoided_t-nonheat)/heat_gj;s.push_str(&format!("{:.1},{:.4},{:.3}\n",a,be,x.annual_avoided_t));} s
+pub fn review5_results_csv()->String{
+ let a=selected_annual_scale();let mut s=String::from("scenario,scale,h2_t_y,avoided_t_y,process_heat_mw,he_flow_kg_s,electric_mwe,electric_mwh,electric_value_sgd_mwh,cost_sgd_t,joint_pass\n");
+ let p=deployment_physical(a);
+ for (n,r) in [("JAEA zero surplus",mature_economic(a,false,0.0)),("JAEA break-even",mature_economic(a,false,break_even_electricity_sgd_mwh(a,false))),("JAEA SG 100",mature_economic(a,false,100.0)),("JAEA SG 150",mature_economic(a,false,150.0)),("JAEA SG 200",mature_economic(a,false,200.0)),("JAEA doubled IHX SG150",mature_economic(a,true,150.0)),("Modern central",modern_cost(a,CostClass::ModernCentral)),("FOAK adverse",modern_cost(a,CostClass::FoakAdverse))]{s.push_str(&format!("{},{:.4},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{}\n",n,a,p.annual_h2_t,p.annual_avoided_t,p.process_heat_mw,p.helium_flow_kg_s,p.net_electric_mwe,p.annual_electric_mwh,r.electricity_value_sgd_mwh,r.cost_sgd_t,r.joint_pass));}s
 }
-
-pub fn deployment_evidence_csv()->String {
- String::from("source,technology,thermal_mw,cost,cost_basis,capacity_factor,finance,class\nJAEA 2014,GTHTR300,600,0.7 JPY/MJ,heat service,0.80,3pct 40y,MATURE DESIGN\nJAEA user requirement,GTHTR300,600,40-50 bn JPY/unit,design target,greater than 0.90,60y,DESIGN TARGET\nINL GAIN 2024,thermal HTGR SMR,thermal-only,2500 USD/kWth; 12 USD/MWhth,moderate,0.93,7.5pct 60y,MODERN CENTRAL\nINL GAIN 2024,thermal HTGR SMR,thermal-only,3250 USD/kWth; 16 USD/MWhth,conservative,0.80 project screen,10pct project WACC 60y,FOAK-ADVERSE SCREEN\n")
+pub fn review5_margin_csv()->String{
+ let min=minimum_annual_scale();let sel=selected_annual_scale();let mut s=String::from("scale,h2_t_y,avoided_t_y,margin_pct,process_heat_mw,utilisation,cost_sgd_t\n");
+ for a in [min*1.001,1.30,1.35,1.40,1.50,sel]{let p=deployment_physical(a);let e=mature_economic(a,false,150.0);s.push_str(&format!("{:.6},{:.3},{:.3},{:.3},{:.3},{:.4},{:.3}\n",a,p.annual_h2_t,p.annual_avoided_t,100.0*(p.annual_avoided_t/250000.0-1.0),p.process_heat_mw,p.reactor_utilisation,e.cost_sgd_t));}s
 }
-
-pub fn deployment_scale_curve_csv()->String {
- let p=r3_uncertainty_point(950.0,20.0,0.90,0.95,11.5,5.5,15.0,5.69,150.0,0.0);
- let mut s=String::from("annual_scale,h2_t_y,annual_avoided_t\n");
- for i in 10..=30 {let a=i as f64/10.0;s.push_str(&format!("{:.1},{:.3},{:.3}\n",a,IEAGHG_BASE.h2_kg_per_h*8322.0/1000.0*a,p.annual_avoided_t*a));} s
-}
-#[cfg(test)] mod tests {
- use super::*;
- #[test] fn scale_one_reproduces_canonical_annual_h2(){assert!((IEAGHG_BASE.h2_kg_per_h*8322.0/1000.0-r3_singapore_scale().annual_h2_t).abs()<1e-9);}
- #[test] fn minimum_scale_exceeds_original(){assert!(deployment_minimum_annual_h2_t()>r3_singapore_scale().annual_h2_t);}
- #[test] fn crf_identity(){assert!((crf(0.03,40)-0.04326237789046286).abs()<1e-12);}
- #[test] fn module_sizing_and_utilisation_are_physical(){for k in [DeploymentCostClass::JaeaMature,DeploymentCostClass::ModernCentral,DeploymentCostClass::FoakAdverse]{let x=deployment_case(k,true);assert!(x.reactor_modules>=1&&x.reactor_utilisation>0.0&&x.reactor_utilisation<=1.0);}}
- #[test] fn ccs_scales_and_cost_identity_holds(){let x=deployment_case(DeploymentCostClass::JaeaMature,true);assert!(x.co2_stored_t_y>r3_singapore_scale().total_co2_to_storage_t_y);assert!((x.abatement_cost_sgd_t-x.annual_incremental_sgd/x.annual_avoided_t).abs()<1e-12);}
- #[test] fn original_gate5_result_is_untouched(){let s=r3_uncertainty_summary();assert_eq!(s.n,64);assert_eq!(s.both_pass,0);}
- #[test] fn mature_cogeneration_is_conditional_joint_pass(){let x=deployment_case(DeploymentCostClass::JaeaMature,true);assert!(x.joint_pass);assert!(!deployment_case(DeploymentCostClass::JaeaMature,false).joint_pass);}
- #[test] fn modern_and_foak_cases_do_not_pass_cost(){assert!(!deployment_case(DeploymentCostClass::ModernCentral,true).pass_cost);assert!(!deployment_case(DeploymentCostClass::FoakAdverse,true).pass_cost);}
+pub fn review5_cost_ledger_csv()->String{format!("item,source_year,source_currency,source_value,index_method,index_source,index_factor,fx_date,fx_sgd,final_basis,converted_sgd\nGTHTR300C plant,2007,JPY,{:.3} billion,Japan GDP deflator,World Bank 2007=99.59 2025=112.27,{:.6},2026-09-29,{:.6},2025-price SGD,{:.3}\nGTHTR300C IHX-loop,2007,JPY,{:.3} billion,Japan GDP deflator,World Bank,{:.6},2026-09-29,{:.6},2025-price SGD,{:.3}\nIEAGHG CCS increment,2014,EUR,{:.3} million,Germany GDP deflator proxy,World Bank/IMF 2014=90.46 2025=123.84,{:.6},2026-09-29,{:.3},2025-price SGD,{:.3}\n",JAEA_PLANT_BJPY,jp_escalation(),JPY_SGD_2026_09_29,jaea_plant_capex_sgd(false),JAEA_IHX_LOOP_BJPY,jp_escalation(),JPY_SGD_2026_09_29,JAEA_IHX_LOOP_BJPY*1e9*jp_escalation()*JPY_SGD_2026_09_29,CCS_TCR_EUR2014/1e6,eu_escalation(),EUR_SGD_2026_09_29,CCS_TCR_EUR2014*eu_escalation()*EUR_SGD_2026_09_29)}
+#[cfg(test)]mod tests{use super::*;
+ #[test]fn temperatures_are_source_defined_and_positive(){let p=deployment_physical(1.4);assert!(p.ihx_approach_k>=MIN_IHX_APPROACH_K);assert!(p.process_approach_k>=MIN_PROCESS_APPROACH_K);assert_eq!(REFORMER_HE_IN_C,880.0);assert_eq!(PROCESS_GAS_OUT_C,820.0);}
+ #[test]fn duty_fits_ihx_and_module(){let p=deployment_physical(selected_annual_scale());assert!(p.process_heat_mw<170.0);assert!(p.reactor_utilisation<1.0);}
+ #[test]fn cost_conversions_reproduce(){assert!((jp_escalation()-112.27/99.59).abs()<1e-12);assert!((jaea_plant_capex_sgd(false)-59.7e9*(112.27/99.59)*0.008117).abs()<1.0);}
+ #[test]fn zero_value_is_not_free_capacity(){let a=selected_annual_scale();assert!(mature_economic(a,false,0.0).cost_sgd_t>mature_economic(a,false,150.0).cost_sgd_t);}
+ #[test]fn break_even_solves_threshold(){let a=selected_annual_scale();let b=break_even_electricity_sgd_mwh(a,false);assert!((mature_economic(a,false,b).cost_sgd_t-100.0).abs()<1e-8);}
+ #[test]fn full_reactor_burden_positive(){let e=mature_economic(selected_annual_scale(),false,150.0);assert!(e.reactor_burden_sgd_y>0.0&&e.electricity_value_sgd_y>0.0);}
+ #[test]fn doubled_ihx_costs_more(){let a=selected_annual_scale();assert!(mature_economic(a,true,150.0).cost_sgd_t>mature_economic(a,false,150.0).cost_sgd_t);}
+ #[test]fn margin_is_not_narrow(){let p=deployment_physical(selected_annual_scale());assert!(p.annual_avoided_t>250000.0*1.05);}
+ #[test]fn specific_abatement_sensitivity(){let p=deployment_physical(minimum_annual_scale());assert!((p.annual_avoided_t-250000.0).abs()<1e-6);assert!(p.annual_avoided_t*0.98<250000.0);}
+ #[test]fn gate5_unchanged(){let x=r3_uncertainty_summary();assert_eq!(x.n,64);assert_eq!(x.both_pass,0);}
 }
