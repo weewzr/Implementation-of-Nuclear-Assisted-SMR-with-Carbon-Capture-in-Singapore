@@ -11,7 +11,7 @@ Figure~\ref{fig:final-system} shows the operative process architecture. Natural 
 \node[box,left=of cap] (psa) {PSA\\88\% recovery};
 \node[box,left=of psa] (h2) {H$_2$\\130 MMSCFD};
 \node[box,right=of cap] (co2) {Captured CO$_2$\\to T\&S};
-\node[box,below=of rx] (rem) {Remaining thermal\\capacity: 423.2 MWth\\power output not claimed};
+\node[box,below=13mm of ihx,minimum width=34mm] (rem) {Remaining reactor capacity\\423.2 MWth thermal\\not claimed as electricity};
 \draw[heat](rx)--node[above,font=\scriptsize]{primary He}(ihx);
 \draw[heat](ihx)--(ref);
 \draw[arr](ref)--(wgs);
@@ -19,7 +19,7 @@ Figure~\ref{fig:final-system} shows the operative process architecture. Natural 
 \draw[arr](cap)--(psa);
 \draw[arr](psa)--(h2);
 \draw[arr](cap)--(co2);
-\draw[heat](rx)--(rem);
+\draw[heat](rx) |- (rem);
 \end{tikzpicture}
 \caption{Final project-specific nuclear-assisted SMR+CCS thermal architecture. INL TEV-953/961 anchors the process conditions; Nishihara et al. anchors the selected 600 MWth GTHTR300C source architecture~\cite{inltev953,inltev961,nishihara2007potential}. The 176.8 MWth process duty is below the source 370 MWth heat branch. Remaining reactor thermal capacity is not equated with electricity because an off-design power-cycle/internal-load model is not established.}
 \label{fig:final-system}
