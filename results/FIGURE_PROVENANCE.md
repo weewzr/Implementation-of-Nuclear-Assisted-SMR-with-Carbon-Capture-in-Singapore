@@ -22,14 +22,36 @@ Useful technical-reference content observed in supplied images:
 These were used to check equipment ordering and explanatory needs, not as numerical authorities. Primary INL/JAEA/IEAGHG literature remains the technical citation basis. No supplied raster figure is reproduced directly in the final manuscript.
 
 
-## Targeted-extension Rust figures
+## Targeted-extension figure/data provenance
+
+### A. Rust-generated assets included directly in the manuscript
 
 | Figure/output | Purpose | Generator | Canonical data/model | Publication use |
 |---|---|---|---|---|
 | Rust thermal-capacity figure | Compare 600 MWth reactor, 370 MWth source heat branch, 176.8 MWth process duty and 423.2 MWth remaining thermal capacity | `model/src/bin/final_design_heat_figure_tex.rs` | constants from `model/src/final_design.rs` | generated TikZ included directly in manuscript |
-| CN4252 threshold SVG | Static vector publication plot of abatement multiple versus abatement cost/ceiling | `model/src/figures.rs` via `model/src/bin/final_design_figures.rs` using Rust `plotters` SVG backend | `final_design(0.0,false)` | deterministic SVG reference/publication asset |
-| Visual data CSV | Machine-readable heat/temperature/threshold values | `model/src/bin/final_design_visual_data_csv.rs` | canonical final-design model/constants | provenance/data inspection |
 | Lifecycle ledger CSV | Saved/added lifecycle terms | `model/src/bin/final_design_lifecycle_ledger_csv.rs` | `final_lifecycle_ledger()` | manuscript table via pgfplotstable |
 | Cost ledger CSV | Saved/added annual-cost terms | `model/src/bin/final_design_cost_ledger_csv.rs` | `final_cost_ledger()` | manuscript table via pgfplotstable |
 
 Supervisor-code pattern reference: OUTRAM PARK uses dedicated plot-data/snapshot structures feeding `egui_plot::Plot`, `Line`, and `PlotPoints`, with explicit engineering units and display/physics separation. This project adopts the model/data/plot separation and unit discipline, but uses deterministic static SVG/TikZ rather than GUI screenshots.
+
+
+### B. Rust-generated reproducible/reference assets not directly included
+
+| Asset | Purpose | Generator | Canonical model/data | Manuscript role |
+|---|---|---|---|---|
+| CN4252 threshold SVG | Deterministic vector check of abatement multiple versus abatement cost/ceiling | `model/src/figures.rs` via `model/src/bin/final_design_figures.rs` using Rust `plotters` SVG backend | `final_design(0.0,false)` | reproducible/reference asset; **not** the threshold graphic included in the active manuscript |
+| Visual data CSV | Machine-readable heat/temperature/threshold values | `model/src/bin/final_design_visual_data_csv.rs` | canonical final-design model/constants | provenance/data inspection and independent reproduction |
+
+### C. Manuscript-authored TikZ visualisations using canonical generated values
+
+| Active manuscript visual | Authorship/generator | Data provenance | Status |
+|---|---|---|---|
+| Annual-abatement threshold graphic | TikZ authored in `paper/sections/07_final_results.tex` | canonical verified lifecycle result (~0.917 MtCO2e/y) and CN4252 0.25-Mt threshold | included in manuscript; not the Plotters SVG |
+| Abatement-cost threshold graphic | TikZ authored in `paper/sections/07_final_results.tex` | canonical verified zero-credit cost (~S$3.725/tCO2e) and CN4252 S$100/t ceiling | included in manuscript; not the Plotters SVG |
+| Process/isolation schematics | manuscript TikZ | primary INL/JAEA/IEAGHG architecture plus canonical final-design values where labelled | included; technical sources cited in captions/text |
+
+The honest provenance chain is therefore:
+- Rust thermal-capacity figure: **figure -> Rust generator -> canonical constants -> primary/source-backed model inputs**.
+- Ledger tables: **table -> generated CSV -> Rust ledger function -> final model/source assumptions**.
+- Threshold TikZ figures: **manuscript TikZ -> canonical verified result values -> final Rust model**.
+- Plotters threshold SVG: **reference SVG -> Rust Plotters generator -> final Rust model**; retained for reproducibility but not rendered in the active paper.
