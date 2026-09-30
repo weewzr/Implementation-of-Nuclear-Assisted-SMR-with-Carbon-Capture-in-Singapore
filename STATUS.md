@@ -47,10 +47,9 @@ Historical costs are normalized to 2025-price basis using explicit national GDP-
 - deployment section: `paper/sections/10a_deployment_extension.tex`.
 
 ## Verification
-Latest completed Research CI before this status update: PASS on the Review-5-remediated model.
-Final Paper CI / artifact visual verification remains required before Review 5 can close.
+Paper/reproducibility run `36655616510`: PASS at the corrected model/manuscript state `649398e14be3a5a78e255d3988ccbcb6b6248025`; artifact `11072086648`; 18-page PDF visually inspected. The Paper workflow's Rust tests passed. Dedicated Research CI for the latest corrected state remains pending because GitHub Actions still shows stale Research-CI run `36655606132` in progress and newer Research runs waiting behind it.
 
 ## Next step
-Complete only final build/artifact verification for Review 5. If Research CI and Paper CI pass, citations/references converge and the actual PDF visually verifies the corrected temperature/economic/cogeneration presentation, update the resolution and mark **Independent Review 5 gate: CLOSED**, then STOP.
+Scientific remediation and PDF verification are complete. Remaining blocker is only the dedicated Research-CI queue state. Once the stale Research run is cleared/completes and the latest Research CI passes, update the resolution and mark **Independent Review 5 gate: CLOSED**, then STOP.
 
 Do not begin Final Submission QA or another review automatically.
