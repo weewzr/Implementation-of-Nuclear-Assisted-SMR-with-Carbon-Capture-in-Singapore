@@ -1,4 +1,4 @@
-# Gate 5 results — canonical experiment artifacts
+> **HISTORICAL / SUPERSEDED FOR FINAL SUBMISSION DESIGN.** Preserved for reproducibility and scientific audit. Current submission-facing results are in `results/final_design/`.\n\n# Gate 5 results — canonical experiment artifacts
 
 ## Status
 
