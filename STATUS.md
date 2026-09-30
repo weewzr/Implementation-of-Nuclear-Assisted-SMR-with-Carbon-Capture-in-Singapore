@@ -1,47 +1,63 @@
 # STATUS
 
-## FINAL CURRENT DESIGN
-**FINAL DESIGN REFINEMENT: COMPLETE**
+## Current state
+Final-design second independent verification: **CORRECTIONS IMPLEMENTED — RE-VERIFICATION PENDING**.
 
-The current submission-facing design is the literature-anchored INL/NGNP high-temperature HTGR-assisted SMR+CCS process:
-- 871 C reformer outlet; S/C 3.0; 78.1% methane conversion; 88% PSA recovery;
-- INL Case-6 925 C reactor outlet / 900 C process heat;
-- 130 MMSCFD H2 source plant;
-- 176.8 MWth nuclear process heat;
-- one 600 MWth GTHTR300C-class cogeneration module;
-- conservative JAEA doubled-IHX/secondary-loop economic sensitivity because final duty exceeds the 170 MWth reference IHX.
+Controlling review:
+`reviews/final_design_independent_verification_02.md`.
 
-Current final-design result/evidence: `results/final_design/`.
-Current final-design model: `model/src/final_design.rs`.
-Canonical manuscript: `paper/main.tex`.
+Correction record:
+`reviews/final_design_independent_verification_02_resolution.md`.
 
-Headline model result: approximately 0.917 MtCO2e/y lifecycle abatement. The mature doubled-IHX/S$150-MWh scenario gives a negative screened abatement cost because cogenerated electricity plus natural-gas savings exceed incremental annual cost; zero-value cogeneration remains below S$100/t in the deterministic screen. Any joint pass is a **CONDITIONAL MODEL RESULT**, not observed Singapore commercial feasibility.
+Do NOT begin Final Submission QA. Do NOT declare the independent verification
+closed. The Independent Reviewer must re-check the corrected design.
 
-## PRESERVED HISTORICAL RESULTS
-These remain reproducible but are superseded for submission-facing design:
-- Gate-5 fixed-scale study: approximately 74.85 ktH2/y, 64 cases, 0 joint passes;
-- Review-5 600 C HTTR/mock-up deployment state: non-positive lifecycle abatement;
-- Reviews 1-5 and all resolution records.
+## Preserved INL process basis
+- 871 C reformer; S/C 3.0; 78.1% methane conversion; 88% PSA recovery.
+- 130 MMSCFD H2.
+- 925 C INL ROT / 900 C process heat.
+- 176.8 MWth process heat; 17.3 MWe process electricity.
+- 34.0 MMSCFD candidate NG versus 52.5 MMSCFD conventional baseline.
+- 1,927 short t/day captured CO2; 142 candidate emitted; 3,205 baseline emitted.
+- ~97,946 tH2/y.
+- ~862,094 t/y direct avoided.
+- ~917,139 tCO2e/y lifecycle avoided under the declared proxy boundary.
 
-Historical evidence is not deleted or rewritten.
+## Corrected JAEA integration
+Principal mature architecture is now the coherent Nishihara 2007 configuration:
+- 600 MWth reactor;
+- 370 MWth source hydrogen/IHX branch;
+- 230 MWth source power branch;
+- 88 MWe source gross electricity;
+- 59.7 bn JPY / 0.52 JPY/MJ / 4.9 JPY/kWh reference economics.
 
-## Literature hierarchy
-- final nuclear-SMR process: INL TEV-953 / TEV-961;
-- HTGR/IHX hardware and helium architecture: JAEA/JAERI GTHTR300C/HTTR;
-- one-module cogeneration economics: Nishihara et al. GTHTR300C;
-- CCS: IEAGHG;
-- Singapore electricity/CCS context: EMA/MTI.
+Project-derived mapping for the 176.8 MWth INL draw:
+- residual power thermal = 423.2 MWth;
+- gross electricity = 161.92 MWe using source 88/230 conversion;
+- net export = 144.62 MWe after 17.3 MWe process demand;
+- annual export ~1.077 TWh/y at 85% availability.
+- process-side He screen ~78.34 kg/s using INL 900/466 C state.
+
+The 70.9 bn JPY / 0.57 JPY/MJ / 5.5 JPY/kWh case is adverse COST
+sensitivity only, not a capacity claim.
+
+## Corrected deterministic economics
+Reference mature architecture:
+- zero electricity value: ~S$3.76/tCO2e;
+- S$100/MWh: ~-S$113.65/t;
+- S$150/MWh: ~-S$172.35/t;
+- S$200/MWh: ~-S$231.06/t;
+- doubled-cost sensitivity at S$150/MWh: ~-S$162.29/t.
+
+These are model outputs pending independent reviewer acceptance.
+
+## Corrected lifecycle intensity
+~1.95 kgCO2e/kgH2. The previous factor-of-1000 implementation error is removed.
 
 ## Verification
-Starting commit for this consolidation: `255fe02061b7660b6cc8384881ee4d2e84e3654b`.
-Final scientific/design commit: `12625aed52d52670b4f87de7511e8a3dd1f103d5`.
-Research CI run `36662636613`: **PASS**.
-Paper/reproducibility CI run `36662636515`: **PASS**.
-Canonical PDF artifact `11074623593`: **11 pages**, 246,106 bytes.
-Undefined citations: **0**. Undefined references: **0**. Bibliography converged successfully (`main.bbl` loaded; `references.bib` detected; latexmk targets up to date).
-Page-by-page visual inspection of the exact artifact: **PASS**, including corrected Figure 4 with all nodes/arrows inside the page boundary and final-design labels unchanged.
-
-Governing distinction: **FINAL SUBMISSION = FINAL BEST-SUPPORTED DESIGN. REPOSITORY = COMPLETE SCIENTIFIC AUDIT TRAIL.**
+Code/tests/manuscript/source register have been corrected. Await current
+Research CI and Paper CI before handoff evidence is complete.
 
 ## Next step
-**STOP.** Final-design refinement is closed. Do not begin Review 6 or Final Submission QA automatically.
+STOP after CI/result/PDF verification and return the corrected state to the
+Independent Reviewer. Do not begin Final Submission QA.
