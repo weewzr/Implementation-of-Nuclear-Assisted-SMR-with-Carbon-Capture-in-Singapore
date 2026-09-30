@@ -29,3 +29,4 @@ cargo run --quiet --bin final_design_source_balance_csv > ../results/final_desig
 cargo run --quiet --bin final_design_temperature_csv > ../results/final_design/generated/temperature_sensitivity.csv
 
 cargo run --quiet --bin final_design_visual_data_csv > ../results/final_design/generated/visual_data.csv
+cargo run --quiet --bin final_design_heat_figure_tex > ../results/final_design/generated/heat_flow_figure.tex
