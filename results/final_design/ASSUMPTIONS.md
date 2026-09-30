@@ -28,4 +28,4 @@
 - No S$100/150/200-MWh project cases are canonical unless a future independently verified off-design power model supports them.
 
 ## Claim strength
-The result remains a CONDITIONAL MODEL RESULT pending independent reviewer re-verification.
+The result is independently verified as a CONDITIONAL MODEL RESULT; it is not demonstrated Singapore commercial feasibility.
