@@ -35,3 +35,5 @@ cargo run --quiet --bin final_design_cost_ledger_csv > ../results/final_design/g
 cargo run --quiet --bin final_design_figures
 
 cargo run --quiet --bin final_design_availability_csv > ../results/final_design/generated/availability_sensitivity.csv
+
+cargo run --quiet --bin final_design_gas_backup_csv > ../results/final_design/generated/gas_backup_sensitivity.csv
