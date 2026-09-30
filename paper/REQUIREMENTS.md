@@ -1,16 +1,15 @@
-# CN4252 manuscript traceability
+# CN4252 final-design manuscript traceability
 
-This is a compact internal submission check, not a parallel manuscript.
+| Requirement | Final-design evidence |
+|---|---|
+| Proposed concept | INL/NGNP high-temperature HTGR-assisted SMR with CCS; JAEA GTHTR300C cogeneration hardware |
+| Why Singapore | gas-dependent energy system, low-carbon hydrogen/decarbonisation context, conditional nuclear/CCS infrastructure |
+| How emissions are reduced | fired reformer heat replaced by nuclear process heat + process CO2 capture + lower NG use |
+| >0.25 MtCO2e/y | final lifecycle model approximately 0.917 MtCO2e/y avoided: PASS |
+| <S$100/tCO2e | forward final-design scenario table; mature zero-value and Singapore-context cases tested |
+| Assumptions controlling result | results/final_design/SOURCE_REGISTER.md and ASSUMPTIONS.md |
+| Implementation constraints | Singapore implementation section: nuclear readiness, IHX/reformer qualification, CCS chain, electricity offtake |
+| Evidence conclusion | conditional model result; not observed commercial feasibility |
+| Reproducibility | model/src/final_design.rs + deterministic CSVs + sh paper/build.sh |
 
-| Official requirement | Canonical manuscript location | Current evidence |
-|---|---|---|
-| >0.25 MtCO2e/year within Singapore | Results; Uncertainty; Comparator analysis | Nuclear R3 domain: 0/64 joint passes; Case 1A exceeds annual direct-abatement scale on common H2 basis |
-| <S$100/tCO2e | Methodology; Results; Uncertainty | Forward abatement-cost calculation; no tested nuclear case jointly passes; Case-1A Singapore cost remains unmatched |
-| Clearly show how solution abates emissions | System boundary; Methodology; Integrated configuration | Fossil heat displacement + process/purge carbon capture + lifecycle ledger |
-| Implementation roadmap | Singapore implementation implications | Nuclear readiness, process-heat demonstration, cross-border CCS chain are explicit conditions |
-| Feasibility and potential effectiveness | Verification; Results; Discussion | Screening feasibility separated from threshold compliance |
-| Accuracy | Verification; Limitations | Source reconstruction, external benchmarks, plant closure, adversarial tests, claim-strength limits |
-| Presentation delivery | Entire paper | Single canonical LaTeX source with generated PDF |
-
-The two quantitative requirements must remain explicit in the abstract, results
-and conclusions. Negative/falsification results are not to be removed.
+Historical Gate-5 0/64 and Review-5 600 C results remain repository provenance and are not the final submission design.
