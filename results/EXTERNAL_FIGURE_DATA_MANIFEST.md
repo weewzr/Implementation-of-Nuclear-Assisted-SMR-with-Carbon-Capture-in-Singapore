@@ -10,5 +10,5 @@
 - Manuscript: Section 2, Figure fig:singapore-context.
 - Distinction: these are external Singapore data, not project-model outputs.
 
-## Project-model figures
-Threshold map, lifecycle decomposition and driver contrasts remain generated from canonical Rust outputs under results/generated/; see the existing Gate-5 figure manifest.
+## Historical project-model figures
+Gate-5 threshold maps, lifecycle decompositions and driver contrasts remain reproducibly generated from historical canonical Rust outputs for audit. They are not dependencies of the current final submission manuscript unless explicitly referenced there. Current final-manuscript figure provenance is recorded in `results/FIGURE_PROVENANCE.md`.
