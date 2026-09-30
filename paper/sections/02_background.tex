@@ -39,7 +39,7 @@ Figure~\ref{fig:smr-explainer} introduces the hydrogen pathway at a deliberately
 \label{fig:smr-explainer}
 \end{figure}
 
-The nuclear proposal changes the \emph{heat source}, not the feed-carbon chemistry. Figure~\ref{fig:nuclear-heat-explainer} separates those ideas. A fired reformer supplies high-temperature heat by combustion; the nuclear-assisted concept instead transfers reactor heat through helium and an intermediate heat exchanger. The canonical screening hierarchy is 950$^\circ$C primary helium $\rightarrow$ 920$^\circ$C secondary helium $\rightarrow$ 900$^\circ$C process hot end, consistent with HTGR/GTHTR high-temperature heat-delivery precedent~\cite{jaeri2004gthtr300c}. Feedstock carbon still requires capture and lifecycle accounting.
+The nuclear proposal changes the \emph{heat source}, not the feed-carbon chemistry. Figure~\ref{fig:nuclear-heat-explainer} separates those ideas. A fired reformer supplies high-temperature heat by combustion; the nuclear-assisted concept instead transfers reactor heat through helium and an intermediate heat exchanger. The final design hierarchy is a 950$^\circ$C-class JAEA primary-helium hardware envelope $\rightarrow$ 900$^\circ$C delivered process heat $\rightarrow$ 871$^\circ$C reformer outlet. The specific INL Case-6 ROT is 925$^\circ$C~\cite{inltev961}, while JAEA/JAERI provides the 950$^\circ$C-class hardware precedent~\cite{jaeri2004gthtr300c}. Feedstock carbon still requires capture and lifecycle accounting.
 
 \begin{figure}[htbp]
 \centering
@@ -48,11 +48,11 @@ The nuclear proposal changes the \emph{heat source}, not the feed-carbon chemist
 \node[unit,right=of fire] (r1) {Reformer\\high-temperature heat};
 \draw[heat](fire)--node[above,font=\scriptsize]{fired heat}(r1);
 \node[below=13mm of fire,unit] (reactor) {HTGR-class reactor\\primary He 950$^\circ$C};
-\node[right=of reactor,unit] (ihx) {IHX\\secondary He 920$^\circ$C};
-\node[right=of ihx,unit] (r2) {Reformer\\process hot end 900$^\circ$C};
+\node[right=of reactor,unit] (ihx) {IHX\\process heat 900$^\circ$C};
+\node[right=of ihx,unit] (r2) {Reformer\\gas outlet 871$^\circ$C};
 \draw[heat](reactor)--(ihx);\draw[heat](ihx)--(r2);
 \node[right=10mm of r1,align=left] {\textbf{What changes:} heat service\\\textbf{What does not:} feed carbon};
 \end{tikzpicture}
-\caption{Original two-layer explanation of nuclear assistance. The concept substitutes a high-temperature heat-delivery chain for fired reformer heat; it does not eliminate carbon entering as natural-gas feed. Temperatures show the canonical screening hierarchy, not a detailed equipment design~\cite{jaeri2004gthtr300c}.}
+\caption{Original two-layer explanation of nuclear assistance. The concept substitutes a high-temperature heat-delivery chain for fired reformer heat; it does not eliminate carbon entering as natural-gas feed. Temperatures show the final literature-supported design ladder; the 950$^\circ$C value is the JAEA hardware envelope and the 900/871$^\circ$C process pair is anchored to INL~\cite{inltev961,jaeri2004gthtr300c}.}
 \label{fig:nuclear-heat-explainer}
 \end{figure}
