@@ -4,32 +4,28 @@
 \subsection{Design selection}
 The final chemical-process basis is INL/NGNP Case 6. INL selected an 871$^\circ$C reformer outlet, steam/carbon ratio 3.0 and 88\% PSA recovery~\cite{inltev953}; TEV-961 reports that a 925$^\circ$C HTGR outlet supplies 900$^\circ$C process heat and the full 176.8 MWth reforming duty at that target~\cite{inltev961}. The source process produces 130 MMSCFD H$_2$ from 34.0 MMSCFD natural gas with 17.3 MWe process demand, 1,927 short ton/day captured CO$_2$ and 142 short ton/day emitted CO$_2$~\cite{inltev961}. The same INL model family provides the 130-MMSCFD conventional no-capture baseline: 52.5 MMSCFD natural gas and 3,205 short ton/day emitted CO$_2$~\cite{inltev953}.
 
-\subsection{Mapping the INL process onto the JAEA cogeneration architecture}
-INL supplies the chemical-process duty; JAEA supplies a candidate reactor/IHX/cogeneration architecture. They are not treated as the same source flowsheet.
+\subsection{Thermal integration with the JAEA architecture}
+INL supplies the chemical-process duty; Nishihara et al. supplies the selected GTHTR300C hardware/economic architecture. They are deliberately kept as separate evidence layers.
 
-The mature economic architecture selected from Nishihara et al. is a 600 MWth GTHTR300C with a 370 MWth source hydrogen/IHX branch and 88 MWe gross electricity from the complementary 230 MWth power branch~\cite{nishihara2007potential}. The final INL process requires only 176.8 MWth, below that source heat-branch capacity. The project therefore retains the 600 MWth reactor and maps the residual
+The selected source architecture is a 600 MWth GTHTR300C with a 370 MWth hydrogen/IHX heat branch and 88 MWe source electricity from the complementary 230 MWth branch~\cite{nishihara2007potential}. The INL process requires 176.8 MWth, so it is below the source heat-branch capacity. At reactor-rating level,
 \[
-Q_{\rm power}=600-176.8=423.2\ {\rm MW_{th}}
+600=176.8+423.2\ {\rm MW_{th}}.
 \]
-through the source-implied gross conversion
-\[
-\eta_{\rm GT}=\frac{88}{600-370}=0.3826,
-\]
-giving a \textbf{PROJECT-DERIVED} gross electricity screen of approximately 161.92 MWe. After the source process demand of 17.3 MWe, the corresponding net export screen is 144.62 MWe. This is an engineering mapping for the project, not a published JAEA part-load operating point.
+The 423.2 MWth term is reported only as \emph{remaining thermal capacity}. It is not converted into a project electricity-output claim because the available source does not provide a validated off-design power-cycle/internal-load model for this changed heat split.
 
-For the process-side helium screen, the project now uses INL Case-6's approximately 900$^\circ$C supply and 466$^\circ$C return. With an average $c_p=5.2$ kJ kg$^{-1}$ K$^{-1}$,
+For the process-side helium screen, INL Case 6 provides approximately 900$^\circ$C supply, 466$^\circ$C return and 78.49 kg/s. Using an average $c_p=5.2$ kJ kg$^{-1}$ K$^{-1}$ gives
 \[
 \dot m_{He}=\frac{176.8\times10^3}{5.2(900-466)}\approx78.34\ {\rm kg/s},
 \]
-close to INL's reported 78.49 kg/s~\cite{inltev961}. The constant-$c_p$ value is a screening approximation.
+which is used only as a constant-$c_p$ verification screen~\cite{inltev961}.
 
 \subsection{Lifecycle calculation}
 Source direct emissions are annualized at the selected mature-design 85\% availability. Lifecycle accounting adds the difference in upstream natural-gas burden and subtracts nuclear-heat, incremental auxiliary-electricity and CO$_2$ transport/storage burdens. The upstream-gas factor is a global proxy~\cite{iea2026lng}; the nuclear lifecycle proxy is global rather than Singapore-specific~\cite{unece2022lca}. The CCS transport burden remains an explicit screening assumption.
 
 \subsection{Forward economics}
-Historical JAEA and IEAGHG anchors use the Review-5 common cost-year/FX normalization. The principal mature case uses the coherent Nishihara reference economics: 59.7 billion JPY plant cost, 0.52 JPY/MJ heat and 4.9 JPY/kWh electricity~\cite{nishihara2007potential}. The source's 70.9 billion JPY / 0.57 JPY/MJ / 5.5 JPY/kWh case is retained only as an adverse \emph{cost} sensitivity in which the assigned IHX/secondary-loop cost is doubled; it is not interpreted as doubled exchanger capacity.
+The principal mature case uses the coherent Nishihara reference economics: 59.7 billion JPY plant cost, 0.52 JPY/MJ heat and 4.9 JPY/kWh electricity at 85\% availability~\cite{nishihara2007potential}. Because no validated project off-design electricity output is claimed, the controlling economic test assigns \textbf{S\$0/MWh electricity export value}. To avoid free reactor capacity, the calculation charges the full published source-product burden: the source 370 MWth heat product at its source heat cost plus the source 88 MWe generation at its source electricity cost. This is a conservative economic allocation, not a claim that the project itself exports 88 MWe.
 
-The full source-priced heat and project-derived power burden is charged. Only net electricity after the 17.3 MWe process load receives a scenario value. S$0/MWh is the conservative no-value test; EMA's market context motivates S$100--200/MWh sensitivity cases~\cite{emausep2025}. CCS capital is anchored to IEAGHG Case 1A and T\&S remains a Singapore screening scenario~\cite{ieaghg2017smr,mticcs2025cost}.
+The source's 70.9 billion JPY / 0.57 JPY/MJ / 5.5 JPY/kWh case is retained only as an adverse \emph{cost} sensitivity in which assigned IHX/secondary-loop cost doubles; it is not interpreted as increased exchanger capacity. CCS capital is anchored to IEAGHG Case 1A and T\&S remains a Singapore screening scenario~\cite{ieaghg2017smr,mticcs2025cost}.
 
 Forward abatement cost remains
 \begin{equation}
