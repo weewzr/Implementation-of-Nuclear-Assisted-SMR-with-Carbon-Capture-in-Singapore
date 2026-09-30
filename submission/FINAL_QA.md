@@ -18,7 +18,7 @@ Use:
 - canonical manuscript: `paper/main.tex`;
 - final-design result: `results/final_design/FINAL_DESIGN_RESULTS.md`.
 
-The current targeted-extension manuscript is 19 pages before the bounded Review-06 correction pass; the operative conclusion remains a **CONDITIONAL MODEL PASS**, not the historical 0/64 result. Current closure evidence belongs in `STATUS.md`, not this historical file.
+The current post-Review-06 manuscript is **20 pages**; the operative conclusion remains a **CONDITIONAL MODEL PASS**, not the historical 0/64 result. Current closure evidence belongs in `STATUS.md` and `results/FINAL_SUBMISSION_QA.md`, not this historical file.
 
 ## Why this file remains
 
