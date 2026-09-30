@@ -1,15 +1,47 @@
-\section{Singapore implementation implications}
-The final design requires one 600 MWth-class HTGR module coupled through an enlarged high-temperature IHX/secondary-helium train to an industrial SMR+CCS plant. The source process heat demand (176.8 MWth) uses less than one-third of reactor thermal rating; the remaining reactor output must therefore have a useful electricity or heat role rather than being treated as economically free. The forward model closes this through the GTHTR300C cogeneration architecture and explicit electricity-value sensitivities.
+\section{Singapore feasibility and implementation roadmap}
 
-Implementation remains conditional. Singapore has no operating nuclear plant, so licensing, siting, emergency planning, safeguards, workforce development and high-temperature process-heat qualification remain prerequisites. Cross-border CO$_2$ transport and storage are likewise not assumed available at an authoritative tariff; MTI continues to treat CCS cost and infrastructure as developing evidence~\cite{mticcs2025cost}. The final model therefore treats nuclear deployment and T\&S as scenario conditions rather than existing infrastructure.
+\subsection{Scale and infrastructure}
+The final source-scale plant produces approximately 97,946 tH$_2$/y and captures approximately 542,362 tCO$_2$/y. One 600 MWth-class reactor module supplies the selected architecture, while 176.8 MWth is required by the reforming process. This is industrial-scale infrastructure rather than a laboratory demonstration: it requires a nuclear site, an integrated hydrogen/CCS complex, natural-gas and water/steam services, CO$_2$ conditioning/export facilities and a dependable storage chain.
 
-A staged implementation pathway is:
+\subsection{Nuclear readiness in Singapore}
+Singapore has \textbf{not made a decision to deploy nuclear energy}. The Government is building capability to assess advanced nuclear technologies, and an IAEA Integrated Nuclear Infrastructure Review Phase-1 mission is planned from 2027~\cite{mti2026inir}. MTI states that any deployment decision must consider safety, reliability, affordability and environmental sustainability, while EMA describes safety as an overriding priority for a small, densely populated city-state~\cite{mti2026safetycriteria,ema2026safety}. The IAEA Milestones/INIR framework spans institutional issues including nuclear safety, radioactive waste and emergency planning. Consequently, regulatory framework, siting, emergency planning, safeguards/security, waste strategy, workforce and public/institutional readiness are deployment gates, not details solved by the process model.
+
+\subsection{CCS feasibility}
+Singapore does not have suitable domestic geological CO$_2$ storage resources and is pursuing cross-border CCS with regional partners~\cite{mti2026carbon}. Cooperation with Indonesia and Malaysia has advanced through government agreements/MOUs, but an agreement is not an operating transport-and-storage service. MTI continues to study the complete CCS value chain and its costs~\cite{mticcs2025cost,mti2025indonesiaccs}. The approximately 542 ktCO$_2$/y captured by this design therefore requires contracted conditioning, transport, injection, monitoring and liability arrangements outside Singapore. CCS availability is a binding deployment dependency.
+
+\subsection{Natural-gas transition character}
+The candidate still consumes 34 MMSCFD natural gas. Nuclear heat removes fired reformer duty but does not remove methane as feedstock. Upstream gas emissions remain inside the lifecycle boundary, which is why this study describes the pathway as lower-carbon hydrogen rather than zero-carbon hydrogen. Continued imported-gas exposure and methane-supply-chain performance remain transition risks.
+
+\subsection{Economic feasibility versus bankability}
+The verified approximately S\$3.725/tCO$_2$e is a \emph{modelled screening abatement cost}, not a quotation for a Singapore nuclear project. It uses mature design-study reactor economics, explicit normalization, a screening CCS cost structure and zero project electricity revenue. It does not constitute a bankable estimate of FOAK financing, Singapore site premium, licensing, security, detailed EPC, contingency, decommissioning/waste, insurance, schedule risk or negotiated CCS contracts. The low numerical cost therefore establishes threshold compliance within the declared model boundary, not commercial investment readiness.
+
+\subsection{Staged implementation roadmap}
+Because several prerequisites are institutional or infrastructure-dependent, implementation is better expressed as decision gates than unsupported dates:
 \begin{enumerate}
-\item validate the 900$^\circ$C-class secondary-helium/IHX/reformer interface and safety isolation architecture;
-\item demonstrate integrated SMR+CCS operation and high-temperature heat transport at relevant duty;
-\item secure a cross-border CO$_2$ storage chain and verified T\&S commercial terms;
-\item establish Singapore nuclear regulatory/siting readiness and an electricity/heat offtake plan for the remaining reactor output;
-\item proceed to front-end engineering only if the mature-design economic assumptions survive project-specific costing.
+\item \textbf{Evidence and capability development:} maintain primary-source HTGR/process-heat evidence, fuel/material qualification awareness and independent model verification. Gate: no unresolved scientific blocker to the screening concept.
+\item \textbf{Singapore nuclear readiness:} complete national technology, safety, regulatory, siting, emergency-planning, waste/security and institutional studies, including the INIR process. Gate: Government determines that nuclear deployment can proceed to project development.
+\item \textbf{CCS chain qualification:} establish legally/commercially usable cross-border transport and permanent-storage arrangements with monitoring and liability terms. Gate: bankable storage service for the required CO$_2$ throughput.
+\item \textbf{Vendor/component qualification:} select a reactor/process-heat architecture and qualify the high-temperature IHX, secondary helium loop, materials and process isolation concept. Gate: component design closes temperature, pressure, creep/fatigue and inspection requirements.
+\item \textbf{Non-nuclear integration demonstration:} test control logic, reformer heat-demand transients, isolation/trips and process-safe-state behaviour using representative heat-loop hardware where practicable. Gate: integrated transient/control hazards are acceptably bounded.
+\item \textbf{Nuclear safety and licensing case:} perform site-specific nuclear safety analysis plus chemical-to-nuclear hazard assessment, separation/layout analysis and emergency planning. Gate: regulatory approval pathway is credible.
+\item \textbf{FOAK project decision:} complete FEED/EPC cost, financing, contracts, schedule, security, waste/decommissioning and offtake assessment. Gate: investment decision.
+\item \textbf{Construction, commissioning and operation:} proceed only after preceding gates close; verify performance and emissions rather than assuming screening values.
 \end{enumerate}
 
-This roadmap is intentionally conditional: the model result does not establish that these deployment prerequisites are presently satisfied.
+\subsection{Overall feasibility classification}
+\begin{table}[htbp]\centering\small
+\caption{Feasibility status of the final concept. Categories describe evidence status, not numerical scores.}
+\begin{tabular}{p{0.28\linewidth}p{0.18\linewidth}p{0.43\linewidth}}
+\toprule Dimension & Status & Basis \\ \midrule
+Thermodynamic/process & Supported & INL Case-6 process model and source mass/heat balance \\
+Heat-source compatibility & Supported at screening level & HTTR temperature precedent; 176.8 MWth below selected 370 MWth source heat branch \\
+High-temperature IHX/materials & Conditional & Demonstrated HTTR IHX precedent, but project-scale exchanger not designed \\
+Nuclear safety & Conditional & Favourable HTGR/TRISO features and HTTR tests; project/site safety case not performed \\
+Chemical/process safety & Conditional & Known industrial safeguards exist; integrated PHA/LOPA/QRA and propagation analysis absent \\
+Singapore regulation/siting & Unresolved & No nuclear deployment decision; capability/INIR work ongoing \\
+Cross-border CCS & Conditional/unresolved & Regional cooperation exists; operating storage chain and tariff not secured \\
+Economic threshold & Supported within model & Zero-credit screening result below S\$100/tCO$_2$e; not bankable FOAK economics \\
+Deployment readiness & Not demonstrated & Multiple regulatory, component, CCS and project-development gates remain \\
+\bottomrule\end{tabular}\end{table}
+
+The correct overall interpretation is therefore not simply ``feasible'' or ``infeasible''. The numerical CN4252 model thresholds are supported; engineering, safety, regulatory and infrastructure feasibility remain conditional or unresolved until the roadmap gates are satisfied.
