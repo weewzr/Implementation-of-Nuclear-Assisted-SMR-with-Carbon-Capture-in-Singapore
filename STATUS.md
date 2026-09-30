@@ -47,6 +47,26 @@ Professor observations generate engineering questions. Primary literature, autho
 **REPOSITORY = COMPLETE SCIENTIFIC AUDIT TRAIL.**
 
 ## Current critical path
-Complete the available professor slide/transcript traceability first, identify unresolved source recovery, then pursue the highest-value safety/EPZ/reliability questions with primary evidence.
+Professor slide/transcript traceability for the available presentation is complete; the second requested transcript remains a source-recovery blocker.
+
+Completed deep-feasibility work now includes:
+- HTGR process-heat demonstrated→designed→modelled scale-up evidence;
+- verified Rust availability sensitivity and evidence-bounded gas-backup sensitivity implementation;
+- industrial process-heat reliability/backup literature;
+- mechanistic source-term / EPZ methodology and radionuclide-specific TRISO evidence;
+- process–nuclear hazard register;
+- HTGR spent-fuel / graphite-waste evidence;
+- heat-rejection accounting boundary and Singapore siting criteria;
+- Singapore nuclear regulatory/infrastructure readiness matrix.
+
+Key unresolved critical-path questions:
+1. execute/verify the latest gas-backup sensitivity outputs and record exact margins;
+2. CCS availability/partial-capture robustness;
+3. selected-design accident sequence register and V&V/uncertainty maturity matrix;
+4. helium-loop hydraulic/pressure-drop/circulator screen only if defensible inputs can be sourced;
+5. recover the missing second professor/research transcript and slides;
+6. integrate matured deep-feasibility evidence into the manuscript only after these gates are sufficiently closed.
+
+Do not begin the next Independent Review until all mandatory deep-feasibility gates are complete.
 
 Do not begin the next Independent Review until all mandatory deep-feasibility gates are complete.
