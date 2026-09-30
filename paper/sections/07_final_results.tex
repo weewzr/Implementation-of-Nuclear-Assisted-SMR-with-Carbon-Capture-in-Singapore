@@ -1,44 +1,39 @@
 \section{Final design results}
 \label{sec:final-results}
 
-The independently verified final design produces 97,946 tH$_2$/y at 85\% availability. The same-output conventional baseline emits 902,060 tCO$_2$/y directly, while the candidate emits 39,966 tCO$_2$/y, giving 862,094 tCO$_2$/y direct abatement~\cite{inltev953,inltev961}. Lifecycle abatement is higher, 917,139 tCO$_2$e/y, because reducing natural-gas use from 52.5 to 34.0 MMSCFD avoids approximately 72.7 ktCO$_2$e/y of upstream gas-supply burden; this saving exceeds the added nuclear, incremental-electricity and CCS transport/storage lifecycle burdens. Captured CO$_2$ is not added separately to the avoided-emissions numerator, so it is not double counted.
+The corrected final-design calculation preserves the independently reproduced INL process basis. At 85\% availability it produces approximately 97,946 tH$_2$/y. Direct avoided emissions are approximately 862,094 tCO$_2$/y and the declared lifecycle extension gives approximately 917,139 tCO$_2$e/y avoided.
 
 \begin{table}[htbp]\centering\small
-\caption{Submission-facing final-design result. Values are the frozen, independently verified screening results.}
+\caption{Corrected submission-facing final-design screening result. Project-derived integration values are not direct JAEA source operating points.}
 \label{tab:final-result}
-\begin{tabular}{p{0.48\linewidth}p{0.36\linewidth}}
+\begin{tabular}{p{0.49\linewidth}p{0.35\linewidth}}
 \toprule
-Quantity & Final-design result \\
+Quantity & Corrected result \\
 \midrule
 Hydrogen production & 97,946 t/y \\
-Reactor configuration & one 600 MWth GTHTR300C-class module \\
-Nuclear process heat & 176.8 MWth (29.5\% of reactor rating) \\
+INL process heat & 176.8 MWth \\
+Nishihara source heat branch & 370 MWth \\
+Project residual power branch & 423.2 MWth \\
+Project-derived gross electricity & 161.92 MWe \\
+Process electricity demand & 17.3 MWe \\
+Project-derived net export & 144.62 MWe \\
+Annual net export & 1.077 TWh/y \\
+Process-side He flow screen & 78.34 kg/s \\
 CO$_2$ captured & 542,362 t/y \\
-Direct CO$_2$ avoided & 862,094 t/y \\
 Lifecycle CO$_2$e avoided & 917,139 t/y \\
-Zero-value cogeneration incremental cost & S\$27.703 million/y \\
-Zero-value cogeneration abatement cost & S\$30.206/tCO$_2$e \\
-S\$150/MWh incremental cost & $-$S\$178.588 million/y \\
-S\$150/MWh abatement cost & $-$S\$194.723/tCO$_2$e \\
-CN4252 annual-abatement threshold & $>250,000$ tCO$_2$e/y: PASS \\
-CN4252 cost threshold & $<\mathrm{S\$}100$/tCO$_2$e: PASS at zero electricity value \\
-Joint result & \textbf{CONDITIONAL PASS} \\
+Candidate lifecycle intensity & 1.95 kgCO$_2$e/kgH$_2$ \\
+Zero-value incremental cost & approximately S\$3.45 million/y \\
+Zero-value abatement cost & approximately S\$3.76/tCO$_2$e \\
+S\$150/MWh incremental cost & approximately $-$S\$158.07 million/y \\
+S\$150/MWh abatement cost & approximately $-$S\$172.35/tCO$_2$e \\
+Joint model classification & \textbf{CONDITIONAL PASS} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The zero-value-cogeneration case is the principal conservative economic robustness test: the full source-priced reactor heat-plus-electricity burden remains charged, but exported electricity receives no value. Its S\$30.206/tCO$_2$e result therefore demonstrates cost-threshold compliance without relying on electricity revenue. In the mature Singapore-context screen, 184.7 MWe net export at S\$150/MWh gives the negative abatement cost shown in Table~\ref{tab:final-result}; this means only that modelled candidate annual net cost is below baseline annual cost under the declared assumptions, not that project profit is guaranteed.
+The zero-value case is the principal cost-robustness screen: the reactor heat-plus-power economic burden remains charged but exported electricity receives no value. The corrected model remains below S\$100/tCO$_2$e in that case. S\$100, S\$150 and S\$200/MWh cases are market-value sensitivities, not guaranteed offtake. The negative central screening cost means only that annual candidate net cost is below the common baseline under the stated assumptions.
 
-\subsection{Temperature and architecture sensitivity}
-The final reformer temperature remains 871$^\circ$C across the INL sensitivity because it is the selected process optimum. At 850$^\circ$C delivered heat (875$^\circ$C ROT), fired trim remains necessary; at 900$^\circ$C delivered heat (925$^\circ$C ROT), nuclear heat supplies the full reforming duty~\cite{inltev961}. This is the principal temperature sensitivity: lower reactor/process-heat temperatures do not change the target chemistry but change how much fossil trim is required.
-
-\begin{table}[htbp]\centering\scriptsize
-\caption{Final-design temperature architecture and relevant source sensitivity.}
-\resizebox{.85\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,
-columns={case,reactoroutc,heatdeliveryc,reformerc,architecture},
-every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]
-{../results/final_design/generated/temperature_sensitivity.csv}}
-\end{table}
+The Nishihara doubled-IHX/secondary-loop \emph{cost} case is retained as an adverse sensitivity; it is not evidence of increased exchanger capacity.
 
 \subsection{CN4252 interpretation}
-The final design is classified only after forward physical and economic calculation. The joint pass in Table~\ref{tab:final-result} is a \textbf{CONDITIONAL MODEL RESULT}: it depends on the mature GTHTR300C design-study cost basis, an enlarged IHX/secondary-loop train, cross-border CCS, the stated lifecycle proxies and electricity-value assumptions. It is not evidence that a Singapore commercial project presently exists at those costs.
+The corrected calculation passes both numerical thresholds under the declared model assumptions, but the independent verification remains open until the reviewer accepts the INL-to-JAEA part-load mapping and corrected economics. The result therefore remains a \textbf{CONDITIONAL MODEL RESULT}, not evidence of an existing Singapore commercial project.
