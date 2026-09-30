@@ -1,6 +1,6 @@
 # FINAL SUBMISSION QA
 
-Status: **IN PROGRESS — final CI/PDF evidence pending.**
+Status: **PASS — FINAL SUBMISSION QA COMPLETE.**
 
 ## Scientific freeze
 The independently verified scientific model is frozen. Final Submission QA changes are presentation, explanation, provenance and current-facing documentation only. No verified model equation, architecture, lifecycle result or economic result was altered.
@@ -75,19 +75,31 @@ Submission-facing manuscript no longer uses retired 161.92/144.62-MWe project ma
 Canonical path remains `sh paper/build.sh`, with Rust tests, deterministic result generation, latexmk/BibTeX and manuscript integrity checks. Final acceptance evidence will record fresh Research CI, Paper CI and exact artifact.
 
 ## Final visual inspection
-Pending fresh final QA artifact. Required page-by-page checks:
-- all figures/tables/equations/captions readable;
-- no clipping/overlap/blank pages;
-- repaired architecture remains separated;
-- threshold graphics readable;
-- bibliography/citations render;
-- no obsolete final-design claims appear.
+PASS on exact artifact `11078290219`.
+- 13 pages inspected page by page;
+- no clipping, node overlap or accidental blank pages;
+- repaired final architecture remains separated and readable;
+- conventional-SMR, nuclear-heat and IHX-isolation teaching figures are readable at normal page scale;
+- final results table and CN4252 threshold graphics fit and are legible;
+- equations and captions render correctly;
+- bibliography is present and the final long MTI URL wraps within the page after the final typography correction;
+- no obsolete 0/64, Review-5 600 C, 170/202 source conflation, 161.92/144.62-MWe mapping or electricity-credit economics is presented as current.
+
+Two-reader test:
+- technically curious high-school reader conceptual test: PASS;
+- university engineering-marker traceability test: PASS.
 
 ## Acceptance evidence
-To be completed after final HEAD workflows:
-- final submission commit: pending;
-- Research CI: pending;
-- Paper CI: pending;
-- artifact ID: pending;
-- page count: pending;
-- exact-artifact visual inspection: pending.
+- final manuscript QA HEAD: `7e4dbb7912eedefb9c91b07112f2cc76ee79137a`;
+- Research CI `36670713040`: PASS;
+- Paper/reproducibility CI `36670713033`: PASS;
+- PDF artifact: `11078290219`;
+- PDF page count: 13;
+- bibliography convergence: PASS (`main.bbl` and `references.bib` detected; latexmk targets up to date);
+- undefined citations: 0;
+- undefined references: 0;
+- exact-artifact visual inspection: PASS;
+- independent verification: `reviews/final_design_independent_verification_02_final_rereview.md`;
+- figure provenance: `results/FIGURE_PROVENANCE.md`.
+
+All Final Submission QA acceptance criteria are satisfied.
