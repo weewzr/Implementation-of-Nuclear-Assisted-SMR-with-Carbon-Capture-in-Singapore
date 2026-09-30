@@ -170,5 +170,7 @@ pub fn temperature_sensitivity_csv()->String{
  #[test]fn electricity_value_does_not_create_unsupported_credit(){let a=final_design(0.0,false);let b=final_design(200.0,false);assert!((a.annual_incremental_sgd-b.annual_incremental_sgd).abs()<1e-9);}
  #[test]fn doubled_cost_is_adverse_not_capacity(){let a=final_design(0.0,false);let b=final_design(0.0,true);assert!(b.abatement_cost_sgd_t>a.abatement_cost_sgd_t);assert_eq!(a.source_gross_electric_mwe,b.source_gross_electric_mwe);}
  #[test]fn modern_cost_sensitivity_is_more_expensive(){assert!(modern_final_cost(3250.0,16.0,0.10,150.0).abatement_cost_sgd_t>modern_final_cost(2500.0,12.0,0.075,150.0).abatement_cost_sgd_t);}
+ #[test]fn lifecycle_ledger_reconciles(){let l=final_lifecycle_ledger();let x=final_design(0.0,false);assert!((l.net_lifecycle_saved-x.lifecycle_avoided_t).abs()<1e-8);}
+ #[test]fn cost_ledger_reconciles(){let l=final_cost_ledger();let x=final_design(0.0,false);assert!((l.net_incremental-x.annual_incremental_sgd).abs()<1e-8);assert_eq!(l.electricity_revenue,0.0);}
  #[test]fn historical_gate5_still_reproduces(){let x=r3_uncertainty_summary();assert_eq!(x.n,64);assert_eq!(x.both_pass,0);}
 }
