@@ -58,7 +58,7 @@ pub fn deployment_physical(annual_scale:f64)->DeploymentPhysical {
  let purge=c.purge_oxidation_co2_kmol_h;
  let stored=(s.captured_co2_kmol_h+0.95*purge)*44.0095*hours*throughput_scale/1000.0;
  let residual=((s.shifted.co2-s.captured_co2_kmol_h)+0.05*purge)*44.0095/h2kg_h;
- let upstream=upstream_ng_from_energy_mw_kgco2e_per_kgh2(ieaghg_feed_lhv_mw()*s.fresh_fraction,11.5);
+ let upstream=(ieaghg_feed_lhv_mw()*s.fresh_fraction*3600.0*11.5/1000.0)/h2kg_h;
  let nuclear=direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(q/throughput_scale,5.5,0.504);
  let circ=helium_circulator_power_mw(heflow,58.0*4.0,5.15,REFORMER_HE_OUT_C,0.70);
  let aux=(c.co2_compression_mwe+c.tail_compression_mwe)*throughput_scale+circ;
