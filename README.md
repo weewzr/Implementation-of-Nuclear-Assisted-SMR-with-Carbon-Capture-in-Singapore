@@ -4,7 +4,7 @@
 
 This repository evaluates a literature-anchored high-temperature gas-cooled reactor (HTGR) assisted steam-methane-reforming (SMR) hydrogen plant with carbon capture and storage (CCS) against the CN4252 Singapore thresholds.
 
-The scientific/research workflow is **CLOSED**. The final result is independently verified at the **CONDITIONAL MODEL RESULT** level; it is not demonstrated Singapore commercial feasibility.
+The targeted scientific extension and Independent Review 06 are complete. Review 06 found **MINOR CORRECTIONS ONLY**; the quantitative result remains independently verified at the **CONDITIONAL MODEL RESULT** level and is not demonstrated Singapore commercial feasibility.
 
 ### Final verified design and result
 - INL process: 871 C reformer outlet; 925 C reactor outlet; 900 C supplied process heat.
@@ -28,8 +28,11 @@ The principal limitations are design-study rather than constructed-project econo
 - Canonical final PDF: generated from `paper/main.tex`; final verified artifact is recorded in `STATUS.md`
 - Final-design model: `model/src/final_design.rs`
 - Final-design results/assumptions/source register: `results/final_design/`
-- Controlling independent verification: `reviews/final_design_independent_verification_02_final_rereview.md`
-- Final Submission QA: `results/FINAL_SUBMISSION_QA.md`
+- Quantitative-foundation independent verification: `reviews/final_design_independent_verification_02_final_rereview.md`
+- Targeted-extension Independent Review 06: `reviews/review_06_targeted_scientific_extension.md`
+- Review-06 resolution: `reviews/review_06_resolution.md`
+- Prior Final Submission QA baseline: `results/FINAL_SUBMISSION_QA.md`
+- Targeted-extension evidence/verification: `results/TARGETED_EXTENSION_EVIDENCE.md`
 - Figure/source provenance: `results/FIGURE_PROVENANCE.md`
 - Assignment brief: `PROJECT_BRIEF.md`
 
