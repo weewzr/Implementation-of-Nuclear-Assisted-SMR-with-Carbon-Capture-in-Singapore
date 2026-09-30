@@ -104,6 +104,48 @@ pub fn modern_final_cost(occ_usd_kwth:f64,om_usd_mwh:f64,wacc:f64,electricity_va
  x.pass_cost=x.abatement_cost_sgd_t<100.0;x.joint_pass=x.pass_abatement&&x.pass_cost;x
 }
 
+#[derive(Clone,Copy,Debug)]
+pub struct FinalLifecycleLedger {
+ pub baseline_direct:f64,pub candidate_direct:f64,pub direct_saved:f64,
+ pub upstream_saved:f64,pub nuclear_added:f64,pub auxiliary_added:f64,
+ pub transport_storage_added:f64,pub net_lifecycle_saved:f64
+}
+pub fn final_lifecycle_ledger()->FinalLifecycleLedger{
+ let hours=JAEA_AVAIL*8760.0;
+ let candidate_direct=short_t_to_t(EMITTED_SHORT_T_D)*365.0*JAEA_AVAIL;
+ let baseline_direct=short_t_to_t(BASE_EMITTED_SHORT_T_D)*365.0*JAEA_AVAIL;
+ let direct_saved=baseline_direct-candidate_direct;
+ let upstream_base=ng_gj_day(NG_BASE_MMSCFD)*365.0*JAEA_AVAIL*11.5/1000.0;
+ let upstream_final=ng_gj_day(NG_FINAL_MMSCFD)*365.0*JAEA_AVAIL*11.5/1000.0;
+ let upstream_saved=upstream_base-upstream_final;
+ let nuclear_added=HEAT_MWTH*1000.0*hours*(5.5*0.504)/1e6;
+ let auxiliary_added=(PROCESS_ELECTRIC_MWE-6.3).max(0.0)*1000.0*hours*5.5/1e6;
+ let captured=short_t_to_t(CAPTURED_SHORT_T_D)*365.0*JAEA_AVAIL;
+ let transport_storage_added=0.025*captured;
+ let net_lifecycle_saved=direct_saved+upstream_saved-nuclear_added-auxiliary_added-transport_storage_added;
+ FinalLifecycleLedger{baseline_direct,candidate_direct,direct_saved,upstream_saved,nuclear_added,auxiliary_added,transport_storage_added,net_lifecycle_saved}
+}
+#[derive(Clone,Copy,Debug)]
+pub struct FinalCostLedger {
+ pub baseline_ng:f64,pub candidate_ng:f64,pub ng_saved:f64,pub reactor_added:f64,
+ pub ccs_annual_added:f64,pub integration_added:f64,pub transport_storage_added:f64,
+ pub electricity_revenue:f64,pub net_incremental:f64
+}
+pub fn final_cost_ledger()->FinalCostLedger{
+ let hours=JAEA_AVAIL*8760.0;
+ let baseline_ng=ng_gj_day(NG_BASE_MMSCFD)*365.0*JAEA_AVAIL*GAS_PRICE_SGD_GJ;
+ let candidate_ng=ng_gj_day(NG_FINAL_MMSCFD)*365.0*JAEA_AVAIL*GAS_PRICE_SGD_GJ;
+ let ng_saved=baseline_ng-candidate_ng;
+ let reactor_added=NISHIHARA_IHX_MWTH*hours*3.6*jaea_heat_sgd_gj(false)+NISHIHARA_GROSS_MWE*hours*jaea_electric_sgd_mwh(false);
+ let captured=short_t_to_t(CAPTURED_SHORT_T_D)*365.0*JAEA_AVAIL;
+ let ccs_cap=ccs_capex_sgd(captured);
+ let ccs_annual_added=ccs_cap*crf(0.08,25);
+ let integration_added=0.10*(jaea_plant_capex_sgd(false)+ccs_cap)*crf(0.03,40);
+ let transport_storage_added=captured*T_AND_S_SGD_T;
+ let electricity_revenue=0.0;
+ let net_incremental=candidate_ng+reactor_added+ccs_annual_added+integration_added+transport_storage_added-electricity_revenue-baseline_ng;
+ FinalCostLedger{baseline_ng,candidate_ng,ng_saved,reactor_added,ccs_annual_added,integration_added,transport_storage_added,electricity_revenue,net_incremental}
+}
 pub fn results_csv()->String{
  let e=final_design(0.0,false);
  format!("scenario,h2ty,heatmw,heliumkgs,residualthermalmwth,sourcegrossmwe,capturedty,avoidedty,lifecycleci,incrementalsgd,costsgdt,apass,cpass,joint\nZero-value electricity,{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.6},{:.3},{:.3},{},{},{}\n",
