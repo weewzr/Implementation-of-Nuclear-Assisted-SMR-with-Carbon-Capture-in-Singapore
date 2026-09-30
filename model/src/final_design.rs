@@ -141,6 +141,57 @@ pub fn availability_sensitivity_csv()->String{
  s
 }
 
+#[derive(Clone,Copy,Debug)]
+pub struct CcsCaptureSensitivity {
+ pub capture_fraction:f64,pub captured_t_y:f64,pub candidate_direct_t_y:f64,
+ pub lifecycle_avoided_t:f64,pub annual_incremental_sgd:f64,
+ pub abatement_cost_sgd_t:f64,pub pass_abatement:bool,pub pass_cost:bool,pub joint_pass:bool
+}
+// Screening sensitivity on delivery of the source-model captured stream.
+// f=1 reproduces the canonical case. If capture is unavailable, the uncaptured
+// portion of the 1,927 short-ton/day source stream is emitted directly.
+// H2/process operating point, natural-gas use, nuclear heat and auxiliary
+// electricity are held fixed. This is NOT an absorber/compressor turndown model.
+pub fn ccs_capture_sensitivity(f:f64)->CcsCaptureSensitivity{
+ assert!((0.0..=1.0).contains(&f));
+ let hours=JAEA_AVAIL*8760.0;
+ let source_captured=short_t_to_t(CAPTURED_SHORT_T_D)*365.0*JAEA_AVAIL;
+ let captured=source_captured*f;
+ let canonical_direct=short_t_to_t(EMITTED_SHORT_T_D)*365.0*JAEA_AVAIL;
+ let candidate_direct=canonical_direct+source_captured*(1.0-f);
+ let baseline_direct=short_t_to_t(BASE_EMITTED_SHORT_T_D)*365.0*JAEA_AVAIL;
+ let direct_saved=baseline_direct-candidate_direct;
+ let upstream_base=ng_gj_day(NG_BASE_MMSCFD)*365.0*JAEA_AVAIL*11.5/1000.0;
+ let upstream_final=ng_gj_day(NG_FINAL_MMSCFD)*365.0*JAEA_AVAIL*11.5/1000.0;
+ let nuclear_lca=HEAT_MWTH*1000.0*hours*(5.5*0.504)/1e6;
+ let aux_lca=(PROCESS_ELECTRIC_MWE-6.3).max(0.0)*1000.0*hours*5.5/1e6;
+ let transport=0.025*captured;
+ let avoided=direct_saved+(upstream_base-upstream_final)-nuclear_lca-aux_lca-transport;
+ let reactor=NISHIHARA_IHX_MWTH*hours*3.6*jaea_heat_sgd_gj(false)
+    +NISHIHARA_GROSS_MWE*hours*jaea_electric_sgd_mwh(false);
+ let ccs_cap=ccs_capex_sgd(captured);
+ let annual_ccs=ccs_cap*crf(0.08,25);
+ let integration=0.10*(jaea_plant_capex_sgd(false)+ccs_cap)*crf(0.03,40);
+ let ts=captured*T_AND_S_SGD_T;
+ let base_ng=ng_gj_day(NG_BASE_MMSCFD)*365.0*JAEA_AVAIL*GAS_PRICE_SGD_GJ;
+ let final_ng=ng_gj_day(NG_FINAL_MMSCFD)*365.0*JAEA_AVAIL*GAS_PRICE_SGD_GJ;
+ let incremental=final_ng+reactor+annual_ccs+integration+ts-base_ng;
+ let cost=incremental/avoided;
+ CcsCaptureSensitivity{capture_fraction:f,captured_t_y:captured,
+  candidate_direct_t_y:candidate_direct,lifecycle_avoided_t:avoided,
+  annual_incremental_sgd:incremental,abatement_cost_sgd_t:cost,
+  pass_abatement:avoided>250_000.0,pass_cost:cost<100.0,
+  joint_pass:avoided>250_000.0&&cost<100.0}
+}
+pub fn ccs_capture_sensitivity_csv()->String{
+ let mut s=String::from("capturefraction,capturedty,candidatedirectty,lifecycleavoidedty,incrementalsgd,costsgdt,apass,cpass,joint\n");
+ for f in [0.0,0.25,0.50,0.557,0.75,0.90,1.0]{
+  let x=ccs_capture_sensitivity(f);
+  s.push_str(&format!("{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{},{},{}\n",f,x.captured_t_y,x.candidate_direct_t_y,x.lifecycle_avoided_t,x.annual_incremental_sgd,x.abatement_cost_sgd_t,x.pass_abatement,x.pass_cost,x.joint_pass));
+ }
+ s
+}
+
 pub const BACKUP_HEATER_EFFICIENCY:f64=0.856; // Rossi et al. 2025 conventional SMR furnace case
 pub const NG_COMBUSTION_KG_CO2_MMBTU:f64=53.02; // US EPA stationary-combustion default, HHV
 pub const MMBTU_GJ:f64=1.05505585262;
@@ -269,6 +320,8 @@ pub fn temperature_sensitivity_csv()->String{
  #[test]fn cost_ledger_reconciles(){let l=final_cost_ledger();let x=final_design(0.0,false);assert!((l.net_incremental-x.annual_incremental_sgd).abs()<1e-8);assert_eq!(l.electricity_revenue,0.0);}
  #[test]fn availability_sensitivity_is_monotonic(){let a=availability_sensitivity(0.50);let b=availability_sensitivity(0.85);assert!(b.annual_h2_t>a.annual_h2_t);assert!(b.lifecycle_avoided_t>a.lifecycle_avoided_t);assert!(a.lifecycle_avoided_t>250_000.0);assert!(a.abatement_cost_sgd_t<100.0);}
  #[test]fn availability_base_reconciles(){let a=availability_sensitivity(JAEA_AVAIL);let b=final_design(0.0,false);assert!((a.annual_h2_t-b.annual_h2_t).abs()<1e-8);assert!((a.lifecycle_avoided_t-b.lifecycle_avoided_t).abs()<1e-8);assert!((a.abatement_cost_sgd_t-b.abatement_cost_sgd_t).abs()<1e-8);}
+ #[test]fn ccs_capture_base_reconciles(){let x=ccs_capture_sensitivity(1.0);let b=final_design(0.0,false);assert!((x.lifecycle_avoided_t-b.lifecycle_avoided_t).abs()<1e-8);assert!((x.abatement_cost_sgd_t-b.abatement_cost_sgd_t).abs()<1e-8);}
+ #[test]fn ccs_capture_abatement_is_monotonic(){let a=ccs_capture_sensitivity(0.25);let b=ccs_capture_sensitivity(0.90);assert!(b.captured_t_y>a.captured_t_y);assert!(b.lifecycle_avoided_t>a.lifecycle_avoided_t);}
  #[test]fn gas_backup_base_reconciles(){let x=gas_backup_sensitivity(JAEA_AVAIL);let b=final_design(0.0,false);assert!(x.backup_hours.abs()<1e-12);assert!((x.lifecycle_avoided_t-b.lifecycle_avoided_t).abs()<1e-8);assert!((x.abatement_cost_sgd_t-b.abatement_cost_sgd_t).abs()<1e-8);}
  #[test]fn gas_backup_penalty_is_monotonic(){let low=gas_backup_sensitivity(0.50);let high=gas_backup_sensitivity(0.80);assert!(low.backup_fuel_gj>high.backup_fuel_gj);assert!(low.lifecycle_avoided_t<high.lifecycle_avoided_t);assert!(low.abatement_cost_sgd_t>high.abatement_cost_sgd_t);assert!(low.joint_pass);}
  #[test]fn historical_gate5_still_reproduces(){let x=r3_uncertainty_summary();assert_eq!(x.n,64);assert_eq!(x.both_pass,0);}
