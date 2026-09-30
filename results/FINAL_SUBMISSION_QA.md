@@ -63,7 +63,7 @@ User-provided source images were inspected. Useful equipment/flow concepts inclu
 Detailed provenance: `results/FIGURE_PROVENANCE.md`.
 
 ## Citation audit
-Material final-design external claims are cited to INL TEV-953/961, Nishihara/JAEA/JAERI, IEAGHG, IEA, UNECE, EMA and MTI as applicable. Final acceptance requires Paper CI to confirm zero undefined citations and references.
+Material final-design external claims are cited to INL TEV-953/961, Nishihara/JAEA/JAERI, IEAGHG, IEA, UNECE, EMA and MTI as applicable. Final Paper CI confirmed zero undefined citations and zero undefined references.
 
 ## Equation/unit audit
 No scientific equations were changed in QA. Context and definitions were strengthened. Nomenclature now explicitly defines CO2e, TRISO, S/C, ROT, MWth, MWe and T&S in addition to SMR, WGS, PSA, CCS, HTGR and IHX.
@@ -72,7 +72,7 @@ No scientific equations were changed in QA. Context and definitions were strengt
 Submission-facing manuscript no longer uses retired 161.92/144.62-MWe project mapping, old electricity-credit economics, the 170/202 source conflation, Gate-5 0/64 results or Review-5 600 C state as current results. Historical evidence remains in GitHub.
 
 ## Reproducibility
-Canonical path remains `sh paper/build.sh`, with Rust tests, deterministic result generation, latexmk/BibTeX and manuscript integrity checks. Final acceptance evidence will record fresh Research CI, Paper CI and exact artifact.
+Canonical path remains `sh paper/build.sh`, with Rust tests, deterministic result generation, latexmk/BibTeX and manuscript integrity checks. Final Research CI, Paper CI and exact-artifact evidence are recorded below.
 
 ## Final visual inspection
 PASS on exact artifact `11078290219`.
