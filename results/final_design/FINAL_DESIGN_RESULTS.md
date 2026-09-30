@@ -1,57 +1,60 @@
 # FINAL DESIGN RESULTS
 
-**Status: CURRENT FINAL DESIGN.** Historical Gate-5 and Review-5 deployment studies are preserved elsewhere and are not the operative submission design.
+**Status: CORRECTED FINAL DESIGN — pending independent reviewer re-verification.**
 
-## Literature-selected process
-- INL/NGNP TEV-953/961 process basis.
-- Reformer outlet: 871 C.
-- Steam/carbon: 3.0 mol/mol.
-- Feed compression condition: approximately 31.7 bar (460 psia).
-- Methane conversion: 78.1%.
-- PSA recovery: 88%.
-- INL high-temperature Case 6: 925 C HTGR outlet, 900 C process heat, full nuclear reforming duty.
-- Source plant: 130 MMSCFD H2, 34.0 MMSCFD NG, 176.8 MWth process heat, 17.3 MWe process demand, 1,927 short ton/day CO2 captured, 142 short ton/day emitted.
+## Final process
+The independently reproduced INL process basis is unchanged:
+- 130 MMSCFD H2; ~97,946 t/y at 85% availability;
+- 871 C reformer, S/C 3.0, 78.1% methane conversion, 88% PSA recovery;
+- 925 C INL reactor outlet and 900 C process heat;
+- 176.8 MWth process heat; 17.3 MWe process electricity;
+- 34.0 MMSCFD candidate NG versus 52.5 MMSCFD conventional baseline;
+- 1,927 short t/day captured CO2, 142 short t/day candidate emitted, 3,205 short t/day baseline emitted;
+- lifecycle avoided emissions remain approximately **917,139 tCO2e/y** under the current proxy boundary;
+- corrected candidate lifecycle intensity is approximately **1.95 kgCO2e/kgH2**.
 
-## Hardware
-- one 600 MWth GTHTR300C-class module;
-- final heat duty = 176.8 MWth (29.5% of reactor thermal rating);
-- JAEA reference IHX = 170 MWth, so the final economic baseline conservatively uses the source doubled-IHX/secondary-loop sensitivity;
-- screening secondary-He return = 585 C for helium-flow estimation.
+## Corrected JAEA configuration
+Principal mature economic architecture: Nishihara et al. 2007.
+- reactor = 600 MWth;
+- source heat/IHX branch = 370 MWth;
+- source power branch = 230 MWth;
+- source gross electricity = 88 MWe;
+- source implied power conversion = 88/230 = 38.26%.
 
-## Annualized final plant
-At 85% availability:
-- H2 = approximately 97,946 t/y;
-- captured CO2 = approximately 542,362 t/y;
-- direct emitted CO2 = approximately 39,966 t/y;
-- direct avoided CO2 relative to same-output INL conventional no-CC baseline = approximately 862,094 t/y;
-- lifecycle avoided CO2e after upstream NG, nuclear, auxiliary and transport/storage burdens = approximately **917,139 tCO2e/y**.
+Project integration mapping:
+- INL process heat draw = 176.8 MWth;
+- residual thermal branch = 423.2 MWth;
+- project-derived gross electricity = **161.92 MWe**;
+- process electricity = 17.3 MWe;
+- project-derived net export = **144.62 MWe**;
+- annual net export at 85% availability = **~1,076,841 MWh/y**;
+- INL process-side helium screen = **~78.34 kg/s** using 900 C supply, 466 C return and Cp=5.2 kJ/kg-K (source Case-6 flow: 78.49 kg/s).
 
-The annual-abatement margin is therefore approximately +667,139 tCO2e/y above the CN4252 threshold.
+This part-load mapping is PROJECT-DERIVED. It is not claimed as a published JAEA operating point.
 
-## Economics
-Final baseline:
-- source doubled-IHX GTHTR300C economics;
-- S$150/MWh electricity-value scenario;
-- S$15/t captured T&S screening scenario;
-- Review-5 common cost-year/FX methodology.
+## Corrected economics
+Principal mature case uses the coherent source reference:
+- 59.7 bn JPY (2007) plant cost before project normalization;
+- 0.52 JPY/MJ source heat cost;
+- 4.9 JPY/kWh source electricity cost;
+- 85% availability;
+- common Review-5 cost-year/FX normalization;
+- S$15/t captured T&S scenario;
+- 10% integration/site allowance.
 
-Expected deterministic forward result from the model:
-- annual incremental cost ≈ **-S$178.6 million/y**;
-- abatement cost ≈ **-S$194.7/tCO2e**;
-- annual-abatement threshold: PASS;
-- cost threshold: PASS;
-- joint status: **CONDITIONAL MODEL PASS**.
+Deterministic corrected screens:
+- **zero electricity value:** incremental cost ~S$3.45m/y; **~S$3.76/tCO2e**;
+- **S$100/MWh:** incremental cost ~-S$104.23m/y; **~-S$113.65/tCO2e**;
+- **S$150/MWh:** incremental cost ~-S$158.07m/y; **~-S$172.35/tCO2e**;
+- **S$200/MWh:** incremental cost ~-S$211.92m/y; **~-S$231.06/tCO2e**;
+- **doubled-IHX/secondary-loop COST sensitivity at S$150/MWh:** ~**-S$162.29/tCO2e**.
 
-The negative abatement cost means the screened candidate has lower annual net cost than the common baseline after cogenerated-electricity value; it is not a subsidy or guaranteed profit.
+These are corrected model outputs awaiting independent reviewer acceptance. Negative abatement cost means only that screened annual candidate net cost is below the common baseline under the stated assumptions.
 
-Important falsification sensitivities:
-- zero-value cogeneration under the mature doubled-IHX source basis: ≈ S$30.2/tCO2e, still below S$100/t;
-- S$100/MWh and S$200/MWh electricity values are generated explicitly;
-- modern-central and FOAK/adverse reactor-cost screens are generated deterministically;
-- reference-IHX economics are retained only as a sensitivity because 176.8 MWth exceeds the 170 MWth reference duty.
+## Final CN4252 classification
+Under the corrected deterministic model:
+- lifecycle avoided emissions >250,000 tCO2e/y: PASS;
+- zero-value abatement cost <S$100/tCO2e: PASS;
+- corrected model joint status: **CONDITIONAL MODEL PASS — pending independent reviewer re-verification**.
 
-## Claim strength
-**CONDITIONAL MODEL RESULT.** The result is not an observed Singapore project price. It depends on source design-study reactor economics, successful high-temperature integration, cross-border CCS availability, lifecycle proxies, T&S assumptions and the stated electricity market treatment.
-
-## Historical context
-The initial fixed-scale 64-case study (0 joint passes) and the Review-5 600 C mock-up-based deployment state remain preserved as superseded research. They are not the final design basis.
+No claim of independent verification or commercial Singapore feasibility is made here.
