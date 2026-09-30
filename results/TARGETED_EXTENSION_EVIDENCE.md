@@ -89,6 +89,6 @@ Specific visual acceptance:
 
 ## Targeted-extension milestone
 
-The targeted scientific extension is **COMPLETE AND READY FOR INDEPENDENT REVIEW**.
+The targeted scientific extension was independently reviewed in Review 06. Decision: **TARGETED SCIENTIFIC EXTENSION VERIFIED — MINOR CORRECTIONS ONLY**. The bounded corrections TE-R01--TE-R04 are recorded in `reviews/review_06_resolution.md`.
 
-This statement does not close scientific review. The next scientific gate is an Independent Reviewer assessment of the revised manuscript/evidence package. No further Main Research expansion should occur before that review unless a concrete build/reproducibility defect is discovered.
+No further broad Main Research expansion is warranted. Final closure depends only on fresh CI/PDF verification of the Review-06 corrections.
