@@ -1,35 +1,67 @@
 \section{Final design results}
 \label{sec:final-results}
 
-The corrected final-design calculation preserves the independently reproduced INL process basis. At 85\% availability it produces approximately 97,946 tH$_2$/y. Direct avoided emissions are approximately 862,094 tCO$_2$/y; the declared lifecycle extension gives approximately 917,139 tCO$_2$e/y avoided and approximately 1.95 kgCO$_2$e/kgH$_2$ candidate lifecycle intensity.
+The verified final-design calculation produces approximately 97,946 tH$_2$/y at 85\% availability. Direct avoided emissions are approximately 862,094 tCO$_2$/y. Lifecycle avoided emissions are larger, approximately 917,139 tCO$_2$e/y, because the candidate consumes less natural gas than the same-output conventional baseline and therefore also avoids upstream gas-supply emissions. Captured CO$_2$ is not added again to the avoided-emissions numerator.
 
 \begin{table}[htbp]\centering\small
-\caption{Corrected final-design screening result. Electricity export is deliberately not credited because no validated off-design project power output is claimed.}
+\caption{Principal submission-facing final-design result. Electricity export receives zero value because no validated project off-design power output is claimed.}
 \label{tab:final-result}
 \begin{tabular}{p{0.52\linewidth}p{0.32\linewidth}}
 \toprule
-Quantity & Corrected result \\
+Quantity & Verified screening result \\
 \midrule
+Reformer / supplied heat & 871$^\circ$C / 900$^\circ$C \\
 Hydrogen production & 97,946 t/y \\
 INL process heat & 176.8 MWth \\
+Selected reactor architecture & 600 MWth GTHTR300C class \\
 Nishihara source heat branch & 370 MWth \\
-Remaining reactor thermal capacity & 423.2 MWth \\
-Nishihara source electricity configuration & 88 MWe at source 370/230 split \\
-Project electricity export & not claimed / no credit \\
-Process-side He flow screen & 78.34 kg/s \\
+Remaining reactor thermal capacity & 423.2 MWth; no power claim \\
 CO$_2$ captured & 542,362 t/y \\
 Direct CO$_2$ avoided & 862,094 t/y \\
 Lifecycle CO$_2$e avoided & 917,139 t/y \\
 Candidate lifecycle intensity & 1.95 kgCO$_2$e/kgH$_2$ \\
-Zero-value incremental cost & generated canonical result \\
-Zero-value abatement cost & generated canonical result; $<\mathrm{S\$}100$/tCO$_2$e \\
-Annual-abatement margin & +667,139 tCO$_2$e/y \\
-Joint model classification & \textbf{CONDITIONAL PASS} \\
+Project electricity revenue & S\$0/MWh \\
+Annual incremental cost & approximately S\$3.416 million/y \\
+Abatement cost & approximately S\$3.725/tCO$_2$e \\
+CN4252 abatement criterion & $>250,000$ tCO$_2$e/y: PASS \\
+CN4252 cost criterion & $<\mathrm{S\$}100$/tCO$_2$e: PASS \\
+Joint classification & \textbf{CONDITIONAL MODEL PASS} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The zero-electricity-value case is the controlling economic test. It charges the full selected Nishihara source-product economic burden, CCS, integration, T\&S and candidate natural gas, subtracts the common baseline natural-gas cost, and gives no revenue for cogenerated electricity. This deliberately prevents an uncertain power-cycle mapping from controlling the CN4252 conclusion.
+\subsection{What the carbon numbers mean}
+The annual-abatement threshold is exceeded by approximately 667,139 tCO$_2$e/y. Equivalently, 0.917 MtCO$_2$e/y is about \textbf{3.7 times} the required 0.25 MtCO$_2$e/y. Lifecycle avoidance exceeds direct avoidance by about 55 ktCO$_2$e/y: the reduction in upstream natural-gas burden is larger than the added nuclear-heat, auxiliary-electricity and CO$_2$ transport/storage lifecycle burdens.
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[->] (0,0)--(10.2,0) node[right]{Annual avoided emissions (MtCO$_2$e/y)};
+\draw[very thick] (0,0.45)--(2.5,0.45) node[midway,above]{required $>0.25$};
+\draw[very thick] (0,1.25)--(9.17,1.25) node[midway,above]{model $\approx0.917$};
+\draw[dashed] (2.5,-0.15)--(2.5,1.65);
+\node[align=left,anchor=west] at (2.7,0.65) {margin $\approx0.667$ Mt/y\\about 3.7$\times$ threshold};
+\end{tikzpicture}
+\caption{CN4252 annual-abatement test using the independently verified final lifecycle result. The model result is a conditional screening result, not measured project performance.}
+\label{fig:abatement-threshold}
+\end{figure}
+
+\subsection{Conservative economic test}
+Abatement cost asks how much additional annual cost is associated with each tonne of lifecycle emissions avoided:
+\[
+C_{\rm abatement}=\frac{C_{\rm candidate}-C_{\rm baseline}}{A_{\rm avoided}}.
+\]
+The controlling case gives no monetary credit to uncertain project electricity output but still charges the full selected reactor source-product economic burden. Its approximately S\$3.725/tCO$_2$e result is about S\$96.3/t below the S\$100/t ceiling. Thus the numerical cost pass does not depend on electricity revenue.
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[x=0.09cm,y=1cm]
+\draw[->] (0,0)--(112,0) node[right]{S\$/tCO$_2$e};
+\draw[very thick] (0,1.1)--(3.725,1.1) node[right]{model $\approx3.73$};
+\draw[dashed] (100,-0.15)--(100,1.55) node[above]{ceiling 100};
+\draw[<->] (3.725,0.45)--(100,0.45) node[midway,above]{margin $\approx96.3$};
+\end{tikzpicture}
+\caption{CN4252 abatement-cost test for the controlling zero-electricity-revenue case.}
+\label{fig:cost-threshold}
+\end{figure}
 
 \subsection{CN4252 interpretation}
-The corrected calculation passes the annual-abatement threshold by approximately 667 ktCO$_2$e/y. Its controlling zero-value cost remains below S\$100/tCO$_2$e under the declared mature source-cost allocation. The result remains a \textbf{CONDITIONAL MODEL RESULT pending independent reviewer re-verification}, not evidence of an existing Singapore commercial project.
+The final configuration satisfies both numerical assignment thresholds under the declared source/design-study and lifecycle assumptions. It remains a \textbf{CONDITIONAL MODEL RESULT}, not evidence of an existing Singapore commercial project.
