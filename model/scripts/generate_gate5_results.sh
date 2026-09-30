@@ -37,3 +37,5 @@ cargo run --quiet --bin final_design_figures
 cargo run --quiet --bin final_design_availability_csv > ../results/final_design/generated/availability_sensitivity.csv
 
 cargo run --quiet --bin final_design_gas_backup_csv > ../results/final_design/generated/gas_backup_sensitivity.csv
+
+cargo run --quiet --bin final_design_reliability_summary > ../results/final_design/generated/reliability_sensitivity.md
