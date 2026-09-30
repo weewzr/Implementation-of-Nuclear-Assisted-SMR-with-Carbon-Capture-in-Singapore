@@ -148,3 +148,28 @@ If all candidate pathways fail the site/emergency-planning test:
 - Tsinghua theses on integrated HTR-PM source term and graphite-dust transport.
 - Ding et al. (2018), *Development of emergency planning zone for high temperature gas-cooled reactor*, Annals of Nuclear Energy 111, 347-353.
 - Chinese small-reactor environmental/regulatory examples under GB/T 17680.1-2008.
+
+
+## Native HTR-PM tritium / C-14 / monitoring evidence
+
+Tsinghua's reactor-safety research programme includes an experimental platform for HTR fission products and important activation products, including dedicated **tritium and C-14 sampling/measurement branches**.
+
+A Tsinghua thesis on HTR-PM tritium identifies major production pathways as:
+- ternary fission;
+- He-3 neutron activation;
+- Li-6 activation;
+- B-10 activation.
+
+This independently cross-checks the Japanese HTTR tritium-generation framework.
+
+Recent Chinese HTGR radiation-monitoring work reports measurements/methods for HTR-10/HTR-PM primary-circuit Ar-41, H-3 and C-14 and proposes normalised primary-circuit activity as a reactor radiological-safety indicator.
+
+Implication:
+**tritium and C-14 are not peripheral theoretical nuclides; Chinese operating/design programmes explicitly monitor and model them.**
+
+The Singapore project should therefore include:
+- tritium in the nuclear/chemical interface question;
+- C-14/tritium in normal-operation radiological monitoring/waste questions;
+- no assumption that “helium is inert” means “helium is non-radioactive”.
+
+This does not create a project release value; it strengthens the need for selected-design radiological inventory/monitoring analysis.
