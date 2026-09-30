@@ -1,7 +1,7 @@
 # STATUS
 
 ## FINAL CURRENT DESIGN
-**FINAL DESIGN REFINEMENT: COMPLETE pending final CI/PDF verification.**
+**FINAL DESIGN REFINEMENT: COMPLETE**
 
 The current submission-facing design is the literature-anchored INL/NGNP high-temperature HTGR-assisted SMR+CCS process:
 - 871 C reformer outlet; S/C 3.0; 78.1% methane conversion; 88% PSA recovery;
@@ -34,9 +34,14 @@ Historical evidence is not deleted or rewritten.
 
 ## Verification
 Starting commit for this consolidation: `255fe02061b7660b6cc8384881ee4d2e84e3654b`.
-Final-design CI/PDF evidence will be recorded after the current workflows complete.
+Final scientific/design commit: `12625aed52d52670b4f87de7511e8a3dd1f103d5`.
+Research CI run `36662636613`: **PASS**.
+Paper/reproducibility CI run `36662636515`: **PASS**.
+Canonical PDF artifact `11074623593`: **11 pages**, 246,106 bytes.
+Undefined citations: **0**. Undefined references: **0**. Bibliography converged successfully (`main.bbl` loaded; `references.bib` detected; latexmk targets up to date).
+Page-by-page visual inspection of the exact artifact: **PASS**, including corrected Figure 4 with all nodes/arrows inside the page boundary and final-design labels unchanged.
+
+Governing distinction: **FINAL SUBMISSION = FINAL BEST-SUPPORTED DESIGN. REPOSITORY = COMPLETE SCIENTIFIC AUDIT TRAIL.**
 
 ## Next step
-Complete only deterministic final-design CI, Paper CI and page-by-page PDF inspection. Then set **FINAL DESIGN REFINEMENT: COMPLETE** and STOP.
-
-Do not begin Review 6. Do not begin Final Submission QA automatically.
+**STOP.** Final-design refinement is closed. Do not begin Review 6 or Final Submission QA automatically.
