@@ -28,7 +28,7 @@ Previous Final Submission QA remains:
 `results/FINAL_SUBMISSION_QA.md`.
 
 ## Current research gate
-Targeted extension acceptance requires:
+Targeted extension substantive work is complete; acceptance now requires final tests/build/PDF inspection. Completed:
 - nuclear primary-source literature expansion and evidence matrix;
 - paragraph/claim-level manuscript citation audit;
 - HTGR/TRISO/IHX/process-heat and safety evidence strengthened;
@@ -38,8 +38,12 @@ Targeted extension acceptance requires:
 - staged implementation roadmap;
 - useful deterministic Rust-generated quantitative figures with data/provenance;
 - coherent manuscript revision;
-- tests/CI/build and exact-PDF inspection;
 - explicit traceability to the complete CN4252 problem statement.
+
+Pending closure evidence:
+- Rust tests/Research CI;
+- Paper/reproducibility CI;
+- generated-figure rendering and exact-PDF inspection.
 
 ## Supervisor-code methodological lesson
 OUTRAM PARK is being used only as a software-methodology reference: explicit V&V status, deterministic Rust computation, evidence-tier discipline, separation of canonical/derived quantities, and reproducible visual outputs. This project will not claim reactor-transient simulation capability it does not possess and will not copy unrelated simulator complexity.
