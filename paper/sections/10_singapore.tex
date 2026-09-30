@@ -1,32 +1,15 @@
 \section{Singapore implementation implications}
-The corrected model translates the candidate into annual H2, fresh-NG energy, captured/residual CO2, cross-border storage throughput, nuclear process heat and helium-loop scale. Required thermal service is expressed against the source-backed 170 MW JAEA IHX benchmark rather than converted into a fabricated commercial reactor-module count.
+The final design requires one 600 MWth-class HTGR module coupled through an enlarged high-temperature IHX/secondary-helium train to an industrial SMR+CCS plant. The source process heat demand (176.8 MWth) uses less than one-third of reactor thermal rating; the remaining reactor output must therefore have a useful electricity or heat role rather than being treated as economically free. The forward model closes this through the GTHTR300C cogeneration architecture and explicit electricity-value sensitivities.
 
-Singapore deployment remains conditional~\cite{mti2025nuclear,mti2026inir,mti2025carbon,mti2025indonesiaccs}. Nuclear power has not been assumed to be deployed: current official activity is capability-building and infrastructure-readiness assessment. Cross-border CO2 transport/storage is likewise treated as an emerging regional pathway under bilateral cooperation, not an existing domestic geological storage service. An implementation roadmap would therefore require, at minimum, nuclear regulatory/readiness development, site and safety assessment, a demonstrated process-heat coupling architecture, and contracted cross-border CO2 transport/storage.
+Implementation remains conditional. Singapore has no operating nuclear plant, so licensing, siting, emergency planning, safeguards, workforce development and high-temperature process-heat qualification remain prerequisites. Cross-border CO$_2$ transport and storage are likewise not assumed available at an authoritative tariff; MTI continues to treat CCS cost and infrastructure as developing evidence~\cite{mticcs2025cost}. The final model therefore treats nuclear deployment and T\&S as scenario conditions rather than existing infrastructure.
 
+A staged implementation pathway is:
+\begin{enumerate}
+\item validate the 900$^\circ$C-class secondary-helium/IHX/reformer interface and safety isolation architecture;
+\item demonstrate integrated SMR+CCS operation and high-temperature heat transport at relevant duty;
+\item secure a cross-border CO$_2$ storage chain and verified T\&S commercial terms;
+\item establish Singapore nuclear regulatory/siting readiness and an electricity/heat offtake plan for the remaining reactor output;
+\item proceed to front-end engineering only if the mature-design economic assumptions survive project-specific costing.
+\end{enumerate}
 
-For historical traceability, the \emph{original fixed-scale Gate-5/R3 screening quantities} are reported in Table~\ref{tab:singapore-scale}; they are not the Review-5-remediated deployment state in Section~\ref{sec:deployment-extension}. They are generated from the corrected R3 state and deliberately retain claim-strength labels. In particular, the \(170\) MW IHX ratio is a duty-equivalence indicator against the GTHTR300C engineering benchmark~\cite{jaeri2004gthtr300c}; it is not a count of commercial reactor modules.
-
-\begin{table}[htbp]
-\centering
-\caption{Original fixed-scale Gate-5/R3 screening quantities (including the historical 920$^\circ$C secondary-He hot end). These are retained for traceability and are superseded for the deployment extension by Section~\ref{sec:deployment-extension}. Infrastructure availability is not implied by these quantities.}
-\label{tab:singapore-scale}
-\small
-\pgfplotstabletypeset[
-  col sep=comma,
-  columns={quantity,value,unit,claim_class},
-  columns/quantity/.style={string type,column name={Quantity},column type={p{0.30\linewidth}}},
-  columns/value/.style={string type,column name={Value},column type={p{0.14\linewidth}}},
-  columns/unit/.style={string type,column name={Unit},column type={p{0.16\linewidth}}},
-  columns/claim_class/.style={string type,column name={Claim class},column type={p{0.27\linewidth}}},
-  every head row/.style={before row=\toprule,after row=\midrule},
-  every last row/.style={after row=\bottomrule}
-]{../results/generated/gate6_singapore_scale.csv}
-\end{table}
-
-The storage throughput satisfies the model identity
-\begin{equation}
-\dot m_{\mathrm{CO_2,storage}}=
-\dot m_{\mathrm{CO_2,process\ capture}}+
-\dot m_{\mathrm{CO_2,purge\ capture}},
-\end{equation}
-which is regression-tested in Rust. This quantity defines the cross-border CCS service that would have to be available to the candidate; it does not establish that such capacity has been contracted or permitted in Singapore.
+This roadmap is intentionally conditional: the model result does not establish that these deployment prerequisites are presently satisfied.
