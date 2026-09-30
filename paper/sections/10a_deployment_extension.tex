@@ -26,7 +26,7 @@ Historical capital anchors are normalized to a 2025-price basis before SGD conve
 \begin{table}[htbp]\centering\tiny
 \caption{Machine-readable Review-5 cost-year and FX conversion ledger.}
 \label{tab:r5-cost-ledger}
-\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,columns={item,sourceyear,sourcecurrency,sourcevalue,indexmethod,indexsource,indexfactor,fxdate,fxsgd,finalbasis,convertedsgd},every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]{../results/generated/review5_cost_ledger.csv}}
+\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,columns={item,sourceyear,sourcevalue,indexfactor,fxsgd,convertedsgd},every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]{../results/generated/review5_cost_ledger.csv}}
 \end{table}
 
 \subsection{Corrected scenarios and scale sensitivity}
@@ -35,7 +35,7 @@ Table~\ref{tab:r5-results} includes the source mature case, doubled-IHX sensitiv
 \begin{table}[htbp]\centering\tiny
 \caption{Review-5-remediated deployment scenarios. The former S\$47.637/t conditional pass is superseded.}
 \label{tab:r5-results}
-\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,columns={scenario,scale,h2ty,avoidedty,processheatmw,heflowkgs,electricmwe,electricmwh,electricvaluesgdmwh,costsgdt,jointpass},every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]{../results/generated/review5_results.csv}}
+\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,columns={scenario,h2ty,avoidedty,processheatmw,electricmwe,electricvaluesgdmwh,costsgdt,jointpass},every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]{../results/generated/review5_results.csv}}
 \end{table}
 
 Table~\ref{tab:r5-margin} evaluates scale factors 1.0--1.5 rather than retaining the former narrow 1.30 point. No finite minimum deployment scale exists for the corrected source-temperature state.
