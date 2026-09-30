@@ -4,7 +4,7 @@
 Reviews 1-4: CLOSED.
 Original Gate 5: COMPLETE and preserved (64 cases, 0 joint passes).
 Original Gate 6 / visual pass: COMPLETE.
-Independent Review 5: OPEN pending final Paper-CI/PDF verification.
+Independent Review 5: CLOSED.
 Final Submission QA: NOT STARTED after Review-5 remediation.
 
 ## Review-5-remediated deployment result
@@ -47,9 +47,10 @@ Historical costs are normalized to 2025-price basis using explicit national GDP-
 - deployment section: `paper/sections/10a_deployment_extension.tex`.
 
 ## Verification
-Paper/reproducibility run `36655616510`: PASS at the corrected model/manuscript state `649398e14be3a5a78e255d3988ccbcb6b6248025`; artifact `11072086648`; 18-page PDF visually inspected. The Paper workflow's Rust tests passed. Dedicated Research CI for the latest corrected state remains pending because GitHub Actions still shows stale Research-CI run `36655606132` in progress and newer Research runs waiting behind it.
+Dedicated Research CI `36655965073`: PASS at `f39fb2d8b2f843f757c1a823d7523cbc2cb99ba5`.
+Paper/reproducibility run `36655616510`: PASS at corrected model/manuscript state `649398e14be3a5a78e255d3988ccbcb6b6248025`; artifact `11072086648`; 18-page PDF visually inspected. Citation/reference convergence and Review-5 temperature/economic/cogeneration presentation were verified.
 
 ## Next step
-Scientific remediation and PDF verification are complete. Remaining blocker is only the dedicated Research-CI queue state. Once the stale Research run is cleared/completes and the latest Research CI passes, update the resolution and mark **Independent Review 5 gate: CLOSED**, then STOP.
+Review-5 scientific remediation, dedicated Research CI, Paper CI and PDF verification are complete. **Independent Review 5 gate: CLOSED.** STOP. Do not begin Final Submission QA or another review automatically.
 
 Do not begin Final Submission QA or another review automatically.
