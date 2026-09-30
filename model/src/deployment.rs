@@ -78,8 +78,8 @@ pub fn deployment_physical(annual_scale:f64)->DeploymentPhysical {
   ihx_approach_k:PRIMARY_OUT_C-IHX_SECONDARY_OUT_C,
   process_approach_k:REFORMER_HE_IN_C-PROCESS_GAS_OUT_C}
 }
-pub fn minimum_annual_scale()->f64 {let x=deployment_physical(1.0);250_000.0/x.annual_avoided_t}
-pub fn selected_annual_scale()->f64 {(minimum_annual_scale()*1.10).max(1.40)}
+pub fn minimum_annual_scale()->f64 {let x=deployment_physical(1.0);if x.annual_avoided_t>0.0{250_000.0/x.annual_avoided_t}else{f64::INFINITY}}
+pub fn selected_annual_scale()->f64 {let m=minimum_annual_scale();if m.is_finite(){(m*1.10).max(1.40)}else{1.50}}
 
 pub fn jp_escalation()->f64{JP_DEFLATOR_2025/JP_DEFLATOR_2007}
 pub fn eu_escalation()->f64{DE_DEFLATOR_2025/DE_DEFLATOR_2014}
@@ -116,7 +116,7 @@ pub fn mature_economic(annual_scale:f64,double_ihx:bool,electricity_value:f64)->
  let c=r3_ccs_ledger(s);
  let aux=(c.co2_compression_mwe+c.tail_compression_mwe)*x.throughput_scale*hours*150.0;
  let incremental=fresh+aux+reactor_burden+annual_ccs+integration+ts-power_value-base;
- let cost=incremental/x.annual_avoided_t;
+ let cost=if x.annual_avoided_t>0.0{incremental/x.annual_avoided_t}else{f64::INFINITY};
  EconomicResult{annual_scale,double_ihx,electricity_value_sgd_mwh:electricity_value,
   reactor_burden_sgd_y:reactor_burden,electricity_value_sgd_y:power_value,
   ccs_capex_sgd:ccs,annual_incremental_sgd:incremental,cost_sgd_t:cost,
@@ -125,7 +125,7 @@ pub fn mature_economic(annual_scale:f64,double_ihx:bool,electricity_value:f64)->
 }
 pub fn break_even_electricity_sgd_mwh(annual_scale:f64,double_ihx:bool)->f64 {
  let z=mature_economic(annual_scale,double_ihx,0.0);let x=deployment_physical(annual_scale);
- (z.annual_incremental_sgd-100.0*x.annual_avoided_t)/x.annual_electric_mwh
+ if x.annual_avoided_t<=0.0{f64::INFINITY}else{(z.annual_incremental_sgd-100.0*x.annual_avoided_t)/x.annual_electric_mwh}
 }
 
 #[derive(Clone,Copy,Debug)]
@@ -142,7 +142,7 @@ pub fn modern_cost(annual_scale:f64,k:CostClass)->EconomicResult {
  let base=annual_thermal_energy_cost_sgd(ieaghg_total_ng_lhv_mw()*x.throughput_scale,hours,17.5);
  let fresh=annual_thermal_energy_cost_sgd(ieaghg_feed_lhv_mw()*s.fresh_fraction*x.throughput_scale,hours,17.5);
  let incremental=fresh+reactor+annual_ccs+integration+x.co2_stored_t_y*ts-base;
- let cost=incremental/x.annual_avoided_t;
+ let cost=if x.annual_avoided_t>0.0{incremental/x.annual_avoided_t}else{f64::INFINITY};
  EconomicResult{annual_scale,double_ihx:false,electricity_value_sgd_mwh:0.0,reactor_burden_sgd_y:reactor,electricity_value_sgd_y:0.0,ccs_capex_sgd:ccs,annual_incremental_sgd:incremental,cost_sgd_t:cost,pass_abatement:x.annual_avoided_t>250_000.0,pass_cost:cost<100.0,joint_pass:x.annual_avoided_t>250_000.0&&cost<100.0}
 }
 
@@ -157,14 +157,13 @@ pub fn review5_margin_csv()->String{
 }
 pub fn review5_cost_ledger_csv()->String{format!("item,source_year,source_currency,source_value,index_method,index_source,index_factor,fx_date,fx_sgd,final_basis,converted_sgd\nGTHTR300C plant,2007,JPY,{:.3} billion,Japan GDP deflator,World Bank 2007=99.59 2025=112.27,{:.6},2026-09-29,{:.6},2025-price SGD,{:.3}\nGTHTR300C IHX-loop,2007,JPY,{:.3} billion,Japan GDP deflator,World Bank,{:.6},2026-09-29,{:.6},2025-price SGD,{:.3}\nIEAGHG CCS increment,2014,EUR,{:.3} million,Germany GDP deflator proxy,World Bank/IMF 2014=90.46 2025=123.84,{:.6},2026-09-29,{:.3},2025-price SGD,{:.3}\n",JAEA_PLANT_BJPY,jp_escalation(),JPY_SGD_2026_09_29,jaea_plant_capex_sgd(false),JAEA_IHX_LOOP_BJPY,jp_escalation(),JPY_SGD_2026_09_29,JAEA_IHX_LOOP_BJPY*1e9*jp_escalation()*JPY_SGD_2026_09_29,CCS_TCR_EUR2014/1e6,eu_escalation(),EUR_SGD_2026_09_29,CCS_TCR_EUR2014*eu_escalation()*EUR_SGD_2026_09_29)}
 #[cfg(test)]mod tests{use super::*;
- #[test]fn temperatures_are_source_defined_and_positive(){let p=deployment_physical(1.4);assert!(p.ihx_approach_k>=MIN_IHX_APPROACH_K);assert!(p.process_approach_k>=MIN_PROCESS_APPROACH_K);assert_eq!(REFORMER_HE_IN_C,880.0);assert_eq!(PROCESS_GAS_OUT_C,600.0);}
- #[test]fn duty_fits_ihx_and_module(){let p=deployment_physical(selected_annual_scale());assert!(p.process_heat_mw<170.0);assert!(p.reactor_utilisation<1.0);}
+ #[test]fn temperatures_are_source_defined_and_positive(){let p=deployment_physical(1.5);assert!(p.ihx_approach_k>=MIN_IHX_APPROACH_K);assert!(p.process_approach_k>=MIN_PROCESS_APPROACH_K);assert_eq!(REFORMER_HE_IN_C,880.0);assert_eq!(PROCESS_GAS_OUT_C,600.0);}
+ #[test]fn duty_fits_ihx_and_module(){let p=deployment_physical(1.5);assert!(p.process_heat_mw<170.0);assert!(p.reactor_utilisation<1.0);}
  #[test]fn cost_conversions_reproduce(){assert!((jp_escalation()-112.27/99.59).abs()<1e-12);assert!((jaea_plant_capex_sgd(false)-59.7e9*(112.27/99.59)*0.008117).abs()<1.0);}
- #[test]fn zero_value_is_not_free_capacity(){let a=selected_annual_scale();assert!(mature_economic(a,false,0.0).cost_sgd_t>mature_economic(a,false,150.0).cost_sgd_t);}
- #[test]fn break_even_solves_threshold(){let a=selected_annual_scale();let b=break_even_electricity_sgd_mwh(a,false);assert!((mature_economic(a,false,b).cost_sgd_t-100.0).abs()<1e-8);}
- #[test]fn full_reactor_burden_positive(){let e=mature_economic(selected_annual_scale(),false,150.0);assert!(e.reactor_burden_sgd_y>0.0&&e.electricity_value_sgd_y>0.0);}
- #[test]fn doubled_ihx_costs_more(){let a=selected_annual_scale();assert!(mature_economic(a,true,150.0).cost_sgd_t>mature_economic(a,false,150.0).cost_sgd_t);}
- #[test]fn margin_is_not_narrow(){let p=deployment_physical(selected_annual_scale());assert!(p.annual_avoided_t>250000.0*1.05);}
- #[test]fn specific_abatement_sensitivity(){let p=deployment_physical(minimum_annual_scale());assert!((p.annual_avoided_t-250000.0).abs()<1e-6);assert!(p.annual_avoided_t*0.98<250000.0);}
+ #[test]fn source_temperature_resolve_is_adverse(){let p=deployment_physical(1.0);assert!(p.annual_avoided_t<=0.0);assert!(minimum_annual_scale().is_infinite());}
+ #[test]fn no_finite_abatement_cost_when_abatement_nonpositive(){for v in [0.0,100.0,150.0,200.0]{let e=mature_economic(1.5,false,v);assert!(e.cost_sgd_t.is_infinite()&&!e.joint_pass);}}
+ #[test]fn full_reactor_burden_is_closed(){let e=mature_economic(1.5,false,150.0);assert!(e.reactor_burden_sgd_y>0.0&&e.electricity_value_sgd_y>0.0);}
+ #[test]fn doubled_ihx_raises_full_reactor_burden(){assert!(mature_economic(1.5,true,150.0).reactor_burden_sgd_y>mature_economic(1.5,false,150.0).reactor_burden_sgd_y);}
+ #[test]fn break_even_is_undefined_without_positive_abatement(){assert!(break_even_electricity_sgd_mwh(1.5,false).is_infinite());}
  #[test]fn gate5_unchanged(){let x=r3_uncertainty_summary();assert_eq!(x.n,64);assert_eq!(x.both_pass,0);}
 }
