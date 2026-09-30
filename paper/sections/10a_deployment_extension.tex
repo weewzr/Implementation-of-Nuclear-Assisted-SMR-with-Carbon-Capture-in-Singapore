@@ -1,117 +1,50 @@
 \section{Singapore deployment-scale techno-economic extension}
 \label{sec:deployment-extension}
-This bounded extension asks a different question from the original fixed-scale Gate-5 experiment. The original result remains 64 canonical nuclear-assisted cases at approximately 74.85 ktH$_2$/y with 0/64 joint CN4252 passes. Here the verified process is scaled as a complete industrial service---H$_2$ throughput, reforming, CCS, process heat, helium service, auxiliaries and annual cost---to test whether a larger literature-supported deployment can cross the \emph{absolute} 0.25 MtCO$_2$e/y threshold without exceeding S\$100/tCO$_2$e. No original Gate-5 range is altered.
+The original Gate-5 result remains 64 fixed-scale cases with 0 joint passes. Independent Review~5 invalidated the earlier deployment conditional pass because its heat interface and one-module economic allocation were not source-equivalent. This section reports the corrected deployment extension.
 
-\subsection{International nuclear and CCS cost basis}
-Table~\ref{tab:deployment-evidence} separates source evidence from project conversions and scenario assumptions. JAEA's mature-design screen uses a 600 MWth GTHTR300-class unit and reports 0.7 JPY/MJ heat at 80\% availability, 40-year life and 3\% discount rate~\cite{jaea2014economics}; the GTHTR300C engineering precedent is 600 MWth at 950$^\circ$C with a 170 MW IHX for hydrogen cogeneration~\cite{jaeri2004gthtr300c}. Earlier GTHTR300 user requirements targeted 40--50 billion JPY/unit and greater than 90\% availability, but these are design targets rather than observed project costs~\cite{takei2006gthtr}. The independent modern bracket uses INL/GAIN's thermal-only HTGR-SMR meta-analysis~\cite{inlgain2024}. IEAGHG Case 1A supplies the incremental CCS capital anchor, 25-year life and 8\% discount basis~\cite{ieaghg2017smr}.
+\subsection{Source-supported heat interface and process re-solve}
+JAEA's HTTR steam-reforming specifications distinguish the temperatures explicitly: secondary helium enters the steam reformer at 880$^\circ$C; process gas enters at 450$^\circ$C and leaves at approximately 580--600$^\circ$C; helium leaves at approximately 585--650$^\circ$C~\cite{jaea2018excellent,jaea2007mockup}. The corrected deployment therefore uses 950$^\circ$C reactor primary-helium outlet, 900$^\circ$C secondary helium at the GTHTR300C IHX outlet, 880$^\circ$C helium at the reformer inlet, and 600$^\circ$C reacting-gas outlet. The old 900/920$^\circ$C deployment chemistry is not retained.
 
-\begin{table}[htbp]
-\centering\scriptsize
-\caption{International nuclear/process-heat evidence used by the deployment-scale extension. JAEA values are mature-design/target estimates; INL values are modern meta-analysis screening points, not Singapore bids.}
-\label{tab:deployment-evidence}
-\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,
-columns={source,technology,thermal_mw,cost,cost_basis,capacity_factor,finance,class},
-columns/source/.style={column name={Source}},columns/technology/.style={column name={Technology}},
-columns/thermal_mw/.style={column name={Thermal MW}},columns/cost/.style={column name={Cost}},
-columns/cost_basis/.style={column name={Cost basis}},columns/capacity_factor/.style={column name={CF}},
-columns/finance/.style={column name={Finance}},columns/class/.style={column name={Class}},
-every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]
-{../results/generated/deployment_evidence.csv}}
-\end{table}
+The automated heat-interface acceptance checks require positive primary-to-secondary and helium-to-process driving forces. The source-anchored hot-end differences are 50 K and 280 K. Recycle, reforming equilibrium, WGS, PSA, capture throughput, heat duty, helium flow and lifecycle emissions are re-solved at this lower process state.
 
-Project currency conversions are fixed screening assumptions (1 JPY=S\$0.0087, US\$1=S\$1.30, EUR1=S\$1.50). Incremental CCS capital is scaled linearly with captured-CO$_2$ throughput from the IEAGHG Case-1A capital increment; no unsupported economy-of-scale exponent is introduced. T\&S is S\$15/30/45 per tonne captured in the mature/central/adverse screens. The S\$15 low case is the project conversion of IEAGHG's EUR10/t source value; the higher cases are sensitivities. Singapore itself does not yet have an authoritative cross-border CCS tariff: MTI states that feasibility work is still obtaining clearer capture, transport and storage cost estimates~\cite{mticcs2025cost}. Singapore's 2026 S\$45/tCO$_2$e carbon tax is context only and is not subtracted from abatement cost~\cite{neacarbon2026}.
+The corrected result is adverse: the source-defined process state has non-positive lifecycle abatement relative to the common baseline. Therefore no finite multiplication of this state can satisfy the absolute 0.25 MtCO$_2$e/y criterion. Scaling a non-positive specific abatement cannot create positive avoided emissions.
 
-Because no authoritative Singapore nuclear-process integration cost exists, the extension uses explicit integration/site allowances of 10/20/30\% of allocated nuclear plus incremental CCS capital for Cases A/B/C. These are \textbf{SCREENING ASSUMPTIONS}, not predicted project costs.
+\subsection{One-module GTHTR300C economic closure}
+The mature economic reconstruction now uses the primary GTHTR300C cogeneration study rather than transferring the later four-unit 0.7 JPY/MJ shortcut. The source reports 59.7 billion JPY total nuclear-plant cost including 11.2 billion JPY for the IHX and secondary-helium loop, 0.52 JPY/MJ heat, 4.9 JPY/kWh electricity and 85\% availability. Doubling the IHX/secondary-loop cost raises total plant cost to 70.9 billion JPY, heat to 0.57 JPY/MJ and electricity to 5.5 JPY/kWh~\cite{nishihara2007potential}. The source architecture produces about 202 MWe with 170 MWth process heat~\cite{jaeri2004gthtr300c}.
 
-\subsection{Required scale and reactor utilisation}
-For a physical case with specific lifecycle abatement $\Delta e$, the annual threshold implies
-\begin{equation}
-M_{H_2,\min}=\frac{250{,}000\times1000}{\Delta e}.
-\end{equation}
-The best-abatement verified Gate-5 physical corner requires approximately the generated minimum in Table~\ref{tab:deployment-summary}; the conservative lifecycle corner has non-positive $\Delta e$ and therefore has no finite deployment scale that can satisfy the abatement threshold. The three economic scenarios are evaluated at 1.30 times the original \emph{annual} H$_2$ production, slightly above the minimum rather than exactly on the threshold.
-
-\begin{table}[htbp]
-\centering\scriptsize
-\caption{Deployment-scale cases. Reactor MWth is installed module capacity; process heat is the service actually delivered to H$_2$ production.}
-\label{tab:deployment-summary}
-\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,
-columns={case,h2_t_y,annual_scale,reactor_mwth,process_heat_mw,co2_stored_t_y},
-columns/case/.style={column name={Case}},columns/h2_t_y/.style={column name={H2 t/y}},
-columns/annual_scale/.style={column name={Annual scale}},columns/reactor_mwth/.style={column name={Reactor MWth}},
-columns/process_heat_mw/.style={column name={Process heat MW}},columns/co2_stored_t_y/.style={column name={CO2 stored t/y}},
-every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]
-{../results/generated/deployment_summary.csv}}
-\end{table}
-
-Figure~\ref{fig:deployment-abatement} shows why scale matters for the absolute CN4252 criterion. It does not improve specific lifecycle performance; it only multiplies a positive specific abatement over a larger useful industrial service.
-
-\begin{figure}[htbp]\centering
-\begin{tikzpicture}
-\begin{axis}[width=.88\linewidth,height=.50\linewidth,xlabel={Annual H$_2$ production (t/y)},ylabel={Annual avoided emissions (tCO$_2$e/y)},grid=major,scaled x ticks=false,xticklabel style={/pgf/number format/fixed,/pgf/number format/1000 sep={,}}]
-\addplot+[thick,mark=*] table[col sep=comma,x=h2_t_y,y=annual_avoided_t]{../results/generated/deployment_scale_curve.csv};
-\draw[dashed,thick] (axis cs:70000,250000)--(axis cs:225000,250000);
-\end{axis}
-\end{tikzpicture}
-\caption{Deployment scale versus annual lifecycle abatement for the verified positive-abatement physical corner. The dashed line is the 0.25 MtCO$_2$e/y threshold. The conservative non-positive-abatement corner is excluded because scaling a negative specific abatement cannot create a positive annual benefit.}
-\label{fig:deployment-abatement}
-\end{figure}
-
-\subsection{Forward economics and allocation}
-Annual candidate and baseline costs are constructed before applying the S\$100/t criterion. Hydrogen-only cases pay the full 600 MWth module service/capital. Cogeneration cases allocate reactor capital/O\&M in proportion to the process-heat thermal-capacity share; the balance of reactor output must therefore have a useful electricity/steam/heat customer and is not assigned zero cost. This is a capacity-allocation screen, not a revenue forecast.
-
-\begin{figure}[htbp]\centering
-\begin{tikzpicture}
-\begin{axis}[width=.9\linewidth,height=.52\linewidth,xlabel={Annual scale relative to original plant},ylabel={Forward abatement cost (S\$/tCO$_2$e)},grid=major,ymin=0,ymax=500]
-\addplot+[thick] table[col sep=comma,x=annual_scale,y=cost_sgd_t,restrict expr to domain={\thisrow{scenario_id}}{0:0}]{../results/generated/deployment_cost_curve.csv};\addlegendentry{JAEA mature}
-\addplot+[thick] table[col sep=comma,x=annual_scale,y=cost_sgd_t,restrict expr to domain={\thisrow{scenario_id}}{1:1}]{../results/generated/deployment_cost_curve.csv};\addlegendentry{Modern central}
-\addplot+[thick] table[col sep=comma,x=annual_scale,y=cost_sgd_t,restrict expr to domain={\thisrow{scenario_id}}{2:2}]{../results/generated/deployment_cost_curve.csv};\addlegendentry{FOAK/adverse}
-\draw[dashed,thick] (axis cs:1,100)--(axis cs:3,100);
-\end{axis}
-\end{tikzpicture}
-\caption{Deployment scale versus forward abatement cost for cogeneration allocation. The horizontal line is S\$100/tCO$_2$e. Scaling alone does not rescue an expensive cost regime: the mature JAEA case is below the threshold, whereas the modern central and adverse screens remain above it.}
-\label{fig:deployment-cost}
-\end{figure}
-
-Figure~\ref{fig:deployment-feasibility} presents the joint feasibility envelope in terms of annual scale and allowable delivered nuclear-heat cost for the low T\&S/mature integration structure. The vertical condition is set by annual abatement; the curve gives the heat price that would make total forward cost exactly S\$100/tCO$_2$e. The JAEA converted heat value is shown as literature evidence, not as a Singapore observed price.
-
-\begin{figure}[htbp]\centering
-\begin{tikzpicture}
-\begin{axis}[width=.88\linewidth,height=.52\linewidth,xlabel={Annual scale relative to original plant},ylabel={Delivered nuclear heat (S\$/GJ)},grid=major,ymin=0,ymax=30]
-\addplot+[thick] table[col sep=comma,x=annual_scale,y=break_even_heat_sgd_gj]{../results/generated/deployment_heat_feasibility.csv};\addlegendentry{S\$100/t break-even}
-\draw[dashed,thick] (axis cs:1.284,0)--(axis cs:1.284,30);
-\draw[densely dashed,thick] (axis cs:1,6.09)--(axis cs:3,6.09);
-\addlegendimage{densely dashed,thick}\addlegendentry{JAEA 0.7 JPY/MJ conversion}
-\end{axis}
-\end{tikzpicture}
-\caption{Joint-feasibility envelope for the mature low-T\&S structure. A joint pass requires scale to the right of the abatement boundary and heat cost below the break-even curve. This is a deterministic feasibility boundary, not a probability map.}
-\label{fig:deployment-feasibility}
-\end{figure}
-
-\subsection{Principal deployment result}
-Table~\ref{tab:deployment-principal} gives the three literature/scenario classes at the 1.30 annual scale. The original 0/64 result is unchanged because these are new deployment-scale cases.
+The corrected model charges the full reactor economic burden as source-priced heat plus source-priced electricity, then treats electricity value as a separate credit. No reactor capacity disappears through allocation. EMA reports that 2025 USEP largely settled in the S\$100--200/MWh range~\cite{emausep2025}; zero, S\$100, S\$150 and S\$200/MWh cases are evaluated explicitly. Since lifecycle abatement is non-positive, no finite electricity value can create a CN4252 joint pass.
 
 \begin{table}[htbp]\centering\scriptsize
-\caption{Principal Singapore deployment-scale results for cogeneration allocation.}
-\label{tab:deployment-principal}
-\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,
-columns={case,h2_t_y,reactor_mwth,process_heat_mw,co2_stored_t_y,avoided_t_y,incremental_sgd,cost_sgd_t,abatement_pass,cost_pass,joint_pass},
-columns/case/.style={column name={Case}},columns/h2_t_y/.style={column name={H2 t/y}},columns/reactor_mwth/.style={column name={Reactor MWth}},
-columns/process_heat_mw/.style={column name={Heat MW}},columns/co2_stored_t_y/.style={column name={CO2 stored t/y}},
-columns/avoided_t_y/.style={column name={Avoided t/y}},columns/incremental_sgd/.style={column name={Incremental S\$}},
-columns/cost_sgd_t/.style={column name={S\$/t}},columns/abatement_pass/.style={column name={A pass}},
-columns/cost_pass/.style={column name={C pass}},columns/joint_pass/.style={column name={Joint}},
-every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]
-{../results/generated/deployment_principal.csv}}
+\caption{Review-5-remediated cogeneration closure. An infinite CN4252 break-even electricity value means that electricity economics cannot repair non-positive lifecycle abatement.}
+\label{tab:r5-cogen}
+\resizebox{.82\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,columns={quantity,value,unit},every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]{../results/generated/review5_cogeneration.csv}}
 \end{table}
 
-\begin{figure}[htbp]\centering
-\begin{tikzpicture}
-\begin{axis}[ybar,width=.9\linewidth,height=.5\linewidth,ylabel={Annual incremental cost (S\$)},symbolic x coords={NG and auxiliary net,Nuclear heat service,CCS capital annualisation,Integration/site annualisation,CO2 transport-storage},xtick=data,x tick label style={rotate=30,anchor=east,font=\scriptsize},grid=major,scaled y ticks=false,yticklabel style={/pgf/number format/fixed,/pgf/number format/1000 sep={,}}]
-\addplot table[col sep=comma,x=component,y=annual_sgd]{../results/generated/deployment_cost_breakdown.csv};
-\end{axis}
-\end{tikzpicture}
-\caption{Annual incremental-cost breakdown for the conditional JAEA mature cogeneration case. The negative NG/auxiliary-net bar is an avoided-cost contribution, not a subsidy. Reactor heat, CCS capital, integration allowance and T\&S are charged independently to avoid double counting.}
-\label{fig:deployment-cost-breakdown}
-\end{figure}
+\subsection{Common cost-year basis}
+Historical capital anchors are normalized to a 2025-price basis before SGD conversion. The screening ledger uses national GDP-deflator ratios~\cite{worldbankdeflator}: Japan 2007--2025 for JAEA and a Germany/euro-area proxy 2014--2025 for IEAGHG. FX is then applied using explicitly dated 29 September 2026 screening rates. This is a transparent screening normalization, not a nuclear-specific construction index.
 
-The extension therefore identifies a \textbf{CONDITIONAL SCENARIO PASS}: at the larger 1.30 annual H$_2$ scale, the JAEA mature-design cogeneration allocation passes both thresholds under the declared low T\&S and integration assumptions. The same physical deployment fails the cost criterion under the modern-central and FOAK/adverse nuclear-cost regimes, and the JAEA hydrogen-only allocation also fails because unused reactor capacity cannot be treated as free. This does not demonstrate commercial feasibility. It shows that a passing region exists only when mature-design nuclear heat economics, useful cogeneration of the remaining reactor output and low-end CCS service costs are simultaneously realised.
+\begin{table}[htbp]\centering\tiny
+\caption{Machine-readable Review-5 cost-year and FX conversion ledger.}
+\label{tab:r5-cost-ledger}
+\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,columns={item,source_year,source_currency,source_value,index_method,index_source,index_factor,fx_date,fx_sgd,final_basis,converted_sgd},every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]{../results/generated/review5_cost_ledger.csv}}
+\end{table}
+
+\subsection{Corrected scenarios and scale sensitivity}
+Table~\ref{tab:r5-results} includes the source mature case, doubled-IHX sensitivity, zero-value surplus, Singapore-context electricity values, modern-central and FOAK/adverse screens. Because corrected avoided emissions are non-positive, abatement cost is represented as $+\infty$ and every case fails the annual-abatement criterion.
+
+\begin{table}[htbp]\centering\tiny
+\caption{Review-5-remediated deployment scenarios. The former S\$47.637/t conditional pass is superseded.}
+\label{tab:r5-results}
+\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,columns={scenario,scale,h2_t_y,avoided_t_y,process_heat_mw,he_flow_kg_s,electric_mwe,electric_mwh,electric_value_sgd_mwh,cost_sgd_t,joint_pass},every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]{../results/generated/review5_results.csv}}
+\end{table}
+
+Table~\ref{tab:r5-margin} evaluates scale factors 1.0--1.5 rather than retaining the former narrow 1.30 point. No finite minimum deployment scale exists for the corrected source-temperature state.
+
+\begin{table}[htbp]\centering\scriptsize
+\caption{Scale sensitivity after the JAEA source-temperature process re-solve.}
+\label{tab:r5-margin}
+\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,columns={scale,h2_t_y,avoided_t_y,margin_pct,process_heat_mw,utilisation,cost_sgd_t},every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]{../results/generated/review5_margin.csv}}
+\end{table}
+
+\subsection{Review-5 conclusion}
+The corrected conditional pass does \textbf{not} survive. The earlier S\$47.637/t arithmetic was reproducible for its assumptions, but those assumptions used a non-source-equivalent heat interface and incomplete one-module cogeneration closure. Under the directly supported JAEA helium-heated-SMR temperature state, the process re-solve does not produce positive lifecycle abatement on the common boundary. The controlling barrier after remediation is therefore physical/lifecycle performance at the source-supported reforming state, not a tunable electricity price.
