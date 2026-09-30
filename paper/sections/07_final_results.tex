@@ -1,22 +1,33 @@
 \section{Final design results}
 \label{sec:final-results}
-Table~\ref{tab:final-result} is generated from the current final-design model. Source-backed process quantities are not mixed with historical Gate-5 or Review-5 deployment values.
 
-\begin{table}[htbp]\centering\scriptsize
-\caption{Final-design CN4252 results and required economic sensitivities.}
+The independently verified final design produces 97,946 tH$_2$/y at 85\% availability. The same-output conventional baseline emits 902,060 tCO$_2$/y directly, while the candidate emits 39,966 tCO$_2$/y, giving 862,094 tCO$_2$/y direct abatement~\cite{inltev953,inltev961}. Lifecycle abatement is higher, 917,139 tCO$_2$e/y, because reducing natural-gas use from 52.5 to 34.0 MMSCFD avoids approximately 72.7 ktCO$_2$e/y of upstream gas-supply burden; this saving exceeds the added nuclear, incremental-electricity and CCS transport/storage lifecycle burdens. Captured CO$_2$ is not added separately to the avoided-emissions numerator, so it is not double counted.
+
+\begin{table}[htbp]\centering\small
+\caption{Submission-facing final-design result. Values are the frozen, independently verified screening results.}
 \label{tab:final-result}
-\resizebox{\linewidth}{!}{\pgfplotstabletypeset[col sep=comma,string type,
-columns={scenario,h2ty,heatmw,heliumkgs,capturedty,avoidedty,incrementalsgd,costsgdt,apass,cpass,joint},
-columns/scenario/.style={column name={Scenario}},columns/h2ty/.style={column name={H$_2$ t/y}},
-columns/heatmw/.style={column name={Heat MWth}},columns/heliumkgs/.style={column name={He kg/s}},
-columns/capturedty/.style={column name={CO$_2$ captured t/y}},columns/avoidedty/.style={column name={Avoided tCO$_2$e/y}},
-columns/incrementalsgd/.style={column name={Incremental S\$/y}},columns/costsgdt/.style={column name={S\$/t}},
-columns/apass/.style={column name={A}},columns/cpass/.style={column name={C}},columns/joint/.style={column name={Joint}},
-every head row/.style={before row=\toprule,after row=\midrule},every last row/.style={after row=\bottomrule}]
-{../results/final_design/generated/final_design_results.csv}}
+\begin{tabular}{p{0.48\linewidth}p{0.36\linewidth}}
+\toprule
+Quantity & Final-design result \\
+\midrule
+Hydrogen production & 97,946 t/y \\
+Reactor configuration & one 600 MWth GTHTR300C-class module \\
+Nuclear process heat & 176.8 MWth (29.5\% of reactor rating) \\
+CO$_2$ captured & 542,362 t/y \\
+Direct CO$_2$ avoided & 862,094 t/y \\
+Lifecycle CO$_2$e avoided & 917,139 t/y \\
+Zero-value cogeneration incremental cost & S\$27.703 million/y \\
+Zero-value cogeneration abatement cost & S\$30.206/tCO$_2$e \\
+S\$150/MWh incremental cost & $-$S\$178.588 million/y \\
+S\$150/MWh abatement cost & $-$S\$194.723/tCO$_2$e \\
+CN4252 annual-abatement threshold & $>250,000$ tCO$_2$e/y: PASS \\
+CN4252 cost threshold & $<\mathrm{S\$}100$/tCO$_2$e: PASS at zero electricity value \\
+Joint result & \textbf{CONDITIONAL PASS} \\
+\bottomrule
+\end{tabular}
 \end{table}
 
-The final source process produces approximately 98 ktH$_2$/y at 85\% availability. Direct source-balance abatement is already well above 0.25 Mt/y because the conventional no-capture baseline emits 3,205 short ton/day CO$_2$ while the nuclear-assisted captured case emits 142 short ton/day at the same H$_2$ output~\cite{inltev953,inltev961}. The lifecycle extension retains a substantial positive margin after upstream-gas, nuclear, auxiliary and transport/storage burdens.
+The zero-value-cogeneration case is the principal conservative economic robustness test: the full source-priced reactor heat-plus-electricity burden remains charged, but exported electricity receives no value. Its S\$30.206/tCO$_2$e result therefore demonstrates cost-threshold compliance without relying on electricity revenue. In the mature Singapore-context screen, 184.7 MWe net export at S\$150/MWh gives the negative abatement cost shown in Table~\ref{tab:final-result}; this means only that modelled candidate annual net cost is below baseline annual cost under the declared assumptions, not that project profit is guaranteed.
 
 \subsection{Temperature and architecture sensitivity}
 The final reformer temperature remains 871$^\circ$C across the INL sensitivity because it is the selected process optimum. At 850$^\circ$C delivered heat (875$^\circ$C ROT), fired trim remains necessary; at 900$^\circ$C delivered heat (925$^\circ$C ROT), nuclear heat supplies the full reforming duty~\cite{inltev961}. This is the principal temperature sensitivity: lower reactor/process-heat temperatures do not change the target chemistry but change how much fossil trim is required.
@@ -30,4 +41,4 @@ every head row/.style={before row=\toprule,after row=\midrule},every last row/.s
 \end{table}
 
 \subsection{CN4252 interpretation}
-The final design is classified only after forward physical and economic calculation. A joint pass, if reproduced in Table~\ref{tab:final-result}, is a \textbf{CONDITIONAL MODEL RESULT}: it depends on the mature GTHTR300C design-study cost basis, an enlarged IHX/secondary-loop train, cross-border CCS, the stated lifecycle proxies and electricity-value assumptions. It is not evidence that a Singapore commercial project presently exists at those costs.
+The final design is classified only after forward physical and economic calculation. The joint pass in Table~\ref{tab:final-result} is a \textbf{CONDITIONAL MODEL RESULT}: it depends on the mature GTHTR300C design-study cost basis, an enlarged IHX/secondary-loop train, cross-border CCS, the stated lifecycle proxies and electricity-value assumptions. It is not evidence that a Singapore commercial project presently exists at those costs.
