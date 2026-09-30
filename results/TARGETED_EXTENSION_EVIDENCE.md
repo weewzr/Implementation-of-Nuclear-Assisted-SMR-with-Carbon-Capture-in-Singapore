@@ -64,3 +64,31 @@ One manuscript inconsistency was corrected: an old limitations sentence referenc
 - contracted cross-border CCS transport/storage tariff, capacity, monitoring and liability;
 - Singapore-specific natural-gas upstream lifecycle inventory;
 - project-specific nuclear process-heat LCA.
+
+
+## Verification closure
+
+Final targeted-extension scientific/layout commit:
+`86d7e617ef69d3e84b241b8dda9eb611d5efe3ee`.
+
+Verification:
+- Research CI `36724044125`: **PASS**.
+- Paper/reproducibility CI `36724043876`: **PASS**.
+- Canonical manuscript artifact `11101183481`: **19 pages**.
+- BibTeX/latexmk convergence: **PASS**.
+- Undefined citations/references after completed build: **0**.
+- Exact-artifact page-by-page visual inspection: **PASS**.
+
+Specific visual acceptance:
+- Rust-generated thermal-capacity figure: PASS; no overlapping labels and no unsupported electricity inference.
+- Rust-generated lifecycle/cost ledger tables: PASS; readable and model-reconciled.
+- Nuclear engineering/safety section: PASS.
+- Singapore feasibility/implementation table and roadmap: PASS; no cell collision.
+- Bibliography: PASS.
+- No clipping, accidental blank pages or obsolete architecture presented as current.
+
+## Targeted-extension milestone
+
+The targeted scientific extension is **COMPLETE AND READY FOR INDEPENDENT REVIEW**.
+
+This statement does not close scientific review. The next scientific gate is an Independent Reviewer assessment of the revised manuscript/evidence package. No further Main Research expansion should occur before that review unless a concrete build/reproducibility defect is discovered.
