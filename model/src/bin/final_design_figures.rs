@@ -1,0 +1,1 @@
+fn main(){nuclear_assisted_smr::figures::threshold_svg("../results/final_design/generated/cn4252_thresholds.svg").expect("threshold SVG generation failed");}
