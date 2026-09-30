@@ -17,11 +17,7 @@ cargo run --quiet --bin gate6_threshold_plot_bounds_csv > ../results/generated/g
 cargo run --quiet --bin gate5_results_synthesis > ../results/generated/gate5_results_synthesis.md
 cargo run --quiet --bin gate5_figure_manifest > ../results/generated/gate5_figure_manifest.md
 
-cargo run --quiet --bin deployment_cases_csv > ../results/generated/deployment_cases.csv
-cargo run --quiet --bin deployment_cost_breakdown_csv > ../results/generated/deployment_cost_breakdown.csv
-cargo run --quiet --bin deployment_scale_curve_csv > ../results/generated/deployment_scale_curve.csv
-cargo run --quiet --bin deployment_cost_curve_csv > ../results/generated/deployment_cost_curve.csv
-cargo run --quiet --bin deployment_evidence_csv > ../results/generated/deployment_evidence.csv
-cargo run --quiet --bin deployment_heat_feasibility_csv > ../results/generated/deployment_heat_feasibility.csv
-cargo run --quiet --bin deployment_summary_csv > ../results/generated/deployment_summary.csv
-cargo run --quiet --bin deployment_principal_csv > ../results/generated/deployment_principal.csv
+
+cargo run --quiet --bin review5_results_csv > ../results/generated/review5_results.csv
+cargo run --quiet --bin review5_margin_csv > ../results/generated/review5_margin.csv
+cargo run --quiet --bin review5_cost_ledger_csv > ../results/generated/review5_cost_ledger.csv
