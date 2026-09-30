@@ -5,7 +5,7 @@ pub const PRIMARY_OUT_C:f64=950.0;
 pub const IHX_SECONDARY_OUT_C:f64=900.0; // GTHTR300C source IHX
 pub const REFORMER_HE_IN_C:f64=880.0;    // HTTR SMR source condition after hot-duct loss
 pub const REFORMER_HE_OUT_C:f64=585.0;   // HTTR design condition
-pub const PROCESS_GAS_OUT_C:f64=820.0;   // bounded deployment reference below He inlet
+pub const PROCESS_GAS_OUT_C:f64=600.0;   // JAEA HTTR/mock-up source process-gas outlet
 pub const MIN_IHX_APPROACH_K:f64=50.0;
 pub const MIN_PROCESS_APPROACH_K:f64=40.0;
 pub const JAEA_AVAIL:f64=0.85;
@@ -41,7 +41,9 @@ pub fn deployment_physical(annual_scale:f64)->DeploymentPhysical {
  assert!(REFORMER_HE_IN_C>PROCESS_GAS_OUT_C);
  let hours=JAEA_AVAIL*8760.0;
  let throughput_scale=annual_scale*8322.0/hours;
- let s=r3_solve_case(PROCESS_GAS_OUT_C+273.15,20.0,0.95,0.90);
+ let fref=r3_canonical_recycle_case().fresh_fraction;
+ let s=r3_solve_at_fixed_fresh(fref,PROCESS_GAS_OUT_C+273.15,20.0,685.15,27.7,0.95,0.90,1e-6,50000);
+ assert!(s.converged);
  let c=r3_ccs_ledger(s);
  let hin=wet6_enthalpy_mw(s.reformer_in,650.0+273.15);
  let hout=wet6_enthalpy_mw(s.reformer_out,PROCESS_GAS_OUT_C+273.15);
@@ -51,15 +53,16 @@ pub fn deployment_physical(annual_scale:f64)->DeploymentPhysical {
  let rec=c.mdea_heat_hi_mw.min(qwhb.max(0.0));
  let q=(qref+(c.mdea_heat_hi_mw-rec))*throughput_scale;
  let heflow=helium_mass_flow_kg_s(q,5.2,REFORMER_HE_IN_C,REFORMER_HE_OUT_C);
- let h2=IEAGHG_BASE.h2_kg_per_h*hours*throughput_scale/1000.0;
+ let h2kg_h=s.product_h2_kmol_h*2.01588;
+ let h2=h2kg_h*hours*throughput_scale/1000.0;
  let purge=c.purge_oxidation_co2_kmol_h;
  let stored=(s.captured_co2_kmol_h+0.95*purge)*44.0095*hours*throughput_scale/1000.0;
- let residual=((s.shifted.co2-s.captured_co2_kmol_h)+0.05*purge)*44.0095/(IEAGHG_BASE.h2_kg_per_h);
+ let residual=((s.shifted.co2-s.captured_co2_kmol_h)+0.05*purge)*44.0095/h2kg_h;
  let upstream=upstream_ng_from_energy_mw_kgco2e_per_kgh2(ieaghg_feed_lhv_mw()*s.fresh_fraction,11.5);
  let nuclear=direct_nuclear_heat_lca_proxy_kgco2e_per_kgh2(q/throughput_scale,5.5,0.504);
  let circ=helium_circulator_power_mw(heflow,58.0*4.0,5.15,REFORMER_HE_OUT_C,0.70);
  let aux=(c.co2_compression_mwe+c.tail_compression_mwe)*throughput_scale+circ;
- let aux_ci=aux*5.5*1000.0/(IEAGHG_BASE.h2_kg_per_h*throughput_scale);
+ let aux_ci=aux*5.5*1000.0/(h2kg_h*throughput_scale);
  let transport=(stored/h2)*0.025;
  let ci=residual+upstream+nuclear+aux_ci+transport;
  let base=ieaghg_unabated_lifecycle_screen(11.5).total();
@@ -105,7 +108,9 @@ pub fn mature_economic(annual_scale:f64,double_ihx:bool,electricity_value:f64)->
  let plant=jaea_plant_capex_sgd(double_ihx);
  let integration=0.10*(plant+ccs)*crf(0.03,40);
  let ts=x.co2_stored_t_y*15.0;
- let s=r3_solve_case(PROCESS_GAS_OUT_C+273.15,20.0,0.95,0.90);
+ let fref=r3_canonical_recycle_case().fresh_fraction;
+ let s=r3_solve_at_fixed_fresh(fref,PROCESS_GAS_OUT_C+273.15,20.0,685.15,27.7,0.95,0.90,1e-6,50000);
+ assert!(s.converged);
  let base=annual_thermal_energy_cost_sgd(ieaghg_total_ng_lhv_mw()*x.throughput_scale,hours,15.0);
  let fresh=annual_thermal_energy_cost_sgd(ieaghg_feed_lhv_mw()*s.fresh_fraction*x.throughput_scale,hours,15.0);
  let c=r3_ccs_ledger(s);
@@ -131,7 +136,9 @@ pub fn modern_cost(annual_scale:f64,k:CostClass)->EconomicResult {
  let cap=occ*1000.0*REACTOR_MWTH;let reactor=cap*crf(wacc,60)+om*REACTOR_MWTH*hours;
  let ccs=ccs_capex_sgd(x.co2_stored_t_y);let annual_ccs=ccs*crf(0.08,25);
  let integration=integ*(cap+ccs)*crf(wacc,60);
- let s=r3_solve_case(PROCESS_GAS_OUT_C+273.15,20.0,0.95,0.90);
+ let fref=r3_canonical_recycle_case().fresh_fraction;
+ let s=r3_solve_at_fixed_fresh(fref,PROCESS_GAS_OUT_C+273.15,20.0,685.15,27.7,0.95,0.90,1e-6,50000);
+ assert!(s.converged);
  let base=annual_thermal_energy_cost_sgd(ieaghg_total_ng_lhv_mw()*x.throughput_scale,hours,17.5);
  let fresh=annual_thermal_energy_cost_sgd(ieaghg_feed_lhv_mw()*s.fresh_fraction*x.throughput_scale,hours,17.5);
  let incremental=fresh+reactor+annual_ccs+integration+x.co2_stored_t_y*ts-base;
@@ -150,7 +157,7 @@ pub fn review5_margin_csv()->String{
 }
 pub fn review5_cost_ledger_csv()->String{format!("item,source_year,source_currency,source_value,index_method,index_source,index_factor,fx_date,fx_sgd,final_basis,converted_sgd\nGTHTR300C plant,2007,JPY,{:.3} billion,Japan GDP deflator,World Bank 2007=99.59 2025=112.27,{:.6},2026-09-29,{:.6},2025-price SGD,{:.3}\nGTHTR300C IHX-loop,2007,JPY,{:.3} billion,Japan GDP deflator,World Bank,{:.6},2026-09-29,{:.6},2025-price SGD,{:.3}\nIEAGHG CCS increment,2014,EUR,{:.3} million,Germany GDP deflator proxy,World Bank/IMF 2014=90.46 2025=123.84,{:.6},2026-09-29,{:.3},2025-price SGD,{:.3}\n",JAEA_PLANT_BJPY,jp_escalation(),JPY_SGD_2026_09_29,jaea_plant_capex_sgd(false),JAEA_IHX_LOOP_BJPY,jp_escalation(),JPY_SGD_2026_09_29,JAEA_IHX_LOOP_BJPY*1e9*jp_escalation()*JPY_SGD_2026_09_29,CCS_TCR_EUR2014/1e6,eu_escalation(),EUR_SGD_2026_09_29,CCS_TCR_EUR2014*eu_escalation()*EUR_SGD_2026_09_29)}
 #[cfg(test)]mod tests{use super::*;
- #[test]fn temperatures_are_source_defined_and_positive(){let p=deployment_physical(1.4);assert!(p.ihx_approach_k>=MIN_IHX_APPROACH_K);assert!(p.process_approach_k>=MIN_PROCESS_APPROACH_K);assert_eq!(REFORMER_HE_IN_C,880.0);assert_eq!(PROCESS_GAS_OUT_C,820.0);}
+ #[test]fn temperatures_are_source_defined_and_positive(){let p=deployment_physical(1.4);assert!(p.ihx_approach_k>=MIN_IHX_APPROACH_K);assert!(p.process_approach_k>=MIN_PROCESS_APPROACH_K);assert_eq!(REFORMER_HE_IN_C,880.0);assert_eq!(PROCESS_GAS_OUT_C,600.0);}
  #[test]fn duty_fits_ihx_and_module(){let p=deployment_physical(selected_annual_scale());assert!(p.process_heat_mw<170.0);assert!(p.reactor_utilisation<1.0);}
  #[test]fn cost_conversions_reproduce(){assert!((jp_escalation()-112.27/99.59).abs()<1e-12);assert!((jaea_plant_capex_sgd(false)-59.7e9*(112.27/99.59)*0.008117).abs()<1.0);}
  #[test]fn zero_value_is_not_free_capacity(){let a=selected_annual_scale();assert!(mature_economic(a,false,0.0).cost_sgd_t>mature_economic(a,false,150.0).cost_sgd_t);}
