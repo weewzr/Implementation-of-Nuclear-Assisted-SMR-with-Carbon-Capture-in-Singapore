@@ -126,3 +126,39 @@ After Research CI, Paper CI, generated-result regeneration and PDF inspection
 are complete, return this corrected state to the Independent Reviewer. The
 Independent Reviewer must determine whether FDV2-B01/M01/M02 now satisfy the
 verification acceptance criteria.
+
+
+## Final bounded corrective pass — B01 / M02 / manuscript build
+
+This update responds to the frozen corrective re-review. It does not close independent verification.
+
+### FDV2-B01
+The last active 170-MW/doubled-capacity rationale has been removed from the current manuscript. The selected current architecture is consistently Nishihara et al. (2007): 600 MWth reactor, 370 MWth source heat/IHX branch and 88 MWe source electricity at the published source split. The doubled-loop case remains only an adverse COST sensitivity.
+
+### FDV2-M02
+The unsupported project extrapolation 423.2*(88/230)=161.92 MWe and the resulting 144.62 MWe export claim have been removed from the canonical final-design calculation and current documentation.
+
+The final thermal statement is deliberately bounded:
+- process duty = 176.8 MWth;
+- source heat branch = 370 MWth, therefore sufficient in capacity;
+- reactor rating = 600 MWth;
+- remaining thermal capacity = 423.2 MWth;
+- INL process helium state = approximately 900/466 C and 78.49 kg/s;
+- constant-Cp verification screen = approximately 78.34 kg/s;
+- no exact project off-design gross/net/export MWe is claimed.
+
+The Nishihara 88 MWe value is retained only as the source configuration and as part of recovering the full published source economic burden. It is not asserted as project export.
+
+### Controlling zero-value economics
+The controlling economic case now assigns project electricity export value = S$0/MWh. The full selected source-product economic burden is charged using the source 370 MWth heat product and source 88 MWe generation at their published unit costs, so reactor capacity is not treated as free. CCS, integration, T&S and natural-gas terms remain included.
+
+Hand reconstruction gives approximately S$3.42 million/y incremental and S$3.72/tCO2e before generator rounding. The approximately 917,139 tCO2e/y lifecycle result and resolved approximately 1.95 kgCO2e/kgH2 intensity are preserved.
+
+### FDV2-M01
+Preserved. The factor-of-1000 error remains removed and the dimensional regression test remains in place.
+
+### FDV2-RR-B01
+The fatal manuscript issue was traced to unsafe raw dollar signs in prose (for example S$100--200/MWh), which left TeX in math mode and surfaced as `Missing $ inserted` at the next section boundary. Current corrected prose uses escaped currency notation. Paper CI must still pass before this correction can be considered verified.
+
+### Handoff status
+Corrections implemented. Research CI, Paper CI and exact PDF visual verification are required before handoff to the Independent Reviewer. Only the Independent Reviewer may close FDV2-B01/M01/M02 and declare the final design verified.
