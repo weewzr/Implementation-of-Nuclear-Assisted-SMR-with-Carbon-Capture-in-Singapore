@@ -59,8 +59,21 @@ Completed deep-feasibility work now includes:
 - heat-rejection accounting boundary and Singapore siting criteria;
 - Singapore nuclear regulatory/infrastructure readiness matrix.
 
+Native-language deepening completed in this pass:
+- Chinese HTR-PM EPZ evidence now separates research several-hundred-metre result, implemented 3/7/30 km emergency plan, and scalable small-reactor regulatory examples;
+- Chinese HTR-PM source-term/PSA/dust/tritium/C-14 evidence added;
+- Japanese HTTR/GTHTR300C evidence ladder deepened for 950 C operation, IHX creep/lifetime, current reactor-to-SMR demonstration and material qualification;
+- dedicated tritium-permeation question added using measured HTTR primary/secondary helium data;
+- Japanese mock-up and 2024 HTTR heat-load-transient evidence added;
+- Singapore siting options expanded beyond Jurong, including the future western island as a non-nuclear-designated power-infrastructure option;
+- Singapore cooling options now include once-through seawater, seawater cooling towers and NEWater trade-offs plus marine/flood hazards;
+- GTHTR300 HALEU/TRISO fuel-supply dependency added;
+- canonical CO2 and cost derivations expanded into reproducible engineering records;
+- question register expanded to DF-35 with explicit decision consequences;
+- Rust vector figures added for availability/abatement, availability/cost and CCS robustness.
+
 Key unresolved critical-path questions:
-1. verify the latest combined reliability/CCS Rust sensitivities and record their exact generated margins from CI;
+1. verify the latest native-evidence/Rust-figure HEAD and record exact reliability/CCS generated margins from CI;
 2. deepen selected-design accident/source-term evidence only where primary citation chains still change conclusions;
 3. recover the missing second professor/research transcript and slides;
 4. reconcile professor traceability/question register after that source recovery;
