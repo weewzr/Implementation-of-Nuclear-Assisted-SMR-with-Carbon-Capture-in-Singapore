@@ -90,7 +90,7 @@ Source heat branch:
 
 Annual thermal energy:
 370 MW × 7446 h × 3.6 GJ/MWh
-= **9,918,? GJ/y** (Rust uses full precision).
+= **9,918,072 GJ/y**.
 
 Cost:
 370 × 7446 × 3.6 × 4.758245876
