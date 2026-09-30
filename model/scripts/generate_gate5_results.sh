@@ -33,3 +33,5 @@ cargo run --quiet --bin final_design_heat_figure_tex > ../results/final_design/g
 cargo run --quiet --bin final_design_lifecycle_ledger_csv > ../results/final_design/generated/lifecycle_ledger.csv
 cargo run --quiet --bin final_design_cost_ledger_csv > ../results/final_design/generated/cost_ledger.csv
 cargo run --quiet --bin final_design_figures
+
+cargo run --quiet --bin final_design_availability_csv > ../results/final_design/generated/availability_sensitivity.csv
