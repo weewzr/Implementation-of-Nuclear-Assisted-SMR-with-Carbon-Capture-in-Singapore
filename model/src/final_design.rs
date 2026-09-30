@@ -141,6 +141,53 @@ pub fn availability_sensitivity_csv()->String{
  s
 }
 
+pub const BACKUP_HEATER_EFFICIENCY:f64=0.856; // Rossi et al. 2025 conventional SMR furnace case
+pub const NG_COMBUSTION_KG_CO2_MMBTU:f64=53.02; // US EPA stationary-combustion default, HHV
+pub const MMBTU_GJ:f64=1.05505585262;
+
+#[derive(Clone,Copy,Debug)]
+pub struct GasBackupSensitivity {
+ pub nuclear_availability:f64,pub backup_hours:f64,pub backup_fuel_gj:f64,
+ pub backup_direct_co2_t:f64,pub backup_upstream_co2e_t:f64,
+ pub lifecycle_avoided_t:f64,pub backup_variable_cost_sgd:f64,
+ pub annual_incremental_sgd:f64,pub abatement_cost_sgd_t:f64,
+ pub pass_abatement:bool,pub pass_cost:bool,pub joint_pass:bool
+}
+// Lower-bound operating sensitivity: gas-fired backup maintains the base 85%
+// process-service hours when nuclear availability is lower. Reactor installed
+// economic burden is retained at the base-case value; backup CAPEX, staffing,
+// maintenance, start-up and integration costs are deliberately NOT invented.
+pub fn gas_backup_sensitivity(nuclear_availability:f64)->GasBackupSensitivity{
+ assert!(nuclear_availability>0.0&&nuclear_availability<=JAEA_AVAIL);
+ let base=final_design(0.0,false);
+ let backup_hours=(JAEA_AVAIL-nuclear_availability)*8760.0;
+ let backup_heat_gj=HEAT_MWTH*backup_hours*3.6;
+ let backup_fuel_gj=backup_heat_gj/BACKUP_HEATER_EFFICIENCY;
+ let combustion_kg_gj=NG_COMBUSTION_KG_CO2_MMBTU/MMBTU_GJ;
+ let backup_direct=backup_fuel_gj*combustion_kg_gj/1000.0;
+ let backup_upstream=backup_fuel_gj*11.5/1000.0;
+ // Nuclear lifecycle burden is avoided during the hours in which backup replaces nuclear heat.
+ let nuclear_lca_reduction=HEAT_MWTH*1000.0*backup_hours*(5.5*0.504)/1e6;
+ let avoided=base.lifecycle_avoided_t+nuclear_lca_reduction-backup_direct-backup_upstream;
+ let backup_cost=backup_fuel_gj*GAS_PRICE_SGD_GJ;
+ let incremental=base.annual_incremental_sgd+backup_cost;
+ let cost=incremental/avoided;
+ GasBackupSensitivity{nuclear_availability,backup_hours,backup_fuel_gj,
+  backup_direct_co2_t:backup_direct,backup_upstream_co2e_t:backup_upstream,
+  lifecycle_avoided_t:avoided,backup_variable_cost_sgd:backup_cost,
+  annual_incremental_sgd:incremental,abatement_cost_sgd_t:cost,
+  pass_abatement:avoided>250_000.0,pass_cost:cost<100.0,
+  joint_pass:avoided>250_000.0&&cost<100.0}
+}
+pub fn gas_backup_sensitivity_csv()->String{
+ let mut s=String::from("nuclearavailability,backuphours,backupfuelgj,backupdirectco2t,backupupstreamco2et,lifecycleavoidedty,backupvariablecostsgd,incrementalsgd,costsgdt,apass,cpass,joint\n");
+ for a in [0.50,0.60,0.70,0.80,0.85]{
+  let x=gas_backup_sensitivity(a);
+  s.push_str(&format!("{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{},{},{}\n",a,x.backup_hours,x.backup_fuel_gj,x.backup_direct_co2_t,x.backup_upstream_co2e_t,x.lifecycle_avoided_t,x.backup_variable_cost_sgd,x.annual_incremental_sgd,x.abatement_cost_sgd_t,x.pass_abatement,x.pass_cost,x.joint_pass));
+ }
+ s
+}
+
 pub fn modern_final_cost(occ_usd_kwth:f64,om_usd_mwh:f64,wacc:f64,electricity_value:f64)->FinalDesign{
  let mut x=final_design(electricity_value,false);
  let hours=JAEA_AVAIL*8760.0;
@@ -222,5 +269,7 @@ pub fn temperature_sensitivity_csv()->String{
  #[test]fn cost_ledger_reconciles(){let l=final_cost_ledger();let x=final_design(0.0,false);assert!((l.net_incremental-x.annual_incremental_sgd).abs()<1e-8);assert_eq!(l.electricity_revenue,0.0);}
  #[test]fn availability_sensitivity_is_monotonic(){let a=availability_sensitivity(0.50);let b=availability_sensitivity(0.85);assert!(b.annual_h2_t>a.annual_h2_t);assert!(b.lifecycle_avoided_t>a.lifecycle_avoided_t);assert!(a.lifecycle_avoided_t>250_000.0);assert!(a.abatement_cost_sgd_t<100.0);}
  #[test]fn availability_base_reconciles(){let a=availability_sensitivity(JAEA_AVAIL);let b=final_design(0.0,false);assert!((a.annual_h2_t-b.annual_h2_t).abs()<1e-8);assert!((a.lifecycle_avoided_t-b.lifecycle_avoided_t).abs()<1e-8);assert!((a.abatement_cost_sgd_t-b.abatement_cost_sgd_t).abs()<1e-8);}
+ #[test]fn gas_backup_base_reconciles(){let x=gas_backup_sensitivity(JAEA_AVAIL);let b=final_design(0.0,false);assert!(x.backup_hours.abs()<1e-12);assert!((x.lifecycle_avoided_t-b.lifecycle_avoided_t).abs()<1e-8);assert!((x.abatement_cost_sgd_t-b.abatement_cost_sgd_t).abs()<1e-8);}
+ #[test]fn gas_backup_penalty_is_monotonic(){let low=gas_backup_sensitivity(0.50);let high=gas_backup_sensitivity(0.80);assert!(low.backup_fuel_gj>high.backup_fuel_gj);assert!(low.lifecycle_avoided_t<high.lifecycle_avoided_t);assert!(low.abatement_cost_sgd_t>high.abatement_cost_sgd_t);assert!(low.joint_pass);}
  #[test]fn historical_gate5_still_reproduces(){let x=r3_uncertainty_summary();assert_eq!(x.n,64);assert_eq!(x.both_pass,0);}
 }
