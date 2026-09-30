@@ -187,3 +187,94 @@ Potential disadvantages/questions:
 - IAEA meteorological/hydrological site-evaluation safety guidance.
 - PUB Singapore, coastal protection and Jurong Island site-specific studies.
 - JTC, Jurong Island official industrial/infrastructure context.
+
+
+## Singapore-native cooling evidence
+
+Singapore industrial practice provides real cooling options without defining this project's heat-rejection duty.
+
+### Once-through seawater
+PUB states that seafront/Jurong Island companies can use seawater as a cooling medium in **once-through seawater cooling**. EMA's reference technical parameters for Singapore CCGT modelling use a once-through cooling-water system with an **8 C condenser temperature rise** and 29.2 C seawater reference temperature.
+
+This is evidence that once-through seawater cooling is technically established in Singapore. It is not a nuclear-project design basis.
+
+### Seawater cooling towers
+PUB also identifies **seawater cooling towers (SWCT)** as technically feasible and economically viable, particularly for greenfield applications. Earlier PUB/Jurong Island work notes SWCT can reduce NEWater reliance and, in network form, may reduce environmental impacts relative to large once-through discharge.
+
+Trade-offs include:
+- land/structure footprint;
+- salt drift/corrosion;
+- pumping/fan power;
+- plume;
+- blowdown;
+- maintenance/fouling.
+
+No project SWCT footprint is calculated because Q_reject is unresolved.
+
+### Freshwater / NEWater
+NEWater is deliberately used for industrial and cooling applications in Singapore and is a valuable water resource. Using large volumes of NEWater for a coastal nuclear heat sink would create an opportunity-cost/resilience question when seawater alternatives exist.
+
+Therefore freshwater/NEWater cooling is an **option to evaluate**, not the default.
+
+### Thermal discharge and marine effects
+Real Jurong Island CCGT EIAs model thermal plumes rather than assuming discharge is harmless. A 2026 PacificLight EIA predicts temperature elevations >3 C beyond 100 m for <10% of time and >2 C within roughly 300 m of its outfall under its own discharge conditions.
+
+A separate Jurong Island cogeneration EIS modelled ~105,000 m3/h heated-water discharge at +7 C and assessed the resulting local thermal plume/marine effects.
+
+These values are **site/project-specific examples**, not nuclear-project discharge assumptions. They demonstrate that:
+- thermal plume modelling is required;
+- marine receptors matter;
+- chlorine/biocide residuals can matter;
+- intake/outfall location is an environmental-design variable.
+
+### Fouling / blockage
+Singapore industrial evidence reports seawater fouling increasing thermal resistance and reducing flow in heat exchangers; back-flushing was used to restore performance. Nuclear ultimate-heat-sink analysis would additionally need to consider debris, marine organisms and common-cause intake blockage.
+
+## Coastal cooling benefit versus coastal hazard
+
+**COASTAL LOCATION → BENEFIT**
+- abundant seawater heat sink;
+- established Singapore once-through/SWCT experience;
+- possible shared intake/outfall infrastructure;
+- reduced freshwater demand;
+- industrial/desalination integration opportunities.
+
+**COASTAL LOCATION → HAZARD**
+- sea-level rise;
+- storm surge / coastal flooding;
+- wave/tide effects;
+- intake blockage/fouling;
+- salt corrosion;
+- marine thermal/chemical discharge;
+- shipping/external hazards;
+- need for long-life coastal protection.
+
+A coastal location is therefore neither automatically favourable nor unfavourable. Cooling access and external-hazard resilience must be evaluated together.
+
+## Singapore site-option set — no selection
+
+The project will not settle on Jurong Island. Current options are:
+
+| Option | Potential strengths | Potential weaknesses / unknowns | Current status |
+|---|---|---|---|
+| Jurong Island | existing energy/chemical infrastructure; gas/H2/CO2/utilities; seawater access | petrochemical external hazards; limited land; coastal flood; security; emergency planning | SCREENING OPTION |
+| Future western island | long-term new power-generation infrastructure explicitly contemplated; potential new-build layout/separation; coastal cooling | reclamation decades-long; final land profile/use unknown; no nuclear decision/site designation; marine/coastal/security issues | FUTURE OPTION |
+| Other coastal/industrial site | seawater access; possible grid/industrial integration | land, population, external hazards, environment/site geology unknown | SCREENING OPTION |
+| Underground | possible shielding/land/security advantages | excavation, flood/water ingress, heat rejection, access/maintenance/cost | FUTURE CONCEPT |
+| Offshore/floating | land relief, seawater access, population separation potential | marine hazards, collision, corrosion, security, emergency access, fuel/waste logistics, regulation | FUTURE CONCEPT |
+| Other future site | preserves option value | insufficient evidence | UNRESOLVED |
+
+### New western island evidence
+At National Day Rally 2026, Singapore announced a long-term plan to connect several islands south of Jurong Island into a new western island that could support advanced manufacturing and **new power-generation infrastructure**. The Government did **not** identify nuclear power as the selected generation technology or designate a nuclear site.
+
+This is therefore:
+**EVIDENCE OF FUTURE POWER-SITING OPTION SPACE, NOT A NUCLEAR SITING DECISION.**
+
+Singapore still states that no nuclear deployment decision has been made and INIR Phase 1 will begin from 2027.
+
+## Decision consequences
+
+- If exact heat rejection later requires a cooling system whose land/intake/outfall/thermal-discharge impacts cannot be accommodated → **that site/cycle configuration is infeasible or requires heat-recovery/cooling redesign**.
+- If coastal flood/storm-surge protection cannot meet nuclear safety requirements over plant life → **candidate coastal site infeasible**.
+- If petrochemical external hazards/separation cannot be bounded at Jurong → **Jurong infeasible; other site options remain open**.
+- If no Singapore site can simultaneously satisfy cooling, external hazards, emergency planning, security and land constraints → **deployment concept infeasible under current siting options**.
