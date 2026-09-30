@@ -1,32 +1,48 @@
-# Nuclear-Assisted Steam Methane Reforming with Carbon Capture in Singapore
+# Nuclear-Assisted SMR + CCS for Singapore
 
-Research project for CN4252: Hydrogen and Low Carbon Technologies.
+## Current final design
+The submission-facing design is the literature-anchored INL/NGNP high-temperature HTGR-assisted steam-methane-reforming process with carbon capture:
+- 871 C reformer outlet;
+- steam/carbon = 3.0;
+- 78.1% methane conversion;
+- 88% PSA recovery;
+- 925 C INL HTGR case supplying 900 C process heat;
+- 130 MMSCFD H2;
+- 176.8 MWth nuclear process heat;
+- one 600 MWth GTHTR300C-class cogeneration module;
+- JAEA one-module/doubled-IHX economics with explicit Singapore electricity-value sensitivities.
 
-## Scientific objective
+Current final-design outputs are under `results/final_design/`.
+Canonical manuscript: `paper/main.tex`.
 
-Assess whether integrating a high-temperature gas-cooled reactor (HTGR) with steam methane reforming (SMR) and amine-based CO2 capture can meet the module's quantitative abatement and cost requirements in a Singapore-relevant scenario, without assuming that the proposed architecture is superior to alternatives.
+## Reproduce
+```bash
+sh paper/build.sh
+```
+This regenerates historical and final-design deterministic datasets, runs the Rust model path used by the manuscript and builds `paper/main.pdf`.
 
-## Research status
+## Scientific interpretation
+The final design is evaluated forward against:
+- annual lifecycle abatement >0.25 MtCO2e/y;
+- forward abatement cost <S$100/tCO2e.
 
-Gate 1 — Research framing and landscape: in progress.
+Any passing result is a **conditional model result**, not an observed Singapore commercial project cost.
 
-See STATUS.md and RESEARCH_FRAMING.md.
+## Historical research preserved
+The repository intentionally retains:
+- original Gate-5 fixed-scale 64-case study (0 joint passes);
+- Review-1 through Review-5 evidence and resolutions;
+- the Review-5 600 C HTTR/mock-up deployment state;
+- superseded generated datasets and regression tests.
 
-## Initial configuration
+These materials remain reproducible for audit but are not the operative final submission design.
 
-The student's starting concept replaces the conventional fired reformer furnace and the electricity-generation path of an HTGR with a direct high-temperature helium heat interface to reforming and steam generation.
-
-This is a hypothesis to test, not a conclusion.
-
-## Planned comparison set
-
-- Fired SMR
-- Fired SMR + CCS
-- Electrified SMR + CCS
-- Nuclear-electric SMR + CCS
-- Direct HTGR-heated SMR + CCS
-- Electrolysis / other low-carbon hydrogen benchmark where data are adequate
-
-## Implementation
-
-Primary computational language: Rust. LaTeX is the canonical manuscript source.
+## Key locations
+- final design model: `model/src/final_design.rs`
+- historical verified model: `model/src/lib.rs`
+- Review-5 deployment model: `model/src/deployment.rs`
+- final result/evidence: `results/final_design/`
+- historical Gate-5 results: `results/GATE5_RESULTS.md`
+- reviews: `reviews/`
+- manuscript: `paper/main.tex`
+- paper instructions: `paper/README.md`
