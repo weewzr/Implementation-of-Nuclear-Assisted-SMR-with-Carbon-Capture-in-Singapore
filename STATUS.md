@@ -1,21 +1,14 @@
 # STATUS
 
-## REVIEW 06 RESOLVED — REVISED SUBMISSION CANDIDATE READY FOR FINAL CLOSURE
+## FINAL SUBMISSION CANDIDATE — CLOSED / FROZEN
 
-Independent Review 06 of the Targeted Scientific Extension concluded:
+The CN4252 research, independent verification, Targeted Scientific Extension, Independent Review 06, Review-06 resolution and Final Submission QA are complete.
 
-**TARGETED SCIENTIFIC EXTENSION VERIFIED — MINOR CORRECTIONS ONLY.**
+**Scientific conclusion: CONDITIONAL MODEL PASS.**
 
-All four Review-06 findings are now resolved:
-- TE-R01 accident-mechanism citations: **RESOLVED**;
-- TE-R02 NRC PIRT metadata: **RESOLVED**;
-- TE-R03 figure provenance: **RESOLVED**;
-- TE-R04 Section-5 accessibility: **RESOLVED**.
+The repository is frozen as the final scientific submission state. No further research, review, optimisation or QA is warranted unless the user explicitly reopens the project because of a genuinely new requirement or newly discovered defect.
 
-Resolution record:
-`reviews/review_06_resolution.md`.
-
-## Preserved verified quantitative foundation
+## Frozen verified quantitative foundation
 - H2 production: ~97,946 t/y.
 - Direct avoided CO2: ~862,094 t/y.
 - Lifecycle avoided: ~917,139 tCO2e/y.
@@ -23,50 +16,39 @@ Resolution record:
 - Process heat: 176.8 MWth.
 - Selected architecture: 600 MWth GTHTR300C-class reactor; 370 MWth source heat/IHX branch.
 - Remaining reactor thermal capacity: 423.2 MWth; no exact project electricity output is claimed.
-- Controlling project electricity revenue: S$0/MWh.
-- Controlling abatement cost: ~S$3.725/tCO2e.
+- Project electricity revenue: S$0/MWh.
+- Controlling screening abatement cost: ~S$3.725/tCO2e.
 - CN4252 numerical thresholds: CONDITIONAL MODEL PASS.
 
-No Review-06 correction changed the scientific model or these verified values.
+## Final closure evidence
+Documentation-only closure HEAD verified before this status record:
+`30f7b91f20b36617dbb239f377c1f49fabe5037c`.
 
-## Current controlling review/evidence
-- Targeted-extension Independent Review: `reviews/review_06_targeted_scientific_extension.md`.
-- Review-06 resolution: `reviews/review_06_resolution.md`.
-- Quantitative-foundation independent verification: `reviews/final_design_independent_verification_02_final_rereview.md`.
-- Targeted-extension evidence: `results/TARGETED_EXTENSION_EVIDENCE.md`.
-- Prior Final Submission QA baseline: `results/FINAL_SUBMISSION_QA.md`.
-- Canonical manuscript: `paper/main.tex`.
+Research CI `36731411439`: **PASS**.
+Paper/reproducibility CI `36731411252`: **PASS**.
+Canonical manuscript artifact `11105412170`: **20-page `paper/main.pdf`**.
+Artifact SHA-256: `4bb7f4563dac0bcfd132ac77cfb669bdd4121d161cc29cf729289fd09ac75684`.
 
-## Final Review-06 correction verification
-Correction/documentation HEAD verified before closure record:
-`a8fd21904679ac180ba490c77e635a8f227b6d25`.
+Authoritative final QA:
+`results/FINAL_SUBMISSION_QA.md`.
 
-Research CI `36729090296`: **PASS**.
-Paper/reproducibility CI `36729090266`: **PASS**.
-Canonical PDF artifact `11104450232`: **20 pages**.
-Bibliography convergence: **PASS**.
-Undefined citations: **0**.
-Undefined references: **0**.
-Exact-artifact page-by-page visual inspection: **PASS**.
+Independent Review 06:
+`reviews/review_06_targeted_scientific_extension.md`.
 
-Visual QA specifically confirmed:
-- corrected Section 5 accident-mechanism citations and accessibility text;
-- Rust-generated thermal-capacity figure;
-- CO2 ledger;
-- cost ledger;
-- Singapore feasibility table and roadmap;
-- captions, units and cross-references;
-- no clipping, overlap or accidental blank pages.
+Review-06 resolution:
+`reviews/review_06_resolution.md`.
 
-## Scientific interpretation
-The project remains an independently verified **CONDITIONAL MODEL PASS**. Numerical CN4252 threshold compliance is supported; commercial, regulatory and site-specific safety feasibility are not demonstrated.
+## Interpretation boundary
+The project demonstrates numerical CN4252 threshold compliance under the declared screening assumptions. It does **not** demonstrate commercial bankability, Singapore regulatory approval, site-specific nuclear/process safety, guaranteed CCS availability, detailed project cost/schedule, public acceptance or deployment readiness.
 
-## Governing distinction
+## Repository policy
 **FINAL SUBMISSION = FINAL BEST-SUPPORTED DESIGN.**
 
 **REPOSITORY = COMPLETE SCIENTIFIC AUDIT TRAIL.**
 
-## Next step
-The revised submission candidate is **READY FOR FINAL SUBMISSION QA/CLOSURE**.
+Historical Gate-5, 64-case screening, Review-5, Reviews 1--5, FDV2 and superseded model/economic/manuscript states remain preserved as historical evidence and are not the operative final conclusion.
 
-**STOP MAIN RESEARCH.** Do not begin Review 07, another broad literature pass or scientific optimisation automatically.
+## Stop condition
+**CLOSED / FROZEN.**
+
+Do not begin Review 07, another Independent Review, another QA cycle, further literature research, model optimisation or manuscript revision unless the project is explicitly reopened for genuinely new evidence or requirements.
