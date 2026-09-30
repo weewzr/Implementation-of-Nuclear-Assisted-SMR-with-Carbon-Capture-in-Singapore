@@ -22,3 +22,8 @@ cargo run --quiet --bin review5_results_csv > ../results/generated/review5_resul
 cargo run --quiet --bin review5_margin_csv > ../results/generated/review5_margin.csv
 cargo run --quiet --bin review5_cost_ledger_csv > ../results/generated/review5_cost_ledger.csv
 cargo run --quiet --bin review5_cogeneration_csv > ../results/generated/review5_cogeneration.csv
+
+mkdir -p ../results/final_design/generated
+cargo run --quiet --bin final_design_results_csv > ../results/final_design/generated/final_design_results.csv
+cargo run --quiet --bin final_design_source_balance_csv > ../results/final_design/generated/source_balance.csv
+cargo run --quiet --bin final_design_temperature_csv > ../results/final_design/generated/temperature_sensitivity.csv
