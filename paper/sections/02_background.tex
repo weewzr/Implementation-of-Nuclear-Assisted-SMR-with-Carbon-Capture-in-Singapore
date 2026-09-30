@@ -56,3 +56,27 @@ The nuclear proposal changes the \emph{heat source}, not the feed-carbon chemist
 \caption{Original two-layer explanation of nuclear assistance. The concept substitutes a high-temperature heat-delivery chain for fired reformer heat; it does not eliminate carbon entering as natural-gas feed. Temperatures show the final literature-supported design ladder; the 950$^\circ$C value is the JAEA hardware envelope and the 900/871$^\circ$C process pair is anchored to INL~\cite{inltev961,jaeri2004gthtr300c}.}
 \label{fig:nuclear-heat-explainer}
 \end{figure}
+
+
+\subsection{Why an HTGR can supply process heat safely across an interface}
+A high-temperature gas-cooled reactor (HTGR) uses helium as coolant. Helium is chemically inert and remains gaseous at reactor temperatures, making it suitable for carrying high-grade heat. HTGR fuel commonly uses coated particles (TRISO): the fuel kernel is surrounded by multiple ceramic/carbon barrier layers. For this project, the important point is not reactor-physics detail but the resulting engineering capability to operate with high-temperature helium~\cite{jaeahttr,jaeri2004gthtr300c}.
+
+The intermediate heat exchanger (IHX) is the isolation boundary between the reactor primary circuit and the chemical heat-transfer circuit. Primary helium transfers heat across exchanger walls to a separate secondary-helium loop; the secondary helium then heats the reformer. Thus \textbf{reactor primary coolant does not enter the hydrogen process}.
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[>=Latex,node distance=10mm,unit/.style={draw,rounded corners,align=center,minimum height=13mm,minimum width=29mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
+\node[unit] (core) {HTGR core\\TRISO fuel\\primary helium};
+\node[unit,right=of core] (ihx) {IHX\\metal boundary\\heat crosses};
+\node[unit,right=of ihx] (sec) {Secondary helium\\separate loop\\900$^\circ$C supply};
+\node[unit,right=of sec] (ref) {Chemical reformer\\176.8 MWth\\871$^\circ$C outlet};
+\draw[heat](core)--node[above,font=\scriptsize]{primary He}(ihx);
+\draw[heat](ihx)--node[above,font=\scriptsize]{secondary He}(sec);
+\draw[heat](sec)--(ref);
+\node[draw,dashed,fit=(core),inner sep=5mm,label=below:{\scriptsize nuclear primary boundary}] {};
+\node[draw,dashed,fit=(sec)(ref),inner sep=5mm,label=below:{\scriptsize non-nuclear process-heat side}] {};
+\end{tikzpicture}
+\caption{Original isolation schematic reconstructed from HTGR/IHX architecture reported by JAEA/JAERI~\cite{jaeahttr,jaeri2004gthtr300c,nishihara2007potential}. It emphasizes the safety-relevant conceptual point: heat crosses the IHX, while the primary reactor coolant and chemical process remain separate circuits.}
+\label{fig:ihx-isolation}
+\end{figure}
+
+The user-provided project-source diagrams were inspected as technical visual references during final QA. They contain useful depictions of fired reforming, amine capture, PSA, HTGR helium loops and IHX coupling, but their supplied filenames do not consistently describe their pictured systems. They were therefore not copied into the manuscript; the explanatory figures above were recreated from source-supported engineering concepts with primary-source attribution.
