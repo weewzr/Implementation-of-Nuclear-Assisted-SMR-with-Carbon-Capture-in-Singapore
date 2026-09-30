@@ -1,6 +1,6 @@
 # Independent Review 5 resolution
 
-Status: **OPEN pending independent Research-CI completion**.
+Status: **CLOSED**.
 
 This resolves findings from `reviews/review_05_deployment_scale_technoeconomic.md`; it does not repeat Review 5.
 
@@ -52,4 +52,6 @@ This resolves findings from `reviews/review_05_deployment_scale_technoeconomic.m
 ## Review-5 scientific decision
 The **previous deployment conditional pass does not survive remediation**. This is not a failure of the remediation: it is the required falsification result after replacing the unsupported heat interface and incomplete economic allocation with source-supported physics and closed cogeneration accounting.
 
-Verification evidence: Paper/reproducibility run `36655616510` PASS at model/manuscript commit `649398e14be3a5a78e255d3988ccbcb6b6248025`; artifact `11072086648`, SHA-256 `868f83c11cd84d523ee02789c242832c198c5769f427d5cbda546e8088590198`; 18-page PDF visually inspected, including historical-vs-remediated temperature labels, cogeneration table, cost ledger and scenario/scale tables. The Paper workflow also completed its internal Rust test stage. The dedicated Research CI run for the latest state is still pending behind a stale GitHub Actions Research-CI run, so Review 5 remains OPEN until that independent workflow completes successfully.
+Verification evidence: dedicated Research CI run `36655965073` PASS at repository state `f39fb2d8b2f843f757c1a823d7523cbc2cb99ba5`. Paper/reproducibility run `36655616510` PASS at corrected model/manuscript state `649398e14be3a5a78e255d3988ccbcb6b6248025`; artifact `11072086648`, SHA-256 `868f83c11cd84d523ee02789c242832c198c5769f427d5cbda546e8088590198`; 18-page PDF visually inspected, including historical-vs-remediated temperature labels, cogeneration table, cost ledger and scenario/scale tables. All previously stated Review-5 BLOCKER and MAJOR acceptance criteria remain satisfied.
+
+**Independent Review 5 gate: CLOSED.**
