@@ -7,3 +7,4 @@ edition = "2021"
 path = "src/lib.rs"
 
 [dependencies]
+plotters = { version = "0.3", default-features = false, features = ["svg_backend", "line_series"] }
