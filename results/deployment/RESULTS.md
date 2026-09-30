@@ -1,4 +1,4 @@
-# Singapore deployment-scale techno-economic extension — results
+> **HISTORICAL / SUPERSEDED FOR FINAL SUBMISSION DESIGN.** Preserved for reproducibility and scientific audit. Current submission-facing results are in `results/final_design/`.\n\n# Singapore deployment-scale techno-economic extension — results
 
 ## Separation from original Gate 5
 Original canonical result remains unchanged: approximately 74.85 ktH2/y, 64 cases, 0 joint CN4252 passes; conservative case fails both thresholds.
