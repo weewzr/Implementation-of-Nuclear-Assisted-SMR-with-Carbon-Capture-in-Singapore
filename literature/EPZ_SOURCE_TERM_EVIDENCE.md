@@ -94,3 +94,74 @@ Evidence tags:
 - Ding, H.; Tong, J.; Wang, Y.; Zhang, L. (2018), *Development of emergency planning zone for high temperature gas-cooled reactor*, Annals of Nuclear Energy 111, 347–353.
 - Petti, D.A.; Hobbins, R.R.; Lowry, P.; Gougar, H. (2013), *Representative source terms and the influence of reactor attributes on functional containment in modular high-temperature gas-cooled reactors*, Nuclear Technology 184, 181–197.
 - Moormann, R. (2008), *Fission Product Transport and Source Terms in HTRs: Experience from AVR Pebble Bed Reactor*, Science and Technology of Nuclear Installations.
+
+
+## Radionuclide-specific evidence chain
+
+### AGR-1 post-irradiation safety tests
+
+Demkowicz et al. tested irradiated AGR-1 UCO TRISO compacts at 1600 and 1800 C for approximately 300 h and measured Ag, Cs, Eu, Sr and Kr release.
+
+Key observations relevant to source-term reasoning:
+- **Cs:** release from particles with intact coatings was <1e-6 after 300 h at 1600 C or 100 h at 1800 C; rare SiC failures can produce significant Cs release.
+- **Kr:** <2e-6 after 300 h at 1600 C; release rises after full coating failure.
+- **Ag:** appreciable early measured release (3-34% of compact inventory) was associated largely with inventory already outside SiC in matrix/OPyC; additional release from intact particles becomes visible at 1800 C.
+- **Eu/Sr:** low but measurable release; rates increase during long 1800 C exposure.
+
+Interpretation: **TRISO is not one universal retention factor.** SiC integrity is especially important for Cs; noble-gas retention depends on dense coating integrity; metallic fission products have different transport behaviour. A mechanistic source term must therefore be radionuclide- and barrier-specific.
+
+Transferability limit: AGR-1 furnace tests bound/represent fuel-level accident behaviour under specified irradiation and thermal histories. They do not directly provide a reactor environmental release fraction because graphite, primary-circuit deposition, dust, confinement and accident transport still intervene.
+
+### Generic modular HTGR functional containment
+
+Petti et al. (Nuclear Technology 184, 2013) construct representative modular-HTGR source terms and explicitly examine:
+- initial fuel quality;
+- in-reactor fuel performance/failure;
+- reactor outlet temperature;
+- retention outside the core.
+
+Their barrier logic supports a functional-containment chain rather than a single containment factor:
+
+fuel kernel/TRISO
+→ fuel element/graphite
+→ primary circuit deposition/holdup
+→ reactor building/confinement
+→ environment.
+
+Project implication: the selected 925 C source operating point cannot be linked directly to off-site dose using only AGR particle-release data.
+
+### Counter-evidence from AVR
+
+Moormann (2008) reports AVR operating experience in which fission products deposited outside the active core are important for source-term estimation, particularly for depressurisation accidents. Carbonaceous dust can sorb activity, deposit on surfaces and be remobilised by flow disturbances. AVR experience also showed discrepancies between laboratory plate-out tests and in-reactor behaviour.
+
+This is a valuable contradiction/qualification:
+- **supports:** coated fuel is a strong barrier and many heat-up releases remain low when temperatures remain within design limits;
+- **challenges simplistic inference:** primary-circuit contamination/dust and long-term operating history can create releasable inventories outside intact TRISO.
+
+Transferability limit: AVR was a pebble-bed experimental reactor with operating/fuel-quality history different from a modern prismatic GTHTR300C-class design. Its measured dust/source-term behaviour should not be numerically imposed on this project. It demonstrates a mechanism and uncertainty that must be addressed.
+
+### HTR-PM source-term V&V precedent
+
+Chen et al. (2018) describe the HTR-STAC source-term package for HTR-PM, comprising dedicated units for:
+- primary-circuit source term;
+- normal airborne release;
+- accident release categories;
+- C-14;
+- tritium.
+
+The work reports formal verification/validation activities including independent code/algorithm review and regulatory assessment by China's NNSA.
+
+Project implication: licensing-grade HTR source-term analysis is a **multi-code / multi-phenomenon task**, not a spreadsheet release fraction. The present CN4252 Rust model does not claim this capability.
+
+## Source-term V&V status for this project
+
+| Submodel | Verification | Validation | Uncertainty | Extrapolation |
+|---|---|---|---|---|
+| TRISO qualitative barrier model | literature cross-check | AGR furnace experiments external to project | strong nuclide/temperature dependence | fuel-test → reactor source term is large extrapolation |
+| Core/graphite retention | not implemented | none in project | not quantified | unresolved |
+| Primary-circuit plate-out/dust | not implemented | AVR gives external mechanism evidence | high/design-dependent | AVR pebble bed → GTHTR300C not quantitatively transferable |
+| Confinement release | not implemented | none | unresolved | unresolved |
+| Atmospheric dispersion | not implemented | none | site/weather dependent | site-specific |
+| Dose / EPZ | not implemented | none | regulator/site dependent | cannot be calculated defensibly |
+
+**Conclusion:** the project can explain the mechanistic chain and evidence maturity, but a numerical project source term or EPZ remains outside current model validity.
