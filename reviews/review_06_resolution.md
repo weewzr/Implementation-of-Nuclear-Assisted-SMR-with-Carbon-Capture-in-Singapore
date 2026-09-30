@@ -21,9 +21,9 @@ The prose remains bounded: it says these mechanisms require design-specific anal
 
 **Evidence:** official U.S. NRC publication records for NUREG/CR-6844 and NUREG/CR-6944 Volumes 3 and 6.
 
-**Verification:** bibliography/build/visual verification pending final CI.
+**Verification:** Research CI `36729090296` PASS; Paper CI `36729090266` PASS; artifact `11104450232` inspected; citations render and bibliography converges.
 
-**Status:** **RESOLVED subject to final build verification**.
+**Status:** **RESOLVED**.
 
 **Scientific conclusion changed?** No.
 
@@ -42,7 +42,7 @@ The prose remains bounded: it says these mechanisms require design-specific anal
 
 **Evidence:** official NRC publication page.
 
-**Verification:** manuscript citation key retained, so no active citation rewrite was required; final BibTeX convergence pending CI.
+**Verification:** manuscript citation key retained; BibTeX/latexmk converged successfully in Paper CI `36729090266`; corrected entry renders in artifact `11104450232`.
 
 **Status:** **RESOLVED subject to final build verification**.
 
@@ -79,9 +79,9 @@ The Plotters SVG is explicitly retained as a reproducible/reference asset and ex
 
 **File:** `paper/sections/05_nuclear_feasibility_safety.tex`.
 
-**Verification:** final exact-PDF readability inspection pending CI.
+**Verification:** exact 20-page artifact `11104450232` inspected page by page; Section 5 takeaways and definitions are readable and technical detail is preserved.
 
-**Status:** **RESOLVED subject to final visual verification**.
+**Status:** **RESOLVED**.
 
 **Scientific conclusion changed?** No.
 
@@ -96,6 +96,27 @@ No Review-06 correction changes:
 - S$0/MWh project electricity revenue;
 - ~S$3.725/tCO2e controlling screening abatement cost.
 
-## Closure condition
+## Closure verification
 
-Review 06 will be marked fully closed after fresh Research CI, Paper/reproducibility CI, bibliography convergence, zero undefined citations/references and exact-artifact page-by-page inspection pass.
+- Research CI `36729090296`: **PASS**.
+- Paper/reproducibility CI `36729090266`: **PASS**.
+- PDF artifact `11104450232`: **20 pages**.
+- Bibliography convergence: **PASS**.
+- Undefined citations: **0**.
+- Undefined references: **0**.
+- Exact-artifact page-by-page visual inspection: **PASS**.
+- Section 5 accessibility/citation inspection: **PASS**.
+- CO2 ledger: **PASS**.
+- Cost ledger: **PASS**.
+- Figures/tables/captions/cross-references: **PASS**.
+
+## Review-06 resolution decision
+
+TE-R01 — **RESOLVED**  
+TE-R02 — **RESOLVED**  
+TE-R03 — **RESOLVED**  
+TE-R04 — **RESOLVED**
+
+**REVIEW 06 CLOSED.**
+
+No scientific result changed.
