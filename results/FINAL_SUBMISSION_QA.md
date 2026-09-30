@@ -1,6 +1,6 @@
 # FINAL SUBMISSION QA
 
-Status: **PASS — FINAL SUBMISSION QA COMPLETE.**
+Status: **PASS — FINAL CLOSURE QA COMPLETE (post-Targeted-Extension / Review 06).**
 
 ## Scientific freeze
 The independently verified scientific model is frozen. Final Submission QA changes are presentation, explanation, provenance and current-facing documentation only. No verified model equation, architecture, lifecycle result or economic result was altered.
@@ -89,8 +89,11 @@ Two-reader test:
 - technically curious high-school reader conceptual test: PASS;
 - university engineering-marker traceability test: PASS.
 
-## Acceptance evidence
-- final manuscript QA HEAD: `7e4dbb7912eedefb9c91b07112f2cc76ee79137a`;
+## Historical pre-extension acceptance evidence
+
+The 13-page artifact below is preserved as the completed pre-extension Final Submission QA milestone. It is **not** the current final manuscript artifact.
+
+- historical manuscript QA HEAD: `7e4dbb7912eedefb9c91b07112f2cc76ee79137a`;
 - Research CI `36670713040`: PASS;
 - Paper/reproducibility CI `36670713033`: PASS;
 - PDF artifact: `11078290219`;
@@ -103,3 +106,84 @@ Two-reader test:
 - figure provenance: `results/FIGURE_PROVENANCE.md`.
 
 All Final Submission QA acceptance criteria are satisfied.
+
+
+## Final closure QA — Targeted Extension + Review 06
+
+Scientific freeze: **PASS**. Review 06 introduced no quantitative change.
+
+Review evidence:
+- `reviews/review_06_targeted_scientific_extension.md`: **TARGETED SCIENTIFIC EXTENSION VERIFIED — MINOR CORRECTIONS ONLY**;
+- `reviews/review_06_resolution.md`: TE-R01 through TE-R04 **RESOLVED**.
+
+Canonical correction state verified before closure documentation:
+- commit `a8fd21904679ac180ba490c77e635a8f227b6d25`;
+- Research CI `36729090296`: **PASS**;
+- Paper/reproducibility CI `36729090266`: **PASS**;
+- artifact `11104450232`;
+- PDF: `paper/main.pdf`, **20 pages**, 294,921 bytes;
+- artifact ZIP SHA-256: `05d8d8e0196c8287d4b68360875e2f718bf6ebae522d6269ea855218afb3883e`;
+- bibliography convergence: **PASS**;
+- undefined citations: **0**;
+- undefined references: **0**;
+- exact-artifact page-by-page visual inspection: **PASS**.
+
+### Computational / Rust QA
+Canonical build path `sh paper/build.sh` runs `cargo test --all-targets`, deterministic generation and clean latexmk/BibTeX. Research CI passed on the correction state. Ledger reconciliation tests require generated lifecycle and cost ledgers to reproduce the canonical final model.
+
+Frozen values confirmed:
+- H2 ~97,946 t/y;
+- direct avoided CO2 ~862,094 t/y;
+- lifecycle avoided ~917,139 tCO2e/y;
+- lifecycle intensity ~1.95 kgCO2e/kgH2;
+- process heat 176.8 MWth;
+- controlling zero-credit abatement cost ~S$3.725/tCO2e.
+
+### CO2 ledger QA
+**PASS.** Direct and lifecycle quantities are distinguished. Displayed reconciliation is approximately:
+862,094 + 72,704 - 3,649 - 450 - 13,559 = 917,140 tCO2e/y, with the ~1 t/y difference from integer display rounding relative to the unrounded ~917,139 model result. Captured CO2 is not double-counted.
+
+### Cost ledger QA
+**PASS.** Displayed annual terms:
+- natural-gas expenditure saved ~S$94.831m;
+- reactor burden added ~S$76.572m;
+- CCS annualisation ~S$10.683m;
+- integration/site allowance ~S$2.857m;
+- T&S ~S$8.135m;
+- project electricity revenue S$0;
+- net incremental cost ~S$3.416m/y;
+- ~S$3.416m / 917,139 tCO2e/y = ~S$3.725/tCO2e.
+
+The manuscript explicitly states this is a screening abatement cost, not turnkey Singapore project cost. FOAK, financing, Singapore construction/site premium, licensing/security, EPC/contingency, emergency planning, detailed IHX qualification, schedule risk, decommissioning/waste, insurance/liability and negotiated CCS infrastructure/contracts remain outside or incomplete in the screening boundary.
+
+### Nuclear/safety and bibliography QA
+**PASS.** Review-06 TE-R01 accident-mechanism citations render. TE-R02 NRC metadata is corrected to NUREG/CR-6944 Volume 6, *Process Heat and Hydrogen Co-Generation PIRTs*, March 2008. HTGR/HTTR/TRISO/IHX and coupled-process claims remain maturity-bounded.
+
+### Figure/provenance QA
+**PASS.** `results/FIGURE_PROVENANCE.md` distinguishes:
+A. Rust-generated assets included in the manuscript;
+B. Rust-generated reference assets not directly included;
+C. manuscript TikZ visuals using canonical values.
+The Rust/Plotters threshold SVG is not misrepresented as the active manuscript threshold graphic.
+
+### CN4252 requirement QA
+**PASS.** The manuscript answers:
+- >0.25 MtCO2e/y;
+- <S$100/tCO2e;
+- abatement mechanism;
+- technical/nuclear/process/Singapore/CCS/economic feasibility;
+- potential effectiveness;
+- staged implementation roadmap;
+- accuracy/evidence maturity;
+- explicit limitations.
+
+### Two-reader QA
+**PASS.** Reader A can follow SMR, CCS, HTGR/TRISO/helium/IHX, isolation, carbon/cost ledgers, threshold results and deployment constraints. Reader B can trace source -> assumption -> equation/model -> generated result -> table/figure -> interpretation -> CN4252 requirement.
+
+### Exact-PDF visual QA
+**PASS.** All 20 pages inspected. Section 5 accessibility/citations, integrated architecture, Rust thermal-capacity figure, CO2 ledger, cost ledger, threshold visuals, feasibility matrix, roadmap, bibliography, captions, units and cross-references are readable. No clipping, overlap, broken glyphs or accidental blank pages were observed.
+
+### Final conclusion
+**CONDITIONAL MODEL PASS.** Numerical CN4252 threshold compliance is supported under the declared screening assumptions. Commercial bankability, Singapore regulatory approval, site-specific nuclear/process safety, guaranteed CCS availability and deployment readiness are **not demonstrated**.
+
+The repository is eligible for final freeze once the documentation-only closure HEAD also passes normal Research and Paper CI.
