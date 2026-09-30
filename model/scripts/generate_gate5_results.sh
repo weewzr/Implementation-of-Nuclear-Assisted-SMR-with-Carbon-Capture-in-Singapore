@@ -21,3 +21,4 @@ cargo run --quiet --bin gate5_figure_manifest > ../results/generated/gate5_figur
 cargo run --quiet --bin review5_results_csv > ../results/generated/review5_results.csv
 cargo run --quiet --bin review5_margin_csv > ../results/generated/review5_margin.csv
 cargo run --quiet --bin review5_cost_ledger_csv > ../results/generated/review5_cost_ledger.csv
+cargo run --quiet --bin review5_cogeneration_csv > ../results/generated/review5_cogeneration.csv
