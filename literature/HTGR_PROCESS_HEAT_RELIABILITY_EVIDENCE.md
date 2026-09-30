@@ -94,7 +94,11 @@ The coupled system has at least these availability contributors:
 
 A single-reactor architecture creates a common process-heat interruption unless backup heat, storage, turndown or a second module is provided.
 
-Peer-reviewed energy/economic work on nuclear/solar-heated SMR (Schroders et al., NED 329, 2018) explicitly concludes that the heat-supply system should include a fossil backup heater. This is useful counter-evidence to any assumption that a single nuclear heat source automatically meets industrial continuity requirements.
+Peer-reviewed reliability work is stronger than a generic availability caveat. Herd, Lommers and Southworth (Nuclear Engineering and Design 251, 2012, 282-291) analyse HTR process-heat systems against a **99.9% process-heat availability requirement** and an n+2 redundancy check. They compare 600 MWth and 350 MWth HTRs with either additional HTRs or gas-fired boiler backup and conclude that substantial excess capacity is required; gas-fired backup is economically favoured across the studied demand range. Their loads are 200-1500 MWth, so the project's 176.8 MWth demand is just below their range and the exact redundancy result is not directly transferable. The methodological conclusion is transferable: industrial heat reliability can be materially stricter than single-reactor capacity factor.
+
+Schroders, Verfondern and Allelein (Nuclear Engineering and Design 329, 2018, 234-246) independently evaluate nuclear-heated SMR and conclude that the nuclear heat-supply system should include a fossil backup heater; even a small amount of natural-gas backup can reduce hydrogen-production cost. This is useful counter-evidence to any assumption that a single nuclear heat source automatically meets industrial continuity requirements.
+
+NEA/industrial-cogeneration literature likewise notes that existing fossil boilers/cogeneration units can serve as backup when HTGR heat is integrated into an industrial steam network, while industrial-scale flexibility/reliability remains to be demonstrated.
 
 ## What may be quantified next
 
@@ -110,7 +114,7 @@ and likewise for operating emissions/abatement terms whose rate basis is unchang
 
 However, **abatement cost does not necessarily scale identically**, because annualised reactor/CCS capital burdens can remain largely fixed while fuel savings and production-dependent T&S vary with operation. The Rust sensitivity must therefore recompute fixed and variable ledger terms separately rather than divide the base result by availability.
 
-Backup-heat cases require their own fuel/emissions/cost terms and will not be invented until a defensible backup configuration and efficiency are sourced.
+Backup-heat cases require their own fuel/emissions/cost terms. Literature now supports **gas-fired backup as an architecture option**, but a project sensitivity still requires a defensible heater efficiency and emissions factor before numerical results are added. No backup performance will be invented.
 
 ## Current disposition
 
@@ -135,3 +139,31 @@ Backup-heat cases require their own fuel/emissions/cost terms and will not be in
 - IAEA TECDOC-1645, *High Temperature Gas Cooled Reactor Fuels and Materials* / process-heat operating experience sections.
 - Hoseinzade & Adams (2017), International Journal of Hydrogen Energy 42, 25048-25062, DOI 10.1016/j.ijhydene.2017.08.031.
 - Schroders, Verfondern & Allelein (2018), Nuclear Engineering and Design 329, 234-246, DOI 10.1016/j.nucengdes.2017.08.007.
+
+
+## Reliability evidence added after initial scale-up pass
+
+### Herd et al. (2012)
+**Question:** how much redundancy is needed when HTRs serve continuous industrial process heat?
+
+**Method:** Monte Carlo availability analysis plus redundancy/failure-mode checks and economic comparison for 200-1500 MWth heat loads.
+
+**Key assumptions:** 99.9% required process-heat availability; n+2 reliability criterion; 600 MWth or 350 MWth HTR modules; HTR or gas-fired backup.
+
+**Finding:** substantial excess capacity is needed; gas-fired boiler backup is more economical than reactor-only redundancy over the studied range.
+
+**Limitation for this project:** 176.8 MWth is below the paper's minimum 200 MWth demand and the selected plant is direct high-temperature reforming heat rather than generic process steam. The exact number of backup units/boilers is not imported.
+
+**Project implication:** DF-08 changes from simply UNRESOLVED to **LITERATURE SUPPORTS NEED FOR REDUNDANCY/BACKUP; PROJECT CONFIGURATION UNRESOLVED**.
+
+### Schroders et al. (2018)
+**Question:** can nuclear heat economically replace fossil heat for SMR?
+
+**Method:** energy-economic optimisation of fossil-, solar- and HTGR-heated steam methane reforming.
+
+**Finding:** nuclear/solar heat systems benefit from fossil backup; nuclear heat is technically capable but continuity/economics improve with backup.
+
+**Project implication:** a gas-fired trim/backup case is scientifically defensible as a future sensitivity, but it must carry its own CO2 and cost penalty.
+
+### IAEA / JAEA demonstration status
+IAEA's operating-nuclear hydrogen review reports that JAEA and MHI are pursuing a stepwise HTTR-to-SMR hydrogen demonstration programme with connection technologies targeted for confirmation around 2030. This is important maturity evidence: **the coupled nuclear-SMR system is still being demonstrated**, even though high-temperature reactor and component precedents already exist.
