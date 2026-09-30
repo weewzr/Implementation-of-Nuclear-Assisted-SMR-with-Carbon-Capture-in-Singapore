@@ -1,14 +1,15 @@
 # FINAL DESIGN SANITY CHECKS
 
 1. INL process state remains 925 C reactor outlet -> 900 C process helium -> 871 C reformer target.
-2. INL Case-6 process duty remains 176.8 MWth and process electricity 17.3 MWe.
-3. INL process-side helium screen uses 900 C supply, 466 C return and constant-Cp flow 78.34 kg/s, within 0.2% of the source 78.49 kg/s.
-4. Nishihara economic architecture is kept coherent: 600 MWth = 370 MWth source heat branch + 230 MWth source power branch -> 88 MWe.
-5. Project integration does NOT import the 88 MWe unchanged. With 176.8 MWth process draw, residual thermal power is 423.2 MWth and project-derived gross electricity is 161.92 MWe using the source 88/230 conversion.
-6. Net export = 161.92-17.3 = 144.62 MWe; annual export at 85% availability is approximately 1.077 TWh/y.
-7. The 59.7 bn JPY / 0.52 JPY/MJ / 4.9 JPY/kWh reference economics are the principal mature case.
-8. The 70.9 bn JPY / 0.57 JPY/MJ / 5.5 JPY/kWh case is an adverse doubled-IHX/secondary-loop COST sensitivity only.
-9. Lifecycle intensity is dimensionally t/t = kg/kg and is approximately 1.95 kgCO2e/kgH2; no factor 1000 is applied.
-10. Direct and lifecycle abatement retain the independently reproduced INL/common-boundary values unless the reviewer finds the project integration mapping changes the lifecycle allocation.
-11. Zero-value electricity, S$100/S$150/S$200-MWh and doubled-cost cases are generated explicitly.
-12. Historical Gate-5 tests remain 64 cases / 0 joint passes and are not rewritten.
+2. INL Case-6 duty remains 176.8 MWth and chemical-process electricity demand 17.3 MWe.
+3. INL process-side helium screen uses 900 C supply, 466 C return and constant-Cp flow ~78.34 kg/s, within ~0.2% of source 78.49 kg/s.
+4. Selected Nishihara source architecture is coherent: 600 MWth reactor, 370 MWth source heat/IHX branch, complementary 230 MWth source branch, 88 MWe source electricity at that published split.
+5. Project process heat 176.8 MWth is below the source 370 MWth heat-branch capacity.
+6. Remaining reactor thermal capacity is 600-176.8 = 423.2 MWth. **It is not converted into a project electricity-output claim.**
+7. No exact project gross/net/export MWe is canonical because no validated off-design turbine/internal-load model is established.
+8. Controlling economics assigns project electricity revenue = S$0/MWh while recovering the full selected Nishihara source-product economic burden.
+9. Reference mature economics are 59.7 bn JPY / 0.52 JPY/MJ / 4.9 JPY/kWh. The 70.9 bn JPY / 0.57 / 5.5 case is an adverse COST sensitivity only.
+10. Lifecycle intensity is ~1.95 kgCO2e/kgH2; the resolved factor-of-1000 defect remains absent.
+11. Lifecycle avoided emissions remain ~917,139 tCO2e/y under the independently verified declared proxy boundary.
+12. Controlling zero-credit abatement cost is ~S$3.725/tCO2e, below the S$100/tCO2e CN4252 threshold.
+13. Historical Gate-5 and Review-5 evidence remains preserved and is not rewritten.
