@@ -1,11 +1,11 @@
 \section{Literature and technical background}
 Natural-gas SMR combines high-temperature reforming with water--gas shift (WGS), hydrogen purification and substantial process heat. Literature and authoritative sources establish three facts central to this study: lifecycle emissions cannot be inferred from stack capture alone because upstream natural-gas emissions remain material; high-temperature gas-cooled reactors can provide high-grade helium heat in principle, but reactor-to-chemical-plant coupling remains an integration problem rather than a demonstrated Singapore deployment; and CCS energy and cost depend strongly on the pressure and composition of the captured stream.
 
-The structured literature matrix in \texttt{literature/RESEARCH\_MATRIX.md} records the evidence basis and contradictions used in model construction. IEAGHG SMR+CCS cases~\cite{ieaghg2017smr} provide the principal process benchmark; NIST/JANAF thermochemistry~\cite{nistwebbook} underpins equilibrium and enthalpy calculations; JAEA/JAERI HTTR and GTHTR300C work~\cite{jaeahttr,jaeri2004gthtr300c} provides temperature, IHX and helium-loop precedent; Singapore Government sources~\cite{mti2025nuclear,mti2026inir,mti2025carbon,mti2025indonesiaccs} define nuclear and cross-border CCS as future or conditional infrastructure rather than existing assets.
+The structured literature matrix in \texttt{literature/RESEARCH\_MATRIX.md} records the evidence basis and contradictions used in model construction. IEA Greenhouse Gas R\&D Programme (IEAGHG) SMR+CCS cases~\cite{ieaghg2017smr} provide the principal process benchmark; National Institute of Standards and Technology (NIST)/JANAF thermochemistry~\cite{nistwebbook} underpins equilibrium and enthalpy calculations; JAEA / Japan Atomic Energy Research Institute (JAERI) HTTR and GTHTR300C work~\cite{jaeahttr,jaeri2004gthtr300c} provides temperature, IHX and helium-loop precedent; Singapore Government sources~\cite{mti2025nuclear,mti2026inir,mti2025carbon,mti2025indonesiaccs} define nuclear and cross-border CCS as future or conditional infrastructure rather than existing assets.
 
 
 \subsection{Visual orientation: from Singapore context to the process}
-Figure~\ref{fig:singapore-context} gives the external-data context before introducing the process model. Singapore's 2024 electricity system remained strongly gas-dependent: natural gas supplied 94.0\% of the generation fuel mix and the average grid emission factor was 0.402 kgCO$_2$/kWh~\cite{ema2024context}; EMA also describes power generation as contributing about 40\% of national carbon emissions~\cite{ema2024futurefund}. These are external Singapore statistics, not outputs of this project.
+Figure~\ref{fig:singapore-context} gives the external-data context before introducing the process model. Singapore's 2024 electricity system remained strongly gas-dependent: natural gas supplied 94.0\% of the generation fuel mix and the average grid emission factor was 0.402 kgCO$_2$/kWh~\cite{ema2024context}; Singapore's Energy Market Authority (EMA) also describes power generation as contributing about 40\% of national carbon emissions~\cite{ema2024futurefund}. These are external Singapore statistics, not outputs of this project.
 
 \begin{figure}[htbp]
 \centering
@@ -14,7 +14,7 @@ Figure~\ref{fig:singapore-context} gives the external-data context before introd
 \node[box,right=8mm of a] (b) {\Large\textbf{0.402}\\[1mm]kgCO$_2$/kWh\\2024 grid factor};
 \node[box,right=8mm of b] (c) {\Large\textbf{$\sim$40\%}\\[1mm]of national carbon emissions\\from power generation};
 \end{tikzpicture}
-\caption{Singapore energy context from EMA 2024 data~\cite{ema2024context,ema2024futurefund}. The panel is reconstructed from authoritative reported values stored in \texttt{data/external/ema\_singapore\_energy\_context\_2024.csv}; it is not a project-model result.}
+\caption{Singapore energy context from Energy Market Authority (EMA) 2024 data~\cite{ema2024context,ema2024futurefund}. The panel is reconstructed from authoritative reported values stored in \texttt{data/external/ema\_singapore\_energy\_context\_2024.csv}; it is not a project-model result.}
 \label{fig:singapore-context}
 \end{figure}
 
