@@ -5,28 +5,44 @@
 The final chemical-process basis is INL/NGNP Case 6. INL selected an 871$^\circ$C reformer outlet, steam/carbon ratio 3.0 and 88\% PSA recovery~\cite{inltev953}; TEV-961 reports that a 925$^\circ$C HTGR outlet supplies 900$^\circ$C process heat and the full 176.8 MWth reforming duty at that target~\cite{inltev961}. The source process produces 130 MMSCFD H$_2$ from 34.0 MMSCFD natural gas with 17.3 MWe process demand, 1,927 short ton/day captured CO$_2$ and 142 short ton/day emitted CO$_2$~\cite{inltev961}. The same INL model family provides the 130-MMSCFD conventional no-capture baseline: 52.5 MMSCFD natural gas and 3,205 short ton/day emitted CO$_2$~\cite{inltev953}.
 
 \subsection{Deriving the reactor requirement from the chemical process}
-The reactor is not selected first.  The verified chemical-process requirement is the starting point.  INL Case 6 requires 176.8 MWth and reports an 871$^\circ$C reformer outlet.  The same source supplies secondary helium at 900$^\circ$C~\cite{inltev961}, giving the positive reported-location temperature difference
-\begin{equation}\label{eq:reported-process-dt}
-\Delta T_{\rm process,reported}=900-871=29~^\circ\mathrm{C}.
-\end{equation}
-This is not claimed as the minimum local reformer pinch: local tube-wall, catalyst-bed and gas-temperature profiles are not all available from the source.
+The reactor is selected from the chemical-process requirement rather than the reverse. INL Case 6 reports a reformer outlet temperature $T_{\rm reformer}=871\,^{\circ}\mathrm C$, secondary-helium supply $T_{\rm He,supply}=900\,^{\circ}\mathrm C$, reactor outlet $T_{\rm reactor,out}=925\,^{\circ}\mathrm C$, and source process duty $\dot Q_{\rm process}=176.8$ MWth~\cite{inltev953,inltev961}.
 
-INL TEV-961 reports the paired 925$^\circ$C reactor-outlet / 900$^\circ$C secondary-helium Case-6 state~\cite{inltev961}; their 25 K difference is therefore source-derived, not an independently invented project pinch:
-\begin{equation}\label{eq:temperature-cascade}
-T_{\rm reactor,out}=T_{\rm He,secondary}+\Delta T_{\rm IHX}
-=900+25=925~^\circ\mathrm{C}.
+To show the available temperature head between the reported secondary-helium supply location and reformer outlet, define
+\begin{equation}\label{eq:reported-process-dt-general}
+\Delta T_{\rm process,reported}
+=T_{\rm He,supply}-T_{\rm reformer},
 \end{equation}
-Thus the evidence chain is
-\[
-925~^\circ\mathrm{C}\rightarrow900~^\circ\mathrm{C}
-\rightarrow871~^\circ\mathrm{C},
-\]
-with 176.8 MWth transferred at the process interface~\cite{inltev961}.  The secondary-helium energy balance is independently consistent:
+where $\Delta T_{\rm process,reported}$ is the reported-location temperature difference (K), $T_{\rm He,supply}$ is secondary-helium supply temperature ($^{\circ}$C), and $T_{\rm reformer}$ is reformer outlet-gas temperature ($^{\circ}$C). Substitution of the cited source states gives
+\begin{equation}\label{eq:reported-process-dt}
+\Delta T_{\rm process,reported}
+=900-871=29~\mathrm K.
+\end{equation}
+Equation~\ref{eq:reported-process-dt} is a reported-location difference, not a minimum local reformer pinch; local tube-wall, catalyst-bed and gas-temperature profiles are not all available.
+
+The corresponding reported reactor-to-secondary-helium difference is
+\begin{equation}\label{eq:ihx-dt-general}
+\Delta T_{\rm IHX}
+=T_{\rm reactor,out}-T_{\rm He,supply},
+\end{equation}
+where $\Delta T_{\rm IHX}$ is the reported primary-to-secondary outlet difference (K) and $T_{\rm reactor,out}$ is reactor outlet temperature ($^{\circ}$C). Using the INL Case-6 values~\cite{inltev961},
+\begin{equation}\label{eq:temperature-cascade}
+\Delta T_{\rm IHX}=925-900=25~\mathrm K.
+\end{equation}
+Thus the source temperature sequence is $925\rightarrow900\rightarrow871\,^{\circ}\mathrm C$; the 25 K and 29 K values are consequences of the reported source states rather than independently selected project pinch assumptions.
+
+Finally, the source-reported 176.8 MWth process duty is checked against its secondary-helium states rather than re-derived from them. The steady sensible-heat relation is
+\begin{equation}\label{eq:helium-heat-general}
+\dot Q=\dot m_{\rm He}\,\bar c_{p,\rm He}
+(T_{\rm in}-T_{\rm out}),
+\end{equation}
+where $\dot Q$ is thermal duty (kW), $\dot m_{\rm He}$ is secondary-helium mass flow (kg/s), $\bar c_{p,\rm He}$ is mean helium heat capacity (kJ kg$^{-1}$ K$^{-1}$), and $T_{\rm in}-T_{\rm out}$ is the helium temperature decrease (K). INL reports $\dot m_{\rm He}=78.49$ kg/s, $T_{\rm in}=900\,^{\circ}\mathrm C$ and $T_{\rm out}\approx466\,^{\circ}\mathrm C$~\cite{inltev961}. Solving Eq.~\ref{eq:helium-heat-general} for the implied mean heat capacity gives
 \begin{equation}\label{eq:helium-cp-check}
-\bar c_p=\frac{176.8\times10^3}
+\bar c_{p,\rm He}
+=\frac{176.8\times10^3}
 {78.49(900-466)}
 \approx5.19~\mathrm{kJ\,kg^{-1}\,K^{-1}}.
 \end{equation}
+This is an independent consistency check on the source duty; it does not imply that the constant-$c_p$ equation generated INL's Aspen duty.
 
 \subsection{Technology screen: why an HTGR and why GTHTR300C class?}
 Representative water-cooled SMRs provide useful electricity, steam, desalination and lower-temperature process heat, but their water-cooled outlet temperatures are far below the approximately 900$^\circ$C heating-medium requirement.  They therefore require a separate temperature-augmentation route for this direct-heat application.  This is an application-specific temperature mismatch, not a claim that LWRs are generally inferior.
@@ -42,14 +58,14 @@ The project is consequently described as a \textbf{GTHTR300C-class / GTHTR300C-i
 \begin{table}[htbp]\centering\scriptsize
 \caption{Application-specific reactor evidence screen.  Dispositions are evidence categories, not technology rankings.}
 \label{tab:reactor-screen}
-\begin{tabular}{p{0.20\linewidth}p{0.15\linewidth}p{0.17\linewidth}p{0.20\linewidth}p{0.20\linewidth}}
+\begin{tabular}{p{0.16\linewidth}p{0.15\linewidth}p{0.19\linewidth}p{0.23\linewidth}p{0.19\linewidth}}
 \toprule
 Candidate & Scale & Temperature evidence & Direct process-heat fit & Disposition\\ \midrule
-Water-cooled SMR family & relevant modular scales & roughly 300$^\circ$C class & requires temperature augmentation for 900$^\circ$C heat & comparator; not direct-heat basis\\
-HTTR & 30 MWth & 950$^\circ$C demonstrated & temperature yes; scale no & demonstrator/evidence\\
+Water-cooled SMR family & relevant modular scales & roughly 300$^\circ$C class (representative) & requires temperature augmentation for 900$^\circ$C heat & comparator; not direct-heat basis\\
+HTTR & 30 MWth~\cite{jaeahttr2026ops} & 950$^\circ$C demonstrated~\cite{jaeahttr2026ops} & temperature yes; scale no & demonstrator/evidence\\
 HTR-PM & $2\times250$ MWth & operating HTGR/steam-cycle evidence & strong HTGR maturity; operating plant is not 900$^\circ$C secondary-He SMR & safety/licensing comparator\\
-GTHTR300C & 600 MWth design & 950$^\circ$C reactor / 900$^\circ$C secondary He design & explicit hydrogen/process-heat architecture & retained design basis, conditional\\
-Project & 600 MWth class & 925$\rightarrow$900$\rightarrow$871$^\circ$C & 176.8 MWth source-model duty & GTHTR300C-informed screen\\
+GTHTR300C & 600 MWth design~\cite{nishihara2007potential} & 950$^\circ$C reactor / 900$^\circ$C secondary He~\cite{nishihara2007potential} & explicit hydrogen/process-heat architecture~\cite{nishihara2007potential} & retained design basis, conditional\\
+Project & 600 MWth class (source basis above) & 925$\rightarrow$900$\rightarrow$871$^\circ$C~\cite{inltev953,inltev961} & 176.8 MWth source-model duty~\cite{inltev961} & GTHTR300C-informed screen\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -57,21 +73,42 @@ Project & 600 MWth class & 925$\rightarrow$900$\rightarrow$871$^\circ$C & 176.8 
 \subsection{Thermal integration with the JAEA architecture}
 INL supplies the chemical-process duty; Nishihara et al. supplies the selected GTHTR300C hardware/economic architecture. They are deliberately kept as separate evidence layers.
 
-The selected source architecture is a 600 MWth GTHTR300C-class design.  JAEA's high-hydrogen variant provides approximately 371 MWth of process-heat branch capability (rounded to 370 MWth in the canonical economic model) and approximately 87--88 MWe of complementary source electricity~\cite{nishihara2007potential}.  The 370 MWth value is therefore a \emph{source process-heat branch/economic architecture}, not the rating of one physical IHX. The INL process requires 176.8 MWth, so nominal source-branch utilisation is
-\[
-176.8/370=47.8\%,
-\]
-with 193.2 MWth nominal branch margin.  This does not prove exchanger feasibility.  The published GTHTR300C reference IHX is approximately 170 MWth, so
-\[
-176.8-170=6.8~\mathrm{MW_{th}},\qquad 176.8/170=1.040.
-\]
-The project duty is therefore about 4.0\% above one published conceptual reference-IHX duty; a larger, parallel or otherwise redesigned exchanger arrangement remains a qualification requirement. At reactor-rating level,
-\[
-600=176.8+423.2\ {\rm MW_{th}}.
-\]
-The 423.2 MWth term is reported only as \emph{remaining thermal capacity}. It is not converted into a project electricity-output claim because the available source does not provide a validated off-design power-cycle/internal-load model for this changed heat split.
+The selected source architecture is a 600 MWth GTHTR300C-class design~\cite{nishihara2007potential}. JAEA's high-hydrogen variant provides approximately 371 MWth of process-heat branch capability (rounded to 370 MWth in the canonical economic model) and approximately 87--88 MWe of complementary source electricity~\cite{nishihara2007potential}. The 370 MWth value is a source process-heat branch/economic architecture, not the rating of one physical IHX.
 
-For the process-side helium screen, INL Case 6 provides approximately 900$^\circ$C supply, 466$^\circ$C return and 78.49 kg/s~\cite{inltev961}. Using project screening Assumption R-08, an average $c_p=5.2$ kJ kg$^{-1}$ K$^{-1}$ selected only to check consistency with the source flow, gives
+To quantify how much of the selected reactor rating is required by the INL process, define
+\begin{equation}\label{eq:reactor-process-fraction}
+f_{\rm process}=\frac{\dot Q_{\rm process}}{\dot Q_{\rm reactor}},
+\end{equation}
+where $f_{\rm process}$ is the reactor thermal-capacity fraction allocated to process heat (-), $\dot Q_{\rm process}$ is the source process duty (MWth), and $\dot Q_{\rm reactor}$ is reactor thermal rating (MWth). Using 176.8 MWth from INL~\cite{inltev961} and 600 MWth from Nishihara~\cite{nishihara2007potential},
+\begin{equation}\label{eq:reactor-process-fraction-sub}
+f_{\rm process}=\frac{176.8}{600}=0.2947\approx29.5\%.
+\end{equation}
+The derived 29.5\% is an aggregate reactor-capacity fraction, not a component qualification result.
+
+The remaining thermal capacity under this simple accounting is
+\begin{equation}\label{eq:remaining-thermal}
+\dot Q_{\rm remaining}=\dot Q_{\rm reactor}-\dot Q_{\rm process}
+=600-176.8=423.2~\mathrm{MW_{th}}.
+\end{equation}
+Here $\dot Q_{\rm remaining}$ is unallocated reactor thermal capacity (MWth). It is not automatically electricity output, cooling duty, turbine input or waste heat because no validated project off-design power-cycle/internal-load model is available.
+
+The process duty also occupies
+\begin{equation}\label{eq:branch-utilisation}
+f_{\rm branch}=\frac{176.8}{370}=0.478\approx47.8\%
+\end{equation}
+of the rounded source high-hydrogen heat branch, leaving 193.2 MWth nominal branch margin. Here $f_{\rm branch}$ is only an architecture-level utilisation fraction; the cited 370 MWth branch~\cite{nishihara2007potential} is not one exchanger rating.
+
+Component scale is checked separately. The published GTHTR300C reference physical IHX is approximately 170 MWth, whereas INL requires 176.8 MWth. Therefore
+\begin{equation}\label{eq:ihx-duty-gap}
+\Delta \dot Q_{\rm IHX}=176.8-170=6.8~\mathrm{MW_{th}},
+\end{equation}
+and
+\begin{equation}\label{eq:ihx-duty-ratio}
+R_{\rm IHX}=\frac{176.8}{170}=1.040.
+\end{equation}
+$\Delta\dot Q_{\rm IHX}$ is the project-minus-reference duty (MWth) and $R_{\rm IHX}$ is their dimensionless ratio. The project duty is thus about 4.0\% above the single reference-IHX duty; a larger, parallel or redesigned exchanger remains a qualification requirement.
+
+For the process-side helium screen, INL Case 6 provides approximately 900$^\circ$C supply, 466$^\circ$C return and 78.49 kg/s~\cite{inltev961}. Using project screening parameter R-08, an average $c_p=5.2$ kJ kg$^{-1}$ K$^{-1}$ selected only to check consistency with the source flow, gives
 \begin{equation}\label{eq:helium-flow-check}
 \dot m_{He}=\frac{176.8\times10^3}{5.2(900-466)}\approx78.34\ {\rm kg/s},
 \end{equation}
@@ -88,9 +125,10 @@ The principal mature case uses the coherent Nishihara reference economics: 59.7 
 The source's 70.9 billion JPY / 0.57 JPY/MJ / 5.5 JPY/kWh case is retained only as an adverse \emph{cost} sensitivity in which assigned IHX/secondary-loop cost doubles; it is not interpreted as increased exchanger capacity. CCS capital is anchored to IEAGHG Case 1A and T\&S remains a Singapore screening scenario~\cite{ieaghg2017smr,mticcs2025cost}.
 
 Forward abatement cost remains
-\begin{equation}
+\begin{equation}\label{eq:abatement-cost-definition}
 C_{\rm abatement}=\frac{C_{\rm candidate}-C_{\rm baseline}}{A_{\rm avoided}}.
 \end{equation}
+where $C_{\rm candidate}$ and $C_{\rm baseline}$ are annual candidate and baseline costs (S\$/y), $A_{\rm avoided}$ is annual lifecycle abatement (tCO$_2$e/y), and $C_{\rm abatement}$ is forward abatement cost (S\$/tCO$_2$e). Section~\ref{sec:ledgers} provides the numerical substitution.
 
 \subsection{Historical research boundary}
 The earlier fixed-scale 64-case study and the Review-5 deployment study remain reproducible audit evidence. They are not the operative final-design calculation.
