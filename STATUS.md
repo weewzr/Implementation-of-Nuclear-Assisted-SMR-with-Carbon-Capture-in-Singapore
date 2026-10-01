@@ -83,12 +83,24 @@ Additional saturation work completed under the uploaded supplemental instruction
 - Singapore 2026 INIR / 19-infrastructure-issue decision framework cross-check;
 - question register expanded through DF-40 with explicit decision consequences.
 
+Current manuscript-integration milestone:
+- process-first reactor selection and temperature derivation integrated;
+- reactor technology screen integrated;
+- 170 MWth IHX qualification issue explicit;
+- Chinese HTR-PM EPZ research vs implemented 3/7/30 km plan integrated;
+- HTTR tritium permeation and process-trip evidence integrated;
+- explicit CO2 and cost numerical derivations integrated;
+- Rust-generated availability, CCS, CO2-bridge and cost-bridge figures integrated/generated;
+- Singapore siting/cooling options integrated without selecting Jurong;
+- native air/water-ingress mechanism evidence now saturated at screening level;
+- Chinese HTR-PM operating-event evidence added for reliability, I&C/human factors and spent-fuel handling.
+
 Key unresolved critical-path questions:
-1. verify the latest native-evidence/Rust-figure HEAD and record exact reliability/CCS generated margins from CI;
-2. reactor-trip/loss-of-nuclear-heat reformer safe-state remains higher-fidelity process-dynamics work; air/water-ingress/source-term methodology is mature enough for current screening claims but project PRA/source term remains future analysis;
+1. verify the fully integrated manuscript/Rust-figure HEAD; exact verified margins from prior CI are: no-backup abatement threshold ~23.2% availability; gas-backup 50% nuclear-availability screen ~0.778 MtCO2e/y and S$48.35/t; zero delivered CCS stream still ~0.388 MtCO2e/y in the narrow steady screen;
+2. reactor-trip/loss-of-nuclear-heat reformer safe-state remains a higher-fidelity process-dynamics requirement; air/water-ingress mechanism literature is saturated for screening, while project PRA/mechanistic source term remains future analysis rather than a literature gap;
 3. recover the missing second professor/research transcript and slides;
 4. reconcile professor traceability/question register after that source recovery;
-5. integrate the now-mature reactor-selection, process-heat, reliability, CCS, source-term/EPZ, waste, cooling/siting, regulatory, V&V, human-factors/security and accident-register evidence into the manuscript;
+5. finish manuscript integration only for remaining high-value waste/fuel/human-factors/V&V limitations; avoid turning research registers into manuscript clutter;
 6. add only the highest-value remaining Rust figures/bridges (CO2 and cost contribution bridges plus selection/evidence schematics where appropriate);
 7. run full CI/PDF QA before the next Independent Review.
 
