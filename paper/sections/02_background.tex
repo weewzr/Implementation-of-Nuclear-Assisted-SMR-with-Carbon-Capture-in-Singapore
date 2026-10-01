@@ -9,39 +9,20 @@ The structured literature matrix in \texttt{literature/RESEARCH\_MATRIX.md} reco
 Before the detailed derivations, Figures~\ref{fig:smr-explainer}--\ref{fig:proposed-orientation} answer three different questions: how conventional hydrogen production obtains reformer heat; what an HTGR normally does with reactor heat in a power-production pathway; and what this project changes by diverting high-temperature heat to the hydrogen process.
 
 \begin{figure}[htbp]\centering
-\begin{tikzpicture}[>=Latex,node distance=7mm,unit/.style={draw,rounded corners,align=center,minimum height=10mm,minimum width=18mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
-\node[unit] (fuel) {Fuel};
-\node[unit,right=of fuel] (furnace) {Furnace};
-\node[unit,right=of furnace] (ref) {SMR};
-\node[unit,right=of ref] (wgs) {WGS};
-\node[unit,right=of wgs] (cap) {CO$_2$ capture};
-\node[unit,right=of cap] (psa) {PSA};
-\node[unit,right=of psa] (h2) {H$_2$};
-\node[unit,above=of ref] (feed) {Natural gas + steam};
-\node[unit,below=of cap] (store) {Compression / conditioning\\$\rightarrow$ T\&S};
-\draw[arr](fuel)--(furnace); \draw[heat](furnace)--node[above,font=\scriptsize]{fossil heat}(ref);
-\draw[arr](feed)--(ref); \draw[arr](ref)--(wgs); \draw[arr](wgs)--(cap); \draw[arr](cap)--(psa); \draw[arr](psa)--(h2); \draw[arr](cap)--(store);
-\end{tikzpicture}
-\caption{Figure 1---conventional hydrogen-production orientation. SMR = Steam Methane Reforming/Reformer; WGS = Water-Gas Shift; PSA = Pressure Swing Adsorption; T\&S = carbon-dioxide transport and storage. Conventional SMR obtains the high-temperature reformer heat service from fuel combustion; carbon capture separates a process CO$_2$ stream before hydrogen purification. The diagram is an original conceptual reconstruction of the source process and does not add unsupported state points~\cite{ieaghg2017smr,inltev953}.}
+\resizebox{\textwidth}{!}{\input{../results/final_design/generated/figure1_conventional_smr_ccs.tex}}
+\caption{Figure 1---conventional hydrogen-production orientation. SMR = Steam Methane Reformer/Reforming; WGS = Water-Gas Shift; CCS = Carbon Capture and Storage; PSA = Pressure Swing Adsorption; T\&S = carbon-dioxide Transport and Storage. The fired furnace supplies the high-temperature reformer heat service; process gas then passes through WGS, CO$_2$ capture and PSA to hydrogen product, while captured CO$_2$ proceeds to conditioning and T\&S. This is an original static engineering schematic reconstructed from the source process; equipment silhouettes are schematic art rather than design drawings~\cite{ieaghg2017smr,inltev953}.}
 \label{fig:smr-explainer}
 \end{figure}
 
 \begin{figure}[htbp]\centering
-\begin{tikzpicture}[>=Latex,node distance=9mm,unit/.style={draw,rounded corners,align=center,minimum height=11mm,minimum width=24mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
-\node[unit] (core) {HTGR core\\fission heat};
-\node[unit,right=of core] (he) {Primary He\\carries heat};
-\node[unit,right=of he] (conv) {Power-conversion\\system};
-\node[unit,right=of conv] (gen) {Turbine / generator\\$\rightarrow$ electricity};
-\node[unit,below=of conv] (sink) {Heat rejection / cooling};
-\draw[heat](core)--(he); \draw[heat](he)--(conv); \draw[arr](conv)--(gen); \draw[heat](conv)--(sink);
-\end{tikzpicture}
-\caption{Figure 2---conceptual conventional HTGR power pathway. HTGR = High-Temperature Gas-Cooled Reactor; He = helium. Fission energy heats the reactor/core, primary helium removes that heat, and a power-conversion system can use it to generate electricity while rejecting remaining heat. This figure is explanatory only: it does \textbf{not} assign a numerical gross, net or export electricity output to this project.}
+\resizebox{0.94\textwidth}{!}{\input{../results/final_design/generated/figure2_htgr_power.tex}}
+\caption{Figure 2---conceptual conventional HTGR electricity-generation pathway. HTGR = High-Temperature Gas-Cooled Reactor; He = helium. Primary helium forms a closed reactor-to-steam-generator loop; the separate steam/water cycle drives a turbine and generator and returns condensate through a pump. This is a reference architecture only and does \textbf{not} assign or imply a numerical electricity output for the proposed CN4252 system. Equipment silhouettes are schematic art, not mechanical design drawings.}
 \label{fig:htgr-power-orientation}
 \end{figure}
 
-\begin{figure}[htbp]\centering
-\resizebox{\textwidth}{!}{\input{../results/final_design/generated/final_integrated_process_figure.tex}}
-\caption{Figure 3---proposed HTGR-assisted SMR+CCS using direct nuclear process heat. HTGR = High-Temperature Gas-Cooled Reactor; IHX = Intermediate Heat Exchanger; SMR = Steam Methane Reformer; WGS = Water-Gas Shift; PSA = Pressure Swing Adsorption; CCS = Carbon Capture and Storage; T\&S = transport and storage. Idaho National Laboratory process evidence anchors the 925$^\circ$C reactor-outlet case, 900$^\circ$C secondary-helium supply, approximately 466$^\circ$C return, 78.49 kg/s source flow, 871$^\circ$C reformer outlet, 176.8 MWth duty, S/C=3.0 and 88\% PSA hydrogen recovery~\cite{inltev953,inltev961}. The 600 MWth GTHTR300C-class reactor basis and source heat architecture are literature design bases~\cite{jaeri2004gthtr300c,nishihara2007potential}. Primary reactor helium and secondary process helium remain physically separated by the IHX. The approximately 170 MWth reference physical IHX is not already qualified for the 176.8 MWth project duty; the approximately 370 MWth source branch is not one physical exchanger. Remaining capacity is thermal capacity only, with no project electricity output inferred. Cross-border CO$_2$ T\&S is a conditional screening boundary.}
+\begin{figure}[p]\centering
+\resizebox{\textwidth}{!}{\input{../results/final_design/generated/figure3_proposed_htgr_smr_ccs.tex}}
+\caption{Figure 3---proposed HTGR-assisted SMR+CCS system. HTGR = High-Temperature Gas-Cooled Reactor; IHX = Intermediate Heat Exchanger; He = helium; SMR = Steam Methane Reformer; WGS = Water-Gas Shift; PSA = Pressure Swing Adsorption; CCS = Carbon Capture and Storage; T\&S = Transport and Storage. Idaho National Laboratory process evidence anchors the 925$^\circ$C reactor-outlet case, 900$^\circ$C secondary-He supply, approximately 466$^\circ$C return, 78.49 kg/s source flow, 871$^\circ$C reformer outlet, 176.8 MWth duty, S/C=3.0 and 88\% PSA hydrogen recovery~\cite{inltev953,inltev961}. The 600 MWth GTHTR300C-class reactor basis is a literature design basis~\cite{jaeri2004gthtr300c,nishihara2007potential}. Primary and secondary helium are physically separated by the IHX and neither mixes with the SMR process gas. The approximately 170 MWth value is a physical-IHX reference/qualification caveat and does not establish a qualified 176.8 MWth project IHX. The approximately 370/371 MWth value is the source architecture/economic process-heat branch, \textbf{not} one physical IHX~\cite{nishihara2007potential}. The 423.2 MWth value is remaining reactor thermal capacity, \textbf{not} electricity output. The 88\% value is PSA hydrogen recovery, \textbf{not} hydrogen purity. H$_2$ product is 130 MMSCFD; annualised output is approximately 97,946 t/y. The CO$_2$ endpoint is a conditional transport/storage screening boundary rather than guaranteed infrastructure.}
 \label{fig:proposed-orientation}
 \end{figure}
 
