@@ -2,16 +2,16 @@ use nuclear_assisted_smr::final_design::{availability_sensitivity,gas_backup_sen
 use std::{fs,fmt::Write};
 fn main(){
  let mut a=String::new();
- writeln!(a,r"\begin{{tikzpicture}}\begin{{axis}}[width=0.94\linewidth,height=6.2cm,xlabel={{Effective annual availability (\%)}},ylabel={{Lifecycle CO$_2$e avoided (t/y)}},xmin=20,xmax=100,ymin=0,ymax=1100000,grid=major,legend style={{font=\small,at={{(0.02,0.98)}},anchor=north west}}]").unwrap();
+ writeln!(a,r"\begin{{tikzpicture}}\begin{{axis}}[width=0.94\linewidth,height=6.2cm,xlabel={{Availability (\%) --- definitions differ by series}},ylabel={{Lifecycle CO$_2$e avoided (t/y)}},xmin=20,xmax=100,ymin=0,ymax=1100000,grid=major,legend style={{font=\small,at={{(0.02,0.98)}},anchor=north west}}]").unwrap();
  writeln!(a,r"\addplot[dashed] coordinates {{(20,250000)(100,250000)}};\addlegendentry{{CN4252 threshold}}").unwrap();
- write!(a,r"\addplot[thick] coordinates {{").unwrap(); for i in 20..=100{let x=availability_sensitivity(i as f64/100.0);write!(a,"({},{:.1})",i,x.lifecycle_avoided_t).unwrap();} writeln!(a,r"}};\addlegendentry{{No-backup screen}}").unwrap();
- write!(a,r"\addplot[thick,densely dotted] coordinates {{").unwrap(); for i in 50..=85{let x=gas_backup_sensitivity(i as f64/100.0);write!(a,"({},{:.1})",i,x.lifecycle_avoided_t).unwrap();} writeln!(a,r"}};\addlegendentry{{Gas-backup lower-bound screen}}\end{{axis}}\end{{tikzpicture}}").unwrap();
+ write!(a,r"\addplot[thick] coordinates {{").unwrap(); for i in 20..=100{let x=availability_sensitivity(i as f64/100.0);write!(a,"({},{:.1})",i,x.lifecycle_avoided_t).unwrap();} writeln!(a,r"}};\addlegendentry{{No backup: effective process availability}}").unwrap();
+ write!(a,r"\addplot[thick,densely dotted] coordinates {{").unwrap(); for i in 50..=85{let x=gas_backup_sensitivity(i as f64/100.0);write!(a,"({},{:.1})",i,x.lifecycle_avoided_t).unwrap();} writeln!(a,r"}};\addlegendentry{{Gas backup: nuclear-source availability; process service=85\%}}\end{{axis}}\end{{tikzpicture}}").unwrap();
  fs::write("../results/final_design/generated/availability_abatement_figure.tex",a).unwrap();
 
  let mut b=String::new();
- writeln!(b,r"\begin{{tikzpicture}}\begin{{axis}}[width=0.94\linewidth,height=6.2cm,xlabel={{Fraction of canonical captured stream stored (\%)}},ylabel={{Lifecycle CO$_2$e avoided (t/y)}},xmin=0,xmax=100,ymin=0,ymax=1000000,grid=major,legend style={{font=\small,at={{(0.02,0.98)}},anchor=north west}}]").unwrap();
+ writeln!(b,r"\begin{{tikzpicture}}\begin{{axis}}[width=0.94\linewidth,height=6.2cm,xlabel={{Canonical captured stream receiving credited storage (\%)}},ylabel={{Lifecycle CO$_2$e avoided (t/y)}},xmin=0,xmax=100,ymin=0,ymax=1000000,grid=major,legend style={{font=\small,at={{(0.02,0.98)}},anchor=north west}}]").unwrap();
  writeln!(b,r"\addplot[dashed] coordinates {{(0,250000)(100,250000)}};\addlegendentry{{CN4252 threshold}}").unwrap();
- write!(b,r"\addplot[thick] coordinates {{").unwrap(); for i in 0..=100{let x=ccs_capture_sensitivity(i as f64/100.0);write!(b,"({},{:.1})",i,x.lifecycle_avoided_t).unwrap();} writeln!(b,r"}};\addlegendentry{{Steady capture/storage screen}}\end{{axis}}\end{{tikzpicture}}").unwrap();
+ write!(b,r"\addplot[thick] coordinates {{").unwrap(); for i in 0..=100{let x=ccs_capture_sensitivity(i as f64/100.0);write!(b,"({},{:.1})",i,x.lifecycle_avoided_t).unwrap();} writeln!(b,r"}};\addlegendentry{{Emissions-only delivered-storage screen}}\end{{axis}}\end{{tikzpicture}}").unwrap();
  fs::write("../results/final_design/generated/ccs_robustness_figure.tex",b).unwrap();
 
  let d=final_design(0.0,false);
