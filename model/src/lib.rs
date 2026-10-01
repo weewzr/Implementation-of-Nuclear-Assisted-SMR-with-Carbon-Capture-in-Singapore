@@ -7,6 +7,7 @@
 pub mod deployment;
 pub mod final_design;
 pub mod figures;
+pub mod schematic_art;
 
 /// kg H2 per normal cubic metre implied by IEAGHG's own base-case pair:
 /// 8.994 t/h = 100,000 Nm3/h.
