@@ -1,6 +1,8 @@
 # STATUS
 
-## FINAL TECHNICAL-REPORT / NUMERICAL-PROVENANCE PRESENTATION PASS — COMPLETE
+## FINAL READABILITY / THREE-FIGURE / REPOSITORY PACKAGING PASS — COMPLETE
+
+**FINAL TECHNICAL-REPORT / NUMERICAL-PROVENANCE PRESENTATION PASS — COMPLETE.**
 
 **STRICT EQUATION / CITATION COMPLIANCE — COMPLETE.**  
 **REVIEW 07 — RESOLVED.**  
@@ -42,27 +44,35 @@ The unavailable second professor/research transcript was explicitly waived by th
 
 ## Final verified artifact
 
-Final strict-equation scientific/manuscript HEAD before this status-only closure commit:
-`3ed597a97364f3f2fc0caab24a4e8deb28ed5649`
+Final packaging/scientific manuscript HEAD before this status-only closure commit:
+`15b81f182f5dd51e0bf38441c48a28b659bd5326`
 
 Verification:
-- Research CI `36873981075` — **PASS**;
-- Paper/reproducibility CI `36873981074` — **PASS**;
-- exact workflow manuscript artifact `11167783843`;
-- artifact digest `sha256:5a61896b350ef6cec1286f5641ca7087ad99bfe2c06fbc9e354e48c9348c694a`;
-- `main.pdf` — **34 pages**;
+- Research CI `36897131627` — **PASS**;
+- Paper/reproducibility CI `36897131406` — **PASS**;
+- exact workflow manuscript artifact `11179719163`;
+- artifact ZIP digest `sha256:365a7ac588d016fd8fb11a597b76cf7677e257036cefaceba2dfe82d1865d160`;
+- exact `main.pdf` SHA256: `sha256:28c3b3db36db3335f9a8d41ccf1ecfbc4e378b76952d28c3cc788c55f63eae0d`;
+- `main.pdf` — **38 pages**;
 - undefined citations in final `main.log`: **0**;
 - undefined references in final `main.log`: **0**;
-- the exact workflow artifact was downloaded and rendered; all 34 pages were visually inspected;
-- pages 16, 19 and 28 were additionally inspected at page scale after the final equation/path wrapping corrections;
-- Eqs. 24--25 on page 16 and Eqs. 41--42 on page 19 remain inside the text margins and are readable;
-- the Appendix-B provenance path on page 28 wraps inside the text block;
-- no observed clipping, overlapping equations/text, table overflow, broken figures, malformed glyphs, accidental blank pages or broken page boundaries;
-- bibliography and appendices render in the exact artifact.
+- obsolete `fig:final-system` reference: **resolved**;
+- the exact workflow artifact was downloaded and all 38 pages were rendered and visually inspected.
 
-The successful `paper/build.sh` explicitly fails when the final `main.log` contains unresolved references or citations. The passing Paper/reproducibility workflow therefore confirms the zero-undefined-citation/reference closure state.
+### Submission-facing visual QA
+- **Figure 1 — PASS:** conventional SMR + CCS pathway is readable at normal page scale; furnace-to-reformer heat relationship and arrows are clear; caption expands the short forms.
+- **Figure 2 — PASS:** conventional HTGR-to-power pathway is readable with no clipping/overlap and does not imply a numerical project electricity output.
+- **Figure 3 — PASS:** the previously observed annotation overlap is corrected in the replacement artifact. Primary and secondary helium are visually distinct; primary reactor coolant terminates at the IHX rather than entering the chemical plant. Visible/captioned canonical values and qualifications remain intact: 600 MWth reactor basis; 925 C reactor outlet; 900 C secondary-He supply; 78.49 kg/s source flow; approximately 466 C return; 871 C reformer outlet; 176.8 MWth process heat; 423.2 MWth remaining thermal capacity; approximately 170 MWth reference physical-IHX qualification caveat; approximately 370/371 MWth source process-heat branch distinction; 88% PSA H2 recovery; 130 MMSCFD H2; and conditional CO2 transport/storage boundary. The 423.2 MWth value is not presented as electricity output; the approximately 370/371 MWth branch is not presented as one physical IHX; and 88% PSA recovery is not presented as hydrogen purity.
+- **Process explanation — PASS:** the report visibly follows fission/heat generation -> primary helium -> IHX isolation -> secondary helium -> reformer heat -> reforming -> WGS -> CO2 capture -> PSA -> H2 product -> conditional CO2 conditioning/transport/storage.
+- **CO2 / cost / CN4252 presentation — PASS:** the CO2 comparison, represented annual-cost comparison and official CN4252 requirement mapping are present and readable; **CONDITIONAL MODEL PASS** is clearly stated after the requirement mapping.
+- **Acronym/organisation readability — PASS:** major short forms are expanded at substantive first use, in nomenclature, or in the relevant figure captions.
+- **Full-PDF QA — PASS:** all 38 pages inspected. No observed clipping, content outside margins, overlapping text/equations/arrows, malformed tables, broken figures, broken glyphs, accidental blank pages or broken page boundaries. Bibliography and appendices render correctly. The logged 19.0227-pt overfull alignment warning was inspected in the exact rendered appendix and is visually acceptable; no corrective edit is warranted.
 
-The status commit following this verified manuscript HEAD changes only this closure record; it does not change the scientific model, equations, generated results or manuscript.
+**STRICT EQUATION / CITATION COMPLIANCE — COMPLETE.**  
+**REVIEW 07 — RESOLVED.**  
+**CONDITIONAL MODEL PASS — RETAINED.**
+
+The status commit following this verified manuscript HEAD changes only this closure record; it does not change the scientific model, equations, figures, generated results or manuscript.
 
 ## Remaining scientific questions
 
