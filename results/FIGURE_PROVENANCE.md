@@ -55,3 +55,18 @@ The honest provenance chain is therefore:
 - Ledger tables: **table -> generated CSV -> Rust ledger function -> final model/source assumptions**.
 - Threshold TikZ figures: **manuscript TikZ -> canonical verified result values -> final Rust model**.
 - Plotters threshold SVG: **reference SVG -> Rust Plotters generator -> final Rust model**; retained for reproducibility but not rendered in the active paper.
+
+
+## Deep-feasibility quantitative figures
+
+| Figure asset | Manuscript role | Generator | Data/model dependency | Evidence class |
+|---|---|---|---|---|
+| `availability_abatement_figure.tex` | availability vs lifecycle-abatement robustness | Rust `deep_feasibility_tikz` | `availability_sensitivity()` and `gas_backup_sensitivity()` | PROJECT-DERIVED VERIFIED SCREENING |
+| `ccs_robustness_figure.tex` | captured-stream delivery fraction vs lifecycle abatement | Rust `deep_feasibility_tikz` | `ccs_capture_sensitivity()` | PROJECT-DERIVED VERIFIED SCREENING |
+| `co2_bridge_figure.tex` | lifecycle contribution bridge | Rust `deep_feasibility_tikz` | canonical `final_design()` lifecycle ledger | PROJECT-DERIVED VERIFIED SCREENING |
+| `cost_bridge_figure.tex` | annual cost-contribution bridge | Rust `deep_feasibility_tikz` | `final_cost_ledger()` | PROJECT-DERIVED VERIFIED SCREENING |
+| `availability_abatement.svg` | vector reference asset for availability screen | Rust/Plotters `figures.rs` | same availability model | REPRODUCIBLE REFERENCE ASSET |
+| `availability_cost.svg` | vector reference asset for cost robustness | Rust/Plotters `figures.rs` | same availability/backup model | REPRODUCIBLE REFERENCE ASSET |
+| `ccs_robustness.svg` | vector reference asset for CCS robustness | Rust/Plotters `figures.rs` | same CCS model | REPRODUCIBLE REFERENCE ASSET |
+
+The active manuscript uses the generated TikZ assets so labels remain LaTeX-native. The SVGs are retained as independently reproducible vector/reference assets. Both originate from the same Rust model functions; neither is manually redrawn.
