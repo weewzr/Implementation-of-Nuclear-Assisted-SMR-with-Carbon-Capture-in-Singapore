@@ -1,5 +1,7 @@
 # Active Manuscript Claim Audit — Targeted Extension
 
+> **Closure note.** Review 07 is resolved and final strict equation/citation compliance is complete. The controlling exact-artifact QA is recorded in `STATUS.md`. The risk list and audit language below preserve the state at the time of this historical claim audit and are not an active outstanding-work list.
+
 Audit basis: active files included by `paper/main.tex`. Historical/non-input sections are excluded from current-claim status but remain in the repository.
 
 | Active section | Paragraph purpose | Source-dependent claims | Audit result / action |
