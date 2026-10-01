@@ -86,3 +86,31 @@ If those measures make the project economically or spatially infeasible, the sel
 - JAERI-Tech 2005-014, full-scale single reaction-tube dynamic-code validation.
 - JAEA press release, 12 Jun 2024, HTTR heat-load variation test.
 - JAEA-Review 2025-053, FY2024 HTTR operation/test report.
+
+
+## 2026 simulator validation update
+
+JAEA's 2026 R&D review reports a RELAP5-based plant simulator with added atmospheric heat-loss and natural-circulation models. Its predictive performance was checked against the mock-up experiment in which hydrogen production was stopped, reproducing post-stop helium/water temperature and pressure behaviour.
+
+This strengthens the V&V classification:
+
+**process-load-loss transient: mock-up experimental data + dynamic-code validation + HTTR reactor-level emulation exist.**
+
+It still does not constitute project-scale validation for a 600 MWth reactor and 176.8 MWth reformer.
+
+## Opposite-direction transient: loss of nuclear heat
+
+The available Japanese programme is much stronger for disturbances originating in the hydrogen plant and propagating toward the reactor than for the chemical consequences of a reactor trip/rapid heat-source loss.
+
+The project still lacks source-backed quantitative answers for:
+- catalyst-bed cooling rate;
+- methane/steam feed-isolation timing;
+- minimum steam/carbon ratio during heat loss;
+- coking/carbon-deposition risk;
+- depressurisation sequence;
+- product/flammable inventory during shutdown;
+- restart criteria.
+
+Therefore DF-11 remains **UNRESOLVED — PROCESS DYNAMICS / SAFE-STATE DESIGN REQUIRED**.
+
+A future model should begin from the chemical reactor inventory and reaction/coking kinetics, not simply reverse the HTTR process-trip transient.
