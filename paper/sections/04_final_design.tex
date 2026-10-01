@@ -5,28 +5,28 @@
 The final chemical-process basis is INL/NGNP Case 6. INL selected an 871$^\circ$C reformer outlet, steam/carbon ratio 3.0 and 88\% PSA recovery~\cite{inltev953}; TEV-961 reports that a 925$^\circ$C HTGR outlet supplies 900$^\circ$C process heat and the full 176.8 MWth reforming duty at that target~\cite{inltev961}. The source process produces 130 MMSCFD H$_2$ from 34.0 MMSCFD natural gas with 17.3 MWe process demand, 1,927 short ton/day captured CO$_2$ and 142 short ton/day emitted CO$_2$~\cite{inltev961}. The same INL model family provides the 130-MMSCFD conventional no-capture baseline: 52.5 MMSCFD natural gas and 3,205 short ton/day emitted CO$_2$~\cite{inltev953}.
 
 \subsection{Deriving the reactor requirement from the chemical process}
-The reactor is not selected first.  The verified chemical-process requirement is the starting point.  INL Case 6 requires 176.8 MWth and reports an 871$^\circ$C reformer outlet.  The same source supplies secondary helium at 900$^\circ$C, giving the positive reported-location temperature difference
-\[
+The reactor is not selected first.  The verified chemical-process requirement is the starting point.  INL Case 6 requires 176.8 MWth and reports an 871$^\circ$C reformer outlet.  The same source supplies secondary helium at 900$^\circ$C~\cite{inltev961}, giving the positive reported-location temperature difference
+\begin{equation}\label{eq:reported-process-dt}
 \Delta T_{\rm process,reported}=900-871=29~^\circ\mathrm{C}.
-\]
+\end{equation}
 This is not claimed as the minimum local reformer pinch: local tube-wall, catalyst-bed and gas-temperature profiles are not all available from the source.
 
-INL then places the secondary-helium supply 25$^\circ$C below its selected reactor-outlet case:
-\[
+INL TEV-961 reports the paired 925$^\circ$C reactor-outlet / 900$^\circ$C secondary-helium Case-6 state~\cite{inltev961}; their 25 K difference is therefore source-derived, not an independently invented project pinch:
+\begin{equation}\label{eq:temperature-cascade}
 T_{\rm reactor,out}=T_{\rm He,secondary}+\Delta T_{\rm IHX}
 =900+25=925~^\circ\mathrm{C}.
-\]
+\end{equation}
 Thus the evidence chain is
 \[
 925~^\circ\mathrm{C}\rightarrow900~^\circ\mathrm{C}
 \rightarrow871~^\circ\mathrm{C},
 \]
 with 176.8 MWth transferred at the process interface~\cite{inltev961}.  The secondary-helium energy balance is independently consistent:
-\[
+\begin{equation}\label{eq:helium-cp-check}
 \bar c_p=\frac{176.8\times10^3}
 {78.49(900-466)}
 \approx5.19~\mathrm{kJ\,kg^{-1}\,K^{-1}}.
-\]
+\end{equation}
 
 \subsection{Technology screen: why an HTGR and why GTHTR300C class?}
 Representative water-cooled SMRs provide useful electricity, steam, desalination and lower-temperature process heat, but their water-cooled outlet temperatures are far below the approximately 900$^\circ$C heating-medium requirement.  They therefore require a separate temperature-augmentation route for this direct-heat application.  This is an application-specific temperature mismatch, not a claim that LWRs are generally inferior.
@@ -71,10 +71,10 @@ The project duty is therefore about 4.0\% above one published conceptual referen
 \]
 The 423.2 MWth term is reported only as \emph{remaining thermal capacity}. It is not converted into a project electricity-output claim because the available source does not provide a validated off-design power-cycle/internal-load model for this changed heat split.
 
-For the process-side helium screen, INL Case 6 provides approximately 900$^\circ$C supply, 466$^\circ$C return and 78.49 kg/s. Using an average $c_p=5.2$ kJ kg$^{-1}$ K$^{-1}$ gives
-\[
+For the process-side helium screen, INL Case 6 provides approximately 900$^\circ$C supply, 466$^\circ$C return and 78.49 kg/s~\cite{inltev961}. Using project screening Assumption R-08, an average $c_p=5.2$ kJ kg$^{-1}$ K$^{-1}$ selected only to check consistency with the source flow, gives
+\begin{equation}\label{eq:helium-flow-check}
 \dot m_{He}=\frac{176.8\times10^3}{5.2(900-466)}\approx78.34\ {\rm kg/s},
-\]
+\end{equation}
 which is used only as a constant-$c_p$ verification screen~\cite{inltev961}.
 
 \input{../results/final_design/generated/heat_flow_figure.tex}
