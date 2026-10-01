@@ -1,6 +1,66 @@
 \section{Final design results}
 \label{sec:final-results}
 
+The three-figure orientation establishes the physical change; this section answers the next two beginner-facing questions: \emph{how much CO$_2$ changes, and what represented annual cost changes?}
+
+\subsection{What changed in carbon terms?}
+\begin{table}[htbp]\centering\small
+\caption{Plain-language carbon comparison on the verified common-output screening boundary. The avoided total reflects the combined candidate architecture---nuclear heat substitution, carbon capture and lower natural-gas use---with lifecycle burdens included; it is not attributed to nuclear heat alone.}
+\begin{tabular}{p{0.46\linewidth}p{0.38\linewidth}}
+\toprule Quantity & Verified value \\ \midrule
+Baseline natural gas & 52.5 MMSCFD~\cite{inltev953}\\
+Candidate natural gas & 34.0 MMSCFD~\cite{inltev961}\\
+Natural-gas reduction & 18.5 MMSCFD\\
+Baseline direct CO$_2$ & approximately 902,060 t/y\\
+Candidate direct CO$_2$ & approximately 39,966 t/y\\
+Direct CO$_2$ avoided & approximately 862,094 t/y\\
+Lifecycle CO$_2$e avoided & approximately 917,139 tCO$_2$e/y\\
+Candidate lifecycle intensity & approximately 1.95 kgCO$_2$e/kgH$_2$\\
+Annual hydrogen output & approximately 97,946 t/y\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{What changed in represented annual cost?}
+\begin{table}[htbp]\centering\small
+\caption{Cost changes represented by the canonical screening model. Negative means an avoided expenditure; positive means an added represented burden.}
+\begin{tabular}{p{0.57\linewidth}r}
+\toprule Annual term & Change (S\$ million/y) \\ \midrule
+Natural-gas expenditure avoided & $-94.831$\\
+Reactor/source economic burden added & $+76.572$\\
+CCS annualisation added & $+10.683$\\
+Integration/site allowance added & $+2.857$\\
+CO$_2$ transport and storage added & $+8.135$\\
+Project electricity revenue & $0.000$\\ \midrule
+Net represented incremental annual cost & $+3.416$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The resulting approximately S\$3.725/tCO$_2$e is a \textbf{screening abatement cost}, not a turnkey Singapore nuclear-project quotation or bankable First-of-a-Kind (FOAK) estimate. Important unresolved project costs include Singapore construction/site premium, financing, Engineering, Procurement and Construction (EPC), licensing, security, detailed IHX qualification, emergency planning, insurance/liability, waste/decommissioning, schedule risk, contingency and contracted CCS infrastructure.
+
+\subsection{Official CN4252 requirement check}
+The official problem statement requires a solution at scale to reduce more than 0.25 MtCO$_2$e/y within Singapore at less than S\$100/tCO$_2$e, clearly explain the abatement mechanism and implementation roadmap, and is assessed on feasibility, potential effectiveness, accuracy and presentation.
+
+\begin{table}[htbp]\centering\small
+\caption{Direct mapping to the official CN4252 problem statement.}
+\begin{tabular}{p{0.28\linewidth}p{0.25\linewidth}p{0.37\linewidth}}
+\toprule Official requirement & Project result & Status / interpretation \\ \midrule
+Abatement $>0.25$ MtCO$_2$e/y & $\sim0.917$ MtCO$_2$e/y & Numerical screening threshold exceeded\\
+Cost $<\mathrm{S\$}100$/tCO$_2$e & $\sim\mathrm{S\$}3.725$/tCO$_2$e & Screening threshold satisfied\\
+How emissions are abated & Nuclear heat substitution + CCS + reduced natural-gas demand; lifecycle burdens included & Explicit carbon ledger\\
+Implementation roadmap & Staged decision gates in Section 10 & Explicit roadmap\\
+Feasibility & Conditional across engineering, safety, regulation, siting and CCS & Not a deployment approval\\
+Potential effectiveness & $\sim0.917$ MtCO$_2$e/y plus bounded sensitivities & Supported within model\\
+Accuracy & Primary sources + assumptions + equations + Rust + provenance + CI + independent reviews & Traceable/reproducible\\
+Presentation & Three orientation figures + ledgers + requirement mapping & Submission-facing explanation\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{CONDITIONAL MODEL PASS.} The numerical screening requirements are satisfied under the declared model boundary. This does not demonstrate commercial Singapore deployment, nuclear licensing approval, a selected Jurong site, a Singapore Emergency Planning Zone, project Probabilistic Risk Assessment/mechanistic source term, a qualified commercial 176.8 MWth IHX, site-specific nuclear/chemical Quantitative Risk Assessment, guaranteed cross-border CCS, or bankable FOAK economics.
+
+\subsection{Detailed verified result}
 The verified final-design calculation produces approximately 97,946 tH$_2$/y at 85\% availability. Direct avoided emissions are approximately 862,094 tCO$_2$/y. Lifecycle avoided emissions are larger, approximately 917,139 tCO$_2$e/y, because the candidate consumes less natural gas than the same-output conventional baseline and therefore also avoids upstream gas-supply emissions. Captured CO$_2$ is not added again to the avoided-emissions numerator.
 
 \begin{table}[htbp]\centering\small
