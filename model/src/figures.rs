@@ -14,24 +14,12 @@ pub fn threshold_svg(path:&str)->Result<(),Box<dyn std::error::Error>>{
 pub fn availability_abatement_svg(path:&str)->Result<(),Box<dyn std::error::Error>>{
  let root=SVGBackend::new(path,(900,520)).into_drawing_area();root.fill(&WHITE)?;
  let mut chart=ChartBuilder::on(&root).margin(35).caption("Availability sensitivity: lifecycle abatement",("sans-serif",26)).x_label_area_size(55).y_label_area_size(80).build_cartesian_2d(25f64..100f64,0f64..1_100_000f64)?;
- chart.configure_mesh().x_desc("Effective annual availability (%)").y_desc("Lifecycle CO2e avoided (t/y)").draw()?;
+ chart.configure_mesh().x_desc("Availability (%) - see legend/caption for definition").y_desc("Lifecycle CO2e avoided (t/y)").draw()?;
  chart.draw_series(LineSeries::new(vec![(25.0,250_000.0),(100.0,250_000.0)],&BLACK.mix(0.5)))?.label("CN4252 threshold");
  let pts=(25..=100).map(|i|{let a=i as f64/100.0;let x=availability_sensitivity(a);(i as f64,x.lifecycle_avoided_t)});
- chart.draw_series(LineSeries::new(pts,&BLUE))?.label("No-backup screen");
+ chart.draw_series(LineSeries::new(pts,&BLUE))?.label("No backup: effective process availability");
  let bpts=(50..=85).map(|i|{let a=i as f64/100.0;let x=gas_backup_sensitivity(a);(i as f64,x.lifecycle_avoided_t)});
- chart.draw_series(LineSeries::new(bpts,&RED))?.label("Gas-backup lower-bound screen");
- chart.configure_series_labels().border_style(BLACK).draw()?;root.present()?;Ok(())
-}
-
-pub fn availability_cost_svg(path:&str)->Result<(),Box<dyn std::error::Error>>{
- let root=SVGBackend::new(path,(900,520)).into_drawing_area();root.fill(&WHITE)?;
- let mut chart=ChartBuilder::on(&root).margin(35).caption("Availability sensitivity: abatement cost",("sans-serif",26)).x_label_area_size(55).y_label_area_size(80).build_cartesian_2d(25f64..100f64,-20f64..120f64)?;
- chart.configure_mesh().x_desc("Effective annual availability (%)").y_desc("Screening abatement cost (S$/tCO2e)").draw()?;
- chart.draw_series(LineSeries::new(vec![(25.0,100.0),(100.0,100.0)],&BLACK.mix(0.5)))?.label("CN4252 ceiling");
- let pts=(25..=100).map(|i|{let a=i as f64/100.0;let x=availability_sensitivity(a);(i as f64,x.abatement_cost_sgd_t)});
- chart.draw_series(LineSeries::new(pts,&BLUE))?.label("No-backup screen");
- let bpts=(50..=85).map(|i|{let a=i as f64/100.0;let x=gas_backup_sensitivity(a);(i as f64,x.abatement_cost_sgd_t)});
- chart.draw_series(LineSeries::new(bpts,&RED))?.label("Gas-backup lower-bound screen");
+ chart.draw_series(LineSeries::new(bpts,&RED))?.label("Gas backup: nuclear-source availability; process service held at 85%");
  chart.configure_series_labels().border_style(BLACK).draw()?;root.present()?;Ok(())
 }
 
