@@ -2,6 +2,17 @@
 \label{sec:ledgers}
 The headline result is easier to audit as two ledgers. A downward arrow means the candidate causes less than the conventional baseline; an upward arrow means the candidate introduces a new lifecycle burden or cost. These rows are generated from the same Rust functions as the final result, so the tables cannot be reconciled by manually changing manuscript numbers.
 
+\subsection{Annual hydrogen production}
+INL reports the common hydrogen service as 130 MMSCFD and approximately 29,000 lb/h~\cite{inltev953,inltev961}. Using Assumption A-02, $A=0.85$, the mass-rate annualisation is
+\begin{equation}\label{eq:annual-h2}
+M_{H_2}=29{,}000\frac{\mathrm{lb}}{\mathrm h}
+\left(0.45359237\frac{\mathrm{kg}}{\mathrm{lb}}\right)
+(8760\,\mathrm{h/y})(0.85)
+\left(\frac{1\,\mathrm t}{1000\,\mathrm{kg}}\right)
+=97{,}946~\mathrm{t/y}.
+\end{equation}
+This is a project annualisation of the source instantaneous rate, not a separate literature-reported annual plant output.
+
 \subsection{Where did the CO$_2$ go?}
 The source process reports 3,205 short ton/day baseline emissions~\cite{inltev953}, and 142 short ton/day residual emissions plus 1,927 short ton/day captured CO$_2$ for Case 6~\cite{inltev961}. These source values are converted rather than reverse-engineered from an assumed pure-methane feed, because the INL process model already distinguishes feed, fuel and process streams. The annualisation uses the Nishihara design-study availability $A=0.85$ (Assumption A-02)~\cite{nishihara2007potential}. Using the standard conversion 1 short ton = 0.90718474 t:
 \begin{equation}\label{eq:base-direct}
@@ -70,37 +81,37 @@ Lifecycle avoidance exceeds direct avoidance because the approximately 72.7 ktCO
 
 \subsection{Where did the money go?}
 The natural-gas saving is directly reproducible from the same cited 52.5 and 34.0 MMSCFD source rates. Assumption A-08 sets the gas price to S\$15/GJ as a project screening value, not a contracted Singapore tariff:
-\[
+\begin{equation}\label{eq:ng-costs}
 C_{\rm NG,base}\approx\mathrm{S\$}269.115~\mathrm{million/y},\qquad
-C_{\rm NG,cand}\approx\mathrm{S\$}174.284~\mathrm{million/y},
-\]
+C_{\rm NG,cand}\approx\mathrm{S\$}174.284~\mathrm{million/y}.
+\end{equation}
 hence
-\[
+\begin{equation}\label{eq:ng-saving}
 S_{\rm NG}=269.115-174.284
 =\mathbf{S\$94.831~million/y}.
-\]
+\end{equation}
 
-The selected source economic burden is deliberately charged in full. Nishihara reports 0.52 JPY/MJ heat and 4.9 JPY/kWh electricity at the source design basis~\cite{nishihara2007potential}. The repository normalizes 2007 JPY using the recorded 2007-to-2025 Japan deflator ratio 112.27/99.59=1.12732 and dated FX 0.008117 SGD/JPY, giving approximately S\$4.758/GJ and S\$44.837/MWh. These are broad screening normalizations, not nuclear-specific construction indices.  Therefore
-\[
+The selected source economic burden is deliberately charged in full. Nishihara reports 0.52 JPY/MJ heat and 4.9 JPY/kWh electricity at the source design basis~\cite{nishihara2007potential}. The repository normalizes 2007 JPY using the recorded 2007-to-2025 Japan deflator ratio 112.27/99.59=1.12732 and dated FX 0.008117 SGD/JPY, giving approximately S\$4.758/GJ and S\$44.837/MWh. These are broad screening normalizations, not nuclear-specific construction indices. Therefore
+\begin{equation}\label{eq:source-heat-cost}
 C_{\rm source,heat}=370(7446)(3.6)(4.758)\approx\mathrm{S\$}47.193~\mathrm{million/y},
-\]
-\[
+\end{equation}
+\begin{equation}\label{eq:source-electric-cost}
 C_{\rm source,electric}=88(7446)(44.837)\approx\mathrm{S\$}29.380~\mathrm{million/y},
-\]
+\end{equation}
 and
-\[
+\begin{equation}\label{eq:source-total-cost}
 C_{\rm source}\approx\mathbf{S\$76.572~million/y}.
-\]
+\end{equation}
 The 88 MWe term is used only to recover the full published source economic burden; it is not a project export claim.
 
 The CCS capital starts from IEAGHG Case 1A's 2014 capture-capital basis and is price/currency normalized and linearly scaled by captured tonnes, giving approximately S\$114.04 million~\cite{ieaghg2017smr}. The linear scaling is a project screening assumption. Assumption A-13 retains the IEAGHG 8\% / 25-year economic basis; with $\mathrm{CRF}(i,n)=i(1+i)^n/[(1+i)^n-1]$, annualisation gives
-\[
+\begin{equation}\label{eq:ccs-annual-cost}
 C_{\rm CCS,annual}\approx\mathbf{S\$10.683~million/y}.
-\]
+\end{equation}
 Assumption A-14 is an explicit 10\% project integration/site capital allowance rather than an observed Singapore cost. Assumption A-15 annualises it at the retained 3\% / 40-year design-study convention. It contributes approximately
-\[
-C_{\rm integration}\approx\mathbf{S\$2.857~million/y},
-\]
+\begin{equation}\label{eq:integration-cost}
+C_{\rm integration}\approx\mathbf{S\$2.857~million/y}.
+\end{equation}
 while Assumption A-16 sets T\&S to S\$15/tCO$_2$ as a project screening tariff; official Singapore evidence indicates that actual cross-border CCS costs remain unresolved~\cite{mticcs2025cost}. Thus
 \begin{equation}\label{eq:ts-cost}
 C_{\rm T\&S}=542{,}362(15)
@@ -124,18 +135,18 @@ every last row/.style={after row=\bottomrule}]
 \end{table}
 
 Total money saved is approximately S\$94.831 million/y.  Total new represented costs are approximately S\$98.247 million/y, so
-\[
+\begin{equation}\label{eq:annual-incremental-cost}
 \Delta C_{\rm annual}
 \approx98.247-94.831
 =\mathbf{S\$3.416~million/y}.
-\]
+\end{equation}
 The final division is therefore
-\[
+\begin{equation}\label{eq:abatement-cost-final}
 C_{\rm abatement}
 =\frac{\Delta C_{\rm annual}}{A_{\rm lifecycle}}
 \approx\frac{\mathrm{S\$}3.416\ \mathrm{million/y}}{917{,}139\ \mathrm{tCO_2e/y}}
 \approx\mathbf{S\$3.725/\mathrm{tCO_2e}}.
-\]
+\end{equation}
 
 \begin{figure}[htbp]\centering
 \input{../results/final_design/generated/cost_bridge_figure.tex}
