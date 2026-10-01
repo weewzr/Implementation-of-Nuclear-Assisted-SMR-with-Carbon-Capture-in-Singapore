@@ -112,7 +112,7 @@ H2(A) = H2_ref * A/A_ref
 
 and likewise for operating emissions/abatement terms whose rate basis is unchanged.
 
-However, **abatement cost does not necessarily scale identically**, because annualised reactor/CCS capital burdens can remain largely fixed while fuel savings and production-dependent T&S vary with operation. The Rust sensitivity must therefore recompute fixed and variable ledger terms separately rather than divide the base result by availability.
+However, **abatement cost does not necessarily scale identically**, because annualised reactor/CCS capital burdens can remain largely fixed while fuel savings and production-dependent T&S vary with operation. Review 07 therefore restricts the no-backup availability sensitivity to throughput/emissions: the repository does not invent a fixed-versus-variable cost decomposition, and no no-backup availability economics are exposed.
 
 Backup-heat cases require their own fuel/emissions/cost terms. Literature now supports **gas-fired backup as an architecture option**, but a project sensitivity still requires a defensible heater efficiency and emissions factor before numerical results are added. No backup performance will be invented.
 
