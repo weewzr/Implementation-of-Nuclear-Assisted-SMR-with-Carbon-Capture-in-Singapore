@@ -12,3 +12,39 @@ Feasibility, effectiveness and accuracy & Sections 4, 5 and 7--13: process-first
 \bottomrule
 \end{tabular}
 \end{center}
+
+
+\subsection{Final-design stream and parameter provenance}
+Table~\ref{tab:stream-parameters} gives the compact submission-facing stream/parameter map. Unknown state points are not invented; the complete number-level audit is maintained in \texttt{results/final\_design/MASTER\_NUMBER\_PROVENANCE\_REGISTER.md}.
+
+\begin{longtable}{p{0.08\linewidth}p{0.25\linewidth}p{0.17\linewidth}p{0.18\linewidth}p{0.23\linewidth}}
+\caption{Final-design stream/parameter map.}\label{tab:stream-parameters}\\
+\toprule ID & Stream / parameter & Value & Origin & Role / citation \\ \midrule
+\endfirsthead
+\toprule ID & Stream / parameter & Value & Origin & Role / citation \\ \midrule
+\endhead
+S-01 & Baseline natural gas & 52.5 MMSCFD & source & common-output conventional baseline~\cite{inltev953}\\
+S-02 & Candidate natural gas & 34.0 MMSCFD & source & Case-6 feed/fuel aggregate~\cite{inltev961}\\
+S-03 & Steam/carbon feed ratio & 3.0 mol/mol & source & reformer feed basis~\cite{inltev953}\\
+S-04 & Reformer outlet gas & 871$^\circ$C & source & final process operating point~\cite{inltev953,inltev961}\\
+S-05 & Reformer pressure & 31.7 bar & source & source process state~\cite{inltev953,inltev961}\\
+S-06 & PSA H$_2$ recovery & 88\% & source & purification basis~\cite{inltev953}\\
+S-07 & H$_2$ product & 130 MMSCFD / 29,000 lb/h & source & common service and annual production basis~\cite{inltev953,inltev961}\\
+S-08 & Captured CO$_2$ & 1,927 short ton/d & source & capture stream; annualized to 542,362 t/y~\cite{inltev961}\\
+S-09 & Candidate emitted CO$_2$ & 142 short ton/d & source & residual direct emissions~\cite{inltev961}\\
+S-10 & Baseline emitted CO$_2$ & 3,205 short ton/d & source & direct-emissions baseline~\cite{inltev953}\\
+H-01 & Reactor outlet, INL Case 6 & 925$^\circ$C & source & primary-side temperature case~\cite{inltev961}\\
+H-02 & Secondary-He supply & 900$^\circ$C & source & process heating-medium supply~\cite{inltev961}\\
+H-03 & Secondary-He return & about 466$^\circ$C & source & heat-transfer consistency state~\cite{inltev961}\\
+H-04 & Secondary-He flow & 78.49 kg/s & source & source process-side flow~\cite{inltev961}\\
+H-05 & Project process heat & 176.8 MWth & source & Case-6 reforming duty~\cite{inltev961}\\
+H-06 & GTHTR300C reactor rating & 600 MWth & source design & selected architecture scale~\cite{nishihara2007potential}\\
+H-07 & High-H$_2$ source heat branch & about 371 MWth (370 model) & source design & architecture/economic branch, not one IHX~\cite{nishihara2007potential}\\
+H-08 & Reference physical IHX & about 170 MWth & source-design comparator & component qualification reference; project duty is about 4\% higher\\
+E-01 & Candidate process electricity & 17.3 MWe & source & Case-6 chemical-process demand~\cite{inltev961}\\
+E-02 & Common/baseline electricity anchor & 6.3 MWe & project screening assumption & historical model anchor; not asserted as INL common-output value\\
+C-01 & CO$_2$ T\&S stream & 542,362 t/y captured & derived & S-08 annualization; route/storage properties otherwise NOT AVAILABLE / NOT MODELLED\\
+\bottomrule
+\end{longtable}
+
+WGS inlet/outlet temperatures, detailed PSA feed/tail-gas state points, CO$_2$ compression discharge pressure and project helium pressure drop are not promoted to final-design values because the active screening calculation does not possess sufficiently traced project-specific state points for them. Their absence is preferable to fabricated precision.
