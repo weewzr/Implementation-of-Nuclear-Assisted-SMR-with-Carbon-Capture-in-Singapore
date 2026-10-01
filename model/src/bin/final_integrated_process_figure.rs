@@ -13,7 +13,7 @@ fn main() {
  writeln!(s, r"\node[equip] (h2) at (3.6,0.5) {{H$_2$ product\\{:.0} MMSCFD}};", H2_MMSCFD).unwrap();
  writeln!(s, r"\node[equip] (co2) at (10.5,-1.7) {{CO$_2$ compression /\\conditioning\\$\rightarrow$ cross-border T\&S\\screening boundary}};").unwrap();
  writeln!(s, r"\node[note] (feed) at (7.2,4.35) {{Natural gas + steam\\S/C = 3.0}};").unwrap();
- writeln!(s, r"\node[note] (remain) at (0,0.45) {{Remaining reactor\\thermal capacity:\\{:.1} MWth\\\textbf{{no project electricity\\output inferred}}}};", remaining).unwrap();
+ writeln!(s, r"\node[note,align=center] (remain) at (0,0.45) {{Remaining reactor\\thermal capacity:\\{:.1} MWth\\\textbf{{no project electricity output inferred}}}};", remaining).unwrap();
  writeln!(s, r"\draw[flow] (feed)--(ref); \draw[flow] (ref)--(wgs); \draw[flow] (wgs)--(cap); \draw[flow] (cap)--(psa); \draw[flow] (psa)--(h2); \draw[flow] (cap)--(co2);").unwrap();
  writeln!(s, r"\draw[heat] (rx.east) -- node[above,align=center]{{PRIMARY HELIUM LOOP\\reactor outlet {:.0}$^\circ$C}} (ihx.west);", INL_ROT_C).unwrap();
  writeln!(s, r"\draw[heat] (ihx.east) -- node[above,align=center]{{SECONDARY HELIUM PROCESS-HEAT LOOP\\supply {:.0}$^\circ$C; source flow 78.49 kg/s}} (ref.west);", HE_SUPPLY_C).unwrap();
