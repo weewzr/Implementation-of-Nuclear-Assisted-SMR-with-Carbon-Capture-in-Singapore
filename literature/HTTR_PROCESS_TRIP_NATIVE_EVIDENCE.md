@@ -114,3 +114,24 @@ The project still lacks source-backed quantitative answers for:
 Therefore DF-11 remains **UNRESOLVED — PROCESS DYNAMICS / SAFE-STATE DESIGN REQUIRED**.
 
 A future model should begin from the chemical reactor inventory and reaction/coking kinetics, not simply reverse the HTTR process-trip transient.
+
+
+## Chemical-side shutdown evidence cross-check
+
+Industrial steam-reformer guidance (CGA H-11 / harmonised AIGA guidance) treats startup/shutdown as safety-critical transitional states and requires controlled steam/feed management, hot-restart criteria, adequate cooling steam, procedures/training and avoidance of conditions that damage catalyst/tubes.
+
+Peer-reviewed industrial catalyst evidence confirms that steam-deficient/high-temperature conditions can promote methane-decomposition/CO-disproportionation carbon deposition, Ni sintering, catalyst fragmentation and rising pressure drop.
+
+This supports the mechanism basis for DF-11:
+**a loss of nuclear heat cannot be represented as “hydrogen production simply stops.”**
+The chemical train requires a defined safe-state sequence.
+
+What remains missing is the selected project's quantitative transient:
+- how fast 176.8 MWth falls;
+- reformer thermal inertia;
+- steam inventory/availability;
+- feed-isolation response;
+- catalyst temperature/composition trajectory;
+- carbon potential.
+
+Decision consequence remains unchanged: a project-scale dynamic reformer model and shutdown philosophy are required before the coupling can be called operationally feasible.
