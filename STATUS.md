@@ -70,7 +70,7 @@ Native-language deepening completed in this pass:
 - GTHTR300 HALEU/TRISO fuel-supply dependency added;
 - canonical CO2 and cost derivations expanded into reproducible engineering records;
 - question register expanded to DF-35 with explicit decision consequences;
-- Rust vector figures added for availability/abatement, availability/cost and CCS robustness.
+- Rust vector figures added for availability/abatement and CCS robustness; the unsupported no-backup availability-cost figure was retired during Review-07 resolution.
 
 Additional saturation work completed under the uploaded supplemental instruction:
 - transparent process-first reactor/temperature/power selection derivation;
