@@ -41,3 +41,5 @@ cargo run --quiet --bin final_design_gas_backup_csv > ../results/final_design/ge
 cargo run --quiet --bin final_design_reliability_summary > ../results/final_design/generated/reliability_sensitivity.md
 
 cargo run --quiet --bin final_design_ccs_capture_csv > ../results/final_design/generated/ccs_capture_sensitivity.csv
+
+cargo run --quiet --bin deep_feasibility_tikz
