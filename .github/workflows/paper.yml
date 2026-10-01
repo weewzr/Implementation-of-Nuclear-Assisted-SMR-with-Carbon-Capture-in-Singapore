@@ -19,11 +19,24 @@ jobs:
         with:
           texlive_version: 2023
           packages: >
-            scheme-medium
+            latex
+            latex-bin
+            bibtex
             latexmk
-            collection-latexextra
-            collection-science
-            collection-pictures
+            geometry
+            amsmath
+            amsfonts
+            booktabs
+            tools
+            siunitx
+            graphics
+            xcolor
+            xurl
+            hyperref
+            natbib
+            microtype
+            pgf
+            pgfplots
       - name: Reproduce and build manuscript
         run: sh paper/build.sh
       - name: Upload generated manuscript
