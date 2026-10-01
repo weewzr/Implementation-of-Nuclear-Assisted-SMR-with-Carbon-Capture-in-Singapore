@@ -1,4 +1,4 @@
-use nuclear_assisted_smr::final_design::{availability_sensitivity,gas_backup_sensitivity,ccs_capture_sensitivity,final_design,final_cost_ledger};
+use nuclear_assisted_smr::final_design::{availability_sensitivity,gas_backup_sensitivity,ccs_capture_sensitivity,final_design,final_cost_ledger,final_lifecycle_ledger};
 use std::{fs,fmt::Write};
 fn main(){
  let mut a=String::new();
@@ -15,9 +15,10 @@ fn main(){
  fs::write("../results/final_design/generated/ccs_robustness_figure.tex",b).unwrap();
 
  let d=final_design(0.0,false);
- let direct=d.direct_avoided_t;
- let up=d.upstream_base_t-d.upstream_final_t;
- let nuc=d.nuclear_lca_t; let aux=d.aux_lca_t; let ts=d.transport_lca_t;
+ let l=final_lifecycle_ledger();
+ let direct=l.direct_avoided;
+ let up=l.upstream_saved;
+ let nuc=l.nuclear_added; let aux=l.aux_added; let ts=l.transport_storage_added;
  let mut w=String::new();
  writeln!(w,r"\begin{{tikzpicture}}\begin{{axis}}[ybar,width=0.94\linewidth,height=6.3cm,ylabel={{Contribution (ktCO$_2$e/y)}},symbolic x coords={{Direct saved,Upstream saved,Nuclear added,Aux added,T\&S added,Net avoided}},xtick=data,x tick label style={{rotate=25,anchor=east}},grid=major]").unwrap();
  writeln!(w,r"\addplot coordinates {{(Direct saved,{:.3})(Upstream saved,{:.3})(Nuclear added,{:.3})(Aux added,{:.3})(T\&S added,{:.3})(Net avoided,{:.3})}};\end{{axis}}\end{{tikzpicture}}",direct/1000.0,up/1000.0,-nuc/1000.0,-aux/1000.0,-ts/1000.0,d.lifecycle_avoided_t/1000.0).unwrap();
