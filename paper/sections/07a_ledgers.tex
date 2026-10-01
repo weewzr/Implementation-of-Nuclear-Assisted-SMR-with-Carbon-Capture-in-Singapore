@@ -176,15 +176,21 @@ S_{\rm NG}=269.115-174.284
 
 The selected source economic burden is deliberately charged in full. Nishihara reports source heat cost $p_{h,0}=0.52$ JPY/MJ and source electricity cost $p_{e,0}=4.9$ JPY/kWh~\cite{nishihara2007potential}. Let $D_{JP}=112.27/99.59=1.12732$ be the recorded 2007-to-2025 Japan GDP-deflator factor (-) and $X_{JPY}=0.008117$ SGD/JPY the dated project FX conversion. The normalized heat price is
 \begin{equation}\label{eq:heat-price-normalization}
-p_h=p_{h,0}D_{JP}X_{JPY}(1000~\mathrm{MJ/GJ})
-=(0.52~\mathrm{JPY/MJ})(1.12732)(0.008117~\mathrm{SGD/JPY})(1000~\mathrm{MJ/GJ})
+\begin{aligned}
+p_h&=p_{h,0}D_{JP}X_{JPY}(1000~\mathrm{MJ/GJ})\\
+&=(0.52~\mathrm{JPY/MJ})(1.12732)(0.008117~\mathrm{SGD/JPY})\\
+&\qquad\times(1000~\mathrm{MJ/GJ})
 \approx\mathrm{S\$}4.758/\mathrm{GJ}.
+\end{aligned}
 \end{equation}
 Similarly,
 \begin{equation}\label{eq:electric-price-normalization}
-p_e=p_{e,0}D_{JP}X_{JPY}(1000~\mathrm{kWh/MWh})
-=(4.9~\mathrm{JPY/kWh})(1.12732)(0.008117~\mathrm{SGD/JPY})(1000~\mathrm{kWh/MWh})
+\begin{aligned}
+p_e&=p_{e,0}D_{JP}X_{JPY}(1000~\mathrm{kWh/MWh})\\
+&=(4.9~\mathrm{JPY/kWh})(1.12732)(0.008117~\mathrm{SGD/JPY})\\
+&\qquad\times(1000~\mathrm{kWh/MWh})
 \approx\mathrm{S\$}44.837/\mathrm{MWh}.
+\end{aligned}
 \end{equation}
 Here $p_h$ and $p_e$ are normalized source-product prices. The deflator and FX bases are documented project normalization inputs; the GDP deflator is a broad screening index, not a nuclear-construction index. Therefore
 \begin{equation}\label{eq:source-heat-cost}
