@@ -98,8 +98,8 @@ Current manuscript-integration milestone:
 Key unresolved critical-path questions:
 1. verify the fully integrated manuscript/Rust-figure HEAD; exact verified margins from prior CI are: no-backup abatement threshold ~23.2% availability; gas-backup 50% nuclear-availability screen ~0.778 MtCO2e/y and S$48.35/t; zero delivered CCS stream still ~0.388 MtCO2e/y in the narrow steady screen;
 2. reactor-trip/loss-of-nuclear-heat reformer safe-state remains a higher-fidelity process-dynamics requirement; air/water-ingress mechanism literature is saturated for screening, while project PRA/mechanistic source term remains future analysis rather than a literature gap;
-3. recover the missing second professor/research transcript and slides;
-4. reconcile professor traceability/question register after that source recovery;
+3. second professor/research transcript source recovery WAIVED by user on 2026-10-01; do not attribute claims to the unavailable source;
+4. available professor/source traceability is the controlling scope; unavailable second transcript remains documented as waived;
 5. finish manuscript integration only for remaining high-value waste/fuel/human-factors/V&V limitations; avoid turning research registers into manuscript clutter;
 6. add only the highest-value remaining Rust figures/bridges (CO2 and cost contribution bridges plus selection/evidence schematics where appropriate);
 7. run full CI/PDF QA before the next Independent Review.
