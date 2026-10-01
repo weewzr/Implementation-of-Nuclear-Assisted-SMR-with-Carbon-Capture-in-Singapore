@@ -14,8 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - name: Install LaTeX
-        run: sudo apt-get update && sudo apt-get install -y latexmk texlive-latex-extra texlive-science
+      - name: Set up cached TeX Live 2023
+        uses: zauguin/install-texlive@f5e7d0b117035fff797d4392ea94131747e03d60
+        with:
+          texlive_version: 2023
+          packages: >
+            scheme-medium
+            latexmk
+            collection-latexextra
+            collection-science
+            collection-pictures
       - name: Reproduce and build manuscript
         run: sh paper/build.sh
       - name: Upload generated manuscript
