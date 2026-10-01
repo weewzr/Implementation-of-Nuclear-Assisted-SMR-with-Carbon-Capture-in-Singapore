@@ -33,7 +33,7 @@ IEAGHG's merchant-SMR CCS study evaluates several capture locations/configuratio
 
 These values demonstrate that “capture rate” depends on capture location and flowsheet. They are not direct alternative operating points for the INL nuclear-heated process.
 
-The project's source process already reports a captured stream of 1,927 short ton/day and emitted stream of 142 short ton/day at the selected operating point. The new Rust sensitivity therefore varies **the fraction of that canonical captured stream actually captured/stored**, not a generic percentage of total carbon entering the plant.
+The project's source process already reports a captured stream of 1,927 short ton/day and emitted stream of 142 short ton/day at the selected operating point. The corrected Rust sensitivity therefore varies **the fraction of that canonical captured stream that ultimately receives credited capture/storage treatment**, not a generic percentage of total carbon entering the plant.
 
 ## Screening sensitivity definition
 
@@ -46,24 +46,26 @@ For f < 1:
 - H2 production, natural-gas use and nuclear heat remain at the source operating point;
 - captured/stored tonnes scale with f;
 - the uncaptured portion of the canonical captured stream is returned to direct atmospheric emissions;
-- T&S lifecycle burden and T&S variable cost scale with captured tonnes;
-- screening CCS capital is scaled with captured tonnes using the existing project cost model;
-- process electricity is held fixed.
+- T&S lifecycle burden scales with tonnes actually delivered/stored;
+- process electricity and the source process operating point are held fixed;
+- **no CCS CAPEX, turndown, solvent/compression or outage economics are calculated in this sensitivity**.
 
-This is deliberately **not** an absorber/compressor turndown model. Real partial capture can change energy, solvent circulation, compression, equipment utilisation and costs.
+This is deliberately an **emissions-only algebraic robustness screen**, not an absorber/compressor turndown, plant-resizing or outage-economic model. Real partial capture can change energy, solvent circulation, compression, equipment utilisation and costs.
 
 ## Why this sensitivity is useful
 
 It answers a narrow robustness question:
 
-**If the Singapore CCS chain cannot accept the full canonical captured stream, how much of that stream must still be captured/stored for the CN4252 numerical threshold to remain satisfied under the existing screening model?**
+**How does annual CO2e performance change if progressively less of the canonical captured stream ultimately receives the credited capture/storage treatment, while the source process boundary remains fixed?**
 
 It does not establish:
 - capture-plant operability at that fraction;
 - storage-chain availability;
 - contract structure;
 - dynamic outage response;
-- bankable CCS cost.
+- bankable CCS cost;
+- redesigned capture-plant CAPEX;
+- outage economics or disappearing installed capital.
 
 ## Infrastructure-availability interpretation
 
@@ -79,8 +81,8 @@ The project currently lacks dynamic CO2 buffer/storage and contract availability
 ## Current dispositions
 
 - DF-27 cross-border CCS availability: **PARTIALLY ANSWERED — regional cooperation/capacity concept exists; operating contracted service remains unresolved**.
-- DF-28 partial/unavailable CCS: **RUST SCREENING SENSITIVITY IMPLEMENTED; dynamic outage response unresolved**.
-- CN4252 robustness: exact threshold fraction is generated deterministically by Rust and printed in Paper/reproducibility CI logs.
+- DF-28 partial/unavailable CCS: **EMISSIONS-ONLY RUST ROBUSTNESS SCREEN IMPLEMENTED; dynamic outage response and economics unresolved**.
+- At f=0, the corrected algebraic screen retains approximately **0.388 MtCO2e/y avoided** while candidate direct emissions rise to approximately **0.582 MtCO2/y**. This means only that the CN4252 0.25-Mt numerical threshold remains exceeded in this narrow emissions screen; it does **not** establish that CCS is unnecessary or acceptable to omit.
 
 ## Sources
 
