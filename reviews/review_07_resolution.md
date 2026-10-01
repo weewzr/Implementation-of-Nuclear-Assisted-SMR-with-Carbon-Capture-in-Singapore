@@ -95,3 +95,48 @@ This resolution record is **provisional until the corrected HEAD passes**:
 - exact corrected PDF page-by-page visual QA.
 
 Only then may STATUS be marked **REVIEW 07 RESOLVED — FINAL SUBMISSION CANDIDATE READY FOR CLOSURE**.
+
+
+## Final closure verification — 2026-10-01
+
+The bounded correction pass is now fully verified.
+
+Final corrected scientific/manuscript HEAD before this closure-record commit:
+- `1de97ff24d24dc85ff8a3362af3e8823bf913349`
+- Research CI `36853991121` — **PASS**
+- Paper/reproducibility CI `36853991282` — **PASS**
+- canonical manuscript artifact `11156632898`
+- artifact digest: `sha256:a271fef9c0095e6406604e504ba7a471cf031ae28857fca61056383843b92935`
+- `main.pdf`: **29 pages**
+
+Exact-artifact QA:
+- the workflow artifact was downloaded rather than substituting a local PDF;
+- all 29 pages were rendered and inspected as a full-document montage;
+- the Future Work pages were inspected at page scale after two detected table-wrapping defects were corrected;
+- final page 23 has no observed inter-column collision;
+- no clipping, overlapping figure/table content, broken equations, accidental blank pages or broken figure boundaries were identified in the final artifact.
+
+The stale regression assertion discovered during the first post-resolution CI run was removed because it referenced the intentionally deleted no-backup availability economic field. The retained test checks the scientifically supported throughput/emissions monotonicity.
+
+All Review-07 findings are therefore **RESOLVED**:
+- DFR-M01 — RESOLVED;
+- DFR-M02 — RESOLVED;
+- DFR-M03 — RESOLVED;
+- DFR-m01 — RESOLVED;
+- DFR-m02 — RESOLVED;
+- DFR-P01 — RESOLVED.
+
+The central quantitative result is unchanged:
+- approximately 97,946 tH2/y;
+- approximately 862,094 t/y direct CO2 avoided;
+- approximately 917,139 tCO2e/y lifecycle avoided;
+- approximately 1.95 kgCO2e/kgH2;
+- 176.8 MWth process heat;
+- S$0/MWh project electricity revenue;
+- approximately S$3.725/tCO2e central screening abatement cost.
+
+Final Review-07 resolution decision:
+
+**REVIEW 07 RESOLVED — CONDITIONAL MODEL PASS RETAINED — FINAL SUBMISSION CANDIDATE READY.**
+
+No Review 08 or additional broad research cycle is scientifically warranted by Review 07. Remaining IHX qualification, process dynamics, PRA/source-term/EPZ, QRA/site, cooling, tritium, CCS-contract and bankable-FOAK questions are explicitly future deployment analyses rather than blockers to the CN4252 screening-paper closure.
