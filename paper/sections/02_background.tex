@@ -4,6 +4,66 @@ Natural-gas SMR combines high-temperature reforming with water--gas shift (WGS),
 The structured literature matrix in \texttt{literature/RESEARCH\_MATRIX.md} records the evidence basis and contradictions used in model construction. International Energy Agency Greenhouse Gas R\&D Programme (IEAGHG) SMR+CCS cases~\cite{ieaghg2017smr} provide the principal process benchmark; National Institute of Standards and Technology (NIST)/JANAF thermochemistry~\cite{nistwebbook} underpins equilibrium and enthalpy calculations; JAEA / Japan Atomic Energy Research Institute (JAERI) HTTR and GTHTR300C work~\cite{jaeahttr,jaeri2004gthtr300c} provides temperature, IHX and helium-loop precedent; Singapore Government sources~\cite{mti2025nuclear,mti2026inir,mti2025carbon,mti2025indonesiaccs} define nuclear and cross-border CCS as future or conditional infrastructure rather than existing assets.
 
 
+
+\subsection{Three-figure orientation: baseline, nuclear power, proposed integration}
+Before the detailed derivations, Figures~\ref{fig:smr-explainer}--\ref{fig:proposed-orientation} answer three different questions: how conventional hydrogen production obtains reformer heat; what an HTGR normally does with reactor heat in a power-production pathway; and what this project changes by diverting high-temperature heat to the hydrogen process.
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[>=Latex,node distance=7mm,unit/.style={draw,rounded corners,align=center,minimum height=10mm,minimum width=18mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
+\node[unit] (fuel) {Fuel};
+\node[unit,right=of fuel] (furnace) {Furnace};
+\node[unit,right=of furnace] (ref) {SMR};
+\node[unit,right=of ref] (wgs) {WGS};
+\node[unit,right=of wgs] (cap) {CO$_2$ capture};
+\node[unit,right=of cap] (psa) {PSA};
+\node[unit,right=of psa] (h2) {H$_2$};
+\node[unit,above=of ref] (feed) {Natural gas + steam};
+\node[unit,below=of cap] (store) {Compression / conditioning\\$\rightarrow$ T\&S};
+\draw[arr](fuel)--(furnace); \draw[heat](furnace)--node[above,font=\scriptsize]{fossil heat}(ref);
+\draw[arr](feed)--(ref); \draw[arr](ref)--(wgs); \draw[arr](wgs)--(cap); \draw[arr](cap)--(psa); \draw[arr](psa)--(h2); \draw[arr](cap)--(store);
+\end{tikzpicture}
+\caption{Figure 1---conventional hydrogen-production orientation. SMR = Steam Methane Reforming/Reformer; WGS = Water-Gas Shift; PSA = Pressure Swing Adsorption; T\&S = carbon-dioxide transport and storage. Conventional SMR obtains the high-temperature reformer heat service from fuel combustion; carbon capture separates a process CO$_2$ stream before hydrogen purification. The diagram is an original conceptual reconstruction of the source process and does not add unsupported state points~\cite{ieaghg2017smr,inltev953}.}
+\label{fig:smr-explainer}
+\end{figure}
+
+\begin{figure}[htbp]\centering
+\begin{tikzpicture}[>=Latex,node distance=9mm,unit/.style={draw,rounded corners,align=center,minimum height=11mm,minimum width=24mm},arr/.style={->,thick},heat/.style={->,thick,dashed}]
+\node[unit] (core) {HTGR core\\fission heat};
+\node[unit,right=of core] (he) {Primary He\\carries heat};
+\node[unit,right=of he] (conv) {Power-conversion\\system};
+\node[unit,right=of conv] (gen) {Turbine / generator\\$\rightarrow$ electricity};
+\node[unit,below=of conv] (sink) {Heat rejection / cooling};
+\draw[heat](core)--(he); \draw[heat](he)--(conv); \draw[arr](conv)--(gen); \draw[heat](conv)--(sink);
+\end{tikzpicture}
+\caption{Figure 2---conceptual conventional HTGR power pathway. HTGR = High-Temperature Gas-Cooled Reactor; He = helium. Fission energy heats the reactor/core, primary helium removes that heat, and a power-conversion system can use it to generate electricity while rejecting remaining heat. This figure is explanatory only: it does \textbf{not} assign a numerical gross, net or export electricity output to this project.}
+\label{fig:htgr-power-orientation}
+\end{figure}
+
+\begin{figure}[htbp]\centering
+\resizebox{\textwidth}{!}{\input{../results/final_design/generated/final_integrated_process_figure.tex}}
+\caption{Figure 3---proposed HTGR-assisted SMR+CCS using direct nuclear process heat. HTGR = High-Temperature Gas-Cooled Reactor; IHX = Intermediate Heat Exchanger; SMR = Steam Methane Reformer; WGS = Water-Gas Shift; PSA = Pressure Swing Adsorption; CCS = Carbon Capture and Storage; T\&S = transport and storage. Idaho National Laboratory process evidence anchors the 925$^\circ$C reactor-outlet case, 900$^\circ$C secondary-helium supply, approximately 466$^\circ$C return, 78.49 kg/s source flow, 871$^\circ$C reformer outlet, 176.8 MWth duty, S/C=3.0 and 88\% PSA hydrogen recovery~\cite{inltev953,inltev961}. The 600 MWth GTHTR300C-class reactor basis and source heat architecture are literature design bases~\cite{jaeri2004gthtr300c,nishihara2007potential}. Primary reactor helium and secondary process helium remain physically separated by the IHX. The approximately 170 MWth reference physical IHX is not already qualified for the 176.8 MWth project duty; the approximately 370 MWth source branch is not one physical exchanger. Remaining capacity is thermal capacity only, with no project electricity output inferred. Cross-border CO$_2$ T\&S is a conditional screening boundary.}
+\label{fig:proposed-orientation}
+\end{figure}
+
+\subsection{How the proposed system works, step by step}
+\begin{enumerate}
+\item \textbf{Fission produces heat.} Nuclear fission releases energy primarily as fission-fragment kinetic energy and associated energy deposition, heating the reactor fuel and core; subsequent radioactive decay contributes decay heat.
+\item \textbf{Primary helium removes core heat.} At the selected process operating point, the source reactor-outlet case is 925$^\circ$C~\cite{inltev961}.
+\item \textbf{Primary helium reaches the IHX.} The hot primary coolant carries reactor heat to the Intermediate Heat Exchanger.
+\item \textbf{The IHX provides physical separation.} Heat crosses exchanger walls; primary reactor helium does not enter the chemical plant.
+\item \textbf{Secondary helium receives the heat.} INL Case 6 supplies secondary helium at 900$^\circ$C with a reported process-side flow of 78.49 kg/s~\cite{inltev961}.
+\item \textbf{Secondary helium heats the reformer.} The source process requires 176.8 MWth and reports an 871$^\circ$C reformer outlet~\cite{inltev953,inltev961}.
+\item \textbf{Secondary helium returns.} After heat transfer, the source return state is approximately 466$^\circ$C before reheating at the IHX~\cite{inltev961}.
+\item \textbf{Natural gas and steam enter the reformer.} The selected steam-to-carbon molar ratio is 3.0~\cite{inltev953}. Nuclear heat replaces fossil \emph{process heat}; natural gas remains the chemical hydrogen feedstock.
+\item \textbf{Steam methane reforming produces synthesis gas.} Methane reacts with steam to form a hydrogen-rich mixture containing carbon monoxide.
+\item \textbf{Water-gas shift increases hydrogen.} Carbon monoxide reacts with steam toward CO$_2$ and additional H$_2$.
+\item \textbf{CO$_2$ is separated.} The source process represents amine-based capture of the concentrated carbon stream.
+\item \textbf{PSA recovers hydrogen.} The selected Pressure Swing Adsorption recovery is 88\%~\cite{inltev953}.
+\item \textbf{Hydrogen leaves as product.} The source service is 130 million standard cubic feet per day (MMSCFD) H$_2$~\cite{inltev953,inltev961}; annualised at 85\% availability, the project calculation gives approximately 97,946 t H$_2$/y.
+\item \textbf{Captured CO$_2$ is conditioned.} The source captured stream is 1,927 short ton/day~\cite{inltev961}, annualised to approximately 542,362 t/y at the declared availability.
+\item \textbf{CO$_2$ leaves the project boundary.} Compression/conditioning leads to transport and geological storage; the cross-border route and storage site remain conditional rather than demonstrated.
+\end{enumerate}
+
 \subsection{Visual orientation: from Singapore context to the process}
 Figure~\ref{fig:singapore-context} gives the external-data context before introducing the process model. Singapore's 2024 electricity system remained strongly gas-dependent: natural gas supplied 94.0\% of the generation fuel mix and the average grid emission factor was 0.402 kgCO$_2$/kWh~\cite{ema2024context}; Singapore's Energy Market Authority (EMA) also describes power generation as contributing about 40\% of national carbon emissions~\cite{ema2024futurefund}. These are external Singapore statistics, not outputs of this project.
 
@@ -20,24 +80,6 @@ Figure~\ref{fig:singapore-context} gives the external-data context before introd
 
 Figure~\ref{fig:smr-explainer} introduces the hydrogen pathway at a deliberately simpler level than the detailed model. Feed carbon enters with natural gas. Reforming converts methane and steam to syngas; WGS converts CO and steam toward CO$_2$ and additional H$_2$; CO$_2$ separation removes a concentrated carbon stream; PSA produces high-purity hydrogen and a carbon-bearing tail gas. CCS changes where much of the carbon goes, but it does not remove the feedstock carbon from the chemistry~\cite{ieaghg2017smr}.
 
-\begin{figure}[htbp]
-\centering
-\begin{tikzpicture}[>=Latex,node distance=7mm,unit/.style={draw,rounded corners,align=center,minimum height=10mm,minimum width=19mm},arr/.style={->,thick}]
-\node[unit] (feed) {Natural gas\\+ steam};
-\node[unit,right=of feed] (ref) {Reformer\\CH$_4$+H$_2$O\\$\rightarrow$ syngas};
-\node[unit,right=of ref] (wgs) {WGS\\CO+H$_2$O\\$\rightarrow$ CO$_2$+H$_2$};
-\node[unit,right=of wgs] (sep) {CO$_2$\\separation};
-\node[unit,right=of sep] (psa) {PSA};
-\node[unit,right=of psa] (h2) {H$_2$\\product};
-\node[unit,below=12mm of sep,xshift=-9mm] (store) {Captured CO$_2$\\compression/storage};
-\node[unit,below=12mm of psa,xshift=9mm] (tail) {PSA tail gas\\residual carbon};
-\draw[arr] (feed)--(ref);
-\draw[arr] (ref)--(wgs);\draw[arr](wgs)--(sep);\draw[arr](sep)--(psa);\draw[arr](psa)--(h2);
-\draw[arr] (sep)--(store);\draw[arr](psa)--(tail);
-\end{tikzpicture}
-\caption{Original explanatory schematic of conventional SMR with CCS, based on the IEAGHG merchant-hydrogen architecture~\cite{ieaghg2017smr}. The figure shows the chemical and carbon logic only; the detailed model later adds recycle, purge, capture fractions and energy duties.}
-\label{fig:smr-explainer}
-\end{figure}
 
 The nuclear proposal changes the \emph{heat source}, not the feed-carbon chemistry. Figure~\ref{fig:nuclear-heat-explainer} separates those ideas. A fired reformer supplies high-temperature heat by combustion; the nuclear-assisted concept instead transfers reactor heat through helium and an intermediate heat exchanger. The final design hierarchy is a 950$^\circ$C-class JAEA primary-helium hardware envelope $\rightarrow$ 900$^\circ$C delivered process heat $\rightarrow$ 871$^\circ$C reformer outlet. The specific INL Case-6 ROT is 925$^\circ$C~\cite{inltev961}, while JAEA/JAERI provides the 950$^\circ$C-class hardware precedent~\cite{jaeri2004gthtr300c}. Feedstock carbon still requires capture and lifecycle accounting.
 
