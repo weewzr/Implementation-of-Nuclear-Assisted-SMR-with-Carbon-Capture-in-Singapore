@@ -66,7 +66,6 @@ The honest provenance chain is therefore:
 | `co2_bridge_figure.tex` | lifecycle contribution bridge | Rust `deep_feasibility_tikz` | canonical `final_design()` lifecycle ledger | PROJECT-DERIVED VERIFIED SCREENING |
 | `cost_bridge_figure.tex` | annual cost-contribution bridge | Rust `deep_feasibility_tikz` | `final_cost_ledger()` | PROJECT-DERIVED VERIFIED SCREENING |
 | `availability_abatement.svg` | vector reference asset for availability screen | Rust/Plotters `figures.rs` | same availability model | REPRODUCIBLE REFERENCE ASSET |
-| `availability_cost.svg` | vector reference asset for cost robustness | Rust/Plotters `figures.rs` | same availability/backup model | REPRODUCIBLE REFERENCE ASSET |
 | `ccs_robustness.svg` | vector reference asset for CCS robustness | Rust/Plotters `figures.rs` | same CCS model | REPRODUCIBLE REFERENCE ASSET |
 
 The active manuscript uses the generated TikZ assets so labels remain LaTeX-native. The SVGs are retained as independently reproducible vector/reference assets. Both originate from the same Rust model functions; neither is manually redrawn.
