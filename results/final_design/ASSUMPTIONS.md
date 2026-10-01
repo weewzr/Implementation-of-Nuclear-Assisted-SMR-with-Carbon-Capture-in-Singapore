@@ -29,3 +29,24 @@
 
 ## Claim strength
 The result is independently verified as a CONDITIONAL MODEL RESULT; it is not demonstrated Singapore commercial feasibility.
+
+
+## Stable submission-facing assumption IDs
+
+| ID | Value | Classification | Basis / justification | Limitation |
+|---|---:|---|---|---|
+| A-01 | 6.3 MWe | PROJECT SCREENING ASSUMPTION / historical model anchor | retained common/baseline electricity anchor from the historical Case-2A separation model; used only so the lifecycle screen charges the 11.0 MWe increment rather than all 17.3 MWe | not established as an INL Case-6/common-output measured value |
+| A-02 | 85% | SOURCE-ANCHORED DESIGN ASSUMPTION | Nishihara GTHTR300C economic/design study | design-study basis, not demonstrated Singapore commercial availability |
+| A-03 | 1044 Btu/scf | PROJECT SCREENING ASSUMPTION | retained canonical NG HHV used for volumetric-to-energy conversion | actual gas HHV varies with composition |
+| A-04 | 11.5 kgCO2e/GJ | AUTHORITATIVE GLOBAL PROXY | IEA global-average gas-supply lifecycle anchor | not Singapore-route-specific |
+| A-05 | 5.5 kgCO2e/MWh-e | AUTHORITATIVE GLOBAL PROXY | UNECE nuclear-electricity lifecycle anchor | not direct process-heat LCA |
+| A-06 | 0.504 MWh-e-equiv/MWh-th | PROJECT ALLOCATION PROXY | retained GTHTR300-class efficiency allocation used to translate A-05 to a thermal screening proxy | not measured process-heat emissions |
+| A-07 | 0.025 tCO2e/tCO2 | PROJECT SCREENING ASSUMPTION | historical generic CCS transport/storage-chain sensitivity | route/storage site unresolved |
+| A-08 | S$15/GJ | PROJECT SCREENING ASSUMPTION | retained natural-gas price screen | not a contracted Singapore gas tariff |
+| A-13 | 8%, 25 y | SOURCE-ANCHORED ECONOMIC ASSUMPTION | IEAGHG comparator financing/life basis | screening annualisation |
+| A-14 | 10% | PROJECT SCREENING ASSUMPTION | integration/site capital allowance on represented plant + CCS capital | not empirical Singapore project cost |
+| A-15 | 3%, 40 y | SOURCE-ANCHORED / SCREENING ASSUMPTION | GTHTR design-study economic convention applied to the project integration allowance | not a financing offer |
+| A-16 | S$15/tCO2 | PROJECT SCREENING ASSUMPTION | low T&S tariff screen; official Singapore evidence supports uncertainty, not this exact tariff | no operating contract demonstrated |
+| A-17 | S$0/y | CONSERVATIVE PROJECT BOUNDARY | no validated project off-design electricity-export model | zero revenue is not a market-price claim |
+
+Full equation/substitution provenance is in `results/final_design/MASTER_NUMBER_PROVENANCE_REGISTER.md`.
