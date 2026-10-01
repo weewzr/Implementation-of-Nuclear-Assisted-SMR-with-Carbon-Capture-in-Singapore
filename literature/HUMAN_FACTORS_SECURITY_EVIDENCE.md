@@ -149,3 +149,20 @@ NRC Research Information Letter 2026-04 is explicitly titled **External Hazard R
 
 Project implication:
 DF-20 and the hydrogen fire/explosion rows of the hazard register remain **SITE-/LAYOUT-SPECIFIC**, but the need for a structured external-hazard risk framework is now independently regulator-supported.
+
+
+## Chinese operating-event learning — human / I&C / auxiliary systems
+
+NNSA operating-event records provide useful counter-evidence to purely design-based reliability arguments:
+
+- **2023 reactor-protection configuration event:** a setting deviation introduced during a protection-system modification left the negative nuclear-power-rate protection channels of both reactors unable to operate at their required setpoint/accuracy. The units remained safe and the event was INES 0. This is direct evidence that configuration management and testing are human/organisational safety functions.
+- **2024 main-helium-circulator event:** failure of a digital amplifier in a magnetic-bearing control cabinet stopped the main helium circulator and triggered an automatic reactor trip through a primary/secondary mass-flow-ratio protection signal. The other module continued operating; barriers remained intact and the event was INES 0.
+- **2025 main-helium-circulator frequency-converter event:** another circulator-control failure caused a reactor trip; the unit returned to criticality after component replacement. Again, barriers remained intact and the event was INES 0.
+
+Project implications:
+1. helium-circulator/control availability is not a theoretical auxiliary issue;
+2. multi-module architectures can provide operational resilience unavailable to a single-module heat source;
+3. I&C configuration control, surveillance testing and maintenance must be included in reliability/HFE reasoning;
+4. none of these events provides a transferable project failure rate.
+
+These operating records strengthen DF-08, DF-38 and DF-39 without changing the conclusion that project-specific reliability/HRA remains unresolved.
