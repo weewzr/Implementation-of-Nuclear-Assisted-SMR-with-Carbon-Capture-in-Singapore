@@ -1,5 +1,7 @@
 # FINAL SUBMISSION QA
 
+> **Historical QA record.** This file preserves earlier submission-QA milestones, including pre-extension and Review-06 states. The controlling final strict-equation artifact, Review-07 closure and exact-PDF QA are recorded in `STATUS.md`; older artifact IDs below remain historical evidence and are not the current PDF.
+
 Status: **PASS — FINAL CLOSURE QA COMPLETE (post-Targeted-Extension / Review 06).**
 
 ## Scientific freeze
