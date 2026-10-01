@@ -278,3 +278,28 @@ Singapore still states that no nuclear deployment decision has been made and INI
 - If coastal flood/storm-surge protection cannot meet nuclear safety requirements over plant life → **candidate coastal site infeasible**.
 - If petrochemical external hazards/separation cannot be bounded at Jurong → **Jurong infeasible; other site options remain open**.
 - If no Singapore site can simultaneously satisfy cooling, external hazards, emergency planning, security and land constraints → **deployment concept infeasible under current siting options**.
+
+
+## Jurong peer-reviewed site-screening evidence
+
+Devanand, Karimi & Kraft (Computers & Chemical Engineering 125, 2019, 339-350) develop a mixed-integer nonlinear optimisation method for preliminary modular-nuclear site selection and demonstrate it using the **J-Park Simulator**, an imaginary/virtual representation of the Jurong Island eco-industrial park.
+
+The paper explicitly describes the method as a **preliminary analysis tool** requiring geographical/energy-demand inputs and intended to identify candidate locations for further study.
+
+Correct evidence classification:
+**PRELIMINARY ACADEMIC SITE-SCREENING EVIDENCE.**
+
+It is **not**:
+- licensing evidence;
+- a real parcel/site approval;
+- EPZ evidence;
+- a site-specific nuclear external-hazard assessment;
+- evidence that Jurong is preferred over future western/offshore/other sites.
+
+The paper is useful because it demonstrates why cooling-water availability, cost, earthquake/geographical constraints and energy-demand proximity can be integrated quantitatively. A future Singapore site study could extend that framework with the nuclear-specific constraints now identified in this project.
+
+## Current official Singapore cross-check
+
+Singapore's 2026 official energy policy remains technology- and site-open. PM Lawrence Wong states that nuclear is being studied as a long-term option, safety is the overriding priority, and the entire ecosystem—regulation, security, emergency response and waste management—must be established. No site has been selected.
+
+Therefore academic Jurong screening does not override the national pre-decision status.
