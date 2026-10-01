@@ -122,3 +122,22 @@ The CN4252 project is a **Phase-A screening research contribution**, not a Phase
 - Singapore Radiation Protection Act 2007 (current version).
 - Radiation Protection (Ionising Radiation) Regulations 2023.
 - IAEA Milestones Approach / INIR framework.
+
+
+## 2026 policy cross-check — decision criteria and infrastructure gates
+
+Singapore's May/June 2026 official statements sharpen the decision framework:
+- **no deployment decision has been made**;
+- INIR Phase 1 begins from 2027 and assesses readiness to make an informed decision, not readiness to build;
+- the IAEA Milestones framework covers **19 infrastructure issues**;
+- Government decision criteria include safety, reliability, affordability and environmental sustainability;
+- EMA/NEA explicitly state that safety culture must be embedded across organisations;
+- Singapore is commissioning studies of international nuclear safety standards, environmental standards/regulatory frameworks, environmental considerations, and advanced-reactor safety/technical feasibility.
+
+The 19-issue Milestones list includes:
+national position; nuclear safety; management; funding/financing; legal framework; safeguards; regulatory framework; radiation protection; grid; human resources; stakeholder involvement; site/supporting facilities; environmental protection; emergency planning; nuclear security; fuel cycle; radioactive waste; industrial involvement; procurement.
+
+This independently validates the project's expanded question register: site, EPZ, security, human factors, fuel supply, waste, financing and industrial capability are not optional “extra discussion”; they are recognised newcomer-infrastructure gates.
+
+### Decision consequence
+Even if the CN4252 carbon/cost model remains favourable, failure to close a mandatory national infrastructure/safety gate means **deployment readiness is not demonstrated**. The project must not aggregate these gates into one numerical techno-economic score.
