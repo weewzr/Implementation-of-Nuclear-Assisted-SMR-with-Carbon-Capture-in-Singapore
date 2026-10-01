@@ -122,17 +122,14 @@ Saturated for dependency identification:
 
 Remaining work is vendor/safeguards/procurement policy.
 
-## Not saturated because source is missing
+## Waived unavailable source
 
 ### Professor / research transcript 2
 The requested second professor/research transcript/slides are not available in the repository/project sources inspected to date.
 
-This prevents declaring **complete professor-feedback traceability**.
+On 2026-10-01, the user explicitly **waived this source-recovery requirement** and instructed Main Research to focus on the evidence actually available.
 
-It does not justify substituting model memory or unrelated web literature for the missing source.
-
-Required action:
-recover/upload the missing source, then perform a bounded traceability pass.
+This is recorded as a waiver, **not** as recovered/completed professor evidence. No claims are attributed to the missing source and no general literature is substituted for it.
 
 ## Higher-fidelity questions that should NOT trigger another broad literature search
 
@@ -173,10 +170,11 @@ Still to verify:
 
 ## Gate decision
 
-**SCIENTIFIC LITERATURE SATURATION: PROVISIONALLY REACHED FOR AVAILABLE SOURCES.**
+**SCIENTIFIC LITERATURE SATURATION: REACHED FOR AVAILABLE SOURCES, SUBJECT TO INTEGRATED CI/PDF QA.**
 
-Not yet ready to start Independent Review because:
-1. the integrated manuscript/figures still require final clean CI/PDF QA;
-2. the missing second professor/research source prevents complete professor-feedback traceability.
-
-If the missing source cannot be recovered, that blocker should be explicitly documented and the user should decide whether to waive it before Independent Review. It must not be silently treated as complete.
+The missing second professor/research source is no longer a review-readiness blocker because the user explicitly waived it. The remaining gate before Deep-Feasibility Independent Review is therefore technical integration QA only:
+1. clean Research CI;
+2. clean Paper/reproducibility CI;
+3. bibliography convergence and zero undefined citations/references;
+4. exact integrated PDF visual inspection;
+5. no new scientific contradiction exposed by that QA.
