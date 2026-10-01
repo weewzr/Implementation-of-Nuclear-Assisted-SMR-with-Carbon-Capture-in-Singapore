@@ -37,7 +37,7 @@ These are hypotheses/results to stress-test, not values to preserve by optimisat
 ## Project-source recovery status
 Available Project Sources include the transcript `Nuclear Energy Assessment and SMR Feasibility for Singapore.txt` and 15 photographed presentation slides. These are being analysed as slide + spoken explanation pairs.
 
-The requested second transcript, `Nuclear Reactor Safety Research and Simulation Overview.txt`, is **not currently present in the Project file inventory under that title**. Main Research will not fabricate its contents; this is a source-recovery blocker for complete professor-feedback closure unless the source becomes available.
+The second professor/research transcript was unavailable to Main Research and was explicitly waived by the user for this phase on 2026-10-01. No claims are attributed to that unavailable source.
 
 ## Governing distinction
 **PROFESSOR OBSERVATION != SCIENTIFIC EVIDENCE.**
@@ -47,7 +47,7 @@ Professor observations generate engineering questions. Primary literature, autho
 **REPOSITORY = COMPLETE SCIENTIFIC AUDIT TRAIL.**
 
 ## Current critical path
-Professor slide/transcript traceability for the available presentation is complete; the second requested transcript remains a source-recovery blocker.
+Professor slide/transcript traceability is complete for the available presentation. The second requested transcript was unavailable and explicitly waived for this phase; it is not an active blocker and is not treated as evidence.
 
 Completed deep-feasibility work now includes:
 - HTGR process-heat demonstrated→designed→modelled scale-up evidence;
