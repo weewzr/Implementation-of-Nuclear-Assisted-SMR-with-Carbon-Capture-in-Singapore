@@ -167,3 +167,22 @@ Backup-heat cases require their own fuel/emissions/cost terms. Literature now su
 
 ### IAEA / JAEA demonstration status
 IAEA's operating-nuclear hydrogen review reports that JAEA and MHI are pursuing a stepwise HTTR-to-SMR hydrogen demonstration programme with connection technologies targeted for confirmation around 2030. This is important maturity evidence: **the coupled nuclear-SMR system is still being demonstrated**, even though high-temperature reactor and component precedents already exist.
+
+
+## Chinese commercial-operation counter-evidence
+
+NNSA reported an HTR-PM operating event dated 15 January 2024: the maximum steam-generator heat-transfer-tube outlet steam-temperature deviation on Unit 1 exceeded the Final Safety Analysis Report requirement. The operator reduced reactor power and performed performance testing/maintenance; Unit 1 later shut down on 29 February and Unit 2 on 6 June.
+
+NNSA classified the event preliminarily as **INES level 0**. Throughout the event:
+- the plant remained in a safe state;
+- all three safety barriers remained intact;
+- there was no external radioactive release.
+
+Why this matters:
+- commercial HTGR operation is real evidence, not only design analysis;
+- real operation still encounters component/temperature-distribution deviations and maintenance outages;
+- this supports retaining explicit availability, inspection and component-performance uncertainty;
+- it does **not** imply that HTR-PM is unsafe.
+
+Transferability:
+HTR-PM's steam generator differs from the project's IHX/reformer interface. The event is used as an operating-reliability/human-factors comparator, not as a project failure rate.
