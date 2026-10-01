@@ -6,26 +6,26 @@ The verified final-design calculation produces approximately 97,946 tH$_2$/y at 
 \begin{table}[htbp]\centering\small
 \caption{Principal submission-facing final-design result. Electricity export receives zero value because no validated project off-design power output is claimed.}
 \label{tab:final-result}
-\begin{tabular}{p{0.52\linewidth}p{0.32\linewidth}}
+\begin{tabular}{p{0.39\linewidth}p{0.27\linewidth}p{0.25\linewidth}}
 \toprule
-Quantity & Verified screening result \\
+Quantity & Verified screening result & Basis \\
 \midrule
-Reformer / supplied heat & 871$^\circ$C / 900$^\circ$C \\
-Hydrogen production & 97,946 t/y \\
-INL process heat & 176.8 MWth \\
-Selected reactor architecture & 600 MWth GTHTR300C class \\
-Nishihara source heat branch & 370 MWth \\
-Remaining reactor thermal capacity & 423.2 MWth; no power claim \\
-CO$_2$ captured & 542,362 t/y \\
-Direct CO$_2$ avoided & 862,094 t/y \\
-Lifecycle CO$_2$e avoided & 917,139 t/y \\
-Candidate lifecycle intensity & 1.95 kgCO$_2$e/kgH$_2$ \\
-Project electricity revenue & S\$0/MWh \\
-Annual incremental cost & approximately S\$3.416 million/y \\
-Abatement cost & approximately S\$3.725/tCO$_2$e \\
-CN4252 abatement criterion & $>250,000$ tCO$_2$e/y: PASS \\
-CN4252 cost criterion & $<\mathrm{S\$}100$/tCO$_2$e: PASS \\
-Joint classification & \textbf{CONDITIONAL MODEL PASS} \\
+Reformer / supplied heat & 871$^\circ$C / 900$^\circ$C & INL~\cite{inltev953,inltev961} \\
+Hydrogen production & 97,946 t/y & Eq.~\ref{eq:annual-h2} \\
+INL process heat & 176.8 MWth & INL~\cite{inltev961} \\
+Selected reactor architecture & 600 MWth GTHTR300C class & Nishihara~\cite{nishihara2007potential} \\
+Nishihara source heat branch & 370 MWth & Nishihara~\cite{nishihara2007potential} \\
+Remaining reactor thermal capacity & 423.2 MWth; no power claim & Eq.~\ref{eq:remaining-thermal} \\
+CO$_2$ captured & 542,362 t/y & Eq.~\ref{eq:captured-annual} \\
+Direct CO$_2$ avoided & 862,094 t/y & Eq.~\ref{eq:direct-avoided} \\
+Lifecycle CO$_2$e avoided & 917,139 t/y & Eq.~\ref{eq:lifecycle-reconciliation} \\
+Candidate lifecycle intensity & 1.95 kgCO$_2$e/kgH$_2$ & Rust lifecycle ledger \\
+Project electricity revenue & S\$0/MWh & Assumption A-17 \\
+Annual incremental cost & approximately S\$3.416 million/y & Eq.~\ref{eq:annual-incremental-cost} \\
+Abatement cost & approximately S\$3.725/tCO$_2$e & Eq.~\ref{eq:abatement-cost-final} \\
+CN4252 abatement criterion & $>250,000$ tCO$_2$e/y: PASS & assignment requirement \\
+CN4252 cost criterion & $<\mathrm{S\$}100$/tCO$_2$e: PASS & assignment requirement \\
+Joint classification & \textbf{CONDITIONAL MODEL PASS} & derived interpretation \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -48,10 +48,7 @@ The annual-abatement threshold is exceeded by approximately 667,139 tCO$_2$e/y. 
 \end{figure}
 
 \subsection{Conservative economic test}
-Abatement cost asks how much additional annual cost is associated with each tonne of lifecycle emissions avoided:
-\[
-C_{\rm abatement}=\frac{C_{\rm candidate}-C_{\rm baseline}}{A_{\rm avoided}}.
-\]
+Abatement cost asks how much additional annual cost is associated with each tonne of lifecycle emissions avoided. Its definition is given by Eq.~\ref{eq:abatement-cost-definition}, and the full numerical substitution is Eq.~\ref{eq:abatement-cost-final}.
 The controlling case gives no monetary credit to uncertain project electricity output but still charges the full selected reactor source-product economic burden. Its approximately S\$3.725/tCO$_2$e result is about S\$96.3/t below the S\$100/t ceiling. Thus the numerical cost pass does not depend on electricity revenue.
 
 \begin{figure}[htbp]\centering
