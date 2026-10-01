@@ -170,11 +170,28 @@ Still to verify:
 
 ## Gate decision
 
-**SCIENTIFIC LITERATURE SATURATION: REACHED FOR AVAILABLE SOURCES, SUBJECT TO INTEGRATED CI/PDF QA.**
+**SCIENTIFIC LITERATURE SATURATION: REACHED FOR AVAILABLE SOURCES — INTEGRATED CI/PDF QA PASSED.**
 
-The missing second professor/research source is no longer a review-readiness blocker because the user explicitly waived it. The remaining gate before Deep-Feasibility Independent Review is therefore technical integration QA only:
-1. clean Research CI;
-2. clean Paper/reproducibility CI;
-3. bibliography convergence and zero undefined citations/references;
-4. exact integrated PDF visual inspection;
-5. no new scientific contradiction exposed by that QA.
+The missing second professor/research source is not a review-readiness blocker because the user explicitly waived it; it remains documented as unavailable and is not treated as evidence.
+
+## Final integration verification
+
+Verified scientific/manuscript HEAD:
+`c6a811b4756541e7aa2e3536c6804765f27a5c19`
+
+- Research CI `36805989847`: PASS.
+- Paper/reproducibility CI `36805989839`: PASS.
+- Artifact `11137329060`, digest `sha256:b5953b5a193c1991c2fcc19ac60b4858ad7cc29b8e226907294dd0831323c68b`.
+- `main.pdf`: 27 pages.
+- Bibliography converged.
+- Successful workflow integrity gate reports zero unresolved citations/references.
+- Exact artifact rendered page-by-page and visually inspected: PASS.
+- No scientific contradiction was exposed by integration QA.
+
+## Gate decision
+
+**DEEP FEASIBILITY RESEARCH: COMPLETE FOR AVAILABLE SOURCES.**
+
+**READY FOR DEEP FEASIBILITY INDEPENDENT REVIEW.**
+
+Do not continue broad Main Research. Remaining unresolved items require higher-fidelity engineering, site/vendor/regulatory inputs or experiments and should be assessed as limitations/gates by the Independent Reviewer rather than filled with additional generic literature.
