@@ -1,6 +1,6 @@
 # STATUS
 
-## DEEP FEASIBILITY / PROFESSOR-FEEDBACK PHASE — IN PROGRESS
+## DEEP FEASIBILITY / PROFESSOR-FEEDBACK PHASE — COMPLETE; READY FOR INDEPENDENT REVIEW
 
 The previously frozen state **FINAL SUBMISSION CANDIDATE — CLOSED / FROZEN** is preserved as a historical milestone at commit `2605b773a57edac8e219176d1bd172707354c524`.
 
@@ -114,3 +114,34 @@ Newly completed since the previous status update:
 Do not begin the next Independent Review until all mandatory deep-feasibility gates are complete.
 
 Do not begin the next Independent Review until all mandatory deep-feasibility gates are complete.
+
+
+## Deep Feasibility closure evidence — 2026-10-01
+
+Deep Feasibility is complete for the available source set. The unavailable second professor/research transcript was explicitly waived by the user and is not treated as recovered evidence.
+
+Integrated scientific/manuscript state:
+- process-first reactor/temperature selection complete;
+- native Chinese HTR-PM EPZ/source-term/operating evidence integrated;
+- native Japanese HTTR/GTHTR300C/IHX/tritium/transient evidence integrated;
+- decision-oriented question register through DF-40;
+- CO2 and cost derivations exposed numerically in the manuscript;
+- Rust-generated robustness and contribution figures integrated;
+- higher-fidelity/site-specific unknowns explicitly retained as unresolved rather than filled by literature inference.
+
+Verified integration HEAD before closure-status commit:
+- `c6a811b4756541e7aa2e3536c6804765f27a5c19`
+- Research CI: `36805989847` — PASS
+- Paper/reproducibility CI: `36805989839` — PASS
+- canonical manuscript artifact: `11137329060`
+- artifact digest: `sha256:b5953b5a193c1991c2fcc19ac60b4858ad7cc29b8e226907294dd0831323c68b`
+- PDF: `main.pdf`, 27 pages
+- bibliography: converged after clean multi-pass build
+- undefined citations/references: zero at successful workflow integrity gate
+- exact-artifact visual inspection: PASS, all 27 pages rendered and inspected; no clipping, overlap, broken equations, accidental blank pages or figure-boundary failures identified.
+
+Scientific interpretation remains:
+**CONDITIONAL MODEL PASS**, not demonstrated Singapore commercial/deployment feasibility.
+
+Next action:
+**STOP MAIN RESEARCH. Hand the current repository to Deep Feasibility Independent Review when explicitly instructed. Do not begin another broad literature/research pass.**
