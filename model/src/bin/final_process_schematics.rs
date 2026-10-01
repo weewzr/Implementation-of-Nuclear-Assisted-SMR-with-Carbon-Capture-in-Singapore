@@ -13,10 +13,10 @@ fn fig3()->String {
  let feed=Pt{x:7.4,y:7.15}; pipe(&mut s,feed,smr.top(),"processgas",Some("NG + steam; S/C=3.0")); pipe(&mut s,smr.right(),wgs.left(),"processgas",None); pipe(&mut s,wgs.right(),cap.left(),"processgas",None);
  ortho(&mut s,cap.right(),14.25,psae.right(),"processgas",Some("H$_2$-rich gas")); let h2end=Pt{x:15.25,y:1.75}; pipe(&mut s,psae.right(),h2end,"h2stream",Some(&format!("H$_2$ {:.0} MMSCFD",H2_MMSCFD)));
  ortho(&mut s,cap.bottom(),11.1,comp.right(),"co2stream",Some("captured CO$_2$")); let ts=Pt{x:7.65,y:1.35}; pipe(&mut s,comp.left(),ts,"co2stream",Some("conditional T\\&S"));
- for q in [rx_hot,rx_cold,ihx_pi,ihx_po,ihx_so,ihx_si,smr_hi,smr_ho,smr.top(),smr.right(),wgs.left(),wgs.right(),cap.left(),cap.right(),cap.bottom(),psae.right(),comp.left(),comp.right()] { writeln!(&mut s,r"\\fill[equipstroke] ({:.2},{:.2}) circle (1.15pt);",q.x,q.y).unwrap(); }
+ for q in [rx_hot,rx_cold,ihx_pi,ihx_po,ihx_so,ihx_si,smr_hi,smr_ho,smr.top(),smr.right(),wgs.left(),wgs.right(),cap.left(),cap.right(),cap.bottom(),psae.right(),comp.left(),comp.right()] { writeln!(&mut s,r"\fill[equipstroke] ({:.2},{:.2}) circle (1.15pt);",q.x,q.y).unwrap(); }
  callout(&mut s,Pt{x:1.2,y:6.55},&format!("600 MWth basis\\\\Remaining thermal capacity: {:.1} MWth\\\\(not electricity output)",REACTOR_MWTH-HEAT_MWTH));
  callout(&mut s,Pt{x:7.4,y:6.35},&format!("871$^\\circ$C outlet\\\\{:.1} MWth process heat",HEAT_MWTH)); callout(&mut s,Pt{x:12.6,y:0.35},&format!("{:.0}\\% H$_2$ recovery",PSA_RECOVERY*100.0));
- writeln!(&mut s,r"\\draw[dashed,equipstroke!65] (2.55,0.1)--(2.55,7.5); \\node[font=\\sffamily\\bfseries\\scriptsize] at (1.25,7.55) {{NUCLEAR PRIMARY}}; \\node[font=\\sffamily\\bfseries\\scriptsize] at (8.8,7.55) {{SECONDARY HEAT LOOP + CHEMICAL PROCESS}};").unwrap();
+ writeln!(&mut s,r"\draw[dashed,equipstroke!65] (2.55,0.1)--(2.55,7.5); \node[font=\sffamily\bfseries\scriptsize] at (1.25,7.55) {{NUCLEAR PRIMARY}}; \node[font=\sffamily\bfseries\scriptsize] at (8.8,7.55) {{SECONDARY HEAT LOOP + CHEMICAL PROCESS}};").unwrap();
  legend(&mut s,12.25,-0.25,&[("primaryhe","Primary He"),("secondaryhe","Secondary He"),("processgas","Process gas"),("co2stream","CO$_2$"),("h2stream","H$_2$")]); end(&mut s); s
 }
 
