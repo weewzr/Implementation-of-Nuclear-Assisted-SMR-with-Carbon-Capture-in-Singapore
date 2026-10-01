@@ -50,7 +50,28 @@ where $Q_{\rm NG,d}$ is natural-gas energy (GJ/d), $HHV_{\rm NG}$ is gas higher 
 \begin{equation}\label{eq:upstream-ng}
 E_{\rm NG,up}=Q_{\rm NG,d}(365)A\,e_{\rm NG}/1000,
 \end{equation}
-where $E_{\rm NG,up}$ is upstream emissions (tCO$_2$e/y) and $e_{\rm NG}=11.5$ kgCO$_2$e/GJ is Assumption A-04~\cite{iea2026lng}. Substitution gives approximately 206,322 tCO$_2$e/y for the baseline and 133,618 tCO$_2$e/y for the candidate, hence $A_{\rm upstream}=72,704$ tCO$_2$e/y.  The new candidate burdens use Assumption A-05, the UNECE 5.5 kgCO$_2$e/MWh$_e$ nuclear-electricity lifecycle anchor~\cite{unece2022lca}. For direct heat, Assumption A-06 multiplies that electricity factor by the declared 0.504 MWh$_e$-equivalent/MWh$_{th}$ allocation proxy; this is not a published direct-heat LCA. The auxiliary term uses the source 17.3 MWe candidate demand~\cite{inltev961} minus Assumption A-01 = 6.3 MWe, a retained historical project screening anchor rather than an INL common-output value. Assumption A-07 = 0.025 tCO$_2$e/tCO$_2$ is likewise a generic project T\&S lifecycle screen, not a Singapore-route measurement. Thus the nuclear-heat lifecycle burden is calculated from
+where $E_{\rm NG,up}$ is upstream emissions (tCO$_2$e/y) and $e_{\rm NG}=11.5$ kgCO$_2$e/GJ is Assumption A-04~\cite{iea2026lng}. For the 52.5 MMSCFD baseline~\cite{inltev953},
+\begin{equation}\label{eq:upstream-ng-base}
+E_{\rm NG,up,base}
+=\left[(52.5~\mathrm{MMSCFD})(10^6~\mathrm{scf/MMSCF})(1044~\mathrm{Btu/scf})(1.05505585262\times10^{-6}~\mathrm{GJ/Btu})\right]
+(365~\mathrm{d/y})(0.85)
+\frac{11.5~\mathrm{kgCO_2e/GJ}}{1000~\mathrm{kg/t}}
+\approx206{,}322~\mathrm{tCO_2e/y}.
+\end{equation}
+Here 1044 Btu/scf is Assumption A-03 and 11.5 kgCO$_2$e/GJ is the IEA global proxy (A-04)~\cite{iea2026lng}. For the 34.0 MMSCFD candidate~\cite{inltev961},
+\begin{equation}\label{eq:upstream-ng-candidate}
+E_{\rm NG,up,cand}
+=\left[(34.0~\mathrm{MMSCFD})(10^6~\mathrm{scf/MMSCF})(1044~\mathrm{Btu/scf})(1.05505585262\times10^{-6}~\mathrm{GJ/Btu})\right]
+(365~\mathrm{d/y})(0.85)
+\frac{11.5~\mathrm{kgCO_2e/GJ}}{1000~\mathrm{kg/t}}
+\approx133{,}618~\mathrm{tCO_2e/y}.
+\end{equation}
+The upstream saving used in the lifecycle ledger is therefore
+\begin{equation}\label{eq:upstream-ng-saving}
+A_{\rm upstream}=E_{\rm NG,up,base}-E_{\rm NG,up,cand}
+=206{,}322-133{,}618\approx72{,}704~\mathrm{tCO_2e/y}.
+\end{equation}
+$E_{\rm NG,up,base}$ and $E_{\rm NG,up,cand}$ are annual upstream gas-supply emissions (tCO$_2$e/y), and $A_{\rm upstream}$ is their project-derived difference (tCO$_2$e/y).  The new candidate burdens use Assumption A-05, the UNECE 5.5 kgCO$_2$e/MWh$_e$ nuclear-electricity lifecycle anchor~\cite{unece2022lca}. For direct heat, Assumption A-06 multiplies that electricity factor by the declared 0.504 MWh$_e$-equivalent/MWh$_{th}$ allocation proxy; this is not a published direct-heat LCA. The auxiliary term uses the source 17.3 MWe candidate demand~\cite{inltev961} minus Assumption A-01 = 6.3 MWe, a retained historical project screening anchor rather than an INL common-output value. Assumption A-07 = 0.025 tCO$_2$e/tCO$_2$ is likewise a generic project T\&S lifecycle screen, not a Singapore-route measurement. Thus the nuclear-heat lifecycle burden is calculated from
 \begin{equation}\label{eq:nuclear-lca-general}
 E_{\rm nuclear}=\dot Q_{\rm process}(1000)t_{\rm op}(e_{\rm nuc}\eta_e)/10^6,
 \end{equation}
@@ -113,11 +134,21 @@ The natural-gas saving is directly reproducible from the same cited 52.5 and 34.
 \begin{equation}\label{eq:ng-cost-general}
 C_{\rm NG}=Q_{\rm NG,d}(365)A P_{\rm NG},
 \end{equation}
-where $C_{\rm NG}$ is annual gas cost (S\$/y). Substitution for the two source flow rates gives
-\begin{equation}\label{eq:ng-costs}
-C_{\rm NG,base}\approx\mathrm{S\$}269.115~\mathrm{million/y},\qquad
-C_{\rm NG,cand}\approx\mathrm{S\$}174.284~\mathrm{million/y}.
+where $C_{\rm NG}$ is annual gas cost (S\$/y). For the cited baseline flow~\cite{inltev953},
+\begin{equation}\label{eq:ng-cost-base}
+C_{\rm NG,base}
+=\left[(52.5)(10^6)(1044)(1.05505585262\times10^{-6})\right]
+(365)(0.85)(15)
+\approx\mathrm{S\$}269.115~\mathrm{million/y},
 \end{equation}
+where the bracketed term is GJ/d and Assumption A-08 is $P_{\rm NG}=\mathrm{S\$}15$/GJ. For the cited candidate flow~\cite{inltev961},
+\begin{equation}\label{eq:ng-cost-candidate}
+C_{\rm NG,cand}
+=\left[(34.0)(10^6)(1044)(1.05505585262\times10^{-6})\right]
+(365)(0.85)(15)
+\approx\mathrm{S\$}174.284~\mathrm{million/y}.
+\end{equation}
+The factors have dimensions MMSCFD$\times$scf/MMSCF$\times$Btu/scf$\times$GJ/Btu$\times$d/y$\times$S\$/GJ, leaving S\$/y.
 hence
 \begin{equation}\label{eq:ng-saving}
 S_{\rm NG}=269.115-174.284
