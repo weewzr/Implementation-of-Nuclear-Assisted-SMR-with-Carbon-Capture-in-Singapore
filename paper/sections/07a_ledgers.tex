@@ -97,7 +97,7 @@ where $e_{\rm T\&S}$ is the screening T\&S factor (tCO$_2$e/tCO$_2$) and $M_{\rm
 \begin{equation}\label{eq:ts-lca}
 E_{\rm T\&S}=0.025(542{,}362)=13{,}559~\mathrm{tCO_2e/y}.
 \end{equation}
-Direct CO$_2$ and lifecycle CO$_2$e are not interchangeable. The conventional and candidate plant stacks first determine the direct saving. Lifecycle accounting then adds the change in upstream natural-gas emissions and subtracts new nuclear, auxiliary-electricity and CO$_2$ transport/storage burdens:
+Direct CO$_2$ and lifecycle CO$_2$e are not interchangeable. The conventional and candidate plant stacks first determine the direct saving in Eq.~\ref{eq:direct-avoided}. Lifecycle accounting then adds the upstream saving from Eq.~\ref{eq:upstream-ng-saving} and subtracts the nuclear, auxiliary-electricity and T\&S burdens from Eqs.~\ref{eq:nuclear-lca}, \ref{eq:aux-lca} and \ref{eq:ts-lca}:
 \begin{equation}\label{eq:lifecycle-avoided}
 A_{\rm lifecycle}=A_{\rm direct}+A_{\rm upstream}-E_{\rm nuclear}-E_{\rm aux}-E_{\rm T\&S}.
 \end{equation}
@@ -209,11 +209,11 @@ C_{\rm CCS,annual}=C_{\rm CCS}\,\mathrm{CRF}(0.08,25)
 \approx\mathbf{S\$10.683~million/y}.
 \end{equation}
 $C_{\rm CCS,annual}$ is annualized capture capital (S\$/y), and $\mathrm{CRF}(0.08,25)\approx0.09368$ y$^{-1}$.
-Assumption A-14 is an explicit 10\% project integration/site capital allowance rather than an observed Singapore cost. Assumption A-15 annualises it at the retained 3\% / 40-year design-study convention. It contributes approximately
+Assumption A-14 is an explicit 10\% project integration/site capital allowance rather than an observed Singapore cost. The S\$546.283 million reactor/source capital basis is the normalized 59.7 billion JPY Nishihara source plant cost~\cite{nishihara2007potential}; S\$114.036 million is the project CCS CAPEX from Eq.~\ref{eq:ccs-capex-substitution}. Assumption A-15 applies the retained 3\% annualisation rate and 40-y life to this allowance; these are screening/design-study bases, not a financing offer. It contributes approximately
 \begin{equation}\label{eq:integration-cost}
 C_{\rm integration}=0.10(546.283+114.036)\,\mathrm{million}\,\mathrm{CRF}(0.03,40)\approx\mathbf{S\$2.857~million/y}.
 \end{equation}
-while Assumption A-16 sets T\&S to S\$15/tCO$_2$ as a project screening tariff; official Singapore evidence indicates that actual cross-border CCS costs remain unresolved~\cite{mticcs2025cost}. Thus
+while Assumption A-16 sets T\&S to S\$15/tCO$_2$ as a project screening tariff, not an observed or contracted Singapore tariff. Official Singapore evidence is cited only for the separate statement that actual cross-border CCS costs remain unresolved~\cite{mticcs2025cost}. Using $M_{\rm captured}=542{,}362$ t/y from Eq.~\ref{eq:captured-annual},
 \begin{equation}\label{eq:ts-cost}
 C_{\rm T\&S}=542{,}362(15)
 \approx\mathbf{S\$8.135~million/y}.
