@@ -19,9 +19,7 @@ jobs:
         with:
           texlive_version: 2023
           packages: >
-            latex
-            latex-bin
-            bibtex
+            scheme-small
             latexmk
             geometry
             amsmath
@@ -34,27 +32,6 @@ jobs:
             xcolor
             xurl
             hyperref
-            pdftexcmds
-            infwarerr
-            ltxcmds
-            kvsetkeys
-            kvdefinekeys
-            kvoptions
-            pdfescape
-            etoolbox
-            auxhook
-            atbegshi
-            atveryend
-            rerunfilecheck
-            uniquecounter
-            hycolor
-            refcount
-            gettitlestring
-            stringenc
-            intcalc
-            bigintcalc
-            bitset
-            iftex
             natbib
             microtype
             pgf
