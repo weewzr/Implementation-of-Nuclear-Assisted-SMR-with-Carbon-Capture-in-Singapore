@@ -4,10 +4,68 @@
 \subsection{Design selection}
 The final chemical-process basis is INL/NGNP Case 6. INL selected an 871$^\circ$C reformer outlet, steam/carbon ratio 3.0 and 88\% PSA recovery~\cite{inltev953}; TEV-961 reports that a 925$^\circ$C HTGR outlet supplies 900$^\circ$C process heat and the full 176.8 MWth reforming duty at that target~\cite{inltev961}. The source process produces 130 MMSCFD H$_2$ from 34.0 MMSCFD natural gas with 17.3 MWe process demand, 1,927 short ton/day captured CO$_2$ and 142 short ton/day emitted CO$_2$~\cite{inltev961}. The same INL model family provides the 130-MMSCFD conventional no-capture baseline: 52.5 MMSCFD natural gas and 3,205 short ton/day emitted CO$_2$~\cite{inltev953}.
 
+\subsection{Deriving the reactor requirement from the chemical process}
+The reactor is not selected first.  The verified chemical-process requirement is the starting point.  INL Case 6 requires 176.8 MWth and reports an 871$^\circ$C reformer outlet.  The same source supplies secondary helium at 900$^\circ$C, giving the positive reported-location temperature difference
+\[
+\Delta T_{\rm process,reported}=900-871=29~^\circ\mathrm{C}.
+\]
+This is not claimed as the minimum local reformer pinch: local tube-wall, catalyst-bed and gas-temperature profiles are not all available from the source.
+
+INL then places the secondary-helium supply 25$^\circ$C below its selected reactor-outlet case:
+\[
+T_{\rm reactor,out}=T_{\rm He,secondary}+\Delta T_{\rm IHX}
+=900+25=925~^\circ\mathrm{C}.
+\]
+Thus the evidence chain is
+\[
+925~^\circ\mathrm{C}\rightarrow900~^\circ\mathrm{C}
+\rightarrow871~^\circ\mathrm{C},
+\]
+with 176.8 MWth transferred at the process interface~\cite{inltev961}.  The secondary-helium energy balance is independently consistent:
+\[
+\bar c_p=\frac{176.8\times10^3}
+{78.49(900-466)}
+\approx5.19~\mathrm{kJ\,kg^{-1}\,K^{-1}}.
+\]
+
+\subsection{Technology screen: why an HTGR and why GTHTR300C class?}
+Representative water-cooled SMRs provide useful electricity, steam, desalination and lower-temperature process heat, but their water-cooled outlet temperatures are far below the approximately 900$^\circ$C heating-medium requirement.  They therefore require a separate temperature-augmentation route for this direct-heat application.  This is an application-specific temperature mismatch, not a claim that LWRs are generally inferior.
+
+HTTR passes the temperature filter: its 30 MWth reactor has demonstrated 950$^\circ$C operation~\cite{jaeahttr2026ops}.  It fails the project-scale filter because
+\[
+176.8/30=5.89,
+\]
+so HTTR is used as experimental evidence rather than as the project heat source.  HTR-PM provides valuable commercial HTGR operating, licensing and safety precedent, but its demonstrated plant is a steam-cycle architecture rather than the 900$^\circ$C secondary-helium reformer interface required here.  JAEA's GTHTR300C family, in contrast, is a 600 MWth process-heat/cogeneration design with 950$^\circ$C reactor-outlet and approximately 900$^\circ$C secondary-helium conditions~\cite{nishihara2007potential}.  It therefore passes the temperature, scale and process-heat-architecture filters.
+
+The project is consequently described as a \textbf{GTHTR300C-class / GTHTR300C-informed screening architecture}, not as an exact GTHTR300C plant: the project uses the INL 925/900/871$^\circ$C operating point and 176.8 MWth duty rather than the exact JAEA heat split.
+
+\begin{table}[htbp]\centering\scriptsize
+\caption{Application-specific reactor evidence screen.  Dispositions are evidence categories, not technology rankings.}
+\label{tab:reactor-screen}
+\begin{tabular}{p{0.20\linewidth}p{0.15\linewidth}p{0.17\linewidth}p{0.20\linewidth}p{0.20\linewidth}}
+\toprule
+Candidate & Scale & Temperature evidence & Direct process-heat fit & Disposition\\ \midrule
+Water-cooled SMR family & relevant modular scales & roughly 300$^\circ$C class & requires temperature augmentation for 900$^\circ$C heat & comparator; not direct-heat basis\\
+HTTR & 30 MWth & 950$^\circ$C demonstrated & temperature yes; scale no & demonstrator/evidence\\
+HTR-PM & $2\times250$ MWth & operating HTGR/steam-cycle evidence & strong HTGR maturity; operating plant is not 900$^\circ$C secondary-He SMR & safety/licensing comparator\\
+GTHTR300C & 600 MWth design & 950$^\circ$C reactor / 900$^\circ$C secondary He design & explicit hydrogen/process-heat architecture & retained design basis, conditional\\
+Project & 600 MWth class & 925$\rightarrow$900$\rightarrow$871$^\circ$C & 176.8 MWth source-model duty & GTHTR300C-informed screen\\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Thermal integration with the JAEA architecture}
 INL supplies the chemical-process duty; Nishihara et al. supplies the selected GTHTR300C hardware/economic architecture. They are deliberately kept as separate evidence layers.
 
-The selected source architecture is a 600 MWth GTHTR300C with a 370 MWth hydrogen/IHX heat branch and 88 MWe source electricity from the complementary 230 MWth branch~\cite{nishihara2007potential}. The INL process requires 176.8 MWth, so it is below the source heat-branch capacity. At reactor-rating level,
+The selected source architecture is a 600 MWth GTHTR300C-class design.  JAEA's high-hydrogen variant provides approximately 371 MWth of process-heat branch capability (rounded to 370 MWth in the canonical economic model) and approximately 87--88 MWe of complementary source electricity~\cite{nishihara2007potential}.  The 370 MWth value is therefore a \emph{source process-heat branch/economic architecture}, not the rating of one physical IHX. The INL process requires 176.8 MWth, so nominal source-branch utilisation is
+\[
+176.8/370=47.8\%,
+\]
+with 193.2 MWth nominal branch margin.  This does not prove exchanger feasibility.  The published GTHTR300C reference IHX is approximately 170 MWth, so
+\[
+176.8-170=6.8~\mathrm{MW_{th}},\qquad 176.8/170=1.040.
+\]
+The project duty is therefore about 4.0\% above one published conceptual reference-IHX duty; a larger, parallel or otherwise redesigned exchanger arrangement remains a qualification requirement. At reactor-rating level,
 \[
 600=176.8+423.2\ {\rm MW_{th}}.
 \]
