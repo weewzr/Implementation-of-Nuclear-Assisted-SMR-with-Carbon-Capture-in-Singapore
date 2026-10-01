@@ -24,20 +24,20 @@ pub fn end(s:&mut String){ writeln!(s,r"\end{{tikzpicture}}").unwrap(); }
 pub fn reactor(s:&mut String,e:Equip,label:&str){
     let x=e.c.x; let y=e.c.y; let w=e.w; let h=e.h;
     writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt,rounded corners=5pt] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-w/2.0,y-h/2.0,x+w/2.0,y+h/2.0).unwrap();
-    writeln!(s,r"\draw[fill=coreaccent!45,draw=coreaccent!80!black] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-w*.18,y-h*.18,x+w*.18,y+h*.18).unwrap();
-    writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",x,y-h*.34,label).unwrap();
+    writeln!(s,r"\draw[fill=coreaccent!45,draw=coreaccent!80!black] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-w*0.18,y-h*0.18,x+w*0.18,y+h*0.18).unwrap();
+    writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",x,y-h*0.34,label).unwrap();
 }
 pub fn exchanger(s:&mut String,e:Equip,label:&str){
     let x=e.c.x; let y=e.c.y; let w=e.w; let h=e.h;
     writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt,rounded corners=2pt] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-w/2.0,y-h/2.0,x+w/2.0,y+h/2.0).unwrap();
-    for k in [-0.25_f64,0.0,0.25] { writeln!(s,r"\draw[equipstroke] ({:.2},{:.2}) -- ({:.2},{:.2});",x-w*.32,y+k*h,x+w*.32,y+k*h).unwrap(); }
+    for k in [-0.25_f64,0.0,0.25] { writeln!(s,r"\draw[equipstroke] ({:.2},{:.2}) -- ({:.2},{:.2});",x-w*0.32,y+k*h,x+w*0.32,y+k*h).unwrap(); }
     writeln!(s,r"\node[font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",x,y,label).unwrap();
 }
 pub fn reformer(s:&mut String,e:Equip,label:&str){
     let x=e.c.x;let y=e.c.y;let w=e.w;let h=e.h;
     writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-w/2.0,y-h/2.0,x+w/2.0,y+h/2.0).unwrap();
-    for k in [-0.24_f64,0.0,0.24] { writeln!(s,r"\draw[coreaccent,line width=1pt] ({:.2},{:.2}) -- ({:.2},{:.2});",x+k*w,y-h*.30,x+k*w,y+h*.30).unwrap(); }
-    writeln!(s,r"\node[font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",x,y-h*.38,label).unwrap();
+    for k in [-0.24_f64,0.0,0.24] { writeln!(s,r"\draw[coreaccent,line width=1pt] ({:.2},{:.2}) -- ({:.2},{:.2});",x+k*w,y-h*0.30,x+k*w,y+h*0.30).unwrap(); }
+    writeln!(s,r"\node[font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",x,y-h*0.38,label).unwrap();
 }
 pub fn vessel(s:&mut String,e:Equip,label:&str){
     let x=e.c.x;let y=e.c.y;let w=e.w;let h=e.h;
@@ -45,35 +45,35 @@ pub fn vessel(s:&mut String,e:Equip,label:&str){
     writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",x,y,label).unwrap();
 }
 pub fn capture(s:&mut String,e:Equip,label:&str){
-    let dx=e.w*.20;
-    for x in [e.c.x-dx,e.c.x+dx] { writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt,rounded corners=6pt] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-e.w*.13,e.c.y-e.h/2.0,x+e.w*.13,e.c.y+e.h/2.0).unwrap(); }
-    writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*.68,label).unwrap();
+    let dx=e.w*0.20;
+    for x in [e.c.x-dx,e.c.x+dx] { writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt,rounded corners=6pt] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-e.w*0.13,e.c.y-e.h/2.0,x+e.w*0.13,e.c.y+e.h/2.0).unwrap(); }
+    writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*0.68,label).unwrap();
 }
 pub fn psa(s:&mut String,e:Equip,label:&str){
-    for dx in [-0.28_f64,0.0,0.28] { let x=e.c.x+dx*e.w; writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt,rounded corners=5pt] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-e.w*.09,e.c.y-e.h/2.0,x+e.w*.09,e.c.y+e.h/2.0).unwrap(); }
-    writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*.68,label).unwrap();
+    for dx in [-0.28_f64,0.0,0.28] { let x=e.c.x+dx*e.w; writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt,rounded corners=5pt] ({:.2},{:.2}) rectangle ({:.2},{:.2});",x-e.w*0.09,e.c.y-e.h/2.0,x+e.w*0.09,e.c.y+e.h/2.0).unwrap(); }
+    writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*0.68,label).unwrap();
 }
 pub fn compressor(s:&mut String,e:Equip,label:&str){
-    writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) -- ({:.2},{:.2}) -- ({:.2},{:.2}) -- cycle;",e.c.x-e.w/2.0,e.c.y-e.h*.35,e.c.x+e.w/2.0,e.c.y-e.h/2.0,e.c.x+e.w/2.0,e.c.y+e.h/2.0).unwrap();
-    writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*.75,label).unwrap();
+    writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) -- ({:.2},{:.2}) -- ({:.2},{:.2}) -- cycle;",e.c.x-e.w/2.0,e.c.y-e.h*0.35,e.c.x+e.w/2.0,e.c.y-e.h/2.0,e.c.x+e.w/2.0,e.c.y+e.h/2.0).unwrap();
+    writeln!(s,r"\node[align=center,font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*0.75,label).unwrap();
 }
 pub fn turbine(s:&mut String,e:Equip,label:&str){
-    writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) -- ({:.2},{:.2}) -- ({:.2},{:.2}) -- ({:.2},{:.2}) -- cycle;",e.c.x-e.w/2.0,e.c.y+e.h*.25,e.c.x+e.w/2.0,e.c.y+e.h/2.0,e.c.x+e.w/2.0,e.c.y-e.h/2.0,e.c.x-e.w/2.0,e.c.y-e.h*.25).unwrap();
+    writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) -- ({:.2},{:.2}) -- ({:.2},{:.2}) -- ({:.2},{:.2}) -- cycle;",e.c.x-e.w/2.0,e.c.y+e.h*0.25,e.c.x+e.w/2.0,e.c.y+e.h/2.0,e.c.x+e.w/2.0,e.c.y-e.h/2.0,e.c.x-e.w/2.0,e.c.y-e.h*0.25).unwrap();
     writeln!(s,r"\node[font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y,label).unwrap();
 }
 pub fn generator(s:&mut String,e:Equip,label:&str){
-    writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) circle ({:.2});",e.c.x,e.c.y,e.w*.35).unwrap();
+    writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) circle ({:.2});",e.c.x,e.c.y,e.w*0.35).unwrap();
     writeln!(s,r"\node[font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y,label).unwrap();
 }
 pub fn condenser(s:&mut String,e:Equip,label:&str){
     writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt,rounded corners=2pt] ({:.2},{:.2}) rectangle ({:.2},{:.2});",e.c.x-e.w/2.0,e.c.y-e.h/2.0,e.c.x+e.w/2.0,e.c.y+e.h/2.0).unwrap();
-    for dy in [-0.2_f64,0.0,0.2] { writeln!(s,r"\draw[waterstream] ({:.2},{:.2}) -- ({:.2},{:.2});",e.c.x-e.w*.35,e.c.y+dy*e.h,e.c.x+e.w*.35,e.c.y+dy*e.h).unwrap(); }
-    writeln!(s,r"\node[font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*.72,label).unwrap();
+    for dy in [-0.2_f64,0.0,0.2] { writeln!(s,r"\draw[waterstream] ({:.2},{:.2}) -- ({:.2},{:.2});",e.c.x-e.w*0.35,e.c.y+dy*e.h,e.c.x+e.w*0.35,e.c.y+dy*e.h).unwrap(); }
+    writeln!(s,r"\node[font=\sffamily\bfseries\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*0.72,label).unwrap();
 }
 pub fn pump(s:&mut String,e:Equip,label:&str){
-    writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) circle ({:.2});",e.c.x,e.c.y,e.w*.28).unwrap();
-    writeln!(s,r"\draw[equipstroke] ({:.2},{:.2}) -- ({:.2},{:.2});",e.c.x,e.c.y,e.c.x+e.w*.22,e.c.y+e.h*.16).unwrap();
-    writeln!(s,r"\node[font=\sffamily\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*.65,label).unwrap();
+    writeln!(s,r"\draw[fill=equipfill,draw=equipstroke,line width=.7pt] ({:.2},{:.2}) circle ({:.2});",e.c.x,e.c.y,e.w*0.28).unwrap();
+    writeln!(s,r"\draw[equipstroke] ({:.2},{:.2}) -- ({:.2},{:.2});",e.c.x,e.c.y,e.c.x+e.w*0.22,e.c.y+e.h*0.16).unwrap();
+    writeln!(s,r"\node[font=\sffamily\scriptsize] at ({:.2},{:.2}) {{{}}};",e.c.x,e.c.y-e.h*0.65,label).unwrap();
 }
 pub fn pipe(s:&mut String,a:Pt,b:Pt,color:&str,label:Option<&str>){
     writeln!(s,r"\draw[{},line width=1.5pt,-{{Latex[length=2mm]}}] {} -- {};",color,p(a),p(b)).unwrap();
