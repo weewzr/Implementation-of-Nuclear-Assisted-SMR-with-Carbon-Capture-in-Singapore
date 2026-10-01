@@ -3,6 +3,39 @@
 The headline result is easier to audit as two ledgers. A downward arrow means the candidate causes less than the conventional baseline; an upward arrow means the candidate introduces a new lifecycle burden or cost. These rows are generated from the same Rust functions as the final result, so the tables cannot be reconciled by manually changing manuscript numbers.
 
 \subsection{Where did the CO$_2$ go?}
+The source process reports direct CO$_2$ streams in short ton/day.  These are converted rather than reverse-engineered from an assumed pure-methane feed, because the INL process model already distinguishes feed, fuel and process streams.  At availability $A=0.85$,
+\[
+E_{\rm base,direct}=3205\frac{\mathrm{short\ ton}}{\mathrm d}
+(0.90718474)\frac{\mathrm t}{\mathrm{short\ ton}}(365)(0.85)
+=902{,}060~\mathrm{t/y},
+\]
+\[
+E_{\rm cand,direct}=142(0.90718474)(365)(0.85)
+=39{,}966~\mathrm{t/y},
+\]
+so
+\[
+A_{\rm direct}=902{,}060-39{,}966=862{,}094~\mathrm{tCO_2/y}.
+\]
+The same conversion gives
+\[
+M_{\rm captured}=1927(0.90718474)(365)(0.85)
+=542{,}362~\mathrm{tCO_2/y}.
+\]
+
+Natural-gas use falls from 52.5 to 34.0 MMSCFD.  Using the declared 1044 Btu/scf HHV and 11.5 kgCO$_2$e/GJ upstream factor, the upstream lifecycle terms are approximately 206,322 and 133,618 tCO$_2$e/y, respectively, saving 72,704 tCO$_2$e/y.  The new candidate burdens are
+\[
+E_{\rm nuclear}=176.8(1000)(7446)(5.5\times0.504)/10^6
+=3{,}649~\mathrm{tCO_2e/y},
+\]
+\[
+E_{\rm aux}=(17.3-6.3)(1000)(7446)(5.5)/10^6
+=450~\mathrm{tCO_2e/y},
+\]
+and
+\[
+E_{\rm T\&S}=0.025(542{,}362)=13{,}559~\mathrm{tCO_2e/y}.
+\]
 Direct CO$_2$ and lifecycle CO$_2$e are not interchangeable. The conventional and candidate plant stacks first determine the direct saving. Lifecycle accounting then adds the change in upstream natural-gas emissions and subtracts new nuclear, auxiliary-electricity and CO$_2$ transport/storage burdens:
 \[A_{\rm lifecycle}=A_{\rm direct}+A_{\rm upstream}-E_{\rm nuclear}-E_{\rm aux}-E_{\rm T\&S}.\]
 
@@ -20,9 +53,52 @@ every last row/.style={after row=\bottomrule}]
 {../results/final_design/generated/lifecycle_ledger.csv}
 \end{table}
 
-Thus lifecycle avoidance exceeds direct avoidance because the approximately 72.7 ktCO$_2$e/y upstream natural-gas saving is larger than the approximately 17.7 ktCO$_2$e/y of new lifecycle burdens. Captured CO$_2$ is not added again to the numerator, avoiding double counting.
+The arithmetic reconciliation is therefore
+\[
+862{,}093.8+72{,}703.8-3{,}649.2-450.5-13{,}559.0
+=\mathbf{917{,}138.9~tCO_2e/y}.
+\]
+Lifecycle avoidance exceeds direct avoidance because the approximately 72.7 ktCO$_2$e/y upstream natural-gas saving is larger than the approximately 17.7 ktCO$_2$e/y of new lifecycle burdens. Captured CO$_2$ is not added again to the numerator, avoiding double counting.  The one-tonne-scale difference obtained by adding rounded table entries is rounding only.
 
 \subsection{Where did the money go?}
+The natural-gas saving is directly reproducible from the same 52.5 and 34.0 MMSCFD source rates and the declared S\$15/GJ gas price:
+\[
+C_{\rm NG,base}\approx\mathrm{S\$}269.115~\mathrm{million/y},\qquad
+C_{\rm NG,cand}\approx\mathrm{S\$}174.284~\mathrm{million/y},
+\]
+hence
+\[
+S_{\rm NG}=269.115-174.284
+=\mathbf{S\$94.831~million/y}.
+\]
+
+The selected source economic burden is deliberately charged in full.  After the declared cost-year/currency normalization, the source heat and electricity product prices are approximately S\$4.758/GJ and S\$44.837/MWh.  Therefore
+\[
+C_{\rm source,heat}=370(7446)(3.6)(4.758)\approx\mathrm{S\$}47.193~\mathrm{million/y},
+\]
+\[
+C_{\rm source,electric}=88(7446)(44.837)\approx\mathrm{S\$}29.380~\mathrm{million/y},
+\]
+and
+\[
+C_{\rm source}\approx\mathbf{S\$76.572~million/y}.
+\]
+The 88 MWe term is used only to recover the full published source economic burden; it is not a project export claim.
+
+The scaled IEAGHG capture capital is approximately S\$114.04 million.  Annualising it at 8\% over 25 years gives
+\[
+C_{\rm CCS,annual}\approx\mathbf{S\$10.683~million/y}.
+\]
+The declared 10\% integration/site allowance, annualised at 3\% over 40 years, contributes approximately
+\[
+C_{\rm integration}\approx\mathbf{S\$2.857~million/y},
+\]
+while transport/storage is
+\[
+C_{\rm T\&S}=542{,}362(15)
+\approx\mathbf{S\$8.135~million/y}.
+\]
+Project electricity revenue is exactly \textbf{S\$0/y}.
 The economic ledger follows the same logic. The conventional baseline's natural-gas expenditure is replaced by lower candidate gas use plus the full selected source reactor economic burden, CCS annualisation, integration allowance and T\&S. Project electricity revenue is exactly zero.
 
 \begin{table}[htbp]\centering\scriptsize
@@ -39,8 +115,19 @@ every last row/.style={after row=\bottomrule}]
 {../results/final_design/generated/cost_ledger.csv}
 \end{table}
 
+Total money saved is approximately S\$94.831 million/y.  Total new represented costs are approximately S\$98.247 million/y, so
+\[
+\Delta C_{\rm annual}
+\approx98.247-94.831
+=\mathbf{S\$3.416~million/y}.
+\]
 The final division is therefore
-\[\frac{\text{net annual cost change}}{\text{lifecycle CO$_2$e saved}}\approx\frac{\mathrm{S\$}3.416\ \mathrm{million/y}}{917{,}139\ \mathrm{tCO_2e/y}}\approx\mathrm{S\$}3.725/\mathrm{tCO_2e}.\]
+\[
+C_{\rm abatement}
+=\frac{\Delta C_{\rm annual}}{A_{\rm lifecycle}}
+\approx\frac{\mathrm{S\$}3.416\ \mathrm{million/y}}{917{,}139\ \mathrm{tCO_2e/y}}
+\approx\mathbf{S\$3.725/\mathrm{tCO_2e}}.
+\]
 
 \subsection{What is not fully priced here?}
 The low screening abatement cost is not a turnkey Singapore project price. The current boundary does not fully price project-specific FOAK premium, financing structure, Singapore site/construction premium, licensing and security, detailed EPC/contingency, emergency-planning infrastructure, detailed 176.8 MWth IHX qualification, waste/decommissioning, insurance/liability, schedule risk, or negotiated cross-border CCS infrastructure/contracts. No monetary values are invented for these unresolved items. Their omission is why the economic conclusion is threshold compliance within the declared model, not bankability.
