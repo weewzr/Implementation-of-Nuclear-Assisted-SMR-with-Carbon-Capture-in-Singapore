@@ -72,13 +72,24 @@ Native-language deepening completed in this pass:
 - question register expanded to DF-35 with explicit decision consequences;
 - Rust vector figures added for availability/abatement, availability/cost and CCS robustness.
 
+Additional saturation work completed under the uploaded supplemental instruction:
+- transparent process-first reactor/temperature/power selection derivation;
+- evidence-based LWR-SMR / HTTR / HTR-PM / GTHTR300(C) technology screen;
+- 370/371 MWth branch meaning separated from the 170 MWth reference physical IHX;
+- HTTR process-trip mock-up/reactor transient evidence and simulator V&V;
+- HTR-PM commercial operating-event counter-evidence;
+- human-factors, I&C, cybersecurity and physical-security question set;
+- Jurong peer-reviewed site-screening evidence correctly classified as preliminary academic evidence;
+- Singapore 2026 INIR / 19-infrastructure-issue decision framework cross-check;
+- question register expanded through DF-40 with explicit decision consequences.
+
 Key unresolved critical-path questions:
 1. verify the latest native-evidence/Rust-figure HEAD and record exact reliability/CCS generated margins from CI;
-2. deepen selected-design accident/source-term evidence only where primary citation chains still change conclusions;
+2. reactor-trip/loss-of-nuclear-heat reformer safe-state remains higher-fidelity process-dynamics work; air/water-ingress/source-term methodology is mature enough for current screening claims but project PRA/source term remains future analysis;
 3. recover the missing second professor/research transcript and slides;
 4. reconcile professor traceability/question register after that source recovery;
-5. integrate the now-mature process-heat, reliability, CCS, source-term/EPZ, waste, cooling/siting, regulatory, V&V and accident-register evidence into the manuscript;
-6. generate evidence-backed Rust figures for the most decision-relevant sensitivities;
+5. integrate the now-mature reactor-selection, process-heat, reliability, CCS, source-term/EPZ, waste, cooling/siting, regulatory, V&V, human-factors/security and accident-register evidence into the manuscript;
+6. add only the highest-value remaining Rust figures/bridges (CO2 and cost contribution bridges plus selection/evidence schematics where appropriate);
 7. run full CI/PDF QA before the next Independent Review.
 
 Newly completed since the previous status update:
