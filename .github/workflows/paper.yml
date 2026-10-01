@@ -30,6 +30,7 @@ jobs:
             tools
             siunitx
             graphics
+            epstopdf-pkg
             xcolor
             xurl
             hyperref
