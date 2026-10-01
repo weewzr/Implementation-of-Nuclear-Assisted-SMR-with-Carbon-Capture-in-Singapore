@@ -53,6 +53,12 @@ every last row/.style={after row=\bottomrule}]
 {../results/final_design/generated/lifecycle_ledger.csv}
 \end{table}
 
+\begin{figure}[htbp]\centering
+\input{../results/final_design/generated/co2_bridge_figure.tex}
+\caption{Rust-generated lifecycle contribution bridge.  Positive bars are savings; negative bars are candidate lifecycle burdens.  The net bar reproduces the canonical lifecycle result.}
+\label{fig:co2-bridge}
+\end{figure}
+
 The arithmetic reconciliation is therefore
 \[
 862{,}093.8+72{,}703.8-3{,}649.2-450.5-13{,}559.0
@@ -128,6 +134,12 @@ C_{\rm abatement}
 \approx\frac{\mathrm{S\$}3.416\ \mathrm{million/y}}{917{,}139\ \mathrm{tCO_2e/y}}
 \approx\mathbf{S\$3.725/\mathrm{tCO_2e}}.
 \]
+
+\begin{figure}[htbp]\centering
+\input{../results/final_design/generated/cost_bridge_figure.tex}
+\caption{Rust-generated annual cost-contribution bridge.  Natural-gas savings are negative cost; reactor, CCS, integration and transport/storage are added costs.  Electricity revenue is zero by model boundary.}
+\label{fig:cost-bridge}
+\end{figure}
 
 \subsection{What is not fully priced here?}
 The low screening abatement cost is not a turnkey Singapore project price. The current boundary does not fully price project-specific FOAK premium, financing structure, Singapore site/construction premium, licensing and security, detailed EPC/contingency, emergency-planning infrastructure, detailed 176.8 MWth IHX qualification, waste/decommissioning, insurance/liability, schedule risk, or negotiated cross-border CCS infrastructure/contracts. No monetary values are invented for these unresolved items. Their omission is why the economic conclusion is threshold compliance within the declared model, not bankability.
