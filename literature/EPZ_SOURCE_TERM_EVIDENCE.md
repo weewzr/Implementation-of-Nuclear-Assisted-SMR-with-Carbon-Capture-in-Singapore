@@ -165,3 +165,57 @@ Project implication: licensing-grade HTR source-term analysis is a **multi-code 
 | Dose / EPZ | not implemented | none | regulator/site dependent | cannot be calculated defensibly |
 
 **Conclusion:** the project can explain the mechanistic chain and evidence maturity, but a numerical project source term or EPZ remains outside current model validity.
+
+
+## Japanese/Chinese native accident-mechanism saturation check
+
+### Air ingress / graphite oxidation — Japan
+JAERI/JAEA performed dedicated HTGR air-ingress experiments using graphite-tube test sections over roughly 400-1050 C to study natural convection, multicomponent diffusion and graphite oxidation after primary-pipe rupture. Japanese VHTR safety analyses explicitly model depressurisation followed by air ingress/graphite oxidation at 950 C-class outlet conditions.
+
+Later JAEA design work treats standpipe rupture/air ingress as a concrete design driver and proposes reflector/flow-path changes to suppress core air ingress. This is evidence that air ingress is not merely a generic PIRT item; it has shaped Japanese prismatic-HTGR design.
+
+### Air ingress — China
+Tsinghua native publication records show an extensive HTR-PM programme covering:
+- diffusion/natural-circulation onset;
+- massive air ingress;
+- IG-110 graphite oxidation kinetics;
+- non-uniform fuel-element oxidation;
+- bottom-reflector oxidation;
+- mitigation measures;
+- graphite dust generation/transport.
+
+These models and experiments were applied to HTR-PM safety review. This independently cross-checks the Japanese mechanism set while highlighting pebble-bed-specific geometry/dust differences.
+
+### Water/steam ingress — Japan
+JAEA small-HTGR preliminary safety work explicitly models steam-generator tube rupture / water ingress. In the cited analysis, water entering the primary system can:
+- insert reactivity;
+- oxidise graphite through C + H2O -> CO + H2;
+- increase primary pressure;
+- generate combustible H2 + CO;
+- potentially lead to safety-valve release to confinement.
+
+One analysed small-HTGR case conservatively estimated 875 kg primary water ingress, 110 kg reaching the core and ~1.8 vol% H2+CO in the stated confinement assumptions, below that study's flammability criterion.
+
+**The numbers are not transferable to this project.** The mechanism chain is.
+
+### Water ingress — China
+HTR-PM research likewise analyses steam-generator blowdown/water ingress transients. This is especially relevant because HTR-PM's operating plant couples helium directly to steam generators, whereas the project's nuclear/process interface is helium-helium IHX. The project may therefore remove some steam-generator-specific pathways at the reactor/process interface, but water/steam ingress can still arise from whatever water/steam equipment is actually connected to the selected design.
+
+## Saturation conclusion for DF-13 / DF-14
+
+The mechanism question is now **research-saturated at screening level**:
+- air ingress -> graphite oxidation / structural and source-term consequences: strongly supported by Japanese and Chinese native evidence plus NRC;
+- water/steam ingress -> reactivity/pressure/graphite reaction/H2+CO consequences: strongly supported by Japanese/Chinese evidence plus NRC.
+
+What remains is not more generic literature. It is **selected-design sequence quantification**:
+break/leak location and size
+→ ingress mass/rate
+→ circulation/diffusion
+→ graphite/fuel temperatures
+→ reaction/oxidation
+→ pressure/combustible gas
+→ fission-product transport
+→ confinement release.
+
+Decision consequence:
+if the selected GTHTR300C-class configuration cannot bound these sequences within fuel/structural/release criteria, its pressure-boundary, confinement, isolation or component architecture must change.
