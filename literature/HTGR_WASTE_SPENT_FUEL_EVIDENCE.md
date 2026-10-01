@@ -91,3 +91,21 @@ These are regulatory/institutional deployment gates rather than CN4252 process-m
 - IAEA TECDOC-2040 (2023), HTGR fuel-cycle/back-end technical meeting proceedings.
 - IAEA Technical Meeting on Management of Spent Fuel from High Temperature Reactors (2025).
 - Hittner et al. (2026), *HTGR TRISO Fuel and Graphite Waste Management Strategies*, Nuclear Technology 212(7), 1653-1662, DOI 10.1080/00295450.2025.2583046.
+
+
+## Chinese operating-event counter-evidence — spent-fuel ventilation
+
+NNSA reported a February 2024 HTR-PM spent-fuel-building event during maintenance of a blocked secondary discharge line. The spent-fuel storage-canister ventilation system did not include purification of airborne radioactive effluent; maintenance activity led to increased airborne radioactive aerosol release through the spent-fuel-building stack.
+
+NNSA reported:
+- the units remained safe;
+- no abnormal personnel radiation exposure occurred;
+- the event was preliminarily INES 0.
+
+This does not invalidate dry-storage feasibility. It does show that:
+- dry storage is not “no radiological system”;
+- ventilation, filtration, maintenance states and blocked-fuel handling can create release pathways;
+- operational waste/maintenance hazards must be analysed in addition to decay-heat removal.
+
+Decision consequence:
+a Singapore spent-fuel concept requires a complete confinement/ventilation/maintenance release analysis, not only a dry-canister heat-removal argument.
