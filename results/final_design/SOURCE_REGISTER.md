@@ -24,3 +24,19 @@
 | Nuclear lifecycle | 5.5 gCO2e/kWh electricity anchor | UNECE, GLOBAL PROXY | derived direct-heat allocation |
 | T&S | S$15/t captured | PROJECT SCREENING ASSUMPTION | economic screen |
 | Electricity export value | S$0/MWh | PROJECT CONSERVATIVE TEST | controlling cost test |
+
+
+## Numerical-audit clarifications
+
+The submission-facing master register is `results/final_design/MASTER_NUMBER_PROVENANCE_REGISTER.md`. The following values are intentionally **not** promoted as primary-source measurements:
+
+- 6.3 MWe common/baseline electricity anchor — historical project screening assumption (A-01), not established as an INL Case-6/common-output value;
+- 1044 Btu/scf natural-gas HHV — project screening conversion basis (A-03);
+- 0.504 thermal allocation — project lifecycle allocation proxy (A-06);
+- 0.025 tCO2e/tCO2 T&S lifecycle factor — generic project screening assumption (A-07);
+- S$15/GJ natural-gas price — project screening assumption (A-08);
+- 10% integration/site allowance — project screening assumption (A-14);
+- S$15/tCO2 T&S tariff — project screening assumption (A-16), not a contracted Singapore tariff;
+- S$0/y project electricity revenue — conservative project boundary (A-17), not a market-price observation.
+
+This classification prevents project assumptions from being visually confused with the INL/JAEA/IEA/UNECE source inputs.
