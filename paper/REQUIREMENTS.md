@@ -28,3 +28,21 @@ Historical Gate-5 0/64 and Review-5 600 C results remain repository provenance a
 | Implementation roadmap | Section 10: staged evidence, regulatory, CCS, vendor, demonstration, licensing and FOAK decision gates |
 | Overall feasibility | Section 10 evidence-status matrix: supported / conditional / unresolved / not demonstrated |
 | Reproducible visualisation | Rust -> deterministic CSV/TikZ -> manuscript via model scripts and paper/build.sh |
+
+
+## Final numerical-provenance audit coverage
+
+| Audit requirement | Canonical evidence |
+|---|---|
+| No consequential orphan numbers | `results/final_design/MASTER_NUMBER_PROVENANCE_REGISTER.md` |
+| Stable assumption identities | `results/final_design/ASSUMPTIONS.md` A-01 onward |
+| Source vs assumption boundary | `results/final_design/SOURCE_REGISTER.md` numerical-audit clarifications |
+| Stream/parameter table | Appendix B, Table `tab:stream-parameters` |
+| Reactor temperature/power selection | Section 4 numbered temperature/helium equations + reactor evidence table |
+| Annual H2 derivation | Section 7 ledger, Eq. `eq:annual-h2` |
+| Direct/lifecycle CO2 derivation | Section 7 numbered carbon equations + lifecycle ledger |
+| Cost derivation | Section 7 numbered cost equations + cost ledger |
+| Original project-output traceability | `results/FINAL_ORIGINAL_PLAN_TRACEABILITY.md` |
+| CN4252 final requirement traceability | Appendix B + `results/FINAL_ORIGINAL_PLAN_TRACEABILITY.md` |
+
+The audit does not promote unavailable WGS/PSA/compression state points to project values and does not change the Review-07 scientific classification.
