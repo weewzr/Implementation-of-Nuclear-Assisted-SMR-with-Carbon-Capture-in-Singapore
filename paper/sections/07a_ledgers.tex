@@ -1,8 +1,8 @@
-\section{Where the carbon and money go}
+\section{Carbon balance and techno-economic analysis}
 \label{sec:ledgers}
-The headline result is easier to audit as two ledgers. A downward arrow means the candidate causes less than the conventional baseline; an upward arrow means the candidate introduces a new lifecycle burden or cost. These rows are generated from the same Rust functions as the final result, so the tables cannot be reconciled by manually changing manuscript numbers.
+The heat and hydrogen calculations define the physical plant. This section follows first the carbon and then the money. The ledgers are generated from the same Rust functions as the final result, so the arithmetic remains tied to the reproducible model rather than manually transcribed headline values.
 
-\subsection{Annual hydrogen production}
+\subsection{Annual hydrogen production from the source rate}
 INL reports the common hydrogen service as 130 MMSCFD and approximately 29,000 lb/h~\cite{inltev953,inltev961}. Using Assumption A-02, $A=0.85$~\cite{nishihara2007potential}, annual hydrogen production is calculated from
 \begin{equation}\label{eq:annual-h2-general}
 M_{H_2}=\dot m_{H_2}\,t_{\rm year}\,A,
@@ -17,7 +17,7 @@ M_{H_2}=29{,}000\frac{\mathrm{lb}}{\mathrm h}
 \end{equation}
 This is a project annualisation of the source instantaneous rate, not a separate literature-reported annual plant output.
 
-\subsection{Where did the CO$_2$ go?}
+\subsection{Carbon balance and lifecycle emissions}
 The source process reports 3,205 short ton/day baseline emissions~\cite{inltev953}, and 142 short ton/day residual emissions plus 1,927 short ton/day captured CO$_2$ for Case 6~\cite{inltev961}. These source values are converted rather than reverse-engineered from an assumed pure-methane feed, because the INL process model already distinguishes feed, fuel and process streams. The annualisation uses the Nishihara design-study availability $A=0.85$ (Assumption A-02)~\cite{nishihara2007potential}. Using the standard conversion 1 short ton = 0.90718474 t, the general annualization for a source daily CO$_2$ rate $\dot M_{CO_2,d}$ is
 \begin{equation}\label{eq:co2-annual-general}
 M_{CO_2,y}=\dot M_{CO_2,d}(0.90718474)(365)A,
@@ -148,7 +148,7 @@ Here $E_{\rm cand,LC}$ is candidate lifecycle emissions (tCO$_2$e/y), $M_{H_2}$ 
 
 Lifecycle avoidance exceeds direct avoidance because the approximately 72.7 ktCO$_2$e/y upstream natural-gas saving is larger than the approximately 17.7 ktCO$_2$e/y of new lifecycle burdens. Captured CO$_2$ is not added again to the numerator, avoiding double counting.  The one-tonne-scale difference obtained by adding rounded table entries is rounding only.
 
-\subsection{Where did the money go?}
+\subsection{Techno-economic calculation}
 The natural-gas saving is directly reproducible from the same cited 52.5 and 34.0 MMSCFD source rates. Assumption A-08 sets the gas price $P_{\rm NG}$ to S\$15/GJ as a project screening value, not a contracted Singapore tariff. Annual gas expenditure is
 \begin{equation}\label{eq:ng-cost-general}
 C_{\rm NG}=Q_{\rm NG,d}(365)A P_{\rm NG},
