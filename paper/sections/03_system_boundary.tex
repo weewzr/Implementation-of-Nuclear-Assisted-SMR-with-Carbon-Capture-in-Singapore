@@ -1,20 +1,66 @@
 \section{Design basis and system boundary}\label{sec:design-basis}
-Before calculating performance, the study fixes what is being compared and classifies the principal inputs. The candidate follows the Idaho National Laboratory (INL) Case-6 process:
-\[
-\text{natural gas + steam}\rightarrow\text{SMR}\rightarrow\text{WGS}
-\rightarrow\text{CO$_2$ capture}\rightarrow\text{PSA}\rightarrow\text{H$_2$}.
-\]
-The reference is INL's conventional no-capture SMR at the same 130 million standard cubic feet per day (MMSCFD) hydrogen service~\cite{inltev953}. Using a common product output prevents the emissions comparison from being driven by plant size.
+W3 defined the physical configuration. This section fixes the numbers and accounting boundaries that make that configuration calculable. The project deliberately layers evidence rather than pretending that one source describes an already-built plant: Idaho National Laboratory (INL) supplies the chemical/process operating basis; Japan Atomic Energy Agency/Japan Atomic Energy Research Institute (JAEA/JAERI) and Nishihara supply the high-temperature reactor/process-heat design architecture and source economics; HTTR supplies demonstrated high-temperature precedent; and the project combines those layers through declared assumptions, engineering balances and Rust calculations. Table~\ref{tab:principal-design-basis} makes those distinctions explicit.
 
-\subsection{Process and heat design basis}
-The main \textbf{literature inputs} are the INL Case-6 process states: 871$^\circ$C reformer outlet, steam-to-carbon ratio 3.0, 88\% PSA hydrogen recovery, 925$^\circ$C reactor outlet, 900$^\circ$C secondary-helium supply, approximately 466$^\circ$C secondary-helium return, 78.49 kg/s source helium flow and 176.8 MWth reformer heat duty~\cite{inltev953,inltev961}. The source process produces 130 MMSCFD H$_2$ and uses 34.0 MMSCFD natural gas~\cite{inltev961}.
+\subsection{Common hydrogen service and conventional baseline}
+The comparison holds hydrogen service fixed so that emissions or cost do not improve merely because one case produces less product. INL reports 130 million standard cubic feet per day (MMSCFD), approximately 29,000 lb/h, of H$_2$ for the common service~\cite{inltev953,inltev961}. The project annualises the source mass rate at the 85\% design-study availability basis to approximately 97,946 t H$_2$/y; that annual value is a \textbf{project-derived result}, not an INL-reported annual production.
 
-The reactor \textbf{design basis} is a 600 MWth GTHTR300C-class architecture from JAEA/Nishihara literature~\cite{nishihara2007potential}. The project combines that hardware/scale precedent with the INL 925/900/871$^\circ$C operating point; it is therefore GTHTR300C-informed rather than an exact reproduction of a published GTHTR300C plant.
+The controlling reference is INL's conventional, fired, no-capture SMR-H$_2$ case at the same hydrogen service. Its aggregate natural-gas use is 52.5 MMSCFD and its direct emitted CO$_2$ is 3,205 short ton/day~\cite{inltev953}. The fired reformer supplies the high-temperature duty described in W3. The reduced lifecycle model also retains 6.3 MWe as a \textbf{project screening assumption/historical common-electricity anchor}; the repository does not establish that value as an INL Case-6/common-output measurement. This distinction matters later because only the candidate-minus-baseline electricity increment is charged in the lifecycle screen.
 
-\subsection{Annualisation and lifecycle boundary}
-Availability is a \textbf{source-anchored design assumption}: 85\%, giving 7,446 operating hours per year~\cite{nishihara2007potential}. The lifecycle boundary includes direct process emissions, upstream natural-gas supply, a declared nuclear-heat lifecycle allocation, incremental process electricity and CO$_2$ transport/storage. The upstream-gas and nuclear factors are global proxies rather than Singapore-specific measurements; the transport/storage lifecycle factor is a project screening assumption.
+\subsection{Candidate chemical-process basis}
+The candidate chemical plant is INL Case 6. These are source states/model results, not quantities re-derived by this project. The candidate uses 34.0 MMSCFD natural gas and produces the same 130 MMSCFD (approximately 29,000 lb/h) H$_2$ service~\cite{inltev953,inltev961}. Its reformer outlet is 871$^\circ$C at a source process pressure of 31.7 bar, with steam/carbon ratio 3.0 mol/mol, reported methane conversion 78.1\%, and PSA H$_2$ recovery 88\%~\cite{inltev953,inltev961}. The 88\% quantity is recovery, not hydrogen purity.
 
-\subsection{Economic boundary}
-The economic comparison includes baseline/candidate natural gas, the full selected reactor source-product economic burden, capture capital annualisation, a declared integration/site allowance and CO$_2$ Transport and Storage (T\&S). Project electricity revenue is set to \textbf{S\$0/y} because the model does not contain a validated off-design project power-output calculation. This is a conservative project boundary, not a market-price forecast.
+The same source case requires 176.8 MWth of process heat and 17.3 MWe of chemical-process electricity~\cite{inltev961}. It reports 1,927 short ton/day of captured CO$_2$ and 142 short ton/day of residual emitted CO$_2$~\cite{inltev961}. For heat transfer, the source reactor-outlet case is 925$^\circ$C and the process-side secondary helium is 900$^\circ$C supply, approximately 466$^\circ$C return and 78.49 kg/s~\cite{inltev961}. These values define the temperature and duty that the selected reactor architecture must serve; W5 tests their thermal compatibility rather than replacing them with invented local wall/pinch states.
 
-The detailed source/assumption/derived classification is preserved in the numerical-provenance register. In the sections that follow, literature values are cited where introduced, assumptions are named explicitly, and quantities such as annual hydrogen, avoided emissions and remaining reactor capacity are reported as \textbf{derived results}, not as literature measurements.
+\subsection{GTHTR300C-class reactor design basis}
+The reactor basis is a \textbf{GTHTR300C-class / GTHTR300C-informed screening architecture}, not an exact operating GTHTR300C plant. JAEA/JAERI/Nishihara literature supplies a 600 MWth high-temperature helium reactor design class, approximately 950$^\circ$C reactor-outlet precedent and approximately 900$^\circ$C secondary-helium process-heat architecture~\cite{jaeri2004gthtr300c,nishihara2007potential}. The high-H$_2$ source variant contains an approximately 370/371 MWth process-heat branch and an approximately 87--88 MWe complementary electricity product~\cite{nishihara2007potential}. The latter is retained only in the published source economic allocation; it is \textbf{not} a claimed project gross, net or export output.
+
+Published GTHTR300C evidence also provides an approximately 170 MWth reference physical IHX duty. That component reference is distinct from the 370/371 MWth architecture-level process-heat branch and does not establish qualification of a 176.8 MWth project exchanger~\cite{jaeri2004gthtr300c,nishihara2007potential}. Combining the 600 MWth source reactor rating with the INL 176.8 MWth project duty leaves 423.2 MWth by subtraction. This is a \textbf{project-derived remaining thermal capacity identity}; it is not electricity, turbine input, cooling duty or waste heat.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Principal design basis and provenance. Detailed number-level provenance remains in the repository master register.}
+\label{tab:principal-design-basis}
+\begin{tabular}{p{0.21\linewidth}p{0.16\linewidth}p{0.22\linewidth}p{0.32\linewidth}}
+\toprule
+Parameter & Value & Evidence class & Why used / source \\ \midrule
+Common H$_2$ service & 130 MMSCFD; \newline $\sim$29,000 lb/h & Source-backed/source-model output & Common baseline/candidate product basis~\cite{inltev953,inltev961} \\
+Baseline NG & 52.5 MMSCFD & Source-backed & Conventional no-capture SMR-H$_2$ gas basis~\cite{inltev953} \\
+Baseline direct CO$_2$ & 3,205 short ton/d & Source-model result & Direct-emissions reference~\cite{inltev953} \\
+Candidate NG & 34.0 MMSCFD & Source-backed & Candidate feed/fuel aggregate~\cite{inltev961} \\
+Reformer state & 871$^\circ$C; 31.7 bar & Source-model basis & Chemical operating point~\cite{inltev953,inltev961} \\
+S/C; CH$_4$ conversion & 3.0 mol/mol; 78.1\% & Source input / source-model result & Feed ratio and process-performance descriptor~\cite{inltev953} \\
+PSA H$_2$ recovery & 88\% & Source-backed & H$_2$ recovery basis; not purity~\cite{inltev953} \\
+Process heat; electricity & 176.8 MWth; 17.3 MWe & Source-model result & Candidate thermal and chemical-process demands~\cite{inltev961} \\
+Captured; residual CO$_2$ & 1,927; 142 short ton/d & Source-model results & Capture throughput and residual direct emissions~\cite{inltev961} \\
+Secondary He & 900$^\circ$C / \sim$466$^\circ$C; 78.49 kg/s & Source-model results & Heat-transfer supply/return/flow anchor~\cite{inltev961} \\
+Reactor-outlet source case & 925$^\circ$C & Source-model input & INL case paired with 900$^\circ$C process heat~\cite{inltev961} \\
+Reactor design rating & 600 MWth & Source design value & GTHTR300C-class scale~\cite{nishihara2007potential} \\
+Source heat branch & \sim$370/371 MWth & Source design value & High-H$_2$ process-heat architecture; not one IHX~\cite{nishihara2007potential} \\
+Reference physical IHX & \sim$170 MWth & Source design value & Component-scale qualification comparator~\cite{jaeri2004gthtr300c,nishihara2007potential} \\
+Source electricity product & \sim$87--88 MWe & Source design/economic value & Recovers published source burden; not project export~\cite{nishihara2007potential} \\
+Remaining thermal capacity & 423.2 MWth & Project-derived & $600-176.8$ capacity identity only \\
+Availability & 85\% & Source-anchored design assumption & Annualises source rates; not demonstrated Singapore reliability~\cite{nishihara2007potential} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Annualisation and principal screening assumptions}
+The 85\% availability basis corresponds to 7,446 operating hours per year and annualises the instantaneous source rates~\cite{nishihara2007potential}. It is a design-study assumption, not evidence that a future Singapore reactor/process complex will achieve 85\% availability.
+
+Only assumptions that materially control later lifecycle/economic results are surfaced here. Natural-gas energy conversion uses a \textbf{project screening assumption} of 1,044 Btu/scf. The lifecycle screen uses an IEA global upstream-gas proxy of 11.5 kgCO$_2$e/GJ~\cite{iea2026lng}, a UNECE nuclear-electricity lifecycle anchor of 5.5 kgCO$_2$e/MWh$_e$~\cite{unece2022lca}, a \textbf{project allocation proxy} of 0.504 MWh$_e$-equivalent/MWh$_{th}$ for direct heat, and a \textbf{project screening assumption} of 0.025 tCO$_2$e per tonne of CO$_2$ transported/stored. These proxies are used to make the lifecycle boundary explicit; none is presented as a Singapore route-specific measurement or a project-specific HTGR heat LCA.
+
+For economics, the natural-gas price is a \textbf{project screening assumption} of S\$15/GJ. Nishihara source economics supply 0.52 JPY/MJ heat, 4.9 JPY/kWh electricity and 59.7 billion JPY plant cost before the project's documented price-year/currency normalization~\cite{nishihara2007potential}. CCS capital uses the IEAGHG reference basis and 8\%/25-y annualisation convention~\cite{ieaghg2017smr}. The model adds a \textbf{project screening} 10\% integration/site capital allowance, annualised at the retained 3\%/40-y design-study convention, plus a \textbf{project screening} S\$15/tCO$_2$ transport/storage tariff. These are screening inputs, not vendor quotations or contracted Singapore tariffs.
+
+\subsection{Lifecycle, economic and deployment boundaries}
+The \textbf{chemical-process boundary} contains natural-gas/steam feed, reforming, WGS, CO$_2$ capture, PSA and H$_2$ product. The \textbf{nuclear process-heat boundary} contains reactor heat, primary helium, the IHX, secondary helium and delivery of process heat. Direct emissions use the source-reported baseline and candidate CO$_2$ streams rather than reverse-engineering them from an assumed pure-methane feed.
+
+The \textbf{lifecycle extension} adds upstream natural-gas emissions, the declared nuclear lifecycle proxy, incremental auxiliary electricity and CO$_2$ transport/storage burden. It does not claim a Singapore-specific gas supply-chain inventory, project-specific nuclear process-heat LCA, dynamic capture/outage model, or complete construction/decommissioning inventory.
+
+The \textbf{economic boundary} represents baseline and candidate natural gas, the full selected source heat/electricity economic burden, CCS capital annualisation, the integration/site screening allowance and CO$_2$ transport/storage. Project electricity revenue is fixed at \textbf{S\$0/y}. No validated off-design turbine/internal-load model exists for the changed 176.8 MWth heat split, so the paper claims no exact project gross MWe, net MWe or export MWe. The source 87--88 MWe product remains only part of the published source architecture/economic burden.
+
+The \textbf{deployment boundary} remains outside demonstrated model closure: no Singapore nuclear site or licence is assumed; detailed project nuclear/chemical safety and emergency planning are not solved here; no operating cross-border CCS route/storage contract is assumed; and the economic screen is not bankable First-of-a-Kind (FOAK) project economics.
+
+\subsection{Values deliberately not invented}
+The source set does not support a complete set of detailed stream/equipment states. WGS inlet/outlet temperatures, detailed PSA feed/tail-gas state points, CO$_2$ compressor discharge pressure, project helium pressure drop, exchanger wall temperatures, a local reformer pinch and an exact project electricity output are therefore \textbf{not assigned}. Their absence is a model limitation, not permission to fill the table with fabricated precision.
+
+The resulting design basis is intentionally mixed but traceable: source process states define the chemical service, source reactor studies define a compatible architecture, project assumptions close specified screening boundaries, and project calculations produce the annual/lifecycle/economic outputs. Given those states and boundaries, the next question is how the governing equations test thermal compatibility and propagate the inputs through the model; that is the purpose of the model-formulation and heat-integration sections that follow.
