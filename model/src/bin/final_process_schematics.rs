@@ -16,14 +16,14 @@ fn fig3()->String {
  for q in [rx_hot,rx_cold,ihx_pi,ihx_po,ihx_so,ihx_si,smr_hi,smr_ho,smr.top(),smr.right(),wgs.left(),wgs.right(),cap.left(),cap.right(),cap.bottom(),psae.right(),comp.left(),comp.right()] { writeln!(&mut s,r"\fill[equipstroke] ({:.2},{:.2}) circle (1.15pt);",q.x,q.y).unwrap(); }
  callout(&mut s,Pt{x:1.2,y:6.55},&format!("600 MWth basis\\\\Remaining thermal capacity: {:.1} MWth\\\\(not electricity output)",REACTOR_MWTH-HEAT_MWTH));
  callout(&mut s,Pt{x:7.4,y:6.35},&format!("871$^\\circ$C outlet\\\\{:.1} MWth process heat",HEAT_MWTH)); callout(&mut s,Pt{x:12.6,y:0.35},&format!("{:.0}\\% H$_2$ recovery",PSA_RECOVERY*100.0));
- writeln!(&mut s,r"\draw[dashed,equipstroke!65] (2.55,0.1)--(2.55,7.5); \node[font=\sffamily\bfseries\scriptsize] at (1.25,7.55) {{NUCLEAR PRIMARY}}; \node[font=\sffamily\bfseries\scriptsize] at (8.8,7.55) {{SECONDARY HEAT LOOP + CHEMICAL PROCESS}};").unwrap();
+ writeln!(&mut s,r"\draw[dashed,equipstroke!65] (5.25,0.1)--(5.25,7.5); \node[font=\sffamily\bfseries\scriptsize] at (2.55,7.55) {{NUCLEAR PRIMARY + IHX INTERFACE}}; \node[font=\sffamily\bfseries\scriptsize] at (9.8,7.55) {{SECONDARY HEAT LOOP + CHEMICAL PROCESS}};").unwrap();
  legend(&mut s,12.25,-0.25,&[("primaryhe","Primary He"),("secondaryhe","Secondary He"),("processgas","Process gas"),("co2stream","CO$_2$"),("h2stream","H$_2$")]); end(&mut s); s
 }
 
 fn fig1()->String {
  let mut s=String::new(); begin(&mut s); let furnace=Equip{c:Pt{x:1.1,y:4.4},w:1.6,h:1.6}; let smr=Equip{c:Pt{x:4.0,y:4.4},w:2.0,h:2.4}; let wgs=Equip{c:Pt{x:6.8,y:4.4},w:1.55,h:1.8}; let cap=Equip{c:Pt{x:9.4,y:4.4},w:1.8,h:2.1}; let psae=Equip{c:Pt{x:12.0,y:4.4},w:1.9,h:1.8}; let comp=Equip{c:Pt{x:9.4,y:1.45},w:1.6,h:1.3};
  vessel(&mut s,furnace,"Fired furnace"); reformer(&mut s,smr,"SMR"); vessel(&mut s,wgs,"WGS"); capture(&mut s,cap,"CO$_2$ capture"); psa(&mut s,psae,"PSA"); compressor(&mut s,comp,"CO$_2$ conditioning");
- pipe(&mut s,furnace.right(),smr.left(),"processgas",Some("fossil fired heat")); let feed=Pt{x:4.0,y:6.8}; pipe(&mut s,feed,smr.top(),"processgas",Some("natural gas + steam")); pipe(&mut s,smr.right(),wgs.left(),"processgas",None); pipe(&mut s,wgs.right(),cap.left(),"processgas",None); pipe(&mut s,cap.right(),psae.left(),"processgas",None);
+ pipe(&mut s,furnace.right(),smr.left(),"processgas",Some("fossil-fired heat + combustion CO$_2$")); let feed=Pt{x:4.0,y:6.8}; pipe(&mut s,feed,smr.top(),"processgas",Some("natural gas + steam")); pipe(&mut s,smr.right(),wgs.left(),"processgas",None); pipe(&mut s,wgs.right(),cap.left(),"processgas",None); pipe(&mut s,cap.right(),psae.left(),"processgas",None);
  let h2=Pt{x:14.1,y:4.4}; pipe(&mut s,psae.right(),h2,"h2stream",Some("H$_2$ product")); ortho(&mut s,cap.bottom(),9.4,comp.top(),"co2stream",Some("captured CO$_2$")); let ts=Pt{x:6.8,y:1.45}; pipe(&mut s,comp.left(),ts,"co2stream",Some("T\\&S")); legend(&mut s,11.1,0.15,&[("processgas","Process / heat"),("co2stream","CO$_2$"),("h2stream","H$_2$")]); end(&mut s); s
 }
 
