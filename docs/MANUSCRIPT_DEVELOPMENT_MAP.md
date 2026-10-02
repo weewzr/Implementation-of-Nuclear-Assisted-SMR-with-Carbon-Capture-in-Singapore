@@ -471,3 +471,46 @@ The large post-schematic writing pass is represented by commits:
 W0 changes documentation only. The active manuscript text, scientific model, canonical numbers, review records and STATUS closure language are intentionally untouched in this phase.
 
 **Single recommended next phase: W1 — Architecture and narrative spine.**
+
+
+---
+
+## W1 implementation record — Architecture and narrative spine
+
+W1 started from `a7ec2fe107b259d310bd98138e05a100f4172104` and changed manuscript **structure only**. The scientific model, equations, canonical values, assumptions, source classifications and review outcomes were not redeveloped.
+
+### Active architecture implemented
+1. `01_introduction.tex` — Introduction and research question
+2. `02_background.tex` — Proposed system
+3. `03_system_boundary.tex` — Design basis and system boundary
+4. `04_model_formulation.tex` — Model formulation
+5. `05_heat_integration.tex` — Nuclear-to-reformer heat integration
+6. `06_hydrogen.tex` — Hydrogen production and material balance
+7. `07_carbon_ccs.tex` — Carbon balance and CCS
+8. `08_energy_performance.tex` — Energy performance, bounded to supported thermal allocation
+9. `09_techno_economics.tex` — Techno-economic analysis
+10. `10_sensitivity.tex` — Sensitivity and parametric analysis
+11. `11_cn4252_assessment.tex` — Integrated assessment against CN4252
+12. `12_deployment_constraints.tex` — Deployment constraints and future work
+13. `13_conclusions.tex` — Conclusions
+
+### W0 findings resolved structurally
+- The overloaded former Section 4 was split into model formulation and heat integration. Its lifecycle formulation now sits with carbon/CCS; its economic formulation sits with TEA.
+- Annual hydrogen production equations `eq:annual-h2-general` and `eq:annual-h2` were moved intact beside the hydrogen-production story.
+- The former combined carbon/economic ledger was split into dedicated carbon/CCS and TEA sections; equation identities and generated ledger labels were preserved.
+- A bounded Energy Performance section now reports only supported thermal allocation and explicitly does not introduce exergy analysis.
+- Supported sensitivity material is now an active section before the integrated CN4252 verdict.
+- Nuclear/chemical safety, Singapore feasibility/roadmap, model limitations and decision-oriented future work are nested under one Deployment Constraints and Future Work section.
+- The old standalone Discussion is no longer active. Its useful interpretation was distributed beside energy/heat, carbon, TEA, sensitivity and deployment content.
+- Appendix B requirement traceability now uses semantic section references rather than stale hard-coded section numbers.
+
+### Content-preservation notes
+Historical inactive files remain in `paper/sections/` as audit history. They are not silently reincorporated by W1. The previous combined active files also remain in the repository where applicable, but `paper/main.tex` is authoritative for the new active assembly.
+
+### W1 flow test
+The active order now supports the plain-language explanation:
+idea → plant definition → model → heat → hydrogen → carbon → supported energy allocation → cost → sensitivity → assignment test → deployment barriers → answer.
+
+Detailed prose/accessibility development remains intentionally deferred to W2–W12.
+
+**Recommended next phase after W1 acceptance: W2 — Introduction and research question.**
