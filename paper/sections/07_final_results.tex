@@ -1,9 +1,9 @@
-\section{Final design results}
+\section{Integrated assessment, sensitivity and CN4252 test}
 \label{sec:final-results}
 
-The three-figure orientation establishes the physical change; this section answers the next two beginner-facing questions: \emph{how much CO$_2$ changes, and what represented annual cost changes?}
+With heat, hydrogen, carbon and cost now derived, the remaining question is whether the integrated system meets the assignment thresholds and how robust that conclusion is within the sensitivities already represented by the model.
 
-\subsection{What changed in carbon terms?}
+\subsection{Integrated carbon result}
 \begin{table}[htbp]\centering\small
 \caption{Plain-language carbon comparison on the verified common-output screening boundary. The avoided total reflects the combined candidate architecture---nuclear heat substitution, carbon capture and lower natural-gas use---with lifecycle burdens included; it is not attributed to nuclear heat alone.}
 \begin{tabular}{p{0.46\linewidth}p{0.38\linewidth}}
@@ -21,7 +21,7 @@ Annual hydrogen output & approximately 97,946 t/y\\
 \end{tabular}
 \end{table}
 
-\subsection{What changed in represented annual cost?}
+\subsection{Integrated cost result}
 \begin{table}[htbp]\centering\small
 \caption{Cost changes represented by the canonical screening model. Negative means an avoided expenditure; positive means an added represented burden.}
 \begin{tabular}{p{0.57\linewidth}r}
@@ -39,7 +39,7 @@ Net represented incremental annual cost & $+3.416$\\
 
 The resulting approximately S\$3.725/tCO$_2$e is a \textbf{screening abatement cost}, not a turnkey Singapore nuclear-project quotation or bankable First-of-a-Kind (FOAK) estimate. Important unresolved project costs include Singapore construction/site premium, financing, Engineering, Procurement and Construction (EPC), licensing, security, detailed IHX qualification, emergency planning, insurance/liability, waste/decommissioning, schedule risk, contingency and contracted CCS infrastructure.
 
-\subsection{Official CN4252 requirement check}
+\subsection{Assessment against the official CN4252 requirements}
 The official problem statement requires a solution at scale to reduce more than 0.25 MtCO$_2$e/y within Singapore at less than S\$100/tCO$_2$e, clearly explain the abatement mechanism and implementation roadmap, and is assessed on feasibility, potential effectiveness, accuracy and presentation.
 
 \begin{table}[htbp]\centering\small
@@ -60,7 +60,7 @@ Presentation & Three orientation figures + ledgers + requirement mapping & Submi
 
 \noindent\textbf{CONDITIONAL MODEL PASS.} The numerical screening requirements are satisfied under the declared model boundary. This does not demonstrate commercial Singapore deployment, nuclear licensing approval, a selected Jurong site, a Singapore Emergency Planning Zone, project Probabilistic Risk Assessment/mechanistic source term, a qualified commercial 176.8 MWth IHX, site-specific nuclear/chemical Quantitative Risk Assessment, guaranteed cross-border CCS, or bankable FOAK economics.
 
-\subsection{Detailed verified result}
+\subsection{Result interpretation}
 The verified final-design calculation produces approximately 97,946 tH$_2$/y at 85\% availability. Direct avoided emissions are approximately 862,094 tCO$_2$/y. Lifecycle avoided emissions are larger, approximately 917,139 tCO$_2$e/y, because the candidate consumes less natural gas than the same-output conventional baseline and therefore also avoids upstream gas-supply emissions. Captured CO$_2$ is not added again to the avoided-emissions numerator.
 
 \begin{table}[htbp]\centering\small
@@ -92,7 +92,7 @@ Joint classification & \textbf{CONDITIONAL MODEL PASS} & derived interpretation 
 
 \noindent\textit{Numerical basis for Table~\ref{tab:final-result}.} The 871/900$^\circ$C temperatures, 176.8 MWth duty, 130-MMSCFD service and source CO$_2$/natural-gas rates are INL source values~\cite{inltev953,inltev961}. The 600-MWth reactor and approximately 370-MWth heat branch are GTHTR300C design-study values~\cite{nishihara2007potential}. The 423.2 MWth value is the project subtraction $600-176.8$, not an external measurement. Hydrogen tonnes per year, captured/direct/lifecycle CO$_2$, lifecycle intensity, annual incremental cost and abatement cost are project-derived Rust outputs whose input-by-input substitutions are given in Section~\ref{sec:ledgers} and the master provenance register. S\$0/MWh is the conservative project boundary adopted because no validated off-design export model exists.
 
-\subsection{What the carbon numbers mean}
+\subsection{Why lifecycle avoidance exceeds direct avoidance}
 The annual-abatement threshold is exceeded by approximately 667,139 tCO$_2$e/y. Equivalently, 0.917 MtCO$_2$e/y is about \textbf{3.7 times} the required 0.25 MtCO$_2$e/y. Lifecycle avoidance exceeds direct avoidance by about 55 ktCO$_2$e/y: the reduction in upstream natural-gas burden is larger than the added nuclear-heat, auxiliary-electricity and CO$_2$ transport/storage lifecycle burdens.
 
 \begin{figure}[htbp]\centering
@@ -107,7 +107,7 @@ The annual-abatement threshold is exceeded by approximately 667,139 tCO$_2$e/y. 
 \label{fig:abatement-threshold}
 \end{figure}
 
-\subsection{Conservative economic test}
+\subsection{Economic robustness}
 Abatement cost asks how much additional annual cost is associated with each tonne of lifecycle emissions avoided. Its definition is given by Eq.~\ref{eq:abatement-cost-definition}, and the full numerical substitution is Eq.~\ref{eq:abatement-cost-final}.
 The controlling case gives no monetary credit to uncertain project electricity output but still charges the full selected reactor source-product economic burden. Its approximately S\$3.725/tCO$_2$e result is about S\$96.3/t below the S\$100/t ceiling. Thus the numerical cost pass does not depend on electricity revenue.
 
@@ -122,7 +122,7 @@ The controlling case gives no monetary credit to uncertain project electricity o
 \label{fig:cost-threshold}
 \end{figure}
 
-\subsection{Robustness screens}
+\subsection{Sensitivity and robustness}
 The verified Rust sensitivities deliberately separate two different questions.  In the \emph{no-backup} curve, the x-variable is effective annual process availability and only throughput/emissions are interpreted: if all operating quantities scale linearly, the 0.25 MtCO$_2$e/y threshold is crossed at approximately \textbf{23.2\% effective process availability}.  This does not imply commercially acceptable availability, reliable hydrogen supply, realistic industrial operation or acceptable economics; no no-backup availability economics are reported because installed/fixed plant costs cannot defensibly be scaled with downtime from the available evidence.  At the canonical 85\% case the emissions result remains 0.917 MtCO$_2$e/y.  The separate gas-backup curve instead uses \emph{nuclear-source availability} while backup heat maintains the defined 85\% process-service hours.  At 50\% nuclear-source availability it gives approximately 0.778 MtCO$_2$e/y and S\$48.35/tCO$_2$e.  Backup capital, fixed O\&M, staffing, start-up and integration are excluded, so those economics are a lower-bound operating screen only.
 
 \begin{figure}[htbp]\centering
@@ -139,5 +139,5 @@ The CCS-delivery sensitivity is an emissions-only algebraic screen varying the f
 \label{fig:ccs-robustness}
 \end{figure}
 
-\subsection{CN4252 interpretation}
+\subsection{Conditional model pass}
 The final configuration satisfies both numerical assignment thresholds under the declared source/design-study and lifecycle assumptions. It remains a \textbf{CONDITIONAL MODEL RESULT}, not evidence of an existing Singapore commercial project.
