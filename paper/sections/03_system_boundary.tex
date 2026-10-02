@@ -1,9 +1,20 @@
-\section{System boundary and comparison basis}
-The final candidate boundary follows the source INL process:
+\section{Design basis and system boundary}
+Before calculating performance, the study fixes what is being compared and classifies the principal inputs. The candidate follows the Idaho National Laboratory (INL) Case-6 process:
 \[
 \text{natural gas + steam}\rightarrow\text{SMR}\rightarrow\text{WGS}
 \rightarrow\text{CO$_2$ capture}\rightarrow\text{PSA}\rightarrow\text{H$_2$}.
 \]
-High-temperature nuclear heat replaces fired reformer duty in the final Case-6 architecture. The lifecycle boundary adds upstream natural-gas supply, a nuclear-heat lifecycle allocation, process electricity and CO$_2$ transport/storage. The economic boundary includes candidate natural gas, the full selected reactor source-product economic burden, incremental CCS capital, integration/site allowance and transport/storage (T\&S). \textbf{Project electricity revenue is fixed at S\$0/MWh}: remaining reactor thermal capacity is acknowledged, but no project-specific off-design electricity output is claimed.
+The reference is INL's conventional no-capture SMR at the same 130 million standard cubic feet per day (MMSCFD) hydrogen service~\cite{inltev953}. Using a common product output prevents the emissions comparison from being driven by plant size.
 
-The principal baseline is INL's conventional no-capture SMR at the same 130 MMSCFD H$_2$ output~\cite{inltev953}. This provides a source-consistent direct-emissions and natural-gas comparison rather than scaling an unrelated plant. IEAGHG Case 1A remains an external conventional-SMR+CCS comparator, but its Singapore economics are not used to overwrite the final INL common-output baseline.
+\subsection{Process and heat design basis}
+The main \textbf{literature inputs} are the INL Case-6 process states: 871$^\circ$C reformer outlet, steam-to-carbon ratio 3.0, 88\% PSA hydrogen recovery, 925$^\circ$C reactor outlet, 900$^\circ$C secondary-helium supply, approximately 466$^\circ$C secondary-helium return, 78.49 kg/s source helium flow and 176.8 MWth reformer heat duty~\cite{inltev953,inltev961}. The source process produces 130 MMSCFD H$_2$ and uses 34.0 MMSCFD natural gas~\cite{inltev961}.
+
+The reactor \textbf{design basis} is a 600 MWth GTHTR300C-class architecture from JAEA/Nishihara literature~\cite{nishihara2007potential}. The project combines that hardware/scale precedent with the INL 925/900/871$^\circ$C operating point; it is therefore GTHTR300C-informed rather than an exact reproduction of a published GTHTR300C plant.
+
+\subsection{Annualisation and lifecycle boundary}
+Availability is a \textbf{source-anchored design assumption}: 85\%, giving 7,446 operating hours per year~\cite{nishihara2007potential}. The lifecycle boundary includes direct process emissions, upstream natural-gas supply, a declared nuclear-heat lifecycle allocation, incremental process electricity and CO$_2$ transport/storage. The upstream-gas and nuclear factors are global proxies rather than Singapore-specific measurements; the transport/storage lifecycle factor is a project screening assumption.
+
+\subsection{Economic boundary}
+The economic comparison includes baseline/candidate natural gas, the full selected reactor source-product economic burden, capture capital annualisation, a declared integration/site allowance and CO$_2$ Transport and Storage (T\&S). Project electricity revenue is set to \textbf{S\$0/y} because the model does not contain a validated off-design project power-output calculation. This is a conservative project boundary, not a market-price forecast.
+
+The detailed source/assumption/derived classification is preserved in the numerical-provenance register. In the sections that follow, literature values are cited where introduced, assumptions are named explicitly, and quantities such as annual hydrogen, avoided emissions and remaining reactor capacity are reported as \textbf{derived results}, not as literature measurements.
