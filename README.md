@@ -1,4 +1,10 @@
-# Nuclear-Assisted SMR + CCS for Singapore
+# Implementation of Nuclear-Assisted Steam Methane Reforming with Carbon Capture in Singapore
+
+This repository implements and evaluates a proposed **High-Temperature Gas-Cooled Reactor (HTGR)-assisted Steam Methane Reforming (SMR) hydrogen-production system with Carbon Capture and Storage (CCS) in Singapore**. The work develops the process configuration, thermal integration, hydrogen/material balance, carbon accounting, lifecycle screening, techno-economic analysis, sensitivity analysis, deployment constraints, and a reproducible technical manuscript around that proposed system.
+
+The project was developed in the context of the **CN4252** module requirements, which provide the motivating decarbonisation and screening targets. CN4252 is therefore the project brief and evaluation context; the repository itself is the implementation and technical assessment of the proposed nuclear-assisted SMR + CCS concept.
+
+For the current manuscript-development workflow, see `docs/PROGRESSIVE_MANUSCRIPT_WORKFLOW.md`. For the exact scientific role, equipment flow and canonical parameters required in report Figures 1–3, see `docs/FIGURE_1_2_3_SPECIFICATION.md`. User-supplied module material, reflections and candidate replacement artwork can be placed under `attachments/`; attachments are not automatically treated as canonical evidence.
 
 ## Current final state
 
