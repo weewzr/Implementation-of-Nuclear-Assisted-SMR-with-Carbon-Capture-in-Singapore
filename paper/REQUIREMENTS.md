@@ -1,48 +1,17 @@
-# CN4252 final-design manuscript traceability
+# CN4252 final manuscript traceability — E8 controlling state
 
-| Requirement | Final-design evidence |
+| Requirement | Final manuscript evidence |
 |---|---|
-| Proposed concept | INL/NGNP high-temperature HTGR-assisted SMR with CCS; JAEA GTHTR300C cogeneration hardware |
-| Why Singapore | gas-dependent energy system, low-carbon hydrogen/decarbonisation context, conditional nuclear/CCS infrastructure |
+| Proposed concept | Nuclear-assisted SMR-H2+CCS; preferred future architecture = 1 x 600 MWth GTHTR300C-class source + 2 x 130 MMSCFD trains, 353.6 MWth process heat |
+| Why Singapore | gas-dependent industrial context; low-carbon H2; conditional nuclear/CCS/site infrastructure |
 | How emissions are reduced | fired reformer heat replaced by nuclear process heat + process CO2 capture + lower NG use |
-| >0.25 MtCO2e/y | final lifecycle model approximately 0.917 MtCO2e/y avoided: PASS |
-| <S$100/tCO2e | controlling zero-electricity-revenue case approximately S$3.725/tCO2e: PASS; no project electricity export credit is claimed |
-| Assumptions controlling result | results/final_design/SOURCE_REGISTER.md and ASSUMPTIONS.md |
-| Implementation constraints | Singapore implementation section: nuclear readiness, IHX/reformer qualification, CCS chain, electricity offtake |
-| Evidence conclusion | independently verified conditional model result; not observed commercial feasibility |
-| Reproducibility | model/src/final_design.rs + deterministic CSVs + sh paper/build.sh |
+| >0.25 MtCO2e/y | preferred mature E2B architecture ~1.834 MtCO2e/y: modelled numerical PASS |
+| <S$100/tCO2e | FOAK ~137.74 FAIL; BOAK ~74.14 projected/modelled PASS; mature 10-OAK ~42.84 projected/modelled PASS |
+| Comparator | conventional SMR+CCS ~0.461 MtCO2e/y on E2 matched-service screen; non-nuclear comparator, not proposed solution |
+| Jurong | conditional candidate industrial context; nuclear-site feasibility not demonstrated |
+| Safety | source technology supported; architecture engineering-supported; quantitative integrated safety conditional/partial; licensing/site safety not demonstrated |
+| Implementation | E7 decision-gated roadmap with STOP/REDESIGN conditions |
+| Reproducibility | Rust/project outputs + E1-E7 machine-readable registers + sh paper/build.sh |
+| Final overall judgement | current/FOAK not deployment-feasible as demonstrated; preferred mature case = conditional future feasibility |
 
-Historical Gate-5 0/64 and Review-5 600 C results remain repository provenance and are not the final submission design.
-
-
-## Targeted-extension coverage
-
-| CN4252 dimension | Current evidence |
-|---|---|
-| Technical feasibility | Sections 4--6: source-backed temperature/duty, Rust-generated thermal-capacity figure, helium/IHX screen |
-| Nuclear safety | Section 5: HTTR demonstrated tests, TRISO evidence, retained accident mechanisms, IHX isolation, integration hazards |
-| Chemical/process safety | Section 5: H2/CH4/CO/hot-pressure hazards, propagation, PHA/QRA limitations |
-| Singapore nuclear feasibility | Section 10: no deployment decision, INIR/capability building, safety/regulatory/siting gates |
-| CCS feasibility | Section 10: no suitable domestic geological storage, cross-border dependency and cost uncertainty |
-| Economic feasibility | Sections 7 and 10: verified zero-credit threshold result separated from bankable project economics |
-| Implementation roadmap | Section 10: staged evidence, regulatory, CCS, vendor, demonstration, licensing and FOAK decision gates |
-| Overall feasibility | Section 10 evidence-status matrix: supported / conditional / unresolved / not demonstrated |
-| Reproducible visualisation | Rust -> deterministic CSV/TikZ -> manuscript via model scripts and paper/build.sh |
-
-
-## Final numerical-provenance audit coverage
-
-| Audit requirement | Canonical evidence |
-|---|---|
-| No consequential orphan numbers | `results/final_design/MASTER_NUMBER_PROVENANCE_REGISTER.md` |
-| Stable assumption identities | `results/final_design/ASSUMPTIONS.md` A-01 onward |
-| Source vs assumption boundary | `results/final_design/SOURCE_REGISTER.md` numerical-audit clarifications |
-| Stream/parameter table | Appendix B, Table `tab:stream-parameters` |
-| Reactor temperature/power selection | Section 4 numbered temperature/helium equations + reactor evidence table |
-| Annual H2 derivation | Section 7 ledger, Eq. `eq:annual-h2` |
-| Direct/lifecycle CO2 derivation | Section 7 numbered carbon equations + lifecycle ledger |
-| Cost derivation | Section 7 numbered cost equations + cost ledger |
-| Original project-output traceability | `results/FINAL_ORIGINAL_PLAN_TRACEABILITY.md` |
-| CN4252 final requirement traceability | Appendix B + `results/FINAL_ORIGINAL_PLAN_TRACEABILITY.md` |
-
-The audit does not promote unavailable WGS/PSA/compression state points to project values and does not change the Review-07 scientific classification.
+Historical one-train 97,946 tH2/y, ~0.917 MtCO2e/y and S$3.725/t screening values remain provenance/model-development evidence where explicitly labelled; they do not control the final E8 conclusion.
