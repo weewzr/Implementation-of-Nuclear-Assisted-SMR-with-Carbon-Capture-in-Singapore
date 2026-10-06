@@ -44,3 +44,5 @@ cargo run --quiet --bin final_design_reliability_summary > ../results/final_desi
 cargo run --quiet --bin final_design_ccs_capture_csv > ../results/final_design/generated/ccs_capture_sensitivity.csv
 
 cargo run --quiet --bin deep_feasibility_tikz
+
+cargo run --quiet --bin e1_engineering_economics
