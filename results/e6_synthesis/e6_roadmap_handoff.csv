@@ -1,0 +1,17 @@
+Gate,Condition_to_close,Evidence_required,Failure_consequence,Source_phase
+FOAK process-heat demonstration,"direct nuclear-to-SMR coupling demonstrated/qualified","HTTR/JAEA programme or equivalent operating demonstration + component qualification","retain as unproven integration or redesign",E2B/E4
+two-train 353.6 MWth architecture proof,"one source can safely/controlably serve two trains","coupled thermal-hydraulic/control demonstration/model","architecture changes; economics recalculated",E2B/E4/E5
+cost-learning validation,"standardisation/replication actually reduces nuclear burden","observed/vendor/contracted cost and O&M evidence across deployment stages","future <100/t case may fail",E2B
+economic gate,"represented full project cost remains <100/t on current evidence boundary","updated CAPEX/OPEX/CCS/site/integration economics","do not proceed as CN4252 economic PASS",E1/E2B
+availability,"~85% annual availability basis defensible","reliability/maintenance/operating evidence","H2/abatement/economics degrade and must be recalculated",E2B
+H2 offtake,"~195892 t/y product has credible users/network/storage","contracts/network/offtake study","modelled effectiveness cannot be realised",E3
+CO2 transport storage,">=~1.085 Mt/y captured CO2 has durable transport and permanent storage","contracts permits storage capacity MRV","CCS/abatement architecture fails or production curtailed",E3
+candidate parcel,"nuclear-compatible Singapore parcel identified","land layout security EPR environmental/site studies","reject Jurong parcel or seek alternative",E3/E5
+cooling heat rejection,"normal + safety heat rejection and UHS closed","complete heat balance DHR/UHS design intake/outfall/environmental analysis","redesign operating point/cooling/site",E3/E5
+water NG infrastructure,"firm NG/water/steam/utilities support two trains","utility capacity and reliability studies","resize or reject site/architecture",E3
+external hazards,"industrial/marine/flood/geotech hazards within design/site criteria","parcel-specific hazard frequencies/loads and SSC assessment","reject parcel or add protection",E3/E5
+nuclear chemical QRA separation,"blast/fire/toxic propagation acceptable","HAZOP/QRA/CFD + nuclear SSC fragility/layout","increase separation/barriers or reject co-location",E4/E5
+transient PRA source term tritium,"integrated nuclear/interface risk and radiological transfer acceptable","600 MWth transients PRA inventory/source-term IHX/tritium models","redesign coupling/safety systems or reject",E4/E5
+dose EPR EPZ,"site consequences and emergency arrangements acceptable","source term + site dispersion/dose + regulator criteria","reject site/design or add mitigation",E5
+security,"industrial co-location compatible with nuclear physical/cyber security","regulator-led security architecture","redesign site/access/interface",E4/E5
+regulatory licensing framework,"Singapore framework and approvals support project","government/regulator policy licensing environmental approvals","deployment cannot proceed",E3-E5
