@@ -135,6 +135,37 @@ C_{\rm abatement}
 
 
 
+
+For the preferred mature case, the represented annual ledger is
+\[
+C_{\rm base,annual}=538.230~\mathrm{S\$\,million/y},\qquad
+C_{\rm cand,annual}=616.814~\mathrm{S\$\,million/y},
+\]
+so that
+\[
+\Delta C_{\rm annual}
+=C_{\rm cand,annual}-C_{\rm base,annual}
+=78.583~\mathrm{S\$\,million/y}.
+\]
+The candidate ledger contains the normalized/annualized mature nuclear burden (S\$207.763 million/y), two-train integration/IHX allowance (S\$22.846 million/y), candidate NG, CCS and T\&S terms; the baseline ledger contains the corresponding two-train conventional NG/process cost basis. The project NG assumption remains S\$15/GJ and T\&S remains S\$15/t captured CO$_2$; neither is a contracted tariff. With E2B lifecycle avoidance
+\[
+A_{\rm lifecycle}=1.834278~\mathrm{MtCO_2e/y},
+\]
+the abatement-cost definition is
+\begin{equation}
+C_{\rm abat}
+=\frac{C_{\rm cand,annual}-C_{\rm base,annual}}{A_{\rm lifecycle}},
+\end{equation}
+where $C_{\rm abat}$ is in S\$/tCO$_2$e when annual costs are expressed in S\$ million/y and $A_{\rm lifecycle}$ in MtCO$_2$e/y. Numerically,
+\[
+C_{\rm abat,mature}
+=\frac{616.814-538.230}{1.834278}
+\approx\mathbf{42.84~\mathrm{S\$/tCO_2e}}.
+\]
+Thus the forward mature model is below the S\$100/t threshold, but only for the \textbf{projected/modelled 10-OAK case}. It is not an observed Singapore quotation, contains no electricity or fictional heat-sharing revenue, and remains exposed to unresolved project costs under the E7 gates.
+
+For comparison, the same forward ledger method gives S\$137.74/tCO$_2$e at FOAK and S\$74.14/tCO$_2$e on the medium BOAK basis. The passing future values therefore come from source-supported two-train utilisation plus projected maturation, not from back-solving the learning rate to the assignment threshold.
+
 \subsection{What is not fully priced here?}
 The low screening abatement cost is not a turnkey Singapore project price. The current boundary does not fully price project-specific FOAK premium, financing structure, Singapore site/construction premium, licensing and security, detailed EPC/contingency, emergency-planning infrastructure, detailed 176.8 MWth IHX qualification, waste/decommissioning, insurance/liability, schedule risk, or negotiated cross-border CCS infrastructure/contracts. No monetary values are invented for these unresolved items. Their omission is why the economic conclusion is threshold compliance within the declared model, not bankability.
 
@@ -144,7 +175,13 @@ This distinction also strengthens the economics. The controlling S\$0/MWh case d
 \label{sec:stage-economics}
 The preceding S\$3.725/tCO$_2$e calculation is retained as a \textbf{historical differential screening bridge}; it no longer controls the final economic conclusion. A stronger E1 accounting assigns the full normalized one-module nuclear burden without unsupported co-product sharing and gives approximately \textbf{S\$154/tCO$_2$e}, which fails the S\$100/t threshold.
 
-E2B then changes the physical utilization architecture before applying independent maturation evidence. One 600 MWth source serves two real 176.8 MWth process trains, for 353.6 MWth useful reformer duty. No electricity revenue and no fictional heat-sharing customer are credited. Using the medium INL non-electric HTGR maturation method, the resulting stage-specific screening economics are:
+E2B changes the physical utilisation architecture before applying an independently selected maturation method. INL/RPT-23-72972 supplies the medium non-electric advanced-reactor/HTGR method: a BOAK overnight-cost basis of USD6,000/kWe (2019 USD) and USD25/MWh OPEX is converted to a heat-only basis by removing the 9\% energy-conversion-system share and applying a 40\% HTGR electric-to-thermal conversion; the resulting BOAK heat-only bases are USD2,184/kWt and USD10/MWth-h~\cite{inl2023advancedcost}. FOAK applies the source medium premium of 1.6. Replication follows
+\begin{equation}
+C_N=C_1(1-LR)^{\log_2 N},
+\end{equation}
+where $C_N$ is overnight cost at the $N$th replicated unit, $C_1$ is the BOAK heat-only starting cost, $LR=0.10$ is the source medium learning rate and $N$ is cumulative unit number~\cite{inl2023advancedcost}. At $N=10$, this gives approximately USD1,539/kWt (2019 USD); OPEX is held at USD10/MWth-h as in the source example. These are modelled/projected maturation inputs, not observed HTGR construction costs, and they were selected independently of the CN4252 S\$100/t threshold.
+
+The project then applies its documented 2019-to-2025 broad price escalation and SGD/USD conversion before annualising capital and adding O\&M. One 600 MWth source serves two real 176.8 MWth process trains, for 353.6 MWth useful reformer duty. No electricity revenue and no fictional heat-sharing customer are credited. The resulting stage-specific screening economics are:
 \begin{table}[htbp]\centering\small
 \caption{Controlling deployment-stage economics for the preferred two-train nuclear-assisted architecture. Values are project-model outputs, not vendor quotations.}
 \label{tab:deployment-economics}
