@@ -76,7 +76,33 @@ Calculate, on matched H2 service and consistent boundaries:
 
 Do not claim nuclear is necessary if CCS supplies most of the benefit.
 
-## Phase E3 — Jurong Island candidate-context feasibility
+## Phase E2B — Architecture innovation and FOAK-to-NOAK threshold recovery
+
+E2 shows that conventional SMR-H2+CCS already clears the abatement threshold and that the central dedicated nuclear-assisted case fails the cost threshold. Before siting/safety work, test whether a **credible future nuclear-assisted deployment architecture** can recover the <S$100/tCO2e requirement.
+
+This is not permission to tune assumptions until the answer passes.
+
+Two tracks are required:
+
+**Track A — Architecture innovation**
+- right-size reactor/process capacity where source-supported;
+- multiple matched H2 trains where physically credible;
+- real multi-user industrial heat sharing;
+- cogeneration/co-product allocation only where an actual service/user and physical energy balance exist;
+- higher utilization of reactor thermal capacity;
+- alternative HTGR module arrangements compatible with process temperature/duty.
+
+**Track B — FOAK→NOAK maturation**
+- establish credible literature-supported FOAK/NOAK or learning/standardisation cost evidence;
+- calculate the exact annual nuclear burden/CAPEX/O&M reduction required to reach S$100/tCO2e;
+- calculate break-even nuclear CAPEX/O&M and other useful threshold quantities;
+- compare required reductions with credible literature ranges rather than assuming maturation.
+
+Every passing case must identify the physical architecture, beneficiary/service, cost-allocation rule, evidence source, unresolved costs and deployment stage.
+
+If no defensible case passes, retain the adverse finding.
+
+
 Treat Jurong Island as a candidate industrial integration context, not an approved nuclear site.
 
 Research current authoritative evidence for:
