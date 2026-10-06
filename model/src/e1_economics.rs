@@ -2,7 +2,7 @@
 //! Historical final_design economics remain untouched for audit provenance.
 use crate::deployment::{ccs_capex_sgd, crf, JAEA_AVAIL, USD_SGD_2026_09_29};
 use crate::final_design::{
-    final_design, CAPTURED_SHORT_T_D, GAS_PRICE_SGD_GJ, HEAT_MWTH, NG_BASE_MMSCFD,
+    final_design, final_cost_ledger, CAPTURED_SHORT_T_D, GAS_PRICE_SGD_GJ, HEAT_MWTH, NG_BASE_MMSCFD,
     NG_FINAL_MMSCFD, NG_HHV_BTU_SCF, T_AND_S_SGD_T,
 };
 
@@ -116,6 +116,26 @@ pub fn e1_case(case: NuclearCase, ng_price: f64, ts_price: f64) -> E1Case {
         pass_cost: cost < 100.0,
     }
 }
+pub fn legacy_nishihara_with_source_integration() -> E1Case {
+    let old = final_cost_ledger();
+    let avoided = final_design(0.0, false).lifecycle_avoided_t;
+    let net = old.net_incremental - old.integration_added + ihx_loop_annual_sgd_unscaled();
+    let candidate = old.baseline_ng + net;
+    let cost = net / avoided;
+    E1Case {
+        baseline_sgd_y: old.baseline_ng,
+        candidate_sgd_y: candidate,
+        net_incremental_sgd_y: net,
+        nuclear_sgd_y: old.reactor_added,
+        integration_sgd_y: ihx_loop_annual_sgd_unscaled(),
+        ccs_sgd_y: old.ccs_annual_added,
+        ts_sgd_y: old.transport_storage_added,
+        avoided_t_y: avoided,
+        abatement_sgd_t: cost,
+        unresolved_margin_to_100_sgd_y: 100.0 * avoided - net,
+        pass_cost: cost < 100.0,
+    }
+}
 pub fn break_even_ng_price(case: NuclearCase, ts_price: f64) -> f64 {
     let at0 = e1_case(case, 0.0, ts_price);
     let saving_per_sgd_gj = (ng_gj_day(NG_BASE_MMSCFD) - ng_gj_day(NG_FINAL_MMSCFD))
@@ -141,6 +161,11 @@ pub fn cases_csv() -> String {
             x.integration_sgd_y,x.ccs_sgd_y,x.ts_sgd_y,x.avoided_t_y,x.abatement_sgd_t,
             x.unresolved_margin_to_100_sgd_y,x.pass_cost));
     }
+    let x=legacy_nishihara_with_source_integration();
+    s.push_str(&format!("Legacy Nishihara + IAEA1682 integration replacement,{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.3},{:.6},{:.3},{}\n",
+        x.baseline_sgd_y,x.candidate_sgd_y,x.net_incremental_sgd_y,x.nuclear_sgd_y,
+        x.integration_sgd_y,x.ccs_sgd_y,x.ts_sgd_y,x.avoided_t_y,x.abatement_sgd_t,
+        x.unresolved_margin_to_100_sgd_y,x.pass_cost));
     s
 }
 pub fn provenance_csv() -> String {
@@ -172,6 +197,13 @@ mod tests {
     #[test] fn integration_anchor_replaces_old_allowance_when_used() {
         assert!(ihx_loop_annual_sgd_unscaled() > 10_000_000.0);
         assert!(ihx_loop_annual_sgd_linear_duty_sensitivity() > ihx_loop_annual_sgd_unscaled());
+    }
+    #[test] fn source_integration_replaces_old_allowance_not_stacks() {
+        let old=final_cost_ledger();
+        let x=legacy_nishihara_with_source_integration();
+        let expected=old.net_incremental-old.integration_added+ihx_loop_annual_sgd_unscaled();
+        assert!((x.net_incremental_sgd_y-expected).abs()<1e-6);
+        assert!(x.abatement_sgd_t>3.725);
     }
     #[test] fn break_even_sensitivities_are_finite() {
         assert!(break_even_ng_price(NuclearCase::MhrtOneModuleCentral,15.0).is_finite());
