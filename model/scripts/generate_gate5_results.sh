@@ -46,3 +46,5 @@ cargo run --quiet --bin final_design_ccs_capture_csv > ../results/final_design/g
 cargo run --quiet --bin deep_feasibility_tikz
 
 cargo run --quiet --bin e1_engineering_economics
+
+cargo run --quiet --bin e2_incremental_nuclear_benefit
