@@ -1,25 +1,19 @@
 \section{Reproducibility}
-From a fresh repository checkout, the canonical end-to-end reproduction command is:
+From a fresh checkout, the canonical manuscript verification remains:
 \begin{verbatim}
 sh paper/build.sh
 \end{verbatim}
-The build script runs the complete Rust test suite, regenerates the canonical Gate-5/Gate-6 manuscript datasets, invokes \texttt{latexmk}, and fails if unresolved LaTeX citations or references remain. For explicit verification, the equivalent sequence is:
-\begin{verbatim}
-cd model
-cargo test --all-targets
-sh scripts/generate_gate5_results.sh
-cd ../paper
-latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-\end{verbatim}
+The build runs the Rust test suite, regenerates canonical model artifacts and compiles \texttt{paper/main.tex}; CI rejects unresolved LaTeX citations/references.
 
-The Rust implementation in \texttt{model/src/lib.rs} is the canonical computational source. Generated CSV/Markdown files under \texttt{results/generated/} are derivative artifacts and are recreated during the paper build. The quantitative manuscript chain is therefore:
-\[
-\text{source/assumption}
-\rightarrow \text{Rust model}
-\rightarrow \text{generated CSV}
-\rightarrow \text{LaTeX table/figure}
-\rightarrow \text{PDF}.
-\]
-The PDF is generated from \texttt{paper/main.tex} and is never maintained independently.
+The post-screening evidence chain is reproduced/inspected by phase:
+\begin{itemize}
+\item canonical physical/lifecycle model: \texttt{model/src/} and generated final-design ledgers;
+\item E1 economics: \texttt{results/E1\_ENGINEERING\_ECONOMIC\_MODEL.md} and associated Rust economic outputs;
+\item E2 attribution: \texttt{results/E2\_INCREMENTAL\_NUCLEAR\_BENEFIT.md};
+\item E2B architecture/maturation: \texttt{model/src/e2b\_maturation.rs} and \texttt{results/e2b\_maturation/};
+\item E3 siting/cooling screens: \texttt{model/src/e3\_siting.rs} and \texttt{results/e3\_siting/};
+\item E4/E5 safety: deterministic hazard/barrier/event-tree/source-term/QRA/data-gap registers under \texttt{results/e4\_safety/} and \texttt{results/e5\_safety/}; no fake numerical risk model is generated;
+\item E6/E7 synthesis and roadmap: machine-readable claim, requirement and decision-gate CSVs under \texttt{results/e6\_synthesis/} and \texttt{results/e7\_roadmap/}.
+\end{itemize}
 
-The GitHub Actions paper workflow invokes this same canonical build script on a fresh runner, avoiding a separate CI-only reproduction path. A successful current workflow run, rather than the existence of a locally generated PDF alone, is the Gate-6 reproducibility acceptance evidence.
+The quantitative chain remains source/assumption $\rightarrow$ Rust/project derivation $\rightarrow$ generated result $\rightarrow$ LaTeX table/figure $\rightarrow$ PDF. The PDF is generated from LaTeX and is not independently maintained. Stage-specific E2B economics and E6/E7 classifications are project-derived screening/synthesis outputs and retain their evidence-maturity labels.
