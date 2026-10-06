@@ -1,11 +1,39 @@
-\section{Deployment constraints and future work}\label{sec:deployment}
-The numerical model tests whether the proposed system closes within the declared screening boundary. Deployment requires separate evidence for component qualification, integrated safety, Singapore institutions and siting, the cross-border CCS chain and project-specific economics.
+\section{Deployment constraints and decision-gated implementation}\label{sec:deployment}
+The preferred mature numerical case is not a deployment claim. Implementation follows the E7 falsification pathway:
+\[
+\begin{gathered}
+\text{CURRENT RESEARCH}
+\rightarrow\text{COMPONENT/INTEGRATION QUALIFICATION}
+\rightarrow\text{FOAK PROCESS-HEAT DEMONSTRATION}\\
+\rightarrow\text{TWO-TRAIN 353.6 MWth DEMONSTRATION}
+\rightarrow\text{REPLICATION/BOAK}
+\rightarrow\text{MATURE 10-OAK COST GATE}\\
+\rightarrow\text{SINGAPORE SITE+LICENSING+CONTRACT CLOSURE}
+\rightarrow\text{CONSTRUCTION/COMMISSIONING}
+\rightarrow\text{MEASURED OPERATION}.
+\end{gathered}
+\]
+
+\subsection{Binding implementation gates}
+Before a real Singapore project can proceed, the following must close:
+\begin{itemize}
+\item \textbf{national/regulatory readiness:} an applicable power-reactor policy, competent regulator, licensing/legal framework, safeguards/security, waste/spent-fuel, EPR, liability and workforce arrangements;
+\item \textbf{technology qualification:} 600 MWth coupled transients, high-temperature IHX/secondary-He/reformer qualification, tritium, controls/isolation, materials and inspection;
+\item \textbf{two-train proof:} physical delivery of 353.6 MWth within the source process-heat branch, including one- and two-train trips, turndown, restart, CCS interaction and H$_2$ quality;
+\item \textbf{integrated safety:} PRA, mechanistic source term, IHX leak/rupture, tritium, chemical HAZOP/QRA, propagation/common cause, UHS/SBO, dispersion/dose, EPR/EPZ and security;
+\item \textbf{site/Jurong:} parcel, geotechnical/coastal/external hazards, QRA/PRA-derived separation, protected area, emergency access, cooling and environmental baseline;
+\item \textbf{infrastructure/market:} credible H$_2$ offtake for approximately 195,892 t/y, firm 68 MMSCFD NG supply, water/cooling, and contracted permanent storage for at least approximately 1.085 MtCO$_2$/y;
+\item \textbf{economic maturation:} observed replication cost, construction, O\&M and integrated availability must support a recalculated cost below S\$100/tCO$_2$e after then-known site/licensing/security/CCS costs;
+\item \textbf{commercial/FID:} full project CAPEX/TCI, financing/IDC, insurance/liability, decommissioning/waste, EPC/owner costs and binding contracts.
+\end{itemize}
+
+Jurong failure does not automatically falsify the technology: another Singapore context may be evaluated. Conversely, if no Singapore context can satisfy siting, safety, security and emergency requirements, Singapore deployment is stopped.
+
+\subsection{STOP/REDESIGN logic}
+The project does not advance automatically. It is redesigned, relocated, reduced in scale, delayed or stopped if high-temperature coupling cannot be qualified; the two-train dynamics fail; integrated availability invalidates the model; observed mature economics remain at or above S\$100/tCO$_2$e; nuclear/chemical separation is infeasible; source-term/dose or external hazards are incompatible with a site; no credible UHS exists; H$_2$ offtake or the CCS chain cannot be contracted; or the future Singapore regulator rejects the design/site.
+
+Only measured commissioning and commercial operation can convert the projected BOAK/10-OAK performance into demonstrated performance.
 
 \input{sections/11_limitations}
 \input{sections/05_nuclear_feasibility_safety}
 \input{sections/10_singapore}
-\input{sections/12a_future_work}
-
-Third, nuclear/chemical isolation is finite rather than absolute.  Primary helium does not flow directly into the chemical plant, but measured HTTR tritium in secondary helium shows that radionuclide permeation must be assessed.  Likewise, Japanese process-trip experiments support thermal buffering/control but do not replace a project-scale transient model.
-
-Fourth, emergency planning is a consequence-and-policy result rather than a generic advanced-reactor radius.  Chinese HTR-PM research supports much smaller technical EPZs than conventional large-reactor practice, yet the implemented Chinese HTR-PM emergency plan retained kilometre-scale plume zones.  Singapore therefore requires its own sequence/frequency/source-term/dispersion/dose/protective-action analysis.
