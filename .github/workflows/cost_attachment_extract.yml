@@ -62,3 +62,5 @@ jobs:
         with:
           name: cost-attachment-extract
           path: cost_attachment_extract/
+
+# safe extraction retry
