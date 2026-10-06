@@ -1,5 +1,12 @@
 # STATUS
 
+## E6 BOUNDED PROJECT-IDENTITY CORRECTION — COMPLETE
+
+The E6 framing has been corrected without changing any E1-E6 numerical result. **Nuclear-assisted SMR-H2 + CCS remains the proposed CN4252 solution. Conventional SMR+CCS is the non-nuclear comparator/counterfactual, not a replacement proposal.** E2's ~0.461 MtCO2e/y comparator result remains visible to test the incremental justification for nuclear integration. FOAK failure and projected BOAK/10-OAK passes remain unchanged.
+
+Files changed only where needed: E6 synthesis, controlling claims, superseded claims and requirement matrix. Deployment-stage and roadmap-handoff matrices required no identity correction.
+
+
 ## E6 — CN4252 FEASIBILITY, EFFECTIVENESS AND REQUIREMENT SYNTHESIS — COMPLETE
 
 E6 is complete. E0-E5 evidence has been synthesized against the official CN4252 requirements without changing the underlying engineering models.
