@@ -1,5 +1,25 @@
 # STATUS
 
+## E8 — FULL MANUSCRIPT REINTEGRATION — COMPLETE
+
+E8 reintegrated E1-E7 controlling evidence into the active LaTeX manuscript. The paper now presents nuclear-assisted SMR-H2+CCS as the proposed solution; the preferred one-reactor/two-train architecture; stage-specific FOAK/BOAK/10-OAK economics; the E2 non-nuclear comparator; E3 Jurong/cooling status; E4/E5 integrated safety hierarchy; and the E7 decision-gated implementation roadmap.
+
+Controlling final manuscript judgement:
+- current/FOAK: NOT DEPLOYMENT-FEASIBLE AS DEMONSTRATED; two-train FOAK ~S$137.74/tCO2e FAIL;
+- early-commercial/BOAK: ~S$74.14/tCO2e projected/modelled numerical PASS, conditional;
+- preferred mature 10-OAK: ~195,892 tH2/y, ~1.834 MtCO2e/y and ~S$42.84/tCO2e projected/modelled numerical PASS; CONDITIONAL FUTURE FEASIBILITY;
+- conventional SMR+CCS remains the comparator/counterfactual and can exceed the minimum abatement threshold;
+- Jurong is not an approved/selected nuclear site;
+- licensing-level integrated safety is not demonstrated.
+
+Historical S$3.725/t, 97,946 tH2/y and ~0.917 MtCO2e/y values are retained only where useful as one-train/model-development evidence and are demoted from the controlling final conclusion.
+
+E8 also updates reproducibility/traceability and creates `results/E8_FINAL_VISUAL_NEEDS.md`. No external image generation or independent review has begun.
+
+**Current research gate: E8 CLOSED pending final CI/PDF verification. STOP.**
+
+---
+
 ## E7 — DECISION-GATED IMPLEMENTATION ROADMAP — COMPLETE
 
 E7 is complete. The nuclear-assisted SMR-H2+CCS proposal now has a measurable, falsifiable implementation pathway rather than a generic research/pilot/build timeline.
