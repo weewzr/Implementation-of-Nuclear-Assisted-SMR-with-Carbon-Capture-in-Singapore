@@ -1,5 +1,36 @@
 # STATUS
 
+## E7 — DECISION-GATED IMPLEMENTATION ROADMAP — COMPLETE
+
+E7 is complete. The nuclear-assisted SMR-H2+CCS proposal now has a measurable, falsifiable implementation pathway rather than a generic research/pilot/build timeline.
+
+Roadmap spine:
+**CURRENT RESEARCH -> COMPONENT/INTEGRATION QUALIFICATION -> FOAK PROCESS-HEAT DEMONSTRATION -> TWO-TRAIN 353.6 MWth DEMONSTRATION -> REPLICATION/BOAK -> MATURE/10-OAK COST GATE -> SINGAPORE SITE/LICENSING/CONTRACT CLOSURE -> CONSTRUCTION/COMMISSIONING -> COMMERCIAL OPERATION/MEASURED VERIFICATION.**
+
+Key rules:
+- no arbitrary calendar dates;
+- FOAK ~S$137.74/tCO2e remains a FAIL;
+- BOAK ~S$74.14/t and 10-OAK ~S$42.84/t remain projected/modelled targets requiring observed learning;
+- 85% is integrated-plant availability, not reactor-only availability;
+- Jurong remains a candidate context and can be rejected without automatically killing the technology concept;
+- neither 246.4 nor 600 MWth is treated as canonical cooling/decay-heat duty;
+- H2 offtake (~195,892 t/y), NG (68 MMSCFD) and CCS (~1.085 Mt/y) are binding infrastructure/commercial gates;
+- safety, source term, QRA/separation, UHS/SBO, dose/EPR/EPZ, security and regulatory acceptance remain binding;
+- FID/construction occurs only after licensing, site, contracts, finance and safety closure;
+- measured operation is required before projected mature performance can be called demonstrated.
+
+Durable outputs:
+- `results/E7_IMPLEMENTATION_ROADMAP.md`
+- `results/e7_roadmap/e7_gate_matrix.csv`
+- `results/e7_roadmap/e7_dependencies.csv`
+- `results/e7_roadmap/e7_parallel_workstreams.csv`
+- `results/e7_roadmap/e7_stop_conditions.csv`
+- `results/e7_roadmap/E7_LATER_VISUAL_SPECIFICATION.md`
+
+**Current research gate: E7 CLOSED. STOP.** Do not begin E8, W5, final visual generation or independent review without explicit instruction.
+
+---
+
 ## E6 BOUNDED PROJECT-IDENTITY CORRECTION — COMPLETE
 
 The E6 framing has been corrected without changing any E1-E6 numerical result. **Nuclear-assisted SMR-H2 + CCS remains the proposed CN4252 solution. Conventional SMR+CCS is the non-nuclear comparator/counterfactual, not a replacement proposal.** E2's ~0.461 MtCO2e/y comparator result remains visible to test the incremental justification for nuclear integration. FOAK failure and projected BOAK/10-OAK passes remain unchanged.
