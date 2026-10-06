@@ -1,5 +1,22 @@
 # STATUS
 
+## POST-E8 ARCHITECTURE SIZING RE-OPTIMIZATION — COMPLETE
+
+Decision: **RETAIN TWO TRAINS** as the best-supported architecture, while explicitly classifying it as **not a proven global optimum**.
+
+The wider screen tested the canonical 1x and 2x Case-6 configurations plus bounded 3-smaller-train and 1-custom-large topology sensitivities. The rule floor(370/176.8)=2 is now treated only as a feasibility rule. Two trains survive the wider multi-criterion screen because they are the only high-utilisation architecture with source-anchored process-train performance and defensible E2B stage economics without inventing equipment scaling, reliability benefits, BOP sharing, footprint reductions or cost credits.
+
+No alternative reactor/source in the current evidence base closes the ~900 C / 353.6 MWth service with a stronger comparable basis. EPZ remains UNKNOWN / SITE-SPECIFIC. No downstream scientific recomputation is required because the benchmark architecture is retained.
+
+Durable outputs:
+- `results/POST_E8_ARCHITECTURE_SIZING_REOPTIMIZATION.md`
+- `results/post_e8_architecture_sizing/candidate_comparison.csv`
+- `results/post_e8_architecture_sizing/integration_economics_sensitivity.csv`
+- `results/post_e8_architecture_sizing/multicriterion_matrix.csv`
+- `model/src/post_e8_architecture_sizing.rs`
+- `model/src/bin/post_e8_architecture_sizing.rs`
+
+
 ## POST-E8 CALCULATION / NOTATION COMPLIANCE PASS — COMPLETE
 
 The bounded E8 calculation/notation addendum has been applied to the active manuscript without changing canonical E1-E7 scientific results. The paper now explicitly derives per-train -> two-train heat/H2/NG/captured-CO2 quantities; distinguishes 95.6% process-heat-branch utilisation from 58.9% whole-reactor thermal utilisation; shows the INL FOAK/BOAK/10-OAK learning method; shows the full mature S$42.84/tCO2e annual-cost substitution; explains the E2B two-train lifecycle scaling/boundary; and restores qualified E3 cooling notation. No safety probabilities/releases were invented.
