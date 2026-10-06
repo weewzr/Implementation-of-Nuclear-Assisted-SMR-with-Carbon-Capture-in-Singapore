@@ -1,5 +1,32 @@
 # STATUS
 
+## E4 — INTEGRATED NUCLEAR + CHEMICAL SAFETY CASE — COMPLETE
+
+E4 is complete. The preferred E2B/E3 architecture has been converted into a project-specific screening safety case covering nuclear initiating events, IHX/interface failures, chemical hazards, bidirectional propagation, common-cause dependencies, Jurong external hazards, defence-in-depth barriers, safe-state functions and evidence maturity.
+
+E4 classification: **ENGINEERING-SUPPORTED SAFETY ARCHITECTURE / INTEGRATED SAFETY CONDITIONAL / LICENSING-LEVEL SAFETY NOT DEMONSTRATED.**
+
+Key boundaries:
+- HTTR/AGR/JAEA evidence is retained with explicit scale/transferability limits;
+- a simultaneous two-train trip is a 353.6 MWth process-heat-sink step, not an invented decay-heat or dump-cooler duty;
+- the IHX provides physical separation but not perfect radiological isolation; project tritium remains unresolved;
+- no event frequency, core-damage frequency, source-term release fraction, off-site dose, EPZ, chemical risk contour or separation distance is invented;
+- Jurong external hazards remain site-specific and unresolved;
+- E5 is required for PRA/source-term/QRA quantitative depth.
+
+Durable outputs:
+- `results/E4_INTEGRATED_SAFETY_CASE.md`
+- `results/e4_safety/e4_hazard_register.csv`
+- `results/e4_safety/e4_barrier_matrix.csv`
+- `results/e4_safety/e4_propagation_matrix.csv`
+- `results/e4_safety/e4_safe_state_matrix.csv`
+- `results/e4_safety/e4_evidence_matrix.csv`
+- `results/e4_safety/E4_LATER_VISUAL_SPECIFICATION.md`
+
+**Current research gate: E4 CLOSED. STOP.** Do not begin E5, W5, E8, final visual generation or independent review without explicit instruction.
+
+---
+
 ## E3 — JURONG ISLAND SITING/COOLING FEASIBILITY — COMPLETE
 
 E3 is complete at scientific HEAD `e09be311950e5aec1eadaacce706778b3f6c42a9`.
