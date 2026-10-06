@@ -8,6 +8,15 @@ The existing verified screening model and S$3.725/tCO2e result remain preserved 
 
 The objective is to replace avoidable screening bridges with the strongest defensible engineering analysis supported by available data, while retaining literature values where the user has explicitly chosen to defer fundamental simulation/model redevelopment.
 
+## Assignment framing
+
+All phases must preserve both CN4252 requirement layers:
+
+1. `docs/CN4252_BROAD_ASSIGNMENT_REQUIREMENTS.md`: decarbonisation problem/context → proposed solution → abatement potential → cost estimate → key questions/further work.
+2. `docs/CN4252_PROBLEM_STATEMENT.md`: solution-at-scale within Singapore → >0.25 MtCO2e/y → <S$100/tCO2e → abatement mechanism → implementation roadmap → originality → feasibility/effectiveness → accuracy/presentation.
+
+The final report and presentation must make the simple broad assignment answer easy to find despite the depth of the engineering analysis.
+
 ## Governing principle
 
 Do not try to make the proposal pass or fail.
