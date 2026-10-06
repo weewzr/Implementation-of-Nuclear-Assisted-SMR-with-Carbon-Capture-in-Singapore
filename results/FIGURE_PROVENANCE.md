@@ -1,26 +1,20 @@
 # FINAL MANUSCRIPT FIGURE PROVENANCE
 
-This record covers submission-facing figures. User-provided Project Source images were inspected as technical references during Final Submission QA; they were not copied directly because the supplied filenames/depicted systems were not consistently aligned and original schematics provide clearer provenance.
+This record covers submission-facing figures. Figures 1--3 are now included directly from user-provided project artwork under `attachments/`. The artwork provides **visual/design provenance only**; scientific validation remains tied to the cited INL, IEAGHG and JAEA/JAERI/Nishihara sources and to the canonical project model.
 
-| Figure | Purpose | Status | Technical basis | Manuscript citation | Generated-data dependency |
-|---|---|---|---|---|---|
-| Singapore energy context | Establish Singapore energy/emissions context | Original data panel | EMA Singapore Energy Statistics | EMA citations in caption | `data/external/ema_singapore_energy_context_2024.csv` |
-| Conventional SMR + CCS explainer | Teach feed -> reformer -> WGS -> capture -> PSA -> H2 and CCS | Original/recreated schematic | IEAGHG merchant-hydrogen process architecture; user Project Source conventional-SMR visual inspected as reference | `ieaghg2017smr` | none |
-| Nuclear heat substitution | Show what changes relative to fired reforming | Original/recreated schematic | INL TEV-961 + JAEA/JAERI HTGR precedent; user Project Source nuclear-assisted visual inspected as reference | `inltev961`, `jaeri2004gthtr300c` | none |
-| HTGR/IHX isolation | Explain primary helium / IHX / secondary helium isolation | Original/recreated schematic | JAEA/JAERI HTGR/IHX architecture; Project Source HTGR loop images inspected as reference | `jaeahttr`, `jaeri2004gthtr300c`, `nishihara2007potential` | none |
-| Final integrated architecture | Show verified final process and remaining thermal capacity without power claim | Original project schematic | INL TEV-953/961 + Nishihara 2007 architecture | `inltev953`, `inltev961`, `nishihara2007potential` | none |
-| Annual-abatement threshold | Make 0.917 versus 0.25 Mt/y immediately visible | Original project-result graphic | Independently verified final lifecycle result | model/review provenance in text | frozen final result |
-| Abatement-cost threshold | Make S$3.725 versus S$100/t immediately visible | Original project-result graphic | Independently verified zero-credit economic result | model/review provenance in text | frozen final result |
+| Figure | Active asset | Purpose | Visual provenance | Scientific basis |
+|---|---|---|---|---|
+| Figure 1 -- conventional SMR + CCS | `attachments/figure1_conventional_smr_ccs.png` | Conventional fired SMR-H2 + CCS reference | User-provided project artwork | IEAGHG merchant-hydrogen architecture; INL conventional SMR evidence |
+| Figure 2 -- reference HTGR power pathway | `attachments/figure2_htgr_reference_power.png` | Explain primary-He heat transport and a separate steam/water power cycle | User-provided project artwork | JAEA/JAERI HTGR precedent; orientation only, no project electricity claim |
+| Figure 3 -- proposed HTGR-assisted SMR + CCS | `attachments/figure3_proposed_htgr_smr_ccs.png` | Proposed nuclear process-heat integration and chemical train | User-provided project artwork | INL TEV-953/961 process states plus GTHTR300C/JAEA design architecture |
 
-## Project Source visual inventory
+## Attachment scientific-use qualification
 
-Useful technical-reference content observed in supplied images:
-- fired SMR furnace, WGS, amine absorber/stripper, PSA and offshore CO2-storage pathway;
-- HTGR core, helium circulator, high-temperature helium loop and heat exchanger/steam-generation concepts;
-- proposed HTGR-assisted reformer with primary/secondary heat-transfer architecture.
+The attachment images are conceptual project artwork, not numerical authorities. Embedded artwork labels that differ from the canonical final-design basis are treated as illustrative and are explicitly qualified in the manuscript captions. For Figure 3, the manuscript text/caption controls the scientific interpretation: 600 MWth design basis; 925 C reactor-outlet source case; 900 C secondary-He supply; approximately 466 C return; 78.49 kg/s secondary-He flow; 176.8 MWth reformer duty; 871 C reformer outlet; S/C=3.0; 88% PSA H2 recovery; and 130 MMSCFD H2 product. The approximately 97,946 t/y value is project-derived annual output. The 423.2 MWth remainder is thermal capacity only. The approximately 170 MWth physical-IHX reference and approximately 370/371 MWth source process-heat branch remain distinct. CO2 transport/storage remains conditional.
 
-These were used to check equipment ordering and explanatory needs, not as numerical authorities. Primary INL/JAEA/IEAGHG literature remains the technical citation basis. No supplied raster figure is reproduced directly in the final manuscript.
+Any power-side/steam-generator equipment visible in the Figure-3 artwork is source-architecture orientation only and does not establish a project electricity output. Likewise, artwork temperatures/purities that are not part of the canonical basis are not promoted to model inputs.
 
+The previous Rust/TikZ conceptual schematics may remain in generated/reproducibility outputs, but they are **not the active manuscript Figures 1--3**. Quantitative model-derived figures and tables remain deterministically generated where reproducibility matters.
 
 ## Targeted-extension figure/data provenance
 
