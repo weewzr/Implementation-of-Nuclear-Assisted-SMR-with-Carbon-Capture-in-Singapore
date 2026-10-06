@@ -1,5 +1,40 @@
 # STATUS
 
+## E3 — JURONG ISLAND SITING/COOLING FEASIBILITY — COMPLETE
+
+E3 is complete at scientific HEAD `e09be311950e5aec1eadaacce706778b3f6c42a9`.
+
+Current E3 conclusion: **Jurong Island is a credible candidate industrial-integration context, but nuclear-site feasibility is NOT DEMONSTRATED.** The E2B two-train architecture is retained: one 600 MWth GTHTR300C-class source, two 130 MMSCFD SMR-H2+CCS trains, 353.6 MWth useful process heat, approximately 195,892 tH2/y and approximately 1.834 MtCO2e/y lifecycle abatement on the E2B scaling basis.
+
+E3 closes the requested screening-level siting/infrastructure questions:
+- Jurong/LCT3 industrial context researched without treating LCT3 as a nuclear project;
+- land/footprint evidence screened without inventing a total nuclear-site area;
+- 246.4 MWth identified only as the conditional full-power residual-disposition envelope, not canonical cooling duty;
+- illustrative seawater flow screens implemented reproducibly in Rust;
+- two-train NG = 68 MMSCFD, H2 = 260 MMSCFD, captured CO2 = approximately 1.085 Mt/y;
+- cooling, water, H2 offtake, CCS chain, nuclear/chemical separation, external hazards, security, emergency planning, environmental permitting and nuclear licensing retained as conditional/unresolved where evidence requires;
+- later conceptual visual specification created as data specification only; no fictional site plan/artwork.
+
+Verification at E3 scientific HEAD:
+- Research CI `37438179971` — **PASS**;
+- Paper/reproducibility CI `37438180028` — **PASS**;
+- E1/E2/E2B files/results were not modified by E3;
+- no Jurong nuclear-site approval, environmental permit, universal separation distance or operating cross-border CCS chain is claimed.
+
+Durable E3 outputs:
+- `results/E3_JURONG_SITING_COOLING.md`;
+- `results/e3_siting/e3_source_evidence_matrix.csv`;
+- `results/e3_siting/e3_cooling_screen.csv`;
+- `results/e3_siting/e3_infrastructure_demands.csv`;
+- `results/e3_siting/e3_jurong_decision_matrix.csv`;
+- `results/e3_siting/E3_LATER_VISUAL_SPECIFICATION.md`;
+- `model/src/e3_siting.rs`;
+- `model/src/bin/e3_jurong_siting.rs`.
+
+**Current research gate: E3 CLOSED. STOP.** Do not begin E4, W5, E8 or independent review without explicit instruction.
+
+---
+
 ## FINAL READABILITY / THREE-FIGURE / REPOSITORY PACKAGING PASS — COMPLETE
 
 **FINAL TECHNICAL-REPORT / NUMERICAL-PROVENANCE PRESENTATION PASS — COMPLETE.**
