@@ -4,7 +4,26 @@ W3 defined the physical configuration. This section fixes the numbers and accoun
 \subsection{Preferred project architecture and per-train provenance}
 The final proposed CN4252 solution is \textbf{nuclear-assisted SMR-H$_2$+CCS}. The INL quantities below are retained as a \emph{per-train source-model basis}. E2B constructs the preferred future architecture by duplicating two identical 130-MMSCFD chemical trains while retaining one 600 MWth GTHTR300C-class source. Thus the project-derived preferred totals are 260 MMSCFD H$_2$, 353.6 MWth reformer heat, 68 MMSCFD candidate natural gas and approximately 1.085 MtCO$_2$/y captured. At the adopted 85\% annualisation basis this corresponds to approximately 195,892 tH$_2$/y. The two-train plant is a project-derived screening architecture; it is not claimed to be a published JAEA or INL plant.
 
-The approximately 370/371 MWth JAEA process-heat branch is an architecture-level source value, not one physical IHX~\cite{nishihara2007potential}. Two 176.8 MWth trains require 353.6 MWth, which is below that branch. Component qualification, coupled dynamics and actual manifold/IHX configuration remain deployment gates.
+The approximately 370/371 MWth JAEA process-heat branch is an architecture-level source value, not one physical IHX~\cite{nishihara2007potential}. With $N_{\rm train}=2$ identical trains, the project scaling is
+\begin{align}
+\dot Q_{\rm process,total}
+&=N_{\rm train}\dot Q_{\rm process,train}
+=2(176.8)=353.6~\mathrm{MW_{th}},\\
+M_{\mathrm{H_2,total}}
+&=2(97{,}946)\approx195{,}892~\mathrm{tH_2/y},\\
+F_{\rm NG,total}
+&=2(34.0)=68.0~\mathrm{MMSCFD},\\
+M_{\mathrm{CO_2,captured,total}}
+&=2(542{,}362)\approx1.085\times10^6~\mathrm{tCO_2/y}.
+\end{align}
+Here $\dot Q$ is thermal process duty, $M$ is annual mass and $F_{\rm NG}$ is standard volumetric natural-gas flow. The per-train heat, NG and captured-CO$_2$ inputs are INL source-model quantities or their documented annualisation~\cite{inltev953,inltev961}; the doubled totals are project derivations, not literature-reported operation of a two-train plant. Thus the preferred architecture produces about 196 ktH$_2$/y while requiring 353.6 MWth of reformer heat.
+
+Two utilisation fractions answer different engineering questions:
+\begin{align}
+f_{\rm branch}&=\frac{353.6}{370}=0.956,\\
+f_{\rm reactor}&=\frac{353.6}{600}=0.589.
+\end{align}
+Thus the reformers use about 95.6\% of the rounded source process-heat branch but only 58.9\% of the total reactor thermal rating. The former leaves little process-heat-branch margin; it must not be confused with whole-reactor utilisation. Component qualification, coupled dynamics and actual manifold/IHX configuration remain deployment gates.
 
 \subsection{Common hydrogen service and conventional baseline}
 The comparison holds hydrogen service fixed so that emissions or cost do not improve merely because one case produces less product. INL reports 130 million standard cubic feet per day (MMSCFD), approximately 29,000 lb/h, of H$_2$ for the common service~\cite{inltev953,inltev961}. The project annualises the source mass rate at the 85\% design-study availability basis to approximately 97,946 t H$_2$/y; that annual value is a \textbf{project-derived result}, not an INL-reported annual production.
