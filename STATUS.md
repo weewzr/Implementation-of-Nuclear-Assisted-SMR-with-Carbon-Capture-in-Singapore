@@ -1,5 +1,43 @@
 # STATUS
 
+## E5 — QUANTITATIVE SAFETY DEPTH — COMPLETE
+
+E5 is complete. E4's causal safety case has been converted into screening event-tree logic, reliability-data requirements, a mechanistic source-term calculation chain, chemical-QRA scenario logic, a strict quantifiable-now boundary and an executable quantitative safety-analysis programme.
+
+E5 classification: **QUANTITATIVE SAFETY SCREEN PARTIAL / INTEGRATED SAFETY CONDITIONAL / LICENSING-LEVEL SAFETY NOT DEMONSTRATED.**
+
+Quantified/reproduced now:
+- 176.8 MWth one-train and 353.6 MWth simultaneous two-train process-heat demand steps;
+- E3 246.4 MWth residual-disposition identity and illustrative cooling envelopes, explicitly not decay heat/UHS duty;
+- 68 MMSCFD NG, 260 MMSCFD H2 and ~1.085 Mt/y captured-CO2 throughput scales;
+- HTTR secondary-loop tritium values retained only as source measurements, not project predictions.
+
+Deliberately not calculated:
+- PRA/event frequencies or CDF;
+- project core radionuclide inventory without fuel/burnup/history inputs;
+- project TRISO accident release without 600 MWth transient temperatures;
+- mechanistic environmental source term;
+- IHX rupture/leak transfer;
+- project tritium concentration;
+- chemical risk/blast/fire/toxic/asphyxiant contours;
+- nuclear/chemical separation distance;
+- safety UHS/decay-heat duty or SBO autonomy;
+- off-site dose or Singapore EPZ.
+
+Durable outputs:
+- `results/E5_QUANTITATIVE_SAFETY_DEPTH.md`
+- `results/e5_safety/e5_event_tree_register.csv`
+- `results/e5_safety/e5_reliability_data_gaps.csv`
+- `results/e5_safety/e5_source_term_chain.csv`
+- `results/e5_safety/e5_qra_scenario_register.csv`
+- `results/e5_safety/e5_quantifiable_now.csv`
+- `results/e5_safety/e5_analysis_program.csv`
+- `results/e5_safety/E5_LATER_TECHNICAL_VISUAL_SPECIFICATION.md`
+
+**Current research gate: E5 CLOSED. STOP.** Do not begin E6, W5, E8, final visual generation or independent review without explicit instruction.
+
+---
+
 ## E4 — INTEGRATED NUCLEAR + CHEMICAL SAFETY CASE — COMPLETE
 
 E4 is complete. The preferred E2B/E3 architecture has been converted into a project-specific screening safety case covering nuclear initiating events, IHX/interface failures, chemical hazards, bidirectional propagation, common-cause dependencies, Jurong external hazards, defence-in-depth barriers, safe-state functions and evidence maturity.
