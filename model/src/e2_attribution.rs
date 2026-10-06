@@ -22,14 +22,14 @@ fn ieaghg_captured_t_y(kg_nm3:f64)->f64{kg_nm3*common_h2_nm3_h_ieaghg_equivalent
 #[derive(Clone,Copy,Debug)]
 pub struct ComparatorCase{
  pub direct_t:f64,pub upstream_t:f64,pub nuclear_t:f64,pub aux_t:f64,pub ts_lca_t:f64,
- pub lifecycle_t:f64,pub represented_cost_sgd_y:f64,pub ng_mw_lhv:f64,pub captured_t:f64
+ pub lifecycle_t:f64,pub represented_cost_sgd_y:f64,pub ng_source_mw:f64,pub captured_t:f64
 }
 pub fn case_a()->ComparatorCase{
  let direct=ieaghg_direct_t_y(IEAGHG_ENERGY_BASE.co2_kg_per_nm3_h2);
  let upstream=ieaghg_ng_upstream_t_y(IEAGHG_ENERGY_BASE.ng_input_mw_lhv);
  ComparatorCase{direct_t:direct,upstream_t:upstream,nuclear_t:0.0,aux_t:0.0,ts_lca_t:0.0,
  lifecycle_t:direct+upstream,represented_cost_sgd_y:e1_case(NuclearCase::MhrtOneModuleCentral,15.0,15.0).baseline_sgd_y,
- ng_mw_lhv:IEAGHG_ENERGY_BASE.ng_input_mw_lhv,captured_t:0.0}
+ ng_source_mw:IEAGHG_ENERGY_BASE.ng_input_mw_lhv,captured_t:0.0}
 }
 pub fn case_b()->ComparatorCase{
  let direct=ieaghg_direct_t_y(IEAGHG_ENERGY_CASE_1A.co2_kg_per_nm3_h2);
@@ -45,7 +45,7 @@ pub fn case_b()->ComparatorCase{
  let incremental_cost=77.7*direct_avoided+15.0*captured;
  ComparatorCase{direct_t:direct,upstream_t:upstream,nuclear_t:0.0,aux_t:0.0,ts_lca_t:ts,
  lifecycle_t:direct+upstream+ts,represented_cost_sgd_y:a.represented_cost_sgd_y+incremental_cost,
- ng_mw_lhv:IEAGHG_ENERGY_CASE_1A.ng_input_mw_lhv,captured_t:captured}
+ ng_source_mw:IEAGHG_ENERGY_CASE_1A.ng_input_mw_lhv,captured_t:captured}
 }
 pub fn case_c()->ComparatorCase{
  let hours=JAEA_AVAIL*8760.0;
@@ -58,7 +58,7 @@ pub fn case_c()->ComparatorCase{
  let econ=e1_case(NuclearCase::MhrtOneModuleCentral,15.0,15.0);
  ComparatorCase{direct_t:direct,upstream_t:upstream,nuclear_t:nuclear,aux_t:aux,ts_lca_t:ts,
  lifecycle_t:direct+upstream+nuclear+aux+ts,represented_cost_sgd_y:econ.candidate_sgd_y,
- ng_mw_lhv:ng_gj_day(NG_FINAL_MMSCFD)/86400.0*1000.0,captured_t:captured}
+ ng_source_mw:ng_gj_day(NG_FINAL_MMSCFD)/86400.0*1000.0,captured_t:captured}
 }
 #[derive(Clone,Copy,Debug)]
 pub struct Attribution{
@@ -77,8 +77,8 @@ pub fn attribution()->Attribution{
 }
 pub fn comparator_csv()->String{
  let a=case_a();let b=case_b();let c=case_c();let x=attribution();
- format!("metric,unabated_smr,smr_ccs,nuclear_smr_ccs,a_to_b,b_to_c\nH2_t_y,{0:.3},{0:.3},{0:.3},0,0\nNG_MW_LHV,{1:.3},{2:.3},{3:.3},{4:.3},{5:.3}\nDirect_CO2_t_y,{6:.3},{7:.3},{8:.3},{9:.3},{10:.3}\nLifecycle_CO2e_t_y,{11:.3},{12:.3},{13:.3},{14:.3},{15:.3}\nRepresented_cost_SGD_y,{16:.3},{17:.3},{18:.3},{19:.3},{20:.3}\nIncremental_step_SGD_t,,{21:.6},{22:.6},,\n",
- annual_h2_t(),a.ng_mw_lhv,b.ng_mw_lhv,c.ng_mw_lhv,b.ng_mw_lhv-a.ng_mw_lhv,c.ng_mw_lhv-b.ng_mw_lhv,
+ format!("metric,unabated_smr,smr_ccs,nuclear_smr_ccs,a_to_b,b_to_c\nH2_t_y,{0:.3},{0:.3},{0:.3},0,0\nNG_source_energy_MW_mixed_basis,{1:.3},{2:.3},{3:.3},{4:.3},{5:.3}\nDirect_CO2_t_y,{6:.3},{7:.3},{8:.3},{9:.3},{10:.3}\nLifecycle_CO2e_t_y,{11:.3},{12:.3},{13:.3},{14:.3},{15:.3}\nRepresented_cost_SGD_y,{16:.3},{17:.3},{18:.3},{19:.3},{20:.3}\nIncremental_step_SGD_t,,{21:.6},{22:.6},,\n",
+ annual_h2_t(),a.ng_source_mw,b.ng_source_mw,c.ng_source_mw,b.ng_source_mw-a.ng_source_mw,c.ng_source_mw-b.ng_source_mw,
  a.direct_t,b.direct_t,c.direct_t,a.direct_t-b.direct_t,b.direct_t-c.direct_t,
  a.lifecycle_t,b.lifecycle_t,c.lifecycle_t,x.a_to_b_abatement,x.b_to_c_abatement,
  a.represented_cost_sgd_y,b.represented_cost_sgd_y,c.represented_cost_sgd_y,x.a_to_b_cost,x.b_to_c_cost,
