@@ -311,3 +311,160 @@ The attachments show a more complete chemical-engineering cost-estimation framew
 
 A future cost-model redevelopment should be a separate gated task:
 equipment/design-input inventory → select one coherent costing method → reproduce correlations outside spreadsheets → validate against workbook/reference cases → define replacement/double-counting boundary → recalculate FCI/COM/annualised cost → regression-test → only then reconsider the headline abatement cost.
+
+
+---
+
+## E0 closure under the Post-Screening Engineering Closure Workflow
+
+This section closes **Phase E0 only** under `docs/POST_SCREENING_ENGINEERING_CLOSURE_WORKFLOW.md`. It supersedes any earlier interpretation that the appropriate endpoint is merely to preserve the S$3.725/tCO2e bridge with stronger caveats.
+
+### E0 decision class
+
+The uploaded CAPCOST/CCEP/DFP/CN4119 materials lead to **three different method classes**:
+
+1. **Presentation/method-definition improvements are immediately valid.**  
+   The project should use explicit purchased-equipment / bare-module / fixed-capital / working-capital / manufacturing-cost terminology; consistent cost-year/index/FX treatment; validity-range checks; and a clear separation between annualised abatement-cost screening and discounted-cash-flow profitability.
+
+2. **Bounded replacement/additional terms are possible where independent engineering inputs exist.**  
+   The repository already contains source-specific integration-cost evidence that is stronger than the generic 10% integration/site bridge: IAEA TECDOC-1682 gives a preliminary GTHTR300C IHX + secondary-helium-loop construction-cost anchor of USD69 million for the 170 MW process-heat architecture, with an independent General Atomics intermediate-loop cost cross-check recorded in `economics/integration_cost_margin_v1.md`. These values are not Singapore EPC quotations, but they are directly relevant engineering evidence and should be tested in E1 rather than leaving the 10% bridge controlling by default.
+
+3. **A substantive engineering-economic model replacement is warranted.**  
+   The current S$3.725/tCO2e result is internally reproducible under its declared differential-screening boundary, but that boundary is too favourable/incomplete to remain the intended final-report controlling economic answer. Existing repository evidence already shows that dedicated-large-HTGR economics are strongly adverse under modern source cases and that shared/cogeneration economics are sensitive to nuclear cost allocation and integration cost. The new costing materials further demonstrate that several omitted process/equipment/OPEX categories cannot legitimately be represented by a generic percentage allowance if design data become available.
+
+Therefore E0 recommends **E1 substantive model replacement**, not a presentation-only edit and not a blind full CAPCOST recost.
+
+### What E0 does *not* authorize
+
+E0 does not:
+- alter the Rust economic model;
+- alter the canonical historical S$3.725/tCO2e screening result;
+- adopt invented equipment dimensions, exchanger area, pressure drop, materials, compressor stages, equipment counts or labour inputs;
+- apply generic chemical-equipment correlations to the reactor/nuclear island;
+- add absorber/stripper/compressor costs on top of aggregate IEAGHG CCS CAPEX without replacing/decomposing that aggregate;
+- claim the USD69 million IHX/secondary-loop source anchor is a Singapore project quotation;
+- begin matched-comparator nuclear-benefit attribution (E2);
+- begin W5 or manuscript reintegration.
+
+The historical S$3.725/tCO2e value remains repository audit evidence until E1 produces and verifies a stronger result.
+
+## Exact recommended E1 scope
+
+E1 should construct the **strongest defensible engineering-economic replacement model supported by existing design data**, using a replacement/addition ledger rather than forcing a complete bottom-up plant estimate.
+
+### E1-1. Freeze economic boundaries and alternatives
+
+Before calculation, define:
+- common hydrogen service and availability;
+- baseline conventional SMR-H2 economic boundary;
+- proposed HTGR-assisted SMR-H2+CCS boundary;
+- cost year and currency target;
+- real/nominal convention;
+- annualisation convention;
+- explicit treatment of common equipment that cancels;
+- explicit rule for which old aggregate/source terms are replaced versus retained.
+
+E1 must preserve the zero unsupported project-electricity-revenue rule unless a validated project power-output model exists.
+
+### E1-2. Replace the generic nuclear/integration bridge with source-specific evidence
+
+Evaluate, without mixing incompatible scopes:
+- Nishihara/JAEA one-module source economics already used by the project;
+- modern IAEA HTGR-200 and MHR-T source CAPEX/O&M cases already recorded in `economics/htgr_cost_overlap_v1.md`;
+- the IAEA TECDOC-1682 IHX + secondary-He-loop USD69 million anchor;
+- the General Atomics intermediate-loop cross-check.
+
+For each case record original currency/year, escalation basis, FX basis, annualisation, included equipment/O&M and allocation rule.
+
+The E1 result should expose at least:
+- dedicated-reactor allocation;
+- shared/cogeneration thermal-share allocation where defensible;
+- integration-cost addition/replacement;
+- uncertainty/range rather than false point precision.
+
+### E1-3. Chemical/process equipment costing only where design inputs exist
+
+Use CAPCOST/DFP/CCEP/Turton/Sinnott methods only for equipment for which the repository provides the required size/pressure/material/power/area inputs and the correlation validity range is satisfied.
+
+Priority candidates to test for costability:
+- conventional chemical heat exchangers;
+- pumps;
+- vessels;
+- CO2 compression/conditioning;
+- WGS equipment;
+- capture equipment only if the aggregate IEAGHG CCS term is deliberately replaced.
+
+If required inputs are absent, mark the item **UNRESOLVED / NOT CALCULABLE** rather than inventing a value.
+
+Do not use generic chemical correlations for the reactor island, nuclear-grade IHX, nuclear helium circulator or other safety-class nuclear equipment unless the source method explicitly supports that service.
+
+### E1-4. CCS scope reconciliation
+
+Choose one coherent CCS treatment:
+- retain and transparently update the aggregate IEAGHG capture-capital basis; **or**
+- replace it with a sufficiently complete bottom-up capture-system estimate.
+
+Do not combine the aggregate capture CAPEX with separately costed absorber/stripper/reboiler/compressor items that are already inside its scope.
+
+Keep cross-border CO2 T&S as a separate explicitly assumed/uncertain category unless a stronger applicable tariff/infrastructure estimate exists.
+
+### E1-5. OPEX / manufacturing-cost completeness test
+
+Using the CN4119 manufacturing-cost framework, determine which of the following can be quantified from existing project data:
+- natural-gas feed/fuel;
+- utilities;
+- waste;
+- operating labour;
+- maintenance/repairs;
+- operating supplies;
+- laboratory/supervision;
+- insurance/taxes/overhead;
+- solvent/catalyst replacement;
+- fixed O&M.
+
+Calculate only supported terms. For unsupported terms, report the missing input and assess whether omission biases the candidate/base comparison.
+
+### E1-6. Capital and annualisation hierarchy
+
+For every newly calculated capital item identify whether it is:
+purchased equipment → bare module/installed → total module/grass-roots/FCI → working capital/TCI.
+
+Do not mix hierarchy levels. Use CRF annualisation only on an explicitly defined capital basis. If DCF/NPV/IRR cannot be supported because revenue, tax, depreciation, construction schedule or working-capital inputs are missing, do not manufacture a profitability result.
+
+### E1-7. Falsification and threshold outputs
+
+E1 must calculate/report:
+- represented annual baseline cost;
+- represented annual candidate cost;
+- net incremental annual cost;
+- lifecycle avoided-emissions denominator carried from the verified emissions model unless the economic boundary requires a justified change;
+- resulting S$/tCO2e;
+- range/sensitivity driven by nuclear allocation, integration cost, NG price, CCS cost/T&S and other supported uncertainties;
+- whether the <S$100/tCO2e requirement survives.
+
+The aim is to falsify favourable bridges. An adverse result must be retained.
+
+### E1-8. Required reproducible outputs
+
+E1 should create:
+- a machine-readable economic-input/provenance table;
+- a replacement/addition/double-counting ledger;
+- deterministic Rust calculations and regression tests for every adopted equation;
+- generated cost-ledger/sensitivity outputs;
+- a durable engineering-economic derivation record.
+
+Only after those pass should E8 eventually replace the manuscript's controlling S$3.725/tCO2e statement.
+
+### E1 acceptance criterion
+
+E1 is complete only when every material represented cost has:
+**scope → equation/method → input → unit → provenance → cost-year/FX treatment → calculation → uncertainty/evidence class → double-counting status**, and every important omitted cost is either quantified or explicitly blocked by a named missing engineering input.
+
+## E0 final classification
+
+- **New materials only improve notation/presentation?** NO.
+- **Bounded replacement/additional cost terms possible?** YES, particularly source-specific integration/nuclear cost treatment where existing evidence supports them.
+- **Substantive engineering-economic model replacement warranted?** YES.
+- **Can a complete CAPCOST/DFP/CCEP bottom-up project estimate be performed now?** NO; material equipment-design inputs remain missing.
+- **Should S$3.725/tCO2e remain the final controlling economic answer?** NO. It remains historical screening evidence until E1 produces the stronger verified result.
+- **Canonical economic result changed during E0?** NO.
