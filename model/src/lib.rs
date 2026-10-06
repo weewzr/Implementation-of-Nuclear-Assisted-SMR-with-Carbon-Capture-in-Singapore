@@ -7,6 +7,7 @@
 pub mod deployment;
 pub mod final_design;
 pub mod e1_economics;
+pub mod e2_attribution;
 pub mod figures;
 pub mod schematic_art;
 
