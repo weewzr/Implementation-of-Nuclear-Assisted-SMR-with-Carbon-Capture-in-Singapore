@@ -48,3 +48,5 @@ cargo run --quiet --bin deep_feasibility_tikz
 cargo run --quiet --bin e1_engineering_economics
 
 cargo run --quiet --bin e2_incremental_nuclear_benefit
+
+cargo run --quiet --bin e2b_architecture_maturation
