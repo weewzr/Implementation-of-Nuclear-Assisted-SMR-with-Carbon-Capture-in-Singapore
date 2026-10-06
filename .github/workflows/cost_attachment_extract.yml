@@ -9,7 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install safe readers
-        run: python -m pip install --quiet openpyxl xlrd python-pptx pypdf
+        run: |
+          python -m pip install --quiet openpyxl xlrd python-pptx pypdf
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils tesseract-ocr
       - name: Extract text and formulas without executing macros
         run: |
           python - <<'PY'
@@ -63,6 +65,15 @@ jobs:
                       w.write(f"\n=== PAGE {i} ===\n")
                       w.write((page.extract_text() or "[NO EMBEDDED TEXT]")+"\n")
           PY
+      - name: OCR scanned evaluation article
+        run: |
+          mkdir -p /tmp/evalpages
+          pdftoppm -r 180 -png "attachments/Evaluating Capital Cost Estimation Programs.PDF" /tmp/evalpages/p >/dev/null 2>&1
+          : > "cost_attachment_extract/Evaluating Capital Cost Estimation Programs.PDF.ocr.txt"
+          for img in /tmp/evalpages/*.png; do
+            echo "=== $img ===" >> "cost_attachment_extract/Evaluating Capital Cost Estimation Programs.PDF.ocr.txt"
+            tesseract "$img" stdout 2>/dev/null >> "cost_attachment_extract/Evaluating Capital Cost Estimation Programs.PDF.ocr.txt"
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: cost-attachment-extract
