@@ -1,5 +1,7 @@
 # E6 CN4252 Feasibility, Effectiveness and Requirement Synthesis
 
+> **Project identity:** The proposed CN4252 solution is **nuclear-assisted SMR-H2 + CCS**. Conventional SMR-H2 + CCS is the **non-nuclear comparator/counterfactual alternative**, not a replacement proposed solution. E2's comparator result is retained to test the incremental value and justification of nuclear integration.
+
 ## 1. Executive decision
 
 The project now has two distinct deployment conclusions that must not be collapsed.
@@ -16,6 +18,8 @@ Singapore industrial hydrogen made by conventional natural-gas steam methane ref
 Singapore/Jurong matters because implementation requires industrial NG, hydrogen offtake, water/steam, cooling, CO2 conditioning/export, hazardous-industry integration and a nuclear regulatory/siting framework.
 
 ### B. Proposed solution
+The proposed CN4252 solution is **nuclear-assisted SMR-H2 + CCS**. Its novel intervention is high-temperature HTGR process heat integrated through primary helium -> IHX -> secondary helium -> reformers. Conventional SMR+CCS remains the non-nuclear comparator/counterfactual used to test whether the added nuclear complexity is justified.
+
 Preferred future architecture:
 - one 600 MWth GTHTR300C-class high-temperature reactor;
 - primary helium -> IHX -> secondary helium;
@@ -53,7 +57,7 @@ What nuclear does not uniquely provide:
 - guaranteed low-cost hydrogen;
 - a guaranteed Singapore deployment pathway.
 
-The defensible reason to study nuclear is therefore not threshold necessity. It is to test whether a mature, high-utilisation, high-temperature nuclear process-heat architecture can become a larger-scale decarbonisation option while reducing fired heat. The evidence does not establish it as Singapore's preferred pathway.
+The defensible reason to study nuclear is therefore not threshold necessity. **Nuclear integration is the project's chosen novel intervention and proposed solution:** it replaces fired high-temperature reformer heat, introduces the primary-He -> IHX -> secondary-He physical integration, enables the investigated high-utilisation two-train architecture, and tests whether that larger nuclear-assisted decarbonisation system can become economically viable after credible deployment maturation. Conventional SMR+CCS is retained as the non-nuclear comparator against which that additional complexity must be justified. The evidence does not establish nuclear as universally superior or as Singapore's definitive technology winner.
 
 ## 4. Potential effectiveness
 
@@ -113,9 +117,9 @@ Any of these can still force redesign, reject a parcel, alter economics/classifi
 
 ## 7. Originality
 
-The originality is not "hydrogen + CCS"; Singapore already has reforming/CCS initiatives.
+The originality is not any individual technology: nuclear hydrogen, HTGRs, SMR-H2, CCS and amine capture all have prior art. Existing Singapore reforming/CCS initiatives strengthen the need to distinguish this project from an ordinary SMR+CCS proposal; they do not redefine the proposed solution as conventional CCS.
 
-Project-specific originality is the combined proposition:
+Project-specific originality is the **Singapore-focused integration and falsifiable engineering assessment** of:
 - high-temperature nuclear process heat replacing fired reformer heat;
 - integration with SMR-H2 + amine CCS;
 - one-source/two-train utilisation architecture;
@@ -130,8 +134,8 @@ This is a distinct engineering integration and deployment-feasibility question r
 ### Conventional SMR
 Reference high-emissions hydrogen route. No CCS and no nuclear integration.
 
-### SMR + CCS
-E2 matched-service screen gives ~0.461 MtCO2e/y, enough to clear the assignment's minimum abatement threshold. This is the key evidence that nuclear is not required for minimum compliance.
+### SMR + CCS — non-nuclear comparator/counterfactual
+E2 matched-service screen gives ~0.461 MtCO2e/y, enough to clear the assignment's minimum abatement threshold. This comparator result tests the incremental justification for adding nuclear; it does **not** replace nuclear-assisted SMR-H2+CCS as the proposed CN4252 solution.
 
 ### Mature nuclear-assisted SMR + CCS
 Adds fired-heat displacement and a larger two-train architecture. E2B gives ~1.834 MtCO2e/y and projected mature economics below S$100/t, but adds nuclear capital, licensing, IHX, safety, siting and common-cause complexity.
