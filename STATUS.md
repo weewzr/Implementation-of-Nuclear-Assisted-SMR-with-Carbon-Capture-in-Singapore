@@ -1,5 +1,10 @@
 # STATUS
 
+## POST-E8 CALCULATION / NOTATION COMPLIANCE PASS — COMPLETE
+
+The bounded E8 calculation/notation addendum has been applied to the active manuscript without changing canonical E1-E7 scientific results. The paper now explicitly derives per-train -> two-train heat/H2/NG/captured-CO2 quantities; distinguishes 95.6% process-heat-branch utilisation from 58.9% whole-reactor thermal utilisation; shows the INL FOAK/BOAK/10-OAK learning method; shows the full mature S$42.84/tCO2e annual-cost substitution; explains the E2B two-train lifecycle scaling/boundary; and restores qualified E3 cooling notation. No safety probabilities/releases were invented.
+
+
 ## E8 — FULL MANUSCRIPT REINTEGRATION — COMPLETE
 
 E8 reintegrated E1-E7 controlling evidence into the active LaTeX manuscript. The paper now presents nuclear-assisted SMR-H2+CCS as the proposed solution; the preferred one-reactor/two-train architecture; stage-specific FOAK/BOAK/10-OAK economics; the E2 non-nuclear comparator; E3 Jurong/cooling status; E4/E5 integrated safety hierarchy; and the E7 decision-gated implementation roadmap.
