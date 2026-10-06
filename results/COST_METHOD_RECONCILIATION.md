@@ -123,7 +123,7 @@ The current S$3.725/tCO2e value remains usable only as a **screening abatement-c
 
 ### 1.11 `Evaluating Capital Cost Estimation Programs.PDF`
 
-**Type:** scanned Feng & Rangaiah (2011) comparison of CapCost, DFP, CCEP, EconExpert and Aspen PEA. The repository scan has no embedded text; the matching published article was cross-checked to interpret the scan.
+**Type:** scanned Feng & Rangaiah (2011) comparison of CapCost, DFP, CCEP, EconExpert and Aspen PEA. The repository scan has no embedded text, so the attachment itself was OCR-read without modifying it.
 
 **Methodological conclusion relevant here:** these are preliminary/study cost tools; equipment-level estimates can differ substantially because correlations, material/pressure factors and installation factors differ. Whole-plant estimates can be closer, but consistency requires using one method/program across design alternatives. Out-of-range equipment often requires multiple units or lower-bound treatment and must not be extrapolated casually.
 
