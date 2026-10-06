@@ -1,5 +1,33 @@
 # STATUS
 
+## E6 — CN4252 FEASIBILITY, EFFECTIVENESS AND REQUIREMENT SYNTHESIS — COMPLETE
+
+E6 is complete. E0-E5 evidence has been synthesized against the official CN4252 requirements without changing the underlying engineering models.
+
+Controlling judgement:
+- **CURRENT/FOAK = FAIL / NOT CURRENTLY DEPLOYMENT FEASIBLE AS DEMONSTRATED.**
+- **EARLY-COMMERCIAL/BOAK = CONDITIONAL FUTURE FEASIBILITY; projected/modelled economics ~S$74.14/tCO2e.**
+- **PREFERRED MATURE/10-OAK = CONDITIONAL FUTURE FEASIBILITY; ~1.834 MtCO2e/y and projected/modelled ~S$42.84/tCO2e, subject to E3-E5 deployment gates.**
+
+Critical interpretation:
+- CCS alone already clears the 0.25 MtCO2e/y minimum on E2's matched-service screen (~0.461 Mt/y); nuclear is not necessary for minimum CN4252 abatement compliance.
+- Nuclear remains a conditional larger-scale high-temperature process-heat decarbonisation option, not an established preferred Singapore pathway.
+- Jurong remains a conditional industrial context, not a demonstrated/approved nuclear site.
+- Licensing-level integrated safety is not demonstrated.
+- Historical S$3.725/tCO2e is superseded as controlling economics and retained only as audit provenance.
+
+Durable outputs:
+- `results/E6_CN4252_SYNTHESIS.md`
+- `results/e6_synthesis/e6_requirement_matrix.csv`
+- `results/e6_synthesis/e6_deployment_stage_matrix.csv`
+- `results/e6_synthesis/e6_controlling_claims.csv`
+- `results/e6_synthesis/e6_superseded_claims.csv`
+- `results/e6_synthesis/e6_roadmap_handoff.csv`
+
+**Current research gate: E6 CLOSED. STOP.** Do not begin E7, W5, E8, final visual generation or independent review without explicit instruction.
+
+---
+
 ## E5 — QUANTITATIVE SAFETY DEPTH — COMPLETE
 
 E5 is complete. E4's causal safety case has been converted into screening event-tree logic, reliability-data requirements, a mechanistic source-term calculation chain, chemical-QRA scenario logic, a strict quantifiable-now boundary and an executable quantitative safety-analysis programme.
