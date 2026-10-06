@@ -16,7 +16,26 @@ E1 central dedicated nuclear case: ~S$141.278m/y net incremental cost, ~S$154.0/
 
 E2: matched SMR+CCS alone gives ~0.461 MtCO2e/y and already passes the abatement threshold; under its harmonisation it is ~S$97/tCO2e. Nuclear is therefore not required for the abatement threshold and cannot be credited with all CCS benefit.
 
-## Objective
+## Objective — FORWARD DESIGN FIRST
+
+The primary E2B objective is to construct one or more **physically coherent future deployment configurations from independent engineering and economic evidence**, calculate their performance forward, and only then compare the resulting abatement cost with the CN4252 S$100/tCO2e criterion.
+
+The required logic is:
+
+**evidence-supported future architecture
+→ reactor/process sizing
+→ independently sourced deployment-stage CAPEX/O&M
+→ physical utilization/allocation
+→ integration + NG + CCS + T&S costs
+→ annual represented cost
+→ lifecycle abatement
+→ forward-calculated S$/tCO2e
+→ only then compare with S$100/tCO2e.**
+
+Do NOT select CAPEX, O&M, utilization, learning rate, allocation, NG price, CCS price or any other assumption because it makes the answer fall below S$100/tCO2e.
+
+The existing back-calculated S$100/t threshold is a **secondary diagnostic and plausibility check only**. It must not be the design method.
+
 Find whether a physically credible future nuclear-assisted architecture and/or evidence-supported FOAK→NOAK maturation can satisfy BOTH CN4252 thresholds without tuning assumptions backwards.
 
 No invented revenue, customers, electricity output, equipment data or arbitrary learning rates. Adverse results must remain.
@@ -53,10 +72,68 @@ If using learning curves, state equation, learning rate/progress ratio, technolo
 
 Construct evidence-backed FOAK / early-commercial / NOAK cases only where source support exists. For each show CAPEX, O&M, integration, allocation/utilization, unresolved allowance, net annual cost, S$/tCO2e, PASS/FAIL and evidence maturity.
 
+## Track B5 — Forward-calculated preferred deployment point
+
+After collecting the FOAK/NOAK evidence, define at least one **preferred mature/future deployment configuration independently of the S$100/t threshold**.
+
+For the preferred case specify before calculating its abatement cost:
+- reactor technology/module arrangement;
+- number of modules;
+- H2 train count/capacity;
+- process-heat allocation;
+- reactor utilization;
+- any genuine co-product/service and its physical basis;
+- deployment maturity (FOAK/early-commercial/NOAK);
+- source-backed CAPEX;
+- source-backed O&M;
+- integration/IHX treatment;
+- NG price/basis;
+- CCS cost treatment;
+- T&S treatment;
+- availability;
+- unresolved-cost treatment;
+- cost year/currency.
+
+Explain why each value is selected from engineering/source evidence **without reference to whether it will pass S$100/t**.
+
+Then run the deterministic model forward and report:
+- annual H2;
+- lifecycle emissions/abatement;
+- annual represented baseline cost;
+- annual represented candidate cost;
+- net incremental annual cost;
+- **forward-calculated S$/tCO2e**;
+- CN4252 PASS/FAIL.
+
+The preferred future value must be the value later intended for the final report if the scenario is sufficiently defensible.
+
+Do not report a deliberately selected value such as S$99/t merely because it passes.
+
+If the independently defined preferred future case is below S$100/t, preserve the resulting calculated value exactly with appropriate precision.
+
+If it remains above S$100/t, retain the failure and investigate other independently motivated architectures rather than tuning this case.
+
 ## Track C — Combined cases
 Only combine individually defensible improvements. Test a small number of coherent scenarios such as right-sized+NOAK, high-utilization multi-train+NOAK, or real shared-heat+NOAK.
 
 Do not stack every optimistic assumption.
+
+## Forward-result hierarchy
+
+E2B should ideally produce three independently defined deployment-stage results:
+
+1. **FOAK/current-source case** — forward-calculated;
+2. **early-commercial/replicated case** — forward-calculated if evidence supports it;
+3. **preferred mature/NOAK case** — forward-calculated.
+
+The final report should eventually present a specific future S$/tCO2e value only if it comes from this forward chain.
+
+The back-calculated break-even CAPEX/O&M/annual burden remains useful for:
+- checking how far a failing case is from the threshold;
+- testing plausibility of a passing case;
+- defining roadmap gates.
+
+It is not the headline future cost estimate.
 
 ## Threshold and roadmap logic
 Every scenario must show:
@@ -86,6 +163,19 @@ Create results/E2B_ARCHITECTURE_MATURATION.md.
 Do not rewrite the active manuscript yet; E8 will integrate the result.
 
 ## Acceptance
+
+E2B does NOT pass merely because a break-even calculation shows what assumptions would be needed to reach S$100/t.
+
+At least one preferred future configuration must be specified independently and forward-calculated. If no evidence-supported future configuration passes, state that honestly.
+
+For any claimed passing case, verify:
+- its assumptions were selected before observing the threshold result;
+- source evidence supports the deployment-stage costs;
+- physical utilization/allocation closes;
+- no unsupported revenue or cost shifting is used;
+- unresolved costs are visible;
+- the result remains below S$100/t after the full represented ledger for that scenario.
+
 Answer:
 1. Can architecture redesign reach <S$100/t?
 2. Can credible FOAK→NOAK maturation reach it?
@@ -113,8 +203,11 @@ FOAK/NOAK SOURCES:
 REQUIRED COST REDUCTION:
 BREAK-EVEN CAPEX:
 BREAK-EVEN O&M:
-FOAK RESULT:
-EARLY-COMMERCIAL RESULT:
+FOAK FORWARD-CALCULATED RESULT:
+EARLY-COMMERCIAL FORWARD-CALCULATED RESULT:
+PREFERRED NOAK/MATURE CONFIGURATION:
+PREFERRED NOAK/MATURE FORWARD-CALCULATED S$/tCO2e:
+WAS THE PREFERRED CASE DEFINED INDEPENDENTLY OF THE S$100/t THRESHOLD?: YES/NO
 NOAK RESULT:
 COMBINED SCENARIOS:
 ANY CASE PASSES BOTH THRESHOLDS?:
