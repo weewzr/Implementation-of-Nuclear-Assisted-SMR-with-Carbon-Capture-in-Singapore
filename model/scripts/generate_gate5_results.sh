@@ -50,3 +50,5 @@ cargo run --quiet --bin e1_engineering_economics
 cargo run --quiet --bin e2_incremental_nuclear_benefit
 
 cargo run --quiet --bin e2b_architecture_maturation
+
+cargo run --quiet --bin e3_jurong_siting
