@@ -33,13 +33,18 @@ jobs:
                           if vals: w.write(" | ".join(vals)+"\n")
           # Legacy XLS.
           import xlrd
-          fn="CCEP-Version 1-Use this next.xls"; book=xlrd.open_workbook(att/fn, formatting_info=False)
-          with open(out/(fn+".txt"),"w",encoding="utf-8") as w:
-              for sh in book.sheets():
-                  w.write(f"\n=== SHEET: {sh.name} ===\n")
-                  for r in range(sh.nrows):
-                      vals=[f"R{r+1}C{c+1}={sh.cell_value(r,c)}" for c in range(sh.ncols) if sh.cell_value(r,c) not in ("",None)]
-                      if vals: w.write(" | ".join(vals)+"\n")
+          fn="CCEP-Version 1-Use this next.xls"
+          try:
+              book=xlrd.open_workbook(att/fn, formatting_info=False)
+              with open(out/(fn+".txt"),"w",encoding="utf-8") as w:
+                  for sh in book.sheets():
+                      w.write(f"\n=== SHEET: {sh.name} ===\n")
+                      for r in range(sh.nrows):
+                          vals=[f"R{r+1}C{c+1}={sh.cell_value(r,c)}" for c in range(sh.ncols) if sh.cell_value(r,c) not in ("",None)]
+                          if vals: w.write(" | ".join(vals)+"\n")
+          except Exception as e:
+              with open(out/(fn+".txt"),"w",encoding="utf-8") as w:
+                  w.write("UNREADABLE WITHOUT PASSWORD/DECRYPTION: "+repr(e)+"\n")
           # PPTX text.
           from pptx import Presentation
           fn="CN4119-0-Second Part Intro.pptx"; prs=Presentation(att/fn)
