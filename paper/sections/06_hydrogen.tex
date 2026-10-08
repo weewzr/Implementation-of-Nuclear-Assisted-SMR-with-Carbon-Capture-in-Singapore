@@ -1,4 +1,11 @@
 \section{Hydrogen production and material balance}\label{sec:hydrogen}
+At the whole-plant level, annual hydrogen is the per-train production rate multiplied by the number of identical trains and annual operating time. If $\dot m_{\mathrm{H_2}}$ is the mass rate in kg/h, $H_y=8760A$ is operating hours per year, and $N$ is the number of trains, then
+\[
+M_{\mathrm{H_2},y}=\frac{N\dot m_{\mathrm{H_2}}H_y}{1000}
+\quad[\mathrm{t/y}].
+\]
+The divisor converts kilograms to tonnes; $A=0.85$ is assumed integrated availability, not a measured uptime guarantee. This identity is used below with the literature-derived per-train rate.
+
 The thermal calculation establishes that the proposed heat path is large enough at screening level; the next question is what hydrogen service that heat supports. The chemical-process model is not re-solved from first principles in this project. Instead, INL Case 6 supplies the source-model process result: 130 MMSCFD H$_2$, an 871$^\circ$C reformer outlet, steam/carbon ratio 3.0 and 88\% PSA hydrogen recovery~\cite{inltev953,inltev961}.
 
 The chemistry explains the sequence represented by that source model. Steam methane reforming converts methane and steam toward carbon monoxide and hydrogen,
