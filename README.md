@@ -12,7 +12,7 @@ Steam methane reforming (SMR) is an established route for manufacturing hydrogen
 
 **Why two trains?** The literature-based chemical train needs 176.8 MWth of heat. Two identical trains need 353.6 MWth, which fits inside the roughly 370 MWth process-heat branch of the reference 600 MWth reactor concept. This is the best-supported configuration found, **not** a proven global optimum.
 
-**How is success measured?** First calculate annual avoided lifecycle emissions: baseline minus candidate. Next calculate annual incremental cost: candidate minus baseline. Divide incremental cost by avoided tonnes. The model predicts ~1.834 MtCO2e/y avoided and S$42.84/t in a mature 10-OAK scenario, but S$137.74/t at FOAK, which **fails** the assignment cost limit.
+**How is success measured?** First calculate annual avoided lifecycle emissions: baseline minus candidate. Next calculate annual incremental cost: candidate minus baseline. Divide incremental cost by avoided tonnes. The model predicts ~1.834 MtCO2e/y avoided and S$42.84/t in a mature 10-OAK scenario, but S$137.74/t at FOAK, which **fails** the specified cost limit.
 
 **What is still unknown?** The site, licensing, integrated safety, emergency-planning zone (EPZ), detailed heat rejection, hydrogen offtake and permanent CO2 storage must be demonstrated. The model is not a permit or an operating plant.
 
@@ -32,7 +32,7 @@ One **600 MWth GTHTR300C-class high-temperature gas-cooled reactor (HTGR)** supp
 | Early-commercial/BOAK cost | **S$74.14/tCO2e — projected/modelled PASS** |
 | Preferred mature 10-OAK cost | **S$42.84/tCO2e — projected/modelled PASS** |
 
-The CN4252 numerical requirements are **>0.25 MtCO2e/y** and **<S$100/tCO2e**. Future projected numerical passes are **not** present-day commercial or licensing feasibility. E2's separately bounded conventional SMR+CCS comparator avoids ~0.461 MtCO2e/y on its matched-service screen, so nuclear is not necessary *merely* to exceed the minimum abatement target. The added nuclear intervention must justify its capital, interfaces and risks.
+The originating screening criteria are **>0.25 MtCO2e/y** and **<S$100/tCO2e**. Future projected numerical passes are **not** present-day commercial or licensing feasibility. E2's separately bounded conventional SMR+CCS comparator avoids ~0.461 MtCO2e/y on its matched-service screen, so nuclear is not necessary *merely* to exceed the minimum abatement target. The added nuclear intervention must justify its capital, interfaces and risks.
 
 The post-E8 architecture-sizing assessment **retains two identical trains as the best-supported choice, not a proven global optimum**. The 353.6 MWth process duty occupies ~95.6% of the rounded 370 MWth source process-heat branch but ~58.9% of the full reactor thermal rating. The conditional 246.4 MWth full-power residual is **not** a measured cooling duty or decay heat. No electricity/co-product revenue is credited.
 
@@ -72,7 +72,7 @@ sh paper/build.sh
 
 This runs model tests, regenerates manuscript data and compiles `paper/main.tex` to `paper/main.pdf`. See [paper build instructions](paper/README.md) and GitHub Actions **Research CI** / **Paper and reproducibility** for verification. The canonical manuscript is LaTeX; do not edit a generated PDF independently.
 
-## Historical results and provenance
+## Historical results, course origin and provenance
 
 The earlier **one-train** screen produced ~97,946 tH2/y, ~917,139 tCO2e/y and an optimistic **S$3.725/tCO2e differential**. Those numbers are preserved for historical traceability, **not** the controlling final economics. The stronger E1 one-module accounting gave ~S$154/tCO2e (FAIL), and E2B subsequently developed the source-utilising two-train architecture above.
 
