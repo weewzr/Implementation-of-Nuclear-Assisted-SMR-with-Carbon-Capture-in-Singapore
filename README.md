@@ -6,6 +6,18 @@ Steam methane reforming (SMR) is an established route for manufacturing hydrogen
 
 **The result is deliberately conditional.** The preferred future architecture has attractive *modelled mature* economics, but the first-of-a-kind (FOAK) configuration fails the cost target, and Singapore siting, licensing, nuclear/chemical safety, cooling and contracted CO2 storage remain unresolved. Nuclear-assisted SMR+CCS is the **proposed solution**; conventional SMR+CCS is the **non-nuclear comparator**, not a replacement project.
 
+## Start here: the project in two minutes
+
+**What does the plant do?** Natural gas and steam react to make hydrogen. Carbon capture removes much of the CO2 generated in that process, while a high-temperature nuclear reactor would supply heat that is normally produced by burning additional gas.
+
+**Why two trains?** The literature-based chemical train needs 176.8 MWth of heat. Two identical trains need 353.6 MWth, which fits inside the roughly 370 MWth process-heat branch of the reference 600 MWth reactor concept. This is the best-supported configuration found, **not** a proven global optimum.
+
+**How is success measured?** First calculate annual avoided lifecycle emissions: baseline minus candidate. Next calculate annual incremental cost: candidate minus baseline. Divide incremental cost by avoided tonnes. The model predicts ~1.834 MtCO2e/y avoided and S$42.84/t in a mature 10-OAK scenario, but S$137.74/t at FOAK, which **fails** the assignment cost limit.
+
+**What is still unknown?** The site, licensing, integrated safety, emergency-planning zone (EPZ), detailed heat rejection, hydrogen offtake and permanent CO2 storage must be demonstrated. The model is not a permit or an operating plant.
+
+To read the mathematics, begin with the manuscript's **How to read this paper** guide, then follow the process and carbon sections before the equation-first economics section.
+
 ## Controlling architecture and results
 
 One **600 MWth GTHTR300C-class high-temperature gas-cooled reactor (HTGR)** supplies heat through a primary-helium/intermediate-heat-exchanger (IHX)/secondary-helium interface to **two 130 MMSCFD SMR-H2+CCS trains**, each requiring 176.8 MWth. This is a **project-proposed, literature-anchored architecture**, not a built Singapore facility or an exact published JAEA design.
