@@ -26,3 +26,6 @@ Prefer a clear research question, early controlling results, a reproducibility e
 
 ## Remaining issues
 Scientific: validated reactor/process transients, IHX qualification, site/EPZ, QRA/PRA/source term, CO2 transport/storage, off-take, availability and actual learning remain unresolved. Presentation: exact PDF artifact must be inspected page-by-page after final build, with separate CI confirmation. No external visuals or independent review were initiated in this editorial pass.
+
+## PDF visual finding (post-build)
+The LaTeX-generated 43-page workflow PDF was downloaded from GitHub Actions and all pages were rendered into four contact sheets. Page 29 had a confirmed oversized displayed roadmap that clipped at the right margin. The roadmap was replaced with a numbered nine-stage list in the active deployment section; this correction is subject to final rebuilt-PDF verification. Other visible pages had no similarly obvious page-edge clipping in the contact-sheet review; isolated figure/table pages retain some whitespace.
