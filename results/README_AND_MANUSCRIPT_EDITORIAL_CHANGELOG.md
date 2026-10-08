@@ -23,3 +23,6 @@ The build command is `sh paper/build.sh`; Research CI must pass `cargo test --al
 
 ## Open technical work (not editorial)
 Commercial IHX/manifold qualification, dynamic heat-rejection transients, project PRA/source term/EPZ, chemical QRA, Jurong parcel suitability, storage/offtake contracts and observed maturation economics. No independent review or final external artwork was started.
+
+## PDF-specific repair
+After both initial workflows were green, the exact GitHub Actions PDF artifact was downloaded and all 43 pages rendered. Page 29 showed the E7 arrow equation overflowing the right margin. The active `paper/sections/12_deployment_constraints.tex` was edited to replace the oversized mathematical display with a readable nine-stage numbered list; no scientific or roadmap gate changed. The manuscript must be rebuilt and the new artifact checked before declaring layout completion.
