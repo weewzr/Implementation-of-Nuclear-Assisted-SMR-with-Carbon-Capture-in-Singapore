@@ -18,7 +18,7 @@
 | 09 Economics | Historical S$3.725/t differential preceded controlling stage-specific results; rounded mature operands produced a misleading exact equality | **Edited** historical heading/warning and approximate rounded-ledger equality; FOAK/BOAK/10-OAK table remains controlling |
 | 10 Sensitivity | Historical one-train backup/CCS plots could be read as preferred two-train predictions | **Edited in preceding commit** with explicit historical one-train scope and no cross-architecture extrapolation |
 | 11 CN4252 assessment | Clearly distinguishes E2 comparator from proposed nuclear solution and separates current from future results | Retained; numerical consistency checked |
-| 12 Deployment | E7 gate sequence has falsification branches; avoids invented dates | Retained; qualitative logic is not a risk calculation |
+| 12 Deployment | E7 gate sequence has falsification branches; avoids invented dates | **Edited after PDF inspection:** long displayed roadmap overflowed right margin; replaced with nine-item numbered list |
 | 13 Conclusions | Reports both adverse FOAK economics and conditional future maturity | Retained; no deployment or site approval asserted |
 | A Reproducibility | Points to Rust, canonical LaTeX and generated ledgers | Retained; CI must be verified on final HEAD |
 | B Traceability | Maps assignment criteria to paper sections and numbers | Retained; historical data not silently erased |
@@ -35,3 +35,6 @@ The manuscript's defensible arc is: established methane-reforming chemistry -> f
 The material current-facing corrections were README replacement, two-train energy section, historical sensitivity labelling, historical economic framing, rounded-ledger equality and the heat-integration benchmark warning. No numerical model assumptions were changed.
 
 Open scientific uncertainties are commercial-scale IHX/loop qualification, detailed dynamic transients, QRA/PRA/source term, site/EPZ, contracted storage/offtake and observed mature cost learning. These are not editorial defects that can be solved by rewriting. Final PDF page-by-page visual inspection and both CI results must be recorded separately; do not infer layout quality from source review alone.
+
+## PDF QA finding and repair
+The first final-HEAD manuscript artifact compiled successfully but visual inspection of all 43 rendered pages identified a **severe right-margin overflow on PDF page 29**: the displayed E7 roadmap arrows were wider than the text block. Replaced that display with a nine-item numbered gate list in `12_deployment_constraints.tex`; the next PDF build must be visually rechecked. The original 43-page PDF is not accepted as final layout QA.
