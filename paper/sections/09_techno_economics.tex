@@ -1,6 +1,55 @@
 \section{Techno-economic analysis}\label{sec:tea}
 \input{sections/09_economic_formulation}
 
+\subsection{Start with the whole annual-cost equation}
+The economic question is simple: \emph{how much more does it cost each year to avoid one tonne of lifecycle greenhouse-gas emissions?} We first compare two plants providing the same hydrogen service, and only then divide by avoided emissions:
+\begin{align}
+\Delta C_y &= C_{\mathrm{candidate},y}-C_{\mathrm{baseline},y},\\
+A_y &= E_{\mathrm{baseline},y}-E_{\mathrm{candidate},y},\\
+AC &= \frac{\Delta C_y}{A_y}.
+\end{align}
+Here $C$ is annual represented cost (S\$/y), $E$ is annual lifecycle emissions (tCO$_2$e/y), $A_y$ is avoided lifecycle emissions (tCO$_2$e/y), and $AC$ is incremental abatement cost (S\$/tCO$_2$e). Positive $\Delta C_y$ means the candidate costs more; a positive $A_y$ means it emits less. The same hydrogen output and annual operating-time assumption must apply to both sides.
+
+For the \textbf{controlling E2B two-train model}, the actual Rust ledger is
+\begin{align}
+C_{\mathrm{baseline},y}&=2C_{\mathrm{NG,baseline,train}},\\
+C_{\mathrm{candidate},y}
+&=2(C_{\mathrm{NG,candidate,train}}+
+ C_{\mathrm{CCS,annual,train}}+
+ C_{\mathrm{T\&S,train}})\\
+&\quad+C_{\mathrm{nuclear,annual}}+
+ 2C_{\mathrm{IHX/secondary,annual,train}}.
+\end{align}
+The baseline ledger represents natural-gas expenditure; it does \emph{not} separately add an SMR capital/O\&M charge. The candidate similarly does \emph{not} separately add an unmodelled SMR plant capital charge. The CCS term is the represented annualized capture capital; the nuclear term combines annualized overnight capital and annual operating expense; the IHX/secondary term is a represented per-train interface allowance. These definitions follow \texttt{model/src/e2b\_maturation.rs} and are a deliberately incomplete project-cost boundary, not a claim that all real-world SMR costs are zero.
+
+\begin{table}[htbp]\centering\small
+\caption{Mature 10-OAK annual cost ledger, two identical trains. Values rounded from the Rust model; sums use unrounded inputs.}
+\label{tab:teaching-cost-ledger}
+\begin{tabular}{p{0.53\linewidth}r}
+\toprule
+Represented cost term & S\$ million/y\\\midrule
+Baseline: 2 $\times$ NG at 52.5 MMSCFD per train & 538.230\\
+Candidate: 2 $\times$ NG at 34 MMSCFD per train & 348.568\\
+Candidate: 2 $\times$ annualized CCS capital & 21.366\\
+Candidate: 2 $\times$ captured-CO$_2$ transport/storage & 16.271\\
+Candidate: mature annualized nuclear capital and O\&M & 207.763\\
+Candidate: 2 $\times$ IHX/secondary-loop allowance & 22.846\\\midrule
+Candidate total (unrounded model) & 616.814\\
+Incremental cost (candidate minus baseline) & 78.583\\
+\bottomrule
+\end{tabular}
+\end{table}
+For example, the baseline is $2(269.115246)=538.230492$ million S\$/y. Candidate gas is $2(174.284159)=348.568319$ million S\$/y; capture is $2(10.682760)=21.365520$ million S\$/y; and transport/storage is $2(8.135430)=16.270860$ million S\$/y. The nuclear and interface terms are stage-specific model outputs. Display rounding explains why subtracting the two displayed three-decimal totals gives 78.584 rather than the unrounded approximately 78.583 million S\$/y.
+
+The denominator comes from the same two-train lifecycle boundary, $A_y=2(917{,}138.9)=1{,}834{,}277.8$ tCO$_2$e/y. Thus
+\[
+AC_{\mathrm{10\mbox{-}OAK}}
+=\frac{\mathrm{S\$}\,78.583\ \mathrm{million/y}}
+{1.834278\ \mathrm{million\ tCO_2e/y}}
+\approx\mathrm{S\$}\,42.84/\mathrm{tCO_2e}.
+\]
+The result is a \emph{projected mature scenario}, not a vendor quote. Before discussing the maturation model, the next subsection retains the original one-train calculation so the evolution of the research remains auditable.
+
 \subsection{Historical one-train differential screen (superseded)}
 The following cost bridge is retained for numerical provenance, not as the controlling CN4252 economic answer. It predates the stronger E1 full-burden accounting and the E2B two-train maturation model. Its S\$3.725/t result must not be interpreted as a deployable FOAK price.
 
