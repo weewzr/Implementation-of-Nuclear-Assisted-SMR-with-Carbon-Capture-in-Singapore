@@ -23,3 +23,6 @@ Without these values, the exact elemental balance residual in kmol C/h and perce
 
 ## Implications
 The existing E2B lifecycle avoidance and 1.085 Mt/y captured-throughput figures remain **historical conditional model results**, not verified plant-wide carbon closure. No project capture-efficiency or tail-gas fate is inferred from 1927/(1927+142). A revised central lifecycle result requires the streamwise balance first.
+
+## Deterministic model added (current continuation)
+`model/src/psa_carbon_closure.rs` now implements a streamwise kmol-C/h balance using explicit CO2, CO, CH4, C2H6 and C3H8 species, returning **None** when an essential stream is unknown. Synthetic tests cover exact closure, a 10 kmol-C/h nonzero residual, missing tail gas, and the 1927/2069 reported-stream ratio. **Synthetic test cases are verification of the arithmetic, not experimental INL Case-6 results.** The actual INL residual remains NOT CALCULABLE until source-complete molar streams are obtained. No source stream is silently set to zero.
