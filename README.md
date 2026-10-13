@@ -1,5 +1,8 @@
 # Nuclear-Assisted Steam Methane Reforming + Carbon Capture in Singapore
 
+> **Current scientific verification gate (October 2026):** The previously reported FOAK/BOAK/10-OAK abatement costs are **represented-scope screening outputs, not fully costed project estimates**. Plant-wide capture efficiency and elemental carbon closure remain **NOT VERIFIED** until PSA tail-gas composition/fate and all carbon-bearing streams are reconciled. Complete chemical-plant, capture operating and Singapore deployment costs remain unpriced. Consequently the earlier projected mature numerical pass must not be presented as a verified full-project pass. See [carbon closure](results/PSA_TAIL_GAS_CARBON_CLOSURE_AUDIT.md), [full cost scope](results/FULL_CHEMICAL_AND_CCS_COST_LEDGER.md), and [revised comparison](results/REVISED_CARBON_ECONOMICS_COMPARISON.md).
+
+
 **Can high-temperature nuclear process heat make established hydrogen production cleaner at industrial scale—and, eventually, economically credible in Singapore?**
 
 Steam methane reforming (SMR) is an established route for manufacturing hydrogen, but methane is used both as chemical feedstock and as fuel for the high-temperature reformer. Carbon capture and storage (CCS) addresses much of the process CO2; it does not eliminate upstream methane emissions or guarantee permanent storage. This project investigates a more demanding intervention: replace fired reformer heat with high-temperature nuclear heat, retain the familiar SMR-H2+amine-CCS chemical process, and test the result against Singapore's CN4252 abatement and cost thresholds.
