@@ -32,3 +32,6 @@ A matched-service IEAGHG/NETL/DOE or vendor cost breakdown with explicit capacit
 
 ## Status
 **Scope identified; complete costing NOT VERIFIED.** No unsupported revised FOAK/BOAK/10-OAK central numbers are issued.
+
+## Newly recovered primary cost benchmark (source recovery)
+IEAGHG 2017-02 (https://ieaghg.org/publications/techno-economic-evaluation-of-smr-based-standalone-merchant-hydrogen-plant-with-ccs/) assesses 100,000 Nm3/h H2 standalone SMR, reporting total-plant capital increases of 18–79% (approximately EUR40–176 million, Q4 2014), operating-cost increases of 18–33%, and CO2 avoidance costs EUR47–70/t for differing capture configurations. **These are source results, not nuclear-assisted project cost estimates.** They cannot be added directly to the existing annualized capture CAPEX because that risks double counting; nor can they be transplanted to the 130 MMSCFD Case-6 train without matched scope/capacity, price-year, geography, power export and equipment boundary reconciliation. See `results/TARGETED_PSA_COST_SOURCE_RECOVERY.md`. Full FOAK/BOAK/10-OAK economics remain unverified.
