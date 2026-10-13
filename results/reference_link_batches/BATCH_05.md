@@ -13,6 +13,8 @@ Each source URL/DOI was opened. Browser tool errors do not establish broken link
 | `takeda2000permeation` | UNRESOLVED | DOI inaccessible |
 | `ding2018epz` | UNRESOLVED | DOI inaccessible |
 | `mee2022htrpmepz` | ACCESS_RESTRICTED | MEE PDF >12MB tool limit, not broken |
-| `mee2009htrpmreview` | IDENTITY_MISMATCH | Opened Chinese regulator page is 2008-05-15 consultation letter on HTR-PM safety review principles, NOT a 2009 published safety-review standard |
+| `mee2009htrpmreview` | CORRECTED_VERIFIED | Opened Chinese regulator page is 2008-05-15 consultation letter on HTR-PM safety review principles, NOT a 2009 published safety-review standard |
 
 **Confirmed mismatch:** MEE link identifies a 2008 consultation letter, not a final 2009 safety-review publication. Correct the bibliography metadata and narrow claims accordingly. No Chinese HTR-PM criterion is transferable as a Singapore licensing standard.
+
+Bibliography repaired at commit `4c33a19ea1aad8406c5b6d3aadec6e96b4a2d98a`: correct 2008 consultation-letter identity, same citation key retained.
