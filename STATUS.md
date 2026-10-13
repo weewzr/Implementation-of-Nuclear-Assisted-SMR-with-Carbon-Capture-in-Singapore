@@ -1,5 +1,12 @@
 # STATUS
 
+## CURRENT SCIENTIFIC GATE — PSA CARBON CLOSURE AND COMPLETE ECONOMICS: OPEN
+
+The latest master instruction requires source-level PSA tail-gas carbon closure and matched-service complete chemical/CCS costs. A source audit and cost-scope ledger have been committed, but original INL streamwise PSA offgas data and full comparable cost inputs have **not yet been established**. The 1927/142 short-ton-per-day CO2 stream ratio is 93.14% of those two streams only, **not** verified plant-wide capture. Elemental residual (kmol C/h): NOT CALCULABLE. Full FOAK/BOAK/10-OAK costs: NOT CALCULABLE; earlier E2B figures are represented-scope historical model scenarios. **Do not close this gate or claim a validated full-project pass.**
+
+Required next scientific work: recover INL stream tables/PFD and PSA offgas fate; build/test deterministic streamwise carbon balance; source matched-scope chemical/CCS capital and OPEX; implement annualized Rust ledger and bounded sensitivities; update controlling paper conclusions, then rebuild and inspect PDF and verify CI.
+
+
 ## POST-E8 ARCHITECTURE SIZING RE-OPTIMIZATION — COMPLETE
 
 Decision: **RETAIN TWO TRAINS** as the best-supported architecture, while explicitly classifying it as **not a proven global optimum**.
