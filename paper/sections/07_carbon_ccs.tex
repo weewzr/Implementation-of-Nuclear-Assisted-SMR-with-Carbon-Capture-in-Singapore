@@ -1,4 +1,16 @@
 \section{Carbon balance and CCS}\label{sec:carbon}
+\subsection{Carbon-closure evidence gate}
+A physical CO$_2$ capture stream is not the same thing as a verified plant-wide capture percentage. At steady state, every carbon atom entering with methane or another carbon-bearing feed must leave as captured CO$_2$, emitted CO$_2$, carbon-bearing product/purge/tail gas or another measured outlet:
+\[
+\dot n_{C,\mathrm{in}}=\dot n_{C,\mathrm{captured}}+
+\dot n_{C,\mathrm{emitted}}+\dot n_{C,\mathrm{products}}+
+\dot n_{C,\mathrm{other}},\qquad
+[\mathrm{kmol\ C/h}].
+\]
+The source-model anchors are 1,927 short ton CO$_2$/day captured and 142 short ton CO$_2$/day reported emitted for one nuclear-assisted Case-6 train. Their ratio, $1927/(1927+142)=93.14\%$, describes only these two reported CO$_2$ streams; it is \emph{not} a verified 90\% absorber-inlet or plant-wide capture fraction. The separate 3,205 short ton/day baseline emission belongs to another process configuration and cannot close the proposed plant's carbon balance.
+
+Pressure Swing Adsorption (PSA) recovers hydrogen but leaves an offgas containing species that must be tracked. Without source-resolved PSA offgas composition and fate (recycle, combustion, purge or export), flue-gas routing and absorber inlet/outlet compositions, the elemental carbon residual and plant-wide capture fraction are \textbf{not calculable}. The older lifecycle ledger below is retained as a conditional screening calculation, not a validated closed carbon balance. See \texttt{results/PSA\_TAIL\_GAS\_CARBON\_CLOSURE\_AUDIT.md}.
+
 The key accounting question is not simply how much CO$_2$ is captured. It is how much lifecycle climate impact is avoided compared with producing the same hydrogen conventionally:
 \[
 A_{\mathrm{lifecycle},y}
