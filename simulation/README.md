@@ -10,13 +10,13 @@ HTGR -> intermediate heat exchanger (IHX) -> helium-heated steam methane reformi
 
 The simulation is intended to be built on the OUTRAM PARK backend, `develop` branch: https://github.com/theodoreOnzGit/outram-park-backend/tree/develop
 
-The aim is a DWSIM-like simulation with material streams, energy streams, equipment models, thermodynamics, reaction kinetics, heat and mass transfer, numerical calculations and interactive visualisation. Design inputs so far: 30 wt% aqueous MEA, a provisional absorber pressure of 25 bar absolute, and a proposed reactor rating of 210 MWth. Design-specific thermal integration for that rating still has to be verified, and a text search of the searchable papers in this library found no source for the 210 MWth figure.
+The aim is a DWSIM-like simulation with material streams, energy streams, equipment models, thermodynamics, reaction kinetics, heat and mass transfer, numerical calculations and interactive visualisation. Design inputs so far: 30 wt% aqueous MEA, a provisional absorber pressure of 25 bar absolute, and a proposed reactor rating of 210 MWth. Design-specific thermal integration for that rating still has to be verified, and a text search of the searchable papers in this library found no source for the 210 MWth figure. The closest rating found is the 215 MW(th) MHR-100SMR concept in REF-INT-003 (IAEA 2017, Table 20).
 
 This folder holds the research library and its index. It contains no simulation and no implementation plan. It sits in the `simulation` folder of the repository, next to `MASTER_ORGANISATIONAL_PROMPT.md`.
 
 ## 2. The research library
 
-The index covers 21 entries: 20 papers held in this folder and 1 paper that is listed but not yet obtained (REF-SMR-006). They are sorted into 11 category folders, each with an `INDEX.md` giving the title, authors, year, DOI or official link, the renamed filename, engineering purposes, equipment supported, availability of equations, parameter values and validation data, verified page or table references and any missing supplementary materials.
+The index covers 25 entries: 24 papers held in this folder and 1 paper that is listed but not yet obtained (REF-SMR-006). They are sorted into 11 category folders, each with an `INDEX.md` giving the title, authors, year, DOI or official link, the renamed filename, engineering purposes, equipment supported, availability of equations, parameter values and validation data, verified page or table references and any missing supplementary materials.
 
 Two files cover the whole library:
 
@@ -36,12 +36,12 @@ simulation/
     02_Intermediate_Heat_Exchanger/   (INDEX.md, 1 PDF)
     03_SMR_Reactor/   (INDEX.md, 5 PDFs)
     04_WGS_Reactor/   (INDEX.md, 2 PDFs)
-    05_MEA_Thermodynamics/   (INDEX.md, 3 PDFs)
-    06_MEA_Absorber/   (INDEX.md, 3 PDFs)
+    05_MEA_Thermodynamics/   (INDEX.md, 4 PDFs)
+    06_MEA_Absorber/   (INDEX.md, 4 PDFs)
     07_MEA_Stripper/   (INDEX.md, 1 PDF)
-    08_Integrated_HTGR_SMR_CCS/   (INDEX.md, 2 PDFs)
+    08_Integrated_HTGR_SMR_CCS/   (INDEX.md, 3 PDFs)
     09_Software_Models_and_Code/   (INDEX.md only, no files yet)
-    10_Supporting_References/   (INDEX.md, 1 PDF)
+    10_Supporting_References/   (INDEX.md, 2 PDFs)
     11_Out_of_Scope/   (INDEX.md, 1 PDF)
     12_Theodore_Simulation_Prompt/   (.gitkeep only)
 ```
@@ -78,12 +78,12 @@ Each entry has a stable ID of the form `REF-<AREA>-<number>`. The ID never chang
 
 1. Open the DOI as `https://doi.org/<DOI>`, or use the official link in the inventory (IAEA record, NETL report, University of Texas repository handles for the two dissertations).
 2. Xu and Froment Part 2 (REF-SMR-002) and Sato et al. 2006 (REF-INT-001) print no DOI and none has been verified. Search by title, journal and year.
-3. JAERI-Tech 2005-031 (REF-SMR-005) is identified by report number; an official URL has not been verified.
+3. JAERI-Tech 2005-031 (REF-SMR-005) is identified by report number; an official URL has not been verified. The same applies to IAEA NP-T-4.3 (REF-INT-003) and IEAGHG 2022-07 (REF-SUP-002), which are identified by series number.
 4. Most journal articles are behind publisher paywalls. Morgan et al. 2018 and Kraussler and Hofbauer 2017 state on the files that they are published open access.
 
 ## 7. Papers in this folder
 
-The 20 PDFs in the category folders are renamed copies of the files collected for this project. The content of each file is unchanged. Copyright in each paper remains with its publisher and authors. Morgan et al. 2018 and Kraussler and Hofbauer 2017 state on the files that they are published open access. For the other papers, check the reuse rights before keeping them in a public repository. Supplementary documents, saved web pages, archives, model and source files, temporary files and credentials are not included, and `.gitignore` excludes them.
+The 24 PDFs in the category folders are renamed copies of the files collected for this project. The content of each file is unchanged. Copyright in each paper remains with its publisher and authors. Morgan et al. 2018 and Kraussler and Hofbauer 2017 state on the files that they are published open access. For the other papers, check the reuse rights before keeping them in a public repository. Supplementary documents, saved web pages, archives, model and source files, temporary files and credentials are not included, and `.gitignore` excludes them.
 
 ## 8. Scope exclusions
 
@@ -105,4 +105,5 @@ Equations, literature values and validation data are marked Yes, Partial or No. 
 4. REF-MEA-004 is Part 2 of a pair; Part 1 is not in the library.
 5. No Aspen Plus, Fortran or other model files were found, so `09_Software_Models_and_Code` is empty.
 6. Several equipment items have no verified source yet (primary helium circulator, syngas cooler, condensate separator, rich amine flash drum, and parts of the reboiler, condenser, lean amine pump and cooler and solvent recycle entries). See the equipment map.
-7. No paper identified so far covers MEA absorption at the provisional 25 bar absolute condition. The papers that state a pressure describe near-atmospheric flue gas.
+7. MEA at the provisional 25 bar absolute condition is only partly covered. REF-MEA-009 gives CO2-MEA equilibrium and speciation at 1 to 50 bar and 303 to 323 K for 10 to 30 mass% MEA, and REF-MEA-008 gives packed-column absorption data at 0.1, 1 and 5 MPa, but for 20 wt% MEA and CO2 in natural gas. The other papers that state a pressure describe near-atmospheric flue gas. No column test at 25 bar with 30 wt% MEA and a syngas feed has been identified.
+8. The proposed 210 MWth rating has no source. The nearest design-scale value found is 215 MW(th) (REF-INT-003, Table 20).

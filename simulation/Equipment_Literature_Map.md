@@ -8,6 +8,7 @@ For each equipment item in the proposed HTGR, IHX, helium-heated SMR, WGS and ME
 
 - REF-HTGR-001 (IAEA 2003, TECDOC-1382): HTTR and HTR-10 benchmark problem descriptions (Ch. 2 and Ch. 3; the HTR-10 core physics chapter is not in the file)
 - REF-IHX-001 (Tochio and Nakagawa 2011): Table 1, HTTR specifications (PDF p. 3)
+- REF-INT-003 (IAEA 2017, NP-T-4.3): concept design parameters for GTHTR300C, HTR-MODUL, HTR-10, GT-MHR and MHR-100SMR (Tables 16 to 20, PDF pp. 38-43)
 
 ### Governing equations
 
@@ -17,6 +18,7 @@ For each equipment item in the proposed HTGR, IHX, helium-heated SMR, WGS and ME
 
 - REF-HTGR-001 (IAEA 2003, TECDOC-1382): benchmark parameters (Ch. 2 and Ch. 3)
 - REF-IHX-001 (Tochio and Nakagawa 2011): Table 1, HTTR specifications (PDF p. 3)
+- REF-INT-003 (IAEA 2017, NP-T-4.3): thermal power, helium temperatures and pressure for those concepts; for example MHR-100SMR 215 MW(th), 450/950 C, 5.0 MPa (Table 20, PDF p. 43)
 
 ### Experimental validation
 
@@ -28,7 +30,7 @@ For each equipment item in the proposed HTGR, IHX, helium-heated SMR, WGS and ME
 - REF-INT-002 (Zhang et al. 2021): HTR-PM based hydrogen production system analysis
 - REF-SMR-004 (Hoseinzade and Adams 2017): Tables 5-6, design parameters for an SMR/HTGR at industrial scale (PDF pp. 10-11)
 
-Note: No source for the proposed 210 MWth rating was found: a text search of the searchable papers in the library returned no 210 MWth figure.
+Note: No source for the proposed 210 MWth rating was found: a text search of the searchable papers in the library returned no 210 MWth figure. The closest rating found is the 215 MW(th) MHR-100SMR concept in REF-INT-003 (Table 20, PDF p. 43).
 
 ## 2. Primary helium circulator
 
@@ -67,6 +69,7 @@ Note: No source for the proposed 210 MWth rating was found: a text search of the
 ### Numerical parameter values
 
 - REF-IHX-001 (Tochio and Nakagawa 2011): Table 2, major specifications of the IHX (PDF p. 5)
+- REF-INT-003 (IAEA 2017, NP-T-4.3): primary and secondary helium temperatures at the IHX for the GTHTR300C hydrogen cogeneration concept (Table 16, PDF p. 38); a typical helium temperature drop of about 50 C across the IHX is stated on PDF p. 26
 
 ### Experimental validation
 
@@ -108,6 +111,7 @@ Note: No source for the proposed 210 MWth rating was found: a text search of the
 - REF-SMR-005 (JAERI 2005, JAERI-Tech 2005-031): specifications and structures of the mock-up steam reformer and other heat exchangers
 - REF-INT-001 (Sato et al. 2006): Table 1, design specifications of the mock-up test facility (PDF p. 2)
 - REF-SMR-004 (Hoseinzade and Adams 2017): Tables 1-2 and 5-6, design specifications and parameters (PDF pp. 8-11)
+- REF-INT-003 (IAEA 2017, NP-T-4.3): MHR-100SMR steam reformer built from three heat exchangers HX1 to HX3 (Table 20, PDF p. 43); AVR-II reformer (Table 15, PDF p. 37)
 
 ### Governing equations
 
@@ -124,6 +128,7 @@ Note: No source for the proposed 210 MWth rating was found: a text search of the
 - REF-SMR-002 (Xu and Froment 1989 Part 2): Tables 1-2, pore size distribution and simulation input data (PDF pp. 2 and 4)
 - REF-SMR-004 (Hoseinzade and Adams 2017): Table 3, estimated parameters (PDF p. 9)
 - REF-INT-002 (Zhang et al. 2021): Table 1, reaction equilibrium constants (PDF p. 5)
+- REF-INT-003 (IAEA 2017, NP-T-4.3): reformer thermal power, helium and steam-methane flow rates and temperatures (Tables 15 and 20, PDF pp. 37 and 43)
 
 ### Experimental validation
 
@@ -135,6 +140,7 @@ Note: No source for the proposed 210 MWth rating was found: a text search of the
 ### Supporting references
 
 - REF-INT-001 (Sato et al. 2006): system-level dynamic behaviour of the HTTR-coupled reforming system
+- REF-SUP-002 (IEAGHG 2022, 2022-07): process data for a conventional fired SMR (Tables 19 and 20, PDF p. 114)
 
 ## 6. WGS reactor
 
@@ -160,6 +166,7 @@ Note: No source for the proposed 210 MWth rating was found: a text search of the
 ### Supporting references
 
 - REF-SMR-001 (Xu and Froment 1989 Part 1): water-gas shift rate within the reforming network; this is on a Ni catalyst, so it is not a shift-catalyst source
+- REF-SUP-002 (IEAGHG 2022, 2022-07): syngas composition before the WGS reactor and cooling of the product gas to about 340 to 350 C ahead of it (PDF pp. 18, 32 and 58); a process description, not reactor design
 
 ## 7. Syngas cooler
 
@@ -181,9 +188,9 @@ Note: No source for the proposed 210 MWth rating was found: a text search of the
 
 ### Supporting references
 
-- Not yet identified
+- REF-SUP-002 (IEAGHG 2022, 2022-07): states only that the product gas is cooled to about 340 to 350 C before the WGS reactor (PDF p. 58); no cooler design
 
-Note: No document in the library describes a syngas cooler.
+Note: No document in the library describes a syngas cooler design.
 
 ## 8. Condensate separator
 
@@ -218,6 +225,7 @@ Note: No document in the library describes a process condensate separator.
 - REF-MEA-005 (Morgan et al. 2018, supporting information): Table S1, NCCC absorber variables
 - REF-MEA-002 (Plaza 2012): pilot plant studies (Ch. 4, printed p. 92)
 - REF-SUP-001 (Nexant and Bechtel 2020, DICE-CRCC): plant-scale PCC absorber design basis (Vol. II, printed pp. 53-73)
+- REF-MEA-008 (Tan et al. 2015): pilot packed column, inner diameter 0.145 m, 1.0 m of FLEXIPAC 1Y packing (PDF p. 3)
 
 ### Governing equations
 
@@ -225,12 +233,14 @@ Note: No document in the library describes a process condensate separator.
 - REF-MEA-003 (Cownden and Lucquiaud 2026): improved mass transfer and thermodynamic/chemistry models
 - REF-MEA-004 (Morgan et al. 2018): rigorous modelling framework, steady-state validation
 - REF-MEA-006 (Sønderby et al. 2013): rate-based packed-column model
+- REF-MEA-009 (Wong et al. 2016): CO2 loading calculation and equilibrium relations (eqns (2) to (7)) with the Deshmukh-Mather activity coefficient model (PDF pp. 3-4)
 
 ### Numerical parameter values
 
 - REF-MEA-003 (Cownden and Lucquiaud 2026): regressed model parameters (Tables 1-3, PDF pp. 3, 5, 10)
 - REF-MEA-001 (Dugas 2009): rate and CO2 partial pressure results and modelling (Ch. 4-5, printed pp. 60-94)
 - REF-MEA-002 (Plaza 2012): Ch. 3 model parameters (printed p. 23 onward)
+- REF-MEA-009 (Wong et al. 2016): Table 2, equilibrium constant parameters, and Table 3, coefficients for selected ions or molecules (PDF pp. 3-4)
 
 ### Experimental validation
 
@@ -240,13 +250,16 @@ Note: No document in the library describes a process condensate separator.
 - REF-MEA-002 (Plaza 2012): pilot plant studies (Ch. 4)
 - REF-MEA-003 (Cownden and Lucquiaud 2026): 23 test cases from 3 facilities (abstract)
 - REF-MEA-007 (Kwak et al. 2012): 2 ton-CO2/day pilot data
+- REF-MEA-008 (Tan et al. 2015): CO2 removal along the column at 0.1, 1 and 5 MPa for 20 wt% MEA (Figs. 3-9, PDF pp. 3-5)
+- REF-MEA-009 (Wong et al. 2016): CO2 loading in 10 to 30 mass% MEA at 1 to 50 bar and 303 to 323 K (Fig. 2, Table 4 and Fig. 4, PDF pp. 4-5)
 
 ### Supporting references
 
 - REF-MEA-001 (Dugas 2009): wetted-wall mass transfer data (Ch. 4)
 - REF-SUP-001 (Nexant and Bechtel 2020, DICE-CRCC): plant-scale MEA capture process description
+- REF-SUP-002 (IEAGHG 2022, 2022-07): MEA capture on the SMR reformer flue gas at 90% capture (PDF pp. 58-59)
 
-Note: The papers that state a pressure describe near-atmospheric flue gas absorption (REF-MEA-006, REF-MEA-003). No paper identified so far covers the provisional 25 bar absolute absorber condition.
+Note: REF-MEA-006 and REF-MEA-003 describe near-atmospheric flue gas absorption. REF-MEA-008 gives packed-column absorption data up to 5 MPa, but for 20 wt% MEA and CO2 in natural gas. REF-MEA-009 gives equilibrium data at 1 to 50 bar for 10 to 30 mass% MEA at 303 to 323 K. No column test at the provisional 25 bar absolute condition with 30 wt% MEA and a syngas feed has been identified.
 
 ## 10. Rich amine flash drum
 

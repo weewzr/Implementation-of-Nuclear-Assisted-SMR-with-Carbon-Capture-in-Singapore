@@ -2,9 +2,9 @@
 
 Scope: Integrated studies that couple the HTGR to the SMR (and, where present, downstream units).
 
-Papers in this folder: 2. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers in this folder: 3. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
-Folder note: No paper identified so far integrates HTGR, SMR, WGS and MEA capture in one model. The papers here couple the HTGR to the SMR.
+Folder note: No paper identified so far integrates HTGR, SMR, WGS and MEA capture in one model. The papers here couple the HTGR to the SMR. REF-INT-003 is a general review that gives concept-level HTGR and steam reformer designs, including a 215 MW(th) case, and has no CO2 capture design.
 
 ### REF-INT-001  Sato et al. 2006
 
@@ -37,3 +37,19 @@ Folder note: No paper identified so far integrates HTGR, SMR, WGS and MEA captur
 - Missing supplementary materials: Supplementary material (Figures 1s and 4s) is not in the folder
 - Priority: CORE
 - Notes: Complete (15 pp). Thermodynamic equilibrium model over T 400-1200 C, P 2-7 MPa and S/C 2-10.
+
+### REF-INT-003  IAEA 2017, NP-T-4.3
+
+- Title: Industrial Applications of Nuclear Energy
+- Authors and year: IAEA (International Atomic Energy Agency) (2017)
+- Source: IAEA Nuclear Energy Series No. NP-T-4.3, IAEA, Vienna, 2017, ISBN 978-92-0-101417-7, 96 pp. in the file
+- DOI or official URL: IAEA Nuclear Energy Series No. NP-T-4.3; ISBN 978-92-0-101417-7; official URL not verified
+- Filename: `IAEA_2017_HTGR_SMR_Reference_Design_Literature_Values.pdf` (in this folder)
+- Primary engineering purpose: Reference_Design
+- Secondary engineering uses: Literature_Values
+- Equipment supported: HTGR reactor (concept design tables); intermediate heat exchanger (helium temperatures only); helium-heated SMR (concept designs and reformer heat exchangers)
+- Equations: No. Literature parameter values: Yes. Validation data: No.
+- Important pages, tables and equations: Table 15 AVR-II with an 8.5 MW(th) steam reformer (PDF p. 37); Table 16 GTHTR300C (PDF p. 38); Table 18 HTR-10 (PDF p. 40); Table 20 MHR-100SMR, 215 MW(th) with three reformer heat exchangers HX1 to HX3 (PDF p. 43); Table 22 helium-heated process heat exchangers in a refinery (PDF p. 48); Section 4.1.3 nuclear assisted steam reforming of natural gas (PDF p. 49). PDF page = printed page + 12
+- Missing supplementary materials: None identified
+- Priority: CORE
+- Notes: Complete (96 pp). A general review of nuclear industrial applications, not a simulation reference. The closest rating to the proposed 210 MWth is the MHR-100SMR concept at 215 MW(th), helium 450/950 C at 5.0 MPa (Table 20); it is not 210 MWth. A text search found no 210 MWth reactor in this report. The report contains no CO2 capture design.
