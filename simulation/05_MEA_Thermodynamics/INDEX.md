@@ -2,7 +2,9 @@
 
 Scope: 30 wt% aqueous MEA thermodynamics, chemistry, rate and mass-transfer models and the data behind them.
 
-Papers in this folder: 3. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers in this folder: 4. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+
+Folder note: REF-MEA-009 (Wong et al. 2016) is the only equilibrium and speciation source identified for pressures up to 50 bar.
 
 ### REF-MEA-001  Dugas 2009
 
@@ -51,3 +53,19 @@ Papers in this folder: 3. Page numbers marked PDF are PDF page numbers; printed 
 - Missing supplementary materials: The Supplementary Material and the Aspen Plus source file that the paper refers to are not in the folder
 - Priority: CORE
 - Notes: Complete (14 pp). Near-atmospheric flue gas absorption. Improves on the CCSI 2018 MEA model.
+
+### REF-MEA-009  Wong et al. 2016
+
+- Title: Raman spectroscopic study on the equilibrium of carbon dioxide in aqueous monoethanolamine
+- Authors and year: M. K. Wong; A. M. Shariff; M. A. Bustam (2016)
+- Source: RSC Advances 6, 10816 (published 12 January 2016; 8 pp. in the file)
+- DOI or official URL: https://doi.org/10.1039/c5ra22926j
+- Filename: `Wong_2016_MEA_Thermodynamic_Equations_Experimental_Data.pdf` (in this folder)
+- Primary engineering purpose: Thermodynamic_Equations
+- Secondary engineering uses: Experimental_Data; Validation_Data
+- Equipment supported: MEA absorber (CO2-MEA-water equilibrium and speciation at absorber pressures)
+- Equations: Yes. Literature parameter values: Yes. Validation data: Yes.
+- Important pages, tables and equations: Eqn (2) CO2 loading from the gas-phase pressure drop and eqns (3)-(7) equilibrium relations, with the Deshmukh-Mather activity coefficient model; Tables 1-2 (PDF p. 3); Table 3 (PDF p. 4); Table 4 and Fig. 4 parity plot (PDF p. 5); Fig. 2 CO2 loading in 20% MEA at 1 to 50 bar (PDF pp. 4-5); Fig. 7 carbamate molality in 30% MEA (PDF p. 7)
+- Missing supplementary materials: Electronic supplementary information (ESI), noted on PDF p. 1, is not in the file
+- Priority: CORE
+- Notes: Complete (8 pp). In situ Raman measurements of CO2 solubility and species distribution in aqueous MEA at 10 to 30 mass%, 1 to 50 bar and 303.15, 313.15 and 323.15 K, analysed with the Deshmukh-Mather model. It is the only equilibrium source identified so far at pressures up to 50 bar. Whether 30 mass% MEA was measured at every pressure has not been checked. The temperatures stop at 323.15 K, so regeneration temperatures are not covered.

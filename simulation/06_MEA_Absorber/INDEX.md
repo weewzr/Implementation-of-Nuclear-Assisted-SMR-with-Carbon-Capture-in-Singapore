@@ -2,9 +2,9 @@
 
 Scope: MEA absorber data and validation (pilot plants, rate-based models).
 
-Papers in this folder: 3. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers in this folder: 4. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
-Folder note: The main MEA models and parameter sources are filed under 05. Morgan et al. also covers the stripper (see 07).
+Folder note: The main MEA models and parameter sources are filed under 05. Morgan et al. also covers the stripper (see 07). REF-MEA-008 (Tan et al. 2015) is the only high-pressure absorption experiment identified (up to 5 MPa, 20 wt% MEA). REF-MEA-009 in folder 05 gives equilibrium data at 1 to 50 bar.
 
 ### REF-MEA-004  Morgan et al. 2018
 
@@ -53,3 +53,19 @@ Folder note: The main MEA models and parameter sources are filed under 05. Morga
 - Missing supplementary materials: None identified
 - Priority: SUPPORTING
 - Notes: Complete (12 pp). Pilot absorber measurements compared with a rate-based packed-column model. Gas at ambient temperature and atmospheric pressure. The filename uses an ASCII o for the o-slash.
+
+### REF-MEA-008  Tan et al. 2015
+
+- Title: Impact of high pressure on high concentration carbon dioxide capture from natural gas by monoethanolamine/N-methyl-2-pyrrolidone solvent in absorption packed column
+- Authors and year: L.S. Tan; A.M. Shariff; K.K. Lau; M.A. Bustam (2015)
+- Source: International Journal of Greenhouse Gas Control 34, 25-30
+- DOI or official URL: https://doi.org/10.1016/j.ijggc.2014.12.020
+- Filename: `Tan_2015_MEA_Absorber_Experimental_Data_Validation_Data.pdf` (in this folder)
+- Primary engineering purpose: Experimental_Data
+- Secondary engineering uses: Validation_Data
+- Equipment supported: MEA absorber (pilot packed column at high pressure)
+- Equations: No. Literature parameter values: Partial. Validation data: Yes.
+- Important pages, tables and equations: Fig. 2 experimental setup and column dimensions (PDF p. 3); Figs. 3-9 CO2 removal along the column at 0.1, 1 and 5 MPa for water, NMP, 20 wt% MEA and MEA with NMP (PDF pp. 3-5)
+- Missing supplementary materials: None identified
+- Priority: CORE
+- Notes: Complete (6 pp). Packed column with inner diameter 0.145 m and 1.0 m of FLEXIPAC 1Y structured packing; feed of 50% CO2 in natural gas at 100 slpm; pressures 0.1, 1 and 5 MPa. The MEA solution is 20 wt%, not 30 wt%, and the gas is CO2 in natural gas, not syngas. Results are given as figures; no data tables were found in the file.
