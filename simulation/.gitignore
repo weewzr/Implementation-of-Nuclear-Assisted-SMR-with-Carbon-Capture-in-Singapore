@@ -1,0 +1,47 @@
+# Other document formats are not used in this library
+*.djvu
+*.epub
+
+# Saved web pages, archives and duplicate bundles
+*.html
+*.htm
+*_files/
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+# Model and source files need separate approval and licensing
+*.apwz
+*.apw
+*.bkp
+*.f
+*.f90
+*.for
+
+# Internal file-management records (local library only)
+Rename_Manifest.csv
+Duplicate_Report.*
+
+# Temporary and system files
+*.tmp
+*.temp
+*.bak
+*.log
+~$*
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Credentials and private material
+.env
+.env.*
+*.key
+*.pem
+*.p12
+secrets*
+credentials*
+
+# Notes containing local computer paths
+local_paths*
