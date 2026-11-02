@@ -2,7 +2,7 @@
 
 Scope: Material outside the simulation scope (for example PSA), kept for reference only.
 
-Papers in this folder: 1. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 1. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 ### REF-OOS-001  Grande et al. 2008
 
@@ -10,7 +10,7 @@ Papers in this folder: 1. Page numbers marked PDF are PDF page numbers; printed 
 - Authors and year: Carlos A. Grande; Filipe V. S. Lopes; Ana M. Ribeiro; José M. Loureiro; Alírio E. Rodrigues (2008)
 - Source: Separation Science and Technology 43(6), 1338-1364
 - DOI or official URL: https://doi.org/10.1080/01496390801940952
-- Filename: `Grande_2008_PSA_Adsorption_Experimental_Data.pdf` (in this folder)
+- Filename: `Grande_2008_PSA_Adsorption_Experimental_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Experimental_Data
 - Secondary engineering uses: Literature_Values
 - Equipment supported: PSA (excluded from the simulation)

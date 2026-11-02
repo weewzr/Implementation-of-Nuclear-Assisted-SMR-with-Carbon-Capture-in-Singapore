@@ -2,7 +2,7 @@
 
 Scope: Integrated studies that couple the HTGR to the SMR (and, where present, downstream units).
 
-Papers in this folder: 3. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 3. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 Folder note: No paper identified so far integrates HTGR, SMR, WGS and MEA capture in one model. The papers here couple the HTGR to the SMR. REF-INT-003 is a general review that gives concept-level HTGR and steam reformer designs, including a 215 MW(th) case, and has no CO2 capture design.
 
@@ -12,7 +12,7 @@ Folder note: No paper identified so far integrates HTGR, SMR, WGS and MEA captur
 - Authors and year: Hiroyuki Sato; Hirofumi Ohashi; Yoshitomo Inaba; Tetsuo Nishihara; Koji Hayashi; Yoshiyuki Inagaki (2006)
 - Source: Transactions of the Atomic Energy Society of Japan 5(4), 292-304 (technical report; Japanese text with English title and abstract)
 - DOI or official URL: DOI not verified (none printed on the file); locate by title and journal issue
-- Filename: `Sato_2006_HTGR_SMR_Integrated_Model_Dynamic_Model.pdf` (in this folder)
+- Filename: `Sato_2006_HTGR_SMR_Integrated_Model_Dynamic_Model.pdf` (local library name, not stored here)
 - Primary engineering purpose: Integrated_Model
 - Secondary engineering uses: Dynamic_Model
 - Equipment supported: HTTR-coupled steam reforming hydrogen production system (system dynamics, code N-HYPAC); helium-heated SMR
@@ -28,7 +28,7 @@ Folder note: No paper identified so far integrates HTGR, SMR, WGS and MEA captur
 - Authors and year: Yongle Zhang; Guang Hu; Huang Zhang; Qianfeng Liu; Junbo Zhou (2021)
 - Source: Journal of Nuclear Science and Technology 58(12), 1359-1372
 - DOI or official URL: https://doi.org/10.1080/00223131.2021.1951863
-- Filename: `Zhang_2021_HTGR_SMR_Integrated_Model_Thermodynamic_Equations.pdf` (in this folder)
+- Filename: `Zhang_2021_HTGR_SMR_Integrated_Model_Thermodynamic_Equations.pdf` (local library name, not stored here)
 - Primary engineering purpose: Integrated_Model
 - Secondary engineering uses: Thermodynamic_Equations
 - Equipment supported: HTR-PM heated SMR system; IHX energy balance in the primary helium loop
@@ -44,7 +44,7 @@ Folder note: No paper identified so far integrates HTGR, SMR, WGS and MEA captur
 - Authors and year: IAEA (International Atomic Energy Agency) (2017)
 - Source: IAEA Nuclear Energy Series No. NP-T-4.3, IAEA, Vienna, 2017, ISBN 978-92-0-101417-7, 96 pp. in the file
 - DOI or official URL: IAEA Nuclear Energy Series No. NP-T-4.3; ISBN 978-92-0-101417-7; official URL not verified
-- Filename: `IAEA_2017_HTGR_SMR_Reference_Design_Literature_Values.pdf` (in this folder)
+- Filename: `IAEA_2017_HTGR_SMR_Reference_Design_Literature_Values.pdf` (local library name, not stored here)
 - Primary engineering purpose: Reference_Design
 - Secondary engineering uses: Literature_Values
 - Equipment supported: HTGR reactor (concept design tables); intermediate heat exchanger (helium temperatures only); helium-heated SMR (concept designs and reformer heat exchangers)

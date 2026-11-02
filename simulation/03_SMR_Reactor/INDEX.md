@@ -2,7 +2,7 @@
 
 Scope: Helium-heated steam methane reforming (SMR) reactor: kinetics, diffusion, heat transfer, reformer models and test data.
 
-Papers in this folder: 5. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 5. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 Folder note: Listed but not in the library: REF-SMR-006 (see the section below). Hoseinzade and Adams (REF-SMR-004) also supports folder 08 as a secondary use.
 
@@ -12,7 +12,7 @@ Folder note: Listed but not in the library: REF-SMR-006 (see the section below).
 - Authors and year: Jianguo Xu; Gilbert F. Froment (1989)
 - Source: AIChE Journal, Vol. 35, No. 1, January 1989 (Part 1 of 2)
 - DOI or official URL: https://doi.org/10.1002/aic.690350109
-- Filename: `Xu_Froment_1989_Part1_SMR_Kinetic_Equations.pdf` (in this folder)
+- Filename: `Xu_Froment_1989_Part1_SMR_Kinetic_Equations.pdf` (local library name, not stored here)
 - Primary engineering purpose: Kinetic_Equations
 - Secondary engineering uses: Literature_Values; Experimental_Data
 - Equipment supported: Helium-heated SMR (reforming, water-gas shift and methanation rate equations on Ni/MgAl2O4)
@@ -28,7 +28,7 @@ Folder note: Listed but not in the library: REF-SMR-006 (see the section below).
 - Authors and year: Jianguo Xu; Gilbert F. Froment (1989)
 - Source: AIChE Journal, Vol. 35, No. 1, January 1989 (Part 2 of 2)
 - DOI or official URL: DOI not verified (none printed on the file); locate by title and journal issue
-- Filename: `Xu_Froment_1989_Part2_SMR_Mass_Transfer_Numerical_Methods.pdf` (in this folder)
+- Filename: `Xu_Froment_1989_Part2_SMR_Mass_Transfer_Numerical_Methods.pdf` (local library name, not stored here)
 - Primary engineering purpose: Mass_Transfer
 - Secondary engineering uses: Numerical_Methods; Literature_Values
 - Equipment supported: Helium-heated SMR catalyst pellet and reactor
@@ -44,7 +44,7 @@ Folder note: Listed but not in the library: REF-SMR-006 (see the section below).
 - Authors and year: Huaqiang Yin; Shengyao Jiang; Youjie Zhang; Huaiming Ju (2007)
 - Source: Journal of Nuclear Science and Technology 44(7), 977-984
 - DOI or official URL: https://doi.org/10.1080/18811248.2007.9711337
-- Filename: `Yin_2007_SMR_Heat_Transfer_Validation_Data.pdf` (in this folder)
+- Filename: `Yin_2007_SMR_Heat_Transfer_Validation_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Heat_Transfer
 - Secondary engineering uses: Validation_Data; Reference_Design
 - Equipment supported: Helium-heated SMR (HTR-10 steam reformer)
@@ -60,7 +60,7 @@ Folder note: Listed but not in the library: REF-SMR-006 (see the section below).
 - Authors and year: Leila Hoseinzade; Thomas A. Adams II (2017)
 - Source: International Journal of Hydrogen Energy 42, 25048-25062
 - DOI or official URL: https://doi.org/10.1016/j.ijhydene.2017.08.031
-- Filename: `Hoseinzade_Adams_2017_SMR_Dynamic_Model_Integrated_Model.pdf` (in this folder)
+- Filename: `Hoseinzade_Adams_2017_SMR_Dynamic_Model_Integrated_Model.pdf` (local library name, not stored here)
 - Primary engineering purpose: Dynamic_Model
 - Secondary engineering uses: Integrated_Model; Heat_Transfer
 - Equipment supported: Helium-heated SMR; nuclear heat supply interface (HTGR and IHX)
@@ -76,7 +76,7 @@ Folder note: Listed but not in the library: REF-SMR-006 (see the section below).
 - Authors and year: Akira Shimizu et al. (16 authors, read by OCR from the cover) (2005)
 - Source: JAERI-Tech 2005-031, Japan Atomic Energy Research Institute (received 15 March 2005), 190 pp.
 - DOI or official URL: JAERI-Tech 2005-031 (official URL not verified)
-- Filename: `JAERI_2005_SMR_Heat_Transfer_Reference_Design.pdf` (in this folder)
+- Filename: `JAERI_2005_SMR_Heat_Transfer_Reference_Design.pdf` (local library name, not stored here)
 - Primary engineering purpose: Heat_Transfer
 - Secondary engineering uses: Reference_Design; Experimental_Data
 - Equipment supported: Helium-heated SMR (steam reformer with full-scale reaction tube); steam superheater, steam generator, condenser, helium gas cooler, feed gas heater and feed gas superheater of the mock-up facility

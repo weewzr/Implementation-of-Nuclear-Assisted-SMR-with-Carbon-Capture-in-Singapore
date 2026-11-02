@@ -1,6 +1,6 @@
 # FINAL MANUSCRIPT FIGURE PROVENANCE
 
-This record covers submission-facing figures. Figures 1--3 are now included directly from user-provided project artwork under `attachments/`. The artwork provides **visual/design provenance only**; scientific validation remains tied to the cited INL, IEAGHG and JAEA/JAERI/Nishihara sources and to the canonical project model.
+This record covers submission-facing figures. Figures 1--3 were user-provided project artwork. The image files were removed from this repository on 2026-11-02 and the paper prints a placeholder for each. The paths in the table are a historical record. The artwork provides **visual/design provenance only**; scientific validation remains tied to the cited INL, IEAGHG and JAEA/JAERI/Nishihara sources and to the canonical project model.
 
 | Figure | Active asset | Purpose | Visual provenance | Scientific basis |
 |---|---|---|---|---|

@@ -2,7 +2,7 @@
 
 Scope: Water-gas shift (WGS) reactor: kinetics, mass transport and experimental data.
 
-Papers in this folder: 2. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 2. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 ### REF-WGS-001  Chinchen et al. 1984
 
@@ -10,7 +10,7 @@ Papers in this folder: 2. Page numbers marked PDF are PDF page numbers; printed 
 - Authors and year: G. C. Chinchen; R. H. Logan; M. S. Spencer (1984)
 - Source: Applied Catalysis 12(1), 69-88
 - DOI or official URL: https://doi.org/10.1016/S0166-9834(00)81505-5
-- Filename: `Chinchen_1984_WGS_Mass_Transfer_Experimental_Data.pdf` (in this folder)
+- Filename: `Chinchen_1984_WGS_Mass_Transfer_Experimental_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Mass_Transfer
 - Secondary engineering uses: Experimental_Data
 - Equipment supported: WGS reactor (Fe/Cr catalyst pellets)
@@ -26,7 +26,7 @@ Papers in this folder: 2. Page numbers marked PDF are PDF page numbers; printed 
 - Authors and year: Michael Kraussler; Hermann Hofbauer (2017)
 - Source: Biomass Conversion and Biorefinery 7, 153-165
 - DOI or official URL: https://doi.org/10.1007/s13399-016-0215-9
-- Filename: `Kraussler_Hofbauer_2017_WGS_Kinetic_Equations_Validation_Data.pdf` (in this folder)
+- Filename: `Kraussler_Hofbauer_2017_WGS_Kinetic_Equations_Validation_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Kinetic_Equations
 - Secondary engineering uses: Validation_Data
 - Equipment supported: WGS reactor (Fe/Cr catalyst)

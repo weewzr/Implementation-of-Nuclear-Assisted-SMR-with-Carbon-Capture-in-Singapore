@@ -2,7 +2,7 @@
 
 Scope: MEA absorber data and validation (pilot plants, rate-based models).
 
-Papers in this folder: 4. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 4. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 Folder note: The main MEA models and parameter sources are filed under 05. Morgan et al. also covers the stripper (see 07). REF-MEA-008 (Tan et al. 2015) is the only high-pressure absorption experiment identified (up to 5 MPa, 20 wt% MEA). REF-MEA-009 in folder 05 gives equilibrium data at 1 to 50 bar.
 
@@ -12,7 +12,7 @@ Folder note: The main MEA models and parameter sources are filed under 05. Morga
 - Authors and year: Joshua C. Morgan; Anderson Soares Chinen; Benjamin Omell; Debangsu Bhattacharyya; Charles Tong; David C. Miller; Bill Buschle; Mathieu Lucquiaud (2018)
 - Source: Industrial & Engineering Chemistry Research 57(31), 10464-10481
 - DOI or official URL: https://doi.org/10.1021/acs.iecr.8b01472
-- Filename: `Morgan_2018_MEA_Absorber_Stripper_Validation_Data.pdf` (in this folder)
+- Filename: `Morgan_2018_MEA_Absorber_Stripper_Validation_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Validation_Data
 - Secondary engineering uses: Experimental_Data
 - Equipment supported: MEA absorber; MEA stripper; reboiler duty
@@ -28,7 +28,7 @@ Folder note: The main MEA models and parameter sources are filed under 05. Morga
 - Authors and year: Joshua C. Morgan; Anderson Soares Chinen; Benjamin Omell; Debangsu Bhattacharyya; Charles Tong; David C. Miller; Bill Buschle; Mathieu Lucquiaud (2018)
 - Source: Supporting information of REF-MEA-004, Industrial & Engineering Chemistry Research 57(31), 10464-10481 (13 pp.)
 - DOI or official URL: https://doi.org/10.1021/acs.iecr.8b01472
-- Filename: `Morgan_2018_MEA_Absorber_Stripper_Validation_Data_SI.pdf` (in this folder)
+- Filename: `Morgan_2018_MEA_Absorber_Stripper_Validation_Data_SI.pdf` (local library name, not stored here)
 - Primary engineering purpose: Validation_Data
 - Secondary engineering uses: Experimental_Data
 - Equipment supported: MEA absorber; MEA stripper
@@ -44,7 +44,7 @@ Folder note: The main MEA models and parameter sources are filed under 05. Morga
 - Authors and year: Tim L. Sønderby; Kim B. Carlsen; Philip L. Fosbøl; Lars G. Kiørboe; Nicolas von Solms (2013)
 - Source: International Journal of Greenhouse Gas Control 12, 181-192
 - DOI or official URL: https://doi.org/10.1016/j.ijggc.2012.10.010
-- Filename: `Sonderby_2013_MEA_Absorber_Experimental_Data_Mass_Transfer.pdf` (in this folder)
+- Filename: `Sonderby_2013_MEA_Absorber_Experimental_Data_Mass_Transfer.pdf` (local library name, not stored here)
 - Primary engineering purpose: Experimental_Data
 - Secondary engineering uses: Mass_Transfer
 - Equipment supported: MEA absorber (pilot packed column); solvent recycle (lean solvent returned to the absorber)
@@ -60,7 +60,7 @@ Folder note: The main MEA models and parameter sources are filed under 05. Morga
 - Authors and year: L.S. Tan; A.M. Shariff; K.K. Lau; M.A. Bustam (2015)
 - Source: International Journal of Greenhouse Gas Control 34, 25-30
 - DOI or official URL: https://doi.org/10.1016/j.ijggc.2014.12.020
-- Filename: `Tan_2015_MEA_Absorber_Experimental_Data_Validation_Data.pdf` (in this folder)
+- Filename: `Tan_2015_MEA_Absorber_Experimental_Data_Validation_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Experimental_Data
 - Secondary engineering uses: Validation_Data
 - Equipment supported: MEA absorber (pilot packed column at high pressure)

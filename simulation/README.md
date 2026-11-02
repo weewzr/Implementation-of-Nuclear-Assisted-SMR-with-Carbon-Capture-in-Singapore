@@ -1,6 +1,6 @@
 # HTGR-SMR-MEA-CCS Research Library Index
 
-Last updated: 2026-10-30
+Last updated: 2026-11-02
 
 ## 1. Project
 
@@ -12,11 +12,11 @@ The simulation is intended to be built on the OUTRAM PARK backend, `develop` bra
 
 The aim is a DWSIM-like simulation with material streams, energy streams, equipment models, thermodynamics, reaction kinetics, heat and mass transfer, numerical calculations and interactive visualisation. Design inputs so far: 30 wt% aqueous MEA, a provisional absorber pressure of 25 bar absolute, and a proposed reactor rating of 210 MWth. Design-specific thermal integration for that rating still has to be verified, and a text search of the searchable papers in this library found no source for the 210 MWth figure. The closest rating found is the 215 MW(th) MHR-100SMR concept in REF-INT-003 (IAEA 2017, Table 20).
 
-This folder holds the research library and its index. It contains no simulation and no implementation plan. It sits in the `simulation` folder of the repository, next to `MASTER_ORGANISATIONAL_PROMPT.md`.
+This folder holds the citation index of the research library. The papers are not stored in this repository. It contains no simulation and no implementation plan. It sits in the `simulation` folder of the repository, next to `MASTER_ORGANISATIONAL_PROMPT.md`.
 
 ## 2. The research library
 
-The index covers 25 entries: 24 papers held in this folder and 1 paper that is listed but not yet obtained (REF-SMR-006). They are sorted into 11 category folders, each with an `INDEX.md` giving the title, authors, year, DOI or official link, the renamed filename, engineering purposes, equipment supported, availability of equations, parameter values and validation data, verified page or table references and any missing supplementary materials.
+The index covers 25 entries: 24 papers cited here and 1 paper that is listed but not yet obtained (REF-SMR-006). They are sorted into 11 category folders, each with an `INDEX.md` giving the title, authors, year, DOI or official link, the renamed filename, engineering purposes, equipment supported, availability of equations, parameter values and validation data, verified page or table references and any missing supplementary materials.
 
 Two files cover the whole library:
 
@@ -32,17 +32,17 @@ simulation/
     Literature_Inventory.csv
     Equipment_Literature_Map.md
     .gitignore
-    01_Nuclear_HTGR/   (INDEX.md, 1 PDF)
-    02_Intermediate_Heat_Exchanger/   (INDEX.md, 1 PDF)
-    03_SMR_Reactor/   (INDEX.md, 5 PDFs)
-    04_WGS_Reactor/   (INDEX.md, 2 PDFs)
-    05_MEA_Thermodynamics/   (INDEX.md, 4 PDFs)
-    06_MEA_Absorber/   (INDEX.md, 4 PDFs)
-    07_MEA_Stripper/   (INDEX.md, 1 PDF)
-    08_Integrated_HTGR_SMR_CCS/   (INDEX.md, 3 PDFs)
+    01_Nuclear_HTGR/   (INDEX.md)
+    02_Intermediate_Heat_Exchanger/   (INDEX.md)
+    03_SMR_Reactor/   (INDEX.md)
+    04_WGS_Reactor/   (INDEX.md)
+    05_MEA_Thermodynamics/   (INDEX.md)
+    06_MEA_Absorber/   (INDEX.md)
+    07_MEA_Stripper/   (INDEX.md)
+    08_Integrated_HTGR_SMR_CCS/   (INDEX.md)
     09_Software_Models_and_Code/   (INDEX.md only, no files yet)
-    10_Supporting_References/   (INDEX.md, 2 PDFs)
-    11_Out_of_Scope/   (INDEX.md, 1 PDF)
+    10_Supporting_References/   (INDEX.md)
+    11_Out_of_Scope/   (INDEX.md)
     12_Theodore_Simulation_Prompt/   (.gitkeep only)
 ```
 
@@ -81,13 +81,13 @@ Each entry has a stable ID of the form `REF-<AREA>-<number>`. The ID never chang
 3. JAERI-Tech 2005-031 (REF-SMR-005) is identified by report number; an official URL has not been verified. The same applies to IAEA NP-T-4.3 (REF-INT-003) and IEAGHG 2022-07 (REF-SUP-002), which are identified by series number.
 4. Most journal articles are behind publisher paywalls. Morgan et al. 2018 and Kraussler and Hofbauer 2017 state on the files that they are published open access.
 
-## 7. Papers in this folder
+## 7. Papers are not stored here
 
-The 24 PDFs in the category folders are renamed copies of the files collected for this project. The content of each file is unchanged. Copyright in each paper remains with its publisher and authors. Morgan et al. 2018 and Kraussler and Hofbauer 2017 state on the files that they are published open access. For the other papers, check the reuse rights before keeping them in a public repository. Supplementary documents, saved web pages, archives, model and source files, temporary files and credentials are not included, and `.gitignore` excludes them.
+The 24 PDFs were removed from this repository on 2026-11-02. Filenames in the index are the names used in the local library. Copyright in each paper remains with its publisher and authors. Use the DOI or official link in the inventory to obtain a copy. Supplementary documents, saved web pages, archives, model and source files, temporary files and credentials are not included, and `.gitignore` excludes them.
 
 ## 8. Scope exclusions
 
-The simulation excludes Pressure Swing Adsorption (PSA), PSA tail-gas recycling, detailed hydrogen purification, and detailed CO2 transport and offshore storage. REF-OOS-001 is a PSA adsorption paper kept in `11_Out_of_Scope` for reference only.
+The simulation excludes Pressure Swing Adsorption (PSA), PSA tail-gas recycling, detailed hydrogen purification, and detailed CO2 transport and offshore storage. REF-OOS-001 is a PSA adsorption paper listed in `11_Out_of_Scope` for reference only.
 
 ## 9. Reserved folder
 

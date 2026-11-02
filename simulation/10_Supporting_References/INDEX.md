@@ -2,7 +2,7 @@
 
 Scope: Supporting references that inform design basis or context but are not a primary source for one unit.
 
-Papers in this folder: 2. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 2. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 ### REF-SUP-001  Nexant and Bechtel 2020, DICE-CRCC
 
@@ -10,7 +10,7 @@ Papers in this folder: 2. Page numbers marked PDF are PDF page numbers; printed 
 - Authors and year: Nexant, Inc.; Bechtel Power and Infrastructure (2020)
 - Source: U.S. Department of Energy contract 89243319CFE000025, 30 April 2020, 481 pp.
 - DOI or official URL: https://netl.doe.gov/sites/default/files/2020-05/DICE-CRCC-Pre-FEED-Final-Report_1.pdf
-- Filename: `Nexant_Bechtel_2020_MEA_Capture_Plant_Reference_Design.pdf` (in this folder)
+- Filename: `Nexant_Bechtel_2020_MEA_Capture_Plant_Reference_Design.pdf` (local library name, not stored here)
 - Primary engineering purpose: Reference_Design
 - Secondary engineering uses: Literature_Values
 - Equipment supported: MEA absorber; stripper; regenerator reboiler; rich/lean amine exchanger; lean amine pump and cooler; condenser (plant-scale equipment)
@@ -26,7 +26,7 @@ Papers in this folder: 2. Page numbers marked PDF are PDF page numbers; printed 
 - Authors and year: IEAGHG (IEA Greenhouse Gas R&D Programme); work undertaken by Element Energy and CE Delft (2022)
 - Source: IEAGHG Technical Report 2022-07, August 2022, 144 pp. in the file
 - DOI or official URL: IEAGHG Technical Report 2022-07; official URL not verified
-- Filename: `IEAGHG_2022_SMR_CCS_Reference_Design_Literature_Values.pdf` (in this folder)
+- Filename: `IEAGHG_2022_SMR_CCS_Reference_Design_Literature_Values.pdf` (local library name, not stored here)
 - Primary engineering purpose: Reference_Design
 - Secondary engineering uses: Literature_Values
 - Equipment supported: Conventional SMR with CCS; WGS reactor (inlet conditions); syngas cooler (one-line mention); MEA absorber (post-combustion capture on SMR flue gas)

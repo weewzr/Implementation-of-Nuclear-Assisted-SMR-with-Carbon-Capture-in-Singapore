@@ -2,7 +2,7 @@
 
 Scope: Intermediate heat exchanger (IHX) and the secondary helium side.
 
-Papers in this folder: 1. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 1. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 ### REF-IHX-001  Tochio and Nakagawa 2011
 
@@ -10,7 +10,7 @@ Papers in this folder: 1. Page numbers marked PDF are PDF page numbers; printed 
 - Authors and year: Daisuke Tochio; Shigeaki Nakagawa (2011)
 - Source: Journal of Nuclear Science and Technology 48(11), 1361-1368
 - DOI or official URL: https://doi.org/10.1080/18811248.2011.9711828
-- Filename: `Tochio_Nakagawa_2011_IHX_Heat_Transfer_Validation_Data.pdf` (in this folder)
+- Filename: `Tochio_Nakagawa_2011_IHX_Heat_Transfer_Validation_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Heat_Transfer
 - Secondary engineering uses: Validation_Data; Reference_Design
 - Equipment supported: Intermediate heat exchanger; secondary helium loop; HTTR primary side

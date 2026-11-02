@@ -2,7 +2,7 @@
 
 Scope: MEA stripper, regeneration and reboiler data.
 
-Papers in this folder: 1. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 1. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 Folder note: Only one stripper-focused paper has been identified. NCCC stripper data (Table S2) sits in the Morgan supporting information filed under 06.
 
@@ -12,7 +12,7 @@ Folder note: Only one stripper-focused paper has been identified. NCCC stripper 
 - Authors and year: No-Sang Kwak; Ji Hyun Lee; In Young Lee; Kyung Ryoung Jang; Jae-Goo Shim (2012)
 - Source: Energy 47, 41-46
 - DOI or official URL: https://doi.org/10.1016/j.energy.2012.07.016
-- Filename: `Kwak_2012_MEA_Stripper_Experimental_Data_Reference_Design.pdf` (in this folder)
+- Filename: `Kwak_2012_MEA_Stripper_Experimental_Data_Reference_Design.pdf` (local library name, not stored here)
 - Primary engineering purpose: Experimental_Data
 - Secondary engineering uses: Reference_Design
 - Equipment supported: MEA stripper; reboiler (regeneration energy); absorber; rich/lean amine exchanger and condenser (pilot equipment list); solvent recycle

@@ -2,7 +2,7 @@
 
 Scope: 30 wt% aqueous MEA thermodynamics, chemistry, rate and mass-transfer models and the data behind them.
 
-Papers in this folder: 4. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 4. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 Folder note: REF-MEA-009 (Wong et al. 2016) is the only equilibrium and speciation source identified for pressures up to 50 bar.
 
@@ -12,7 +12,7 @@ Folder note: REF-MEA-009 (Wong et al. 2016) is the only equilibrium and speciati
 - Authors and year: Ross Edward Dugas (2009)
 - Source: PhD dissertation, University of Texas at Austin, December 2009 (supervisor Gary T. Rochelle), 282 pp.
 - DOI or official URL: https://repositories.lib.utexas.edu/handle/2152/7586 (record matched by title only)
-- Filename: `Dugas_2009_MEA_Experimental_Data_Mass_Transfer.pdf` (in this folder)
+- Filename: `Dugas_2009_MEA_Experimental_Data_Mass_Transfer.pdf` (local library name, not stored here)
 - Primary engineering purpose: Experimental_Data
 - Secondary engineering uses: Mass_Transfer; Thermodynamic_Equations
 - Equipment supported: MEA absorber (wetted-wall rate data); MEA thermodynamics (CO2 partial pressure data)
@@ -28,7 +28,7 @@ Folder note: REF-MEA-009 (Wong et al. 2016) is the only equilibrium and speciati
 - Authors and year: Jorge Mario Plaza (2012)
 - Source: PhD dissertation, University of Texas at Austin, May 2012 (supervisor Gary T. Rochelle), 326 pp.
 - DOI or official URL: https://tdl-ir.tdl.org/handle/2152/ETD-UT-2012-05-4952 (record matched by title only)
-- Filename: `Plaza_2012_MEA_Thermodynamic_Equations_Kinetic_Equations.pdf` (in this folder)
+- Filename: `Plaza_2012_MEA_Thermodynamic_Equations_Kinetic_Equations.pdf` (local library name, not stored here)
 - Primary engineering purpose: Thermodynamic_Equations
 - Secondary engineering uses: Kinetic_Equations; Experimental_Data
 - Equipment supported: MEA absorber; MEA thermodynamics; absorber intercooling; rich/lean cross exchanger (pilot plant description)
@@ -44,7 +44,7 @@ Folder note: REF-MEA-009 (Wong et al. 2016) is the only equilibrium and speciati
 - Authors and year: Ryan Cownden; Mathieu Lucquiaud (2026)
 - Source: Carbon Capture Science & Technology 19, 100625
 - DOI or official URL: https://doi.org/10.1016/j.ccst.2026.100625
-- Filename: `Cownden_Lucquiaud_2026_MEA_Thermodynamic_Equations_Mass_Transfer.pdf` (in this folder)
+- Filename: `Cownden_Lucquiaud_2026_MEA_Thermodynamic_Equations_Mass_Transfer.pdf` (local library name, not stored here)
 - Primary engineering purpose: Thermodynamic_Equations
 - Secondary engineering uses: Mass_Transfer
 - Equipment supported: MEA absorber; MEA stripper (regenerator); rich/lean cross exchanger (modelled for each test case)
@@ -60,7 +60,7 @@ Folder note: REF-MEA-009 (Wong et al. 2016) is the only equilibrium and speciati
 - Authors and year: M. K. Wong; A. M. Shariff; M. A. Bustam (2016)
 - Source: RSC Advances 6, 10816 (published 12 January 2016; 8 pp. in the file)
 - DOI or official URL: https://doi.org/10.1039/c5ra22926j
-- Filename: `Wong_2016_MEA_Thermodynamic_Equations_Experimental_Data.pdf` (in this folder)
+- Filename: `Wong_2016_MEA_Thermodynamic_Equations_Experimental_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Thermodynamic_Equations
 - Secondary engineering uses: Experimental_Data; Validation_Data
 - Equipment supported: MEA absorber (CO2-MEA-water equilibrium and speciation at absorber pressures)

@@ -2,15 +2,15 @@
 
 Scope: HTGR reactor and primary system references (HTTR and HTR-10 benchmarks).
 
-Papers in this folder: 1. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
+Papers listed here: 1. Page numbers marked PDF are PDF page numbers; printed means the page number printed on the document.
 
 ### REF-HTGR-001  IAEA 2003, TECDOC-1382
 
 - Title: Evaluation of High Temperature Gas Cooled Reactor Performance: Benchmark Analysis Related to Initial Testing of the HTTR and HTR-10
 - Authors and year: IAEA (International Atomic Energy Agency) (2003)
-- Source: IAEA-TECDOC-1382, IAEA, Vienna, November 2003, ISBN 92-0-116203-0. The file in this folder is Part 1 only.
+- Source: IAEA-TECDOC-1382, IAEA, Vienna, November 2003, ISBN 92-0-116203-0. The indexed file is Part 1 only.
 - DOI or official URL: IAEA-TECDOC-1382; ISBN 92-0-116203-0; https://www.iaea.org/ar/node/277691
-- Filename: `IAEA_2003_HTGR_Reference_Design_Validation_Data.pdf` (in this folder)
+- Filename: `IAEA_2003_HTGR_Reference_Design_Validation_Data.pdf` (local library name, not stored here)
 - Primary engineering purpose: Reference_Design
 - Secondary engineering uses: Validation_Data; Literature_Values
 - Equipment supported: HTGR reactor (HTTR and HTR-10); primary and secondary helium circulator scenarios
